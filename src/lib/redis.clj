@@ -36,7 +36,7 @@
 (def ^{:arglists '([conn])} client:stop  (h/wrap-stop  pool/pool:stop  (client-steps)))
 (def ^{:arglists '([conn])} client:kill  (h/wrap-stop  pool/pool:kill  (client-steps)))
 
-(defn- client-string
+(defn client-string
   [{:keys [host port pool]}]
   (str "#rt.redis.client " (merge {:host host :port port}
                                    (h/comp:info pool))))

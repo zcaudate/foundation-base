@@ -171,7 +171,8 @@
 
  foundation/lib.redis
  {:description "wrapper for redis" 
-  :include [[lib.redis :complete]]}
+  :include [[lib.redis :complete]]
+  :bundle [{:path "resources" :include ["assets/lib.redis"]}]}
 
  foundation/lua.aws
  {:description "aws library" 

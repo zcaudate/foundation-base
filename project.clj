@@ -57,6 +57,9 @@
    ;; rt.basic
    [http-kit "2.5.3"]
 
+   ;; rt.jep
+   [black.ninia/jep "4.1.0"]
+   
    ;; rt.graal
    [org.graalvm.sdk/graal-sdk "21.2.0"]
    [org.graalvm.truffle/truffle-api "21.2.0"]

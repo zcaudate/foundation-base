@@ -1,8 +1,7 @@
 (ns lua.nginx.driver-redis
   (:require [std.lang :as l]
             [std.lib :as h]
-            [std.string :as str]
-            [rt.redis :as redis]))
+            [std.string :as str]))
 
 (l/script :lua
   {:bundle {:default [["resty.redis" :as ngxredis]]}

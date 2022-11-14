@@ -1,0 +1,13 @@
+{:dependencies [:project :dependencies]
+ :signing      {:key [:include [:str ["config/keys/" [:global :hara.email] ".secured"]]
+                               {:type :gpg :secured true}]}
+ :packages     [:include "config/packages.edn"
+                         {:type :edn}]
+ :releases {:all     {:type        :maven
+                      :repository  "github"
+                      :manifest    :all}
+            :lang    [:include "config/deploy/lang.edn" 
+                               {:type :edn}]
+            :public  [:include "config/deploy/public.edn" 
+                               {:type :edn}]}
+ :repositories       [:include "config/repositories.edn" {:type :edn}]}

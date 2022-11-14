@@ -1,0 +1,7 @@
+{:profile      {:user      "test@test.com"
+                :deploy    "caudata"}
+ :repositories {"caudata"  {:id       "caudata"
+                            :url      "https://maven.caudata.io"
+                            :digest   false
+                            :authentication {:username "caudata"
+                                             :password "caudata"}}}}

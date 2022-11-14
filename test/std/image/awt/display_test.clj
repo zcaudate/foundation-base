@@ -4,13 +4,13 @@
             [std.image.awt.io :as io]))
 
 ^{:refer std.image.awt.display/create-viewer :added "3.0" :unit #{:gui}}
-(fact "creates a viewer for the awt image"
+(comment "creates a viewer for the awt image"
 
   (create-viewer "hello")
   => (contains {:frame javax.swing.JFrame}))
 
 ^{:refer std.image.awt.display/display :added "3.0" :unit #{:gui}}
-(fact "displays a BufferedImage in a JFrame"
+(comment "displays a BufferedImage in a JFrame"
 
   (doto (display (io/read "test-data/std.image/circle-100.png")
                  {})

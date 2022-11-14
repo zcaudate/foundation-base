@@ -37,7 +37,7 @@
   => "function arr_map(arr,f){\n  out = [];\n  for:array([e,arr],x:arr_push(out,f(e)));\n  return out;\n}")
 
 ^{:refer std.lang.base.workspace/ptr-clip :added "4.0"}
-(fact "copies pointer text to clipboard"
+(comment "copies pointer text to clipboard"
   ^:hidden
   
   (do (w/ptr-clip k/arr-map)

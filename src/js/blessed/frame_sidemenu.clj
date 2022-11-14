@@ -6,7 +6,6 @@
 (l/script :js
   {:require [[xt.lang.base-lib :as k]
              [js.core :as j :include [:node :util]]
-             [js.lib.valtio :as v]
              [js.react   :as r]
              [js.blessed :as b :include [:lib :react]]
              [js.blessed.ui-style :as ui-style]

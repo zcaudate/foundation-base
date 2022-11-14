@@ -2,7 +2,7 @@
   (:use code.test)
   (:require [std.lib :as h]
             [std.lang :as l]
-            [rt.solidity :as solidity]
+            [rt.solidity :as s]
             [rt.solidity.env-ganache :as env-ganache]))
 
 (l/script- :js

@@ -3,7 +3,7 @@
   (:require [std.lib :as h]
             [std.lang :as l]
             [xt.lang.base-notify :as notify]
-            [rt.solidity :as solidity]
+            [rt.solidity :as s]
             [rt.solidity.env-ganache :as env-ganache]
             [rt.solidity.compile-solc :as compile-solc]
             [web3.lib.example-counter :as example-counter]))

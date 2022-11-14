@@ -53,7 +53,7 @@
 (fact "check that port is available"
 
   (port:check-available 51311)
-  => anything?)
+  => anything)
 
 ^{:refer std.lib.network/port:get-available :added "4.0"}
 (fact "get first available port from a range"

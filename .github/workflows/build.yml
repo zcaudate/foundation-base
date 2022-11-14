@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Installing Jars
+      - name: Running Tests
         run: lein test
         
     services:
@@ -62,5 +62,5 @@ jobs:
           context: docker
           tags: '${{ steps.metadata.outputs.tags }}'
           labels: '${{ steps.metadata.outputs.labels }}'
-          push: true}
+          push: true
           

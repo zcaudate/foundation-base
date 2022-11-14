@@ -67,7 +67,7 @@
   ^:hidden
   
   (set
-   (!.js
+   (j/<!
     (k/obj-keys
      (e/new-contract "0x94e3361495bD110114ac0b6e35Ed75E77E6a6cFA"
                      (@! (:abi +contract+))
@@ -114,7 +114,7 @@
 (fact "creates a new contract factory"
   ^:hidden
   
-  (!.js
+  (j/<!
    (k/obj-keys
     (e/new-contract-factory
      (@! (:abi +contract+))
@@ -127,7 +127,7 @@
 (fact "gets a signer given url and private key"
   ^:hidden
   
-  (!.js
+  (j/<!
    (k/obj-keys
     (e/get-signer "http://127.0.0.1:8545"
                   (@! (last env-ganache/+default-private-keys+)))))

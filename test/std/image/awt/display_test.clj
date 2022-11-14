@@ -1,0 +1,17 @@
+(ns std.image.awt.display-test
+  (:use code.test)
+  (:require [std.image.awt.display :refer :all]
+            [std.image.awt.io :as io]))
+
+^{:refer std.image.awt.display/create-viewer :added "3.0" :unit #{:gui}}
+(fact "creates a viewer for the awt image"
+
+  (create-viewer "hello")
+  => (contains {:frame javax.swing.JFrame}))
+
+^{:refer std.image.awt.display/display :added "3.0" :unit #{:gui}}
+(fact "displays a BufferedImage in a JFrame"
+
+  (doto (display (io/read "test-data/std.image/circle-100.png")
+                 {})
+    (-> :frame (.hide))))

@@ -43,6 +43,75 @@
  foundation/jvm
  {:description "jvm library"
   :include [[jvm :complete]]}
+  
+ foundation/js.blessed
+ {:description "js blessed" 
+  :include [[js.blessed :complete]]}
+  
+ foundation/js.core
+ {:description "js core libraries" 
+  :include [[js.core :complete]
+            [js.webpack :complete]]}
+ 
+ foundation/js.lib.chalk
+ {:description "js util libraries" 
+  :include [[js.lib.chalk :complete]]}
+
+ foundation/js.lib.d3
+ {:description "js util libraries" 
+  :include [[js.lib.d3 :complete]]}
+
+ foundation/js.lib.datetime
+ {:description "js util libraries" 
+  :include [[js.lib.datetime :complete]]}
+ 
+ foundation/js.lib.driver
+ {:description "js util libraries" 
+  :include [[js.lib.driver-postgres :complete]
+            [js.lib.driver-redis :complete]
+            [js.lib.driver-sqlite :complete]]}
+
+ foundation/js.lib.ethereum
+ {:description "js ethereum and solc" 
+  :include [[js.lib.eth-bench :complete]
+            [js.lib.eth-lib :complete]
+            [js.lib.eth-solc :complete]]}
+
+ foundation/js.lib.fastify
+ {:description "js ethereum and solc" 
+  :include [[js.lib.fastify :complete]]}
+
+ foundation/js.lib.lw-charts
+ {:description "js util libraries" 
+  :include [[js.lib.lw-charts :complete]]}
+
+ foundation/js.lib.metamask
+ {:description "js metamask library" 
+  :include [[js.lib.metamask :complete]]}
+ 
+ foundation/js.lib.rn
+ {:description "js util libraries" 
+  :include [[js.lib.rn-expo :base]
+            [js.lib.rn-gesture :base]
+            [js.lib.rn-paper :base]]}
+
+ foundation/js.lib.valtio
+ {:description "js util libraries" 
+  :include [[js.lib.valtio :complete]]}
+ 
+ foundation/js.react
+ {:description "js core libraries" 
+  :include [[js.react :base]
+            [js.react.helper-portal :base]]}
+ 
+ foundation/js.react-ext
+ {:description "js core libraries" 
+  :include [[js.react.ext-box :base]
+            [js.react.ext-cell :base]
+            [js.react.ext-form :base]
+            [js.react.ext-log :base]
+            [js.react.ext-route :base]
+            [js.react.ext-view :base]]}
 	    
  foundation/lib.aether
  {:description "wrapper for org.eclipse.aether"
@@ -99,6 +168,30 @@
  foundation/lib.redis
  {:description "wrapper for redis" 
   :include [[lib.redis :complete]]}
+
+ foundation/lua.aws
+ {:description "aws library" 
+  :include [[lua.aws   :complete]]}
+ 
+ foundation/lua.core
+ {:description "core lua library" 
+  :include [[lua.core   :complete]]}
+ 
+ foundation/lua.nginx
+ {:description "nginx library" 
+  :include [[lua.nginx   :complete]]}
+
+ foundation/lua.ext.plisio
+ {:description "plisio library" 
+  :include [[lua.ext.plisio   :complete]]}
+
+ foundation/lua.ext.sochain
+ {:description "sochain library" 
+  :include [[lua.ext.sochain   :complete]]}
+ 
+ foundation/lua.torch
+ {:description "torch library" 
+  :include [[lua.torch   :complete]]}
   
  foundation/math.infix
  {:description "lisp infix notation"
@@ -211,6 +304,10 @@
   [com.fasterxml.jackson.core/jackson-databind
    com.fasterxml.jackson.datatype/jackson-datatype-jsr310]
   :bundle [{:path "target/classes" :include ["hara/lib/json"]}]}
+ 
+ foundation/std.lang
+ {:description "working with other languages"
+  :include [[std.lang :complete]]}
   
  foundation/std.lib
  {:description "simple string methods for searching"
@@ -265,4 +362,21 @@
   
  foundation/std.timeseries
  {:description "timeseries manipulation"
-  :include [[std.timeseries :complete]]}}
+  :include [[std.timeseries :complete]]}
+  
+ foundation/xtalk.lang
+ {:description "xtalk language"
+  :include [[xt.lang     :complete]
+            [xt.module   :complete]]}
+ 
+ foundation/xtalk.db
+ {:description "xtalk language"
+  :include [[xt.db     :complete]]}
+
+ foundation/xtalk.runtime
+ {:description "xtalk language"
+  :include [[xt.runtime     :complete]]}
+
+ foundation/xtalk.system
+ {:description "xtalk language"
+  :include [[xt.sys     :complete]]}}

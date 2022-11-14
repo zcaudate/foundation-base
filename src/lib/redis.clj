@@ -2,8 +2,8 @@
   (:require [std.lib :as h :refer [defimpl]]
             [net.resp.connection :as conn]
             [net.resp.pool :as pool]
-            [rt.redis.bench :as bench]
-            [rt.redis.event :as event]
+            [lib.redis.bench :as bench]
+            [lib.redis.event :as event]
             [lib.docker :as docker])
   (:import (hara.net.resp SocketConnection)))
 
@@ -52,7 +52,7 @@
                          :path [:redis :pool]})]
     (pool/pool:start (assoc client :pool pool))))
 
-(def ^{:arglists '([conn])} client:start (wrap/wrap-start client-start (client-steps)))
+(def ^{:arglists '([conn])} client:start (h/wrap-start client-start (client-steps)))
 
 (defn client-create
   "creates a redis client

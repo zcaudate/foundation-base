@@ -23,8 +23,7 @@
   "executes a docker command"
   {:added "4.0"}
   [command & [opts tail]]
-  (let [{:keys [host format]
-         :or {host *host*}} opts
+  (let [{:keys [host format]} opts
         args (concat ["docker"]
                      (when host ["--host" host])
                      command
@@ -97,12 +96,15 @@
                     nil
                     
                     :else
-                    @(apply h/sh (concat ["docker" "--host" (or *host* "127.0.0.1") "run"]
+                    @(apply h/sh (concat ["docker" "run"]
+                                         (when *host* ["--host" *host*])
                                          (if detached ["-d"])
                                          (if remove ["--rm"])
                                          flags args)))
          cid   (if (empty? cid)
-                 @(h/sh "docker" "--host" (or *host* "127.0.0.1") "ps" "-aqf" (str "name=^" name "$"))
+                 @(h/sh {:args (concat ["docker" "ps"]
+                                       (when *host* ["--host" *host*])
+                                       ["-aqf" (str "name=^" name "$")])})
                  cid)
          ip   (get-ip cid)]
      (if (or repeat ip)
@@ -115,5 +117,6 @@
   ([{:keys [group id] :as m
      :or {group "testing"}}]
    (when (has-container? m)
-     @(h/sh "docker"  "--host" (or *host* "127.0.0.1") "kill" (str group "_" (or id (h/error "Id required")))))))
-
+     @(h/sh {:args (concat ["docker" "kill"]
+                           (when *host* ["--host" *host*])
+                           [(str group "_" (or id (h/error "Id required")))])}))))

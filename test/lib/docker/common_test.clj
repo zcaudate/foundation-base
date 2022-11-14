@@ -1,15 +1,19 @@
 (ns lib.docker.common-test
   (:use code.test)
   (:require [lib.docker.common :refer :all]
-            [lib.docker.ryuk :as ryuk]))
+            [lib.docker.ryuk :as ryuk]
+            [std.lib :as h]))
 
 ^{:refer lib.docker.common/raw-exec :guard true :added "4.0"}
 (fact "executes a shell command"
   ^:hidden
   
-  (raw-exec ["docker" "--host" (or *host* "127.0.0.1") "ps"   "--format" "{{json .}}"]
+  (raw-exec (concat ["docker" "ps"]
+                    (when *host* ["--host" *host*])
+                    ["--format" "{{json .}}"])
             {})
   => coll?)
+
 
 ^{:refer lib.docker.common/raw-command :added "4.0"}
 (fact "executes a docker command"

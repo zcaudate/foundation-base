@@ -33,6 +33,7 @@
 
 (fact:global
  {:setup [(env/start-ganache-server)
+          (Thread/sleep 500)
           (l/rt:restart)]
   :teardown [(l/rt:stop)]})
 

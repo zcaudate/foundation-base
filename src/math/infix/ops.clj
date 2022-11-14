@@ -1,4 +1,5 @@
-(ns math.infix.ops)
+(ns math.infix.ops
+  (:refer-clojure :exclude [abs]))
 
 (defmacro defunary
   "helper for `java.lang.Math` unary functions"

@@ -1,14 +1,16 @@
 (ns lib.docker.ryuk-test
   (:use code.test)
   (:require [lib.docker.ryuk :refer :all]
-            [lib.docker.common :as common]))
-
+            [lib.docker.common :as common]
+            [std.lib :as h]))
 
 ^{:refer lib.docker.common/CANARY :guard true :adopt true :added "4.0"}
 (fact "executes a shell command"
   ^:hidden
   
-  (common/raw-exec ["docker" "--host" (or common/*host* "127.0.0.1") "ps"   "--format" "{{json .}}"]
+  (common/raw-exec (concat ["docker" "ps"]
+                           (when common/*host* ["--host" common/*host*])
+                           ["--format" "{{json .}}"])
                    {})
   => coll?)
 
@@ -27,7 +29,7 @@
   (stop-ryuk))
 
 ^{:refer lib.docker.ryuk/start-reaped :added "4.0"}
-(comment "starts a reaped container"
+(fact "starts a reaped container"
   ^:hidden
 
   (start-reaped {:id     "test"
@@ -40,4 +42,5 @@
 (fact "stops all reaped"
   ^:hidden
   
-  (stop-all-reaped))
+  (stop-all-reaped)
+  => (any nil? h/wrapped?))

@@ -1,8 +1,7 @@
 (ns lib.redis.event-test
   (:use code.test)
   (:require [lib.redis.event :refer :all]
-            
-            [lib.redis.client :as r]
+            [lib.redis :as r]
             [lib.redis.bench :as bench]
             [net.resp.connection :as conn]
             [net.resp.wire :as wire]

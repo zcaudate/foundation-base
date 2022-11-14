@@ -66,4 +66,6 @@
                  (map :id))]
      (when (not-empty cs)
        ;;cs
-       (apply h/sh (concat ["docker" "--host" (or common/*host* "127.0.0.1") "stop"] cs))))))
+       (h/sh {:args (concat ["docker" "stop"]
+                            (when common/*host* ["--host" common/*host*])
+                            cs)})))))

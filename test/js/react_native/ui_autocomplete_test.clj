@@ -59,7 +59,7 @@
   ^:hidden
 
   (def.js NAMES
-    (@! (->> (h/sys:resource-content "assets/js.react-native/girl-names.json")
+    (@! (->> (h/sys:resource-content "js.react-native/girl-names.json")
              (std.json/read)
              (mapv std.string/upper-case))))
   

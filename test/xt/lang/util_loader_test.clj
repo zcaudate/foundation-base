@@ -413,7 +413,6 @@
 ^{:refer xt.lang.util-loader/unload-tasks :added "4.0"}
 (fact "unload tasks")
 
-
 ^{:refer xt.lang.util-loader/load-tasks.global :adopt true :added "4.0"}
 (fact "load tasks"
   ^:hidden
@@ -440,4 +439,4 @@
                         (fn []
                           (repl/notify  [(k/floor (/ (- B A) 100))
                                          (k/floor (/ (- C A) 100))]))))
-  => [1 2])
+  => (contains [number? 2]))

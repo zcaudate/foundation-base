@@ -94,7 +94,7 @@
                                                    (catch Throwable t))
                                               (reset! *server* nil))))]
                            (h/wait-for-port "127.0.0.1" +default-port+
-                                            {:timeout 5000})
+                                            {:timeout 10000})
                            {:type "ganache"
                             :port +default-port+
                             :root +default-port+

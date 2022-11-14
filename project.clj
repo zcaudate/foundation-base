@@ -123,9 +123,9 @@
   :java-output-path  "target/classes"
   :repl-options {:host "0.0.0.0" :port 51311}
   :jvm-opts
-  ["-Xms1536m"
-   "-Xmx1536m"
-   "-XX:MaxMetaspaceSize=1536m"
+  ["-Xms2048m"
+   "-Xmx2048m"
+   "-XX:MaxMetaspaceSize=2048m"
    "-XX:-OmitStackTraceInFastThrow"
    
    ;;

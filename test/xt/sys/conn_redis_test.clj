@@ -2,7 +2,7 @@
   (:use code.test)
   (:require [std.lang :as l]
             [std.lib :as h]
-            [rt.redis]
+            [lib.redis.bench :as bench]
             [xt.lang.base-notify :as notify]))
 
 (l/script- :lua
@@ -24,10 +24,10 @@
              [xt.lang.base-lib :as k]]})
 
 (fact:global
- {:setup    [(rt.redis/start-redis-array [17000])
+ {:setup    [(bench/start-redis-array [17000])
              (l/rt:restart)]
   :teardown [(l/rt:stop)
-             (rt.redis/stop-redis-array [17000])]})
+             (bench/stop-redis-array [17000])]})
 
 ^{:refer xt.sys.conn-redis/script-tmpl :added "4.0"}
 (fact "creates a script template"

@@ -3,7 +3,7 @@
   (:require [std.lang :as l]
             [std.lib :as h]
             [xt.lang.base-notify :as notify]
-            [rt.redis]))
+            [lib.redis.bench :as bench]))
 
 (l/script- :js
   {:runtime :basic
@@ -13,11 +13,11 @@
              [js.lib.driver-redis :as js-driver]]})
 
 (fact:global
- {:setup    [(rt.redis/start-redis-array [17000])
+ {:setup    [(bench/start-redis-array [17000])
              (l/rt:restart)
              (Thread/sleep 500)]
   :teardown [(l/rt:stop)
-             (rt.redis/stop-redis-array [17000])]})
+             (bench/stop-redis-array [17000])]})
 
 ^{:refer js.lib.driver-redis/connect-constructor :added "4.0"}
 (fact "creates a connection"

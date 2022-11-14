@@ -68,5 +68,7 @@
                      (conn/test:config)
                      {:host host
                       :port port})]
-     (-> m
-         (assoc :id id :tag :redis :mode mode :runtime (atom {:scripts {} :listeners {}}))))))
+     (merge m {:id id
+               :tag :redis
+               :mode mode
+               :runtime (atom {:scripts {} :listeners {}})}))))

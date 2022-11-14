@@ -53,15 +53,16 @@
 (fact "check that port is available"
 
   (port:check-available 51311)
-  => boolean?)
+  => anything?)
 
 ^{:refer std.lib.network/port:get-available :added "4.0"}
 (fact "get first available port from a range"
 
-  (port:get-available [51311 51312 51313])
+  (port:get-available [51312 51313])
   => number?)
 
 ^{:refer std.lib.network/wait-for-port :added "3.0"}
 (fact "waits for a port to be ready"
 
-  (wait-for-port "localhost" 51311 {:timeout 1000}))
+  (wait-for-port "localhost" 51313 {:timeout 1000})
+  => (throws))

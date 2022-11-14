@@ -1,9 +1,9 @@
-(ns rt.docker.ryuk
+(ns lib.docker.ryuk
   (:require [std.lib :as h]
             [std.concurrent :as cc]
             [std.json :as json]
             [std.string :as str]
-            [rt.docker.common :as common]))
+            [lib.docker.common :as common]))
 
 ;;
 ;; Testing

@@ -2,7 +2,7 @@
   (:use [code.test])
   (:require [net.resp.wire :refer :all]
             [net.resp.connection :as conn]
-            [rt.redis.bench :as bench]
+            [lib.redis.bench :as bench]
             [std.lib :as h]
             [std.concurrent.request :as req]
             [std.concurrent :as cc])

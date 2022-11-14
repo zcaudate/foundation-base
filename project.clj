@@ -1,15 +1,12 @@
 (defproject zcaudate/foundation-base "4.0.1"
   :description "base libraries for foundation"
   :url "https://www.gitlab.com/zcaudate/foundation-base"
-  :aliases {"test"        ["exec" "-ep" "(use 'code.test) (def res (run :all)) (System/exit (+ (:failed res) (:thrown res)))"]
-            "test-std"    ["exec" "-ep" "(use 'code.test) (def res (run '[std])) (System/exit (+ (:failed res) (:thrown res)))"]
-            "test-unit"   ["run" "-m" "code.test" "exit"]
-            "test-ui"     ["exec" "-ep" "(use 'code.test) (run :all {:include [{:unit #{:gui :gpu}}]})"]
-            "test-server" ["exec" "-ep" "(use 'code.test) (run :all {:include [{:unit #{:infra :todo}}]})"]
-            "publish"     ["exec" "-ep" "(use 'code.doc)     (deploy-template :all) (publish :all)"]
-            "install"     ["exec" "-ep" "(use 'code.maven)  (install :all {:tag :all}) (System/exit 0)"]
-            "deploy"      ["exec" "-ep" "(use 'code.maven)  (deploy :all {:tag :all}) (System/exit 0)"]
-            "deploy-public"  ["exec" "-ep" "(use 'code.maven)  (deploy :all {:tag :public}) (System/exit 0)"]}
+  :aliases
+  {"test"  ["exec" "-ep" "(use 'code.test) (def res (run :all)) (System/exit (+ (:failed res) (:thrown res)))"]
+   "test-unit"   ["run" "-m" "code.test" "exit"]
+   "publish"     ["exec" "-ep" "(use 'code.doc)     (deploy-template :all) (publish :all)"]
+   "install"     ["exec" "-ep" "(use 'code.maven)  (install :all {:tag :all}) (System/exit 0)"]
+   "deploy"      ["exec" "-ep" "(use 'code.maven)  (deploy :all {:tag :all}) (System/exit 0)"]}
   :dependencies
   [;; dev
    [org.clojure/clojure "1.11.1"]
@@ -45,6 +42,9 @@
    [org.bouncycastle/bcprov-jdk15on "1.65"]
    [org.bouncycastle/bcpg-jdk15on "1.65"]
 
+   ;; lib.postgres
+   [com.impossibl.pgjdbc-ng/pgjdbc-ng "0.8.9"]
+   
    ;; lib.oshi
    [com.github.oshi/oshi-core "6.3.1"]
 
@@ -100,9 +100,8 @@
    [com.googlecode.java-diff-utils/diffutils "1.3.0"]
    
 
-   ;; TESTS
-   [org.eclipse.jgit/org.eclipse.jgit "5.13.0.202109080827-r"] ;; std.object
-   ]
+   ;; TESTS - std.object
+   [org.eclipse.jgit/org.eclipse.jgit "5.13.0.202109080827-r"]]
   :global-vars {*warn-on-reflection* true}
   :cljfmt {:file-pattern #"^[^\.].*\.clj$"
            :indents {script [[:inner 0]]
@@ -115,7 +114,6 @@
                              [cider/cider-nrepl "0.25.11"]]}
              :repl {:injections [(try (require 'jvm.tool)
                                       (require '[std.lib :as h])
-                                      (require 'std.lang.dev)
                                       (catch Throwable t (.printStackTrace t)))]}}
   :resource-paths    ["resources" "test-data" "test-code"]
   :java-source-paths ["src-java" "test-java"]

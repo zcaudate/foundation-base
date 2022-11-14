@@ -1,10 +1,10 @@
-(ns rt.docker.ryuk-test
+(ns lib.docker.ryuk-test
   (:use code.test)
-  (:require [rt.docker.ryuk :refer :all]
-            [rt.docker.common :as common]))
+  (:require [lib.docker.ryuk :refer :all]
+            [lib.docker.common :as common]))
 
 
-^{:refer rt.docker.common/CANARY :guard true :adopt true :added "4.0"}
+^{:refer lib.docker.common/CANARY :guard true :adopt true :added "4.0"}
 (fact "executes a shell command"
   ^:hidden
   
@@ -13,20 +13,20 @@
   => coll?)
 
 
-^{:refer rt.docker.ryuk/start-ryuk :added "4.0"}
+^{:refer lib.docker.ryuk/start-ryuk :added "4.0"}
 (fact "starts the reaper"
   ^:hidden
   
   (start-ryuk)
   => map?)
 
-^{:refer rt.docker.ryuk/stop-ryuk :added "4.0"}
+^{:refer lib.docker.ryuk/stop-ryuk :added "4.0"}
 (fact "stops the reaper"
   ^:hidden
   
   (stop-ryuk))
 
-^{:refer rt.docker.ryuk/start-reaped :added "4.0"}
+^{:refer lib.docker.ryuk/start-reaped :added "4.0"}
 (comment "starts a reaped container"
   ^:hidden
 
@@ -36,7 +36,7 @@
                  :cmd    ["node"]})
   => map?)
 
-^{:refer rt.docker.ryuk/stop-all-reaped :added "4.0"}
+^{:refer lib.docker.ryuk/stop-all-reaped :added "4.0"}
 (fact "stops all reaped"
   ^:hidden
   

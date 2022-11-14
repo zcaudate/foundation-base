@@ -58,6 +58,10 @@
    org.eclipse.aether/aether-transport-file
    org.eclipse.aether/aether-transport-classpath
    org.apache.maven/maven-aether-provider]}
+ 
+ foundation/lib.docker
+ {:description "wrapper for docker" 
+  :include [[lib.docker :complete]]}
   
  foundation/lib.jdbc
  {:description "jdbc interop"
@@ -70,6 +74,10 @@
    org.apache.lucene/lucene-queryparser
    org.apache.lucene/lucene-analyzers-common
    org.apache.lucene/lucene-suggest]}
+
+ foundation/lib.minio
+ {:description "wrapper for minio" 
+  :include [[lib.minio :complete]]}
   
  foundation/lib.openpgp
  {:description "openpgp that makes sense"
@@ -81,6 +89,16 @@
  {:description "wrapper for com.github.oshi"
   :include [[lib.oshi :complete]]
   :dependencies [com.github.oshi/oshi-core]}
+
+ foundation/lib.postgres
+ {:description "wrapper for postgres" 
+  :include [[lib.postgres :complete]]
+  :dependencies
+  [com.impossibl.pgjdbc-ng/pgjdbc-ng]}
+
+ foundation/lib.redis
+ {:description "wrapper for redis" 
+  :include [[lib.redis :complete]]}
   
  foundation/math.infix
  {:description "lisp infix notation"
@@ -105,14 +123,6 @@
   :include [[net.resp :complete]]
   :bundle
   [{:path "target/classes" :include ["hara/net/resp"]}]}
- 
- foundation/rt.docker
- {:description "wrapper for docker" 
-  :include [[rt.docker :complete]]}
-
- foundation/rt.minio
- {:description "wrapper for minio" 
-  :include [[rt.minio :complete]]}
   
  foundation/script.css
  {:description "read and write css using clojure"

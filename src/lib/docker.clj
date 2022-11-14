@@ -1,7 +1,7 @@
-(ns rt.docker
+(ns lib.docker
   (:require [std.lib :as h]
-            [rt.docker.common :as common]
-            [rt.docker.ryuk :as ryuk]))
+            [lib.docker.common :as common]
+            [lib.docker.ryuk :as ryuk]))
 
 (h/intern-in
  common/get-ip

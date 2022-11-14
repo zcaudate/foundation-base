@@ -1,4 +1,4 @@
-(ns rt.docker.common
+(ns lib.docker.common
   (:require [std.lib :as h]
             [std.concurrent :as cc]
             [std.json :as json]

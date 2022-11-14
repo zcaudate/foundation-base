@@ -1,5 +1,5 @@
-(ns rt.minio
-  (:require [rt.minio.bench :as bench]
+(ns lib.minio
+  (:require [lib.minio.bench :as bench]
             [std.lib :as h]))
 
 (h/intern-in bench/start-minio-array

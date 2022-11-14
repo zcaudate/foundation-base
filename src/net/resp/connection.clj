@@ -263,8 +263,8 @@
 
 (def test:activate
   (fn []
-    (require 'rt.docker)
-    (eval '(rt.docker/start-reaped
+    (require 'lib.docker)
+    (eval '(lib.docker/start-reaped
             {:group "testing"
              :id "redis"
              :image "redis:6.0.9"
@@ -272,8 +272,8 @@
 
 (def test:deactivate
   (fn []
-    (require 'rt.docker)
-    (eval '(rt.docker/stop-container {:group "testing" :id "redis"}))))
+    (require 'lib.docker)
+    (eval '(lib.docker/stop-container {:group "testing" :id "redis"}))))
 
 (defn test:config
   "creates a container and gets config

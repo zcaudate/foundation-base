@@ -84,6 +84,8 @@
              [comp:remote? component/remote?]
              component/component?
              component/impl:component
+	     component/wrap-start
+	     component/wrap-stop
 
              [deps:construct deps/construct]
              [deps:deconstruct deps/deconstruct]

@@ -171,7 +171,7 @@
 
 (defmethod compile-ext-fn :redis
   [_]
-  {:fn 'rt.redis/generate-script
+  {:fn 'lib.redis/generate-script
    :lang    :lua
    :suffix  :lua})
 

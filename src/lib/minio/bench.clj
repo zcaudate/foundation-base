@@ -1,4 +1,4 @@
-(ns rt.minio.bench
+(ns lib.minio.bench
   (:require [std.lib :as h :refer [defimpl]]
             [std.json :as json]
             [std.string :as str]

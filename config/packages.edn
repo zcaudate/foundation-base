@@ -116,7 +116,7 @@
  foundation/js.react-native
  {:description "js core libraries" 
   :include [[js.react-native :complete]]}
-	    
+ 
  foundation/lib.aether
  {:description "wrapper for org.eclipse.aether"
   :include [[lib.aether :complete]]

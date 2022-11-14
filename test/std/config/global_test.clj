@@ -33,7 +33,7 @@
 (fact "returns the global object for thecurrent project"
 
   (:group (global-project-raw))
-  => "tahto")
+  => "zcaudate")
 
 ^{:refer std.config.global/global-home-raw :added "3.0"}
 (fact "returns the global object for all global types"
@@ -51,7 +51,7 @@
 (fact "returns the global object for all global types"
 
   (:group (global-all-raw))
-  => "tahto")
+  => "zcaudate")
 
 ^{:refer std.config.global/global :added "3.0"}
 (fact "returns the entire global map"

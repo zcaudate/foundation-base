@@ -125,7 +125,7 @@
   :jvm-opts
   ["-Xms2048m"
    "-Xmx2048m"
-   "-XX:MaxMetaspaceSize=2048m"
+   "-XX:MaxMetaspaceSize=1048m"
    "-XX:-OmitStackTraceInFastThrow"
    
    ;;

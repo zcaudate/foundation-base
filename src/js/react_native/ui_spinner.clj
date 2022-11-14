@@ -1,0 +1,266 @@
+(ns js.react-native.ui-spinner
+  (:require [std.lang :as l]
+            [std.lib :as h]))
+
+(l/script :js
+  {:require [[xt.lang.base-lib :as k]
+             [js.core :as j]
+             [js.react :as r]
+             [js.react-native :as n :include [:fn]]
+             [js.react-native.animate :as a]
+             [js.react-native.physical-base :as physical-base]
+             [js.react-native.physical-edit :as physical-edit]
+             [js.react-native.helper-roller :as helper-roller]
+             [js.react-native.helper-theme :as helper-theme]
+             [js.react-native.helper-theme-default :as helper-theme-default]]
+   :export [MODULE]})
+  
+(def.js ITEMS
+  ["0" "1" "2" "3" "4" "5" "6" "7" "8" "9"])
+
+(def.js styleDigit
+  {:height 25
+   :width 10
+   :overflow "hidden"
+   :backgroundColor "blue"})
+
+(def.js styleDigitText
+  {:height 25
+   :position "absolute"
+   :width 10
+   :fontSize 16
+   :fontWeight "400"
+   :backgroundColor "red"
+   :color "#333"})
+
+(defn.js spinnerTheme
+  "creates the spinner theme"
+  {:added "4.0"}
+  [#{[theme
+      themePipeline
+      (:.. rprops)]}]
+  (var __theme (j/assign {} helper-theme-default/ButtonDefaultTheme theme))
+  (var __themePipeline (j/assign {}
+                                 helper-theme-default/PressDefaultPipeline
+                                 themePipeline))
+  (var [styleStatic transformFn]
+       (helper-theme/prepThemeCombined
+        #{[:theme __theme
+           :themePipeline __themePipeline
+           (:.. rprops)]}))
+  (return [styleStatic transformFn]))
+
+(defn.js SpinnerStatic
+  "creates the spinner padding"
+  {:added "0.1"}
+  [#{[text
+      styleText
+      style
+      editable]}]
+  (return
+   [:% n/View
+    {:style [-/styleDigit
+             (:.. (j/arrayify style))]}
+    [:% n/Text
+     {:style [-/styleDigitText
+              (n/PlatformSelect
+               {:web {:userSelect "none"
+                      :cursor (:? editable
+                                  "ns-resize"
+                                  "default")}})
+              (:.. (j/arrayify styleText))]}
+     text]]))
+
+(defn.js SpinnerDigit
+  "creates the spinner digit"
+  {:added "4.0"}
+  [#{[index
+      style
+      styleText
+      (:= brand {})
+      (:= items -/ITEMS)
+      (:= divisions 5)
+      editable]}]
+  (var #{labels
+         labelsLu
+         offset
+         modelFn} (helper-roller/useRoller #{index items divisions}))
+  (return
+   [:% n/View
+    {:style [-/styleDigit
+             (:.. (j/arrayify style))]}
+    (j/map (k/arr-range divisions)
+           (fn:> [index i]
+             [:% physical-base/Text
+              {:key i
+               :indicators {:offset offset
+                            :value (. labels [index])}
+               :style [-/styleDigitText
+                       (n/PlatformSelect
+                        {:web {:userSelect "none"
+                               :cursor (:? editable
+                                           "ns-resize"
+                                           "default")}})
+                       (:.. (j/arrayify styleText))]
+               :transformations
+               (fn [#{offset value}]
+                 (var v (- offset index))
+                 (var #{translate
+                        scale
+                        visible} (modelFn v))
+                 (return
+                  {:text  (. items [value])
+                   :style {:opacity (:? visible
+                                        (k/mix -2 1 scale)
+                                        0)
+                           :zIndex (* 10 scale)
+                           :transform [{:translateY (* -2 translate)}]}}))}]))]))
+
+(defn.js SpinnerValues
+  "creates the spinner values"
+  {:added "4.0"}
+  [#{[max
+      min
+      onChange
+      value
+      editable
+      setValue
+      styleDigit
+      styleDigitText
+      styleDecimal
+      styleDecimalText
+      (:= decimal 0)]}]
+  (var arrDigits [])
+  (var arrTotal  (j/ceil (j/log10 (+ max 0.0001))))
+  (k/for:index [i [0 (j/max arrTotal
+                            (+ 1 decimal)) 1]]
+    (when (and (== i decimal)
+               (< 0 i))
+      (x:arr-push-first arrDigits {:type "decimal"}))
+    (x:arr-push-first arrDigits {:type "digit"
+                                 :order i}))
+  (var digitFn
+       (fn [#{type order} i]
+         (cond (== type "digit")
+               (return
+                [:% -/SpinnerDigit
+                 {:key (+ "digit" i)
+                  :index (j/floor (/ value (j/round (k/pow 10 order))))
+                  :style styleDigit
+                  :styleText styleDigitText
+                  :editable editable}])
+
+               (== type "decimal")
+               (return
+                [:% -/SpinnerStatic
+                 {:key (+ "decimal" i)
+                  :text "."
+                  :style [{:width 5}
+                          styleDecimal]
+                  :styleText styleDecimalText
+                  :editable editable}]))))
+  (return
+   [:<>
+    (j/map arrDigits digitFn)]))
+
+(defn.js useSpinnerPosition
+  "helper function to connect spinner position"
+  {:added "4.0"}
+  [value setValue valueRef min max]
+  (var position     (a/val 0))
+  (var prevRef      (r/ref value))
+  (r/init []
+    (a/addListener position
+                   (fn []
+                     (var #{_value _offset} position)
+                     (var nValue (k/clamp
+                                  min max
+                                  (- (r/curr valueRef)
+                                     (j/round (/ _value 3)))))
+                     (when (not= nValue (r/curr prevRef))
+                       (setValue nValue)
+                       (r/curr:set prevRef nValue)))))
+  (return position))
+
+(defn.js Spinner
+  "creates the spinner value"
+  {:added "0.1"}
+  [#{[theme
+      themePipeline
+      disabled
+      min
+      max
+      value
+      setValue
+      style
+      styleText
+      chord
+      onHoverIn
+      onHoverOut
+      (:.. rprops)]}]
+  (var [__value __setValue] (r/local value))
+  (var __valueRef     (r/ref __value))
+  
+  (var [styleStatic transformFn] (-/spinnerTheme #{[theme
+                                                    themePipeline
+                                                    (:.. rprops)]}))
+  
+  (var position     (-/useSpinnerPosition __value __setValue __valueRef
+                                          min
+                                          max))
+  (var #{touchable
+         panHandlers} (physical-edit/usePanTouchable
+                       #{[disabled
+                          :chord (j/assign {:value __value} chord)
+                          (:.. rprops)]}
+                       "vertical"
+                       position
+                       false))
+  (var  #{setPressing
+          pressing
+          hovering
+          setHovering}    touchable)
+  (r/watch [pressing]
+    (r/curr:set __valueRef __value))
+  (r/watch [pressing __value]
+    (when (not pressing)
+      (setValue __value)))
+  (r/watch [value]
+    (when (not= value __value)
+      (__setValue value)))
+  (return
+   [:% physical-base/Box
+    #{[:indicators touchable.indicators
+       :chord      touchable.chord
+       :onMouseEnter  (fn [e] (setHovering true)
+                        (if onHoverIn (onHoverIn e)))
+       :onMouseLeave  (fn [e] (setHovering false)
+                        (if onHoverOut (onHoverOut e)))
+       :onMouseUp     (fn []
+                         (setPressing false))
+       :style [{:overflow "hidden"
+                :flexDirection "row"
+                :padding 5}
+               #_(n/PlatformSelect
+                {:web {:userSelect "none"
+                       :cursor "ns-resize"}})
+               styleStatic
+               (:.. (j/arrayify style))]
+       :transformations transformFn
+       (:.. (j/assign touchable
+                      panHandlers))
+       :children [[:% -/SpinnerValues
+                   #{[:key "values"
+                      :editable true
+                      :value __value
+                      :setValue __setValue
+                      min
+                      max
+                      (:.. rprops)]}]
+                  [:% n/View
+                   {:key "background"
+                    :style {:position "absolute"
+                            :height "100%"
+                            :width "100%"}}]]]}]))
+
+(def.js MODULE (!:module))

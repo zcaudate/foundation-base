@@ -48,6 +48,10 @@
  {:description "js blessed" 
   :include [[js.blessed :complete]]}
   
+ foundation/js.cell
+ {:description "js blessed" 
+  :include [[js.cell :complete]]}
+  
  foundation/js.core
  {:description "js core libraries" 
   :include [[js.core :complete]
@@ -84,10 +88,16 @@
  foundation/js.lib.lw-charts
  {:description "js util libraries" 
   :include [[js.lib.lw-charts :complete]]}
+ 
+ foundation/js.lib.rn
+ {:description "js util libraries" 
+  :include [[js.lib.rn-expo :base]
+            [js.lib.rn-gesture :base]
+            [js.lib.rn-paper :base]]}
 
- foundation/js.lib.metamask
- {:description "js metamask library" 
-  :include [[js.lib.metamask :complete]]}
+ foundation/js.lib.valtio
+ {:description "js util libraries" 
+  :include [[js.lib.valtio :complete]]}
  
  foundation/js.lib.rn
  {:description "js util libraries" 
@@ -112,6 +122,10 @@
             [js.react.ext-log :base]
             [js.react.ext-route :base]
             [js.react.ext-view :base]]}
+  
+ foundation/js.react-native
+ {:description "js core libraries" 
+  :include [[js.react-native :complete]]}
 	    
  foundation/lib.aether
  {:description "wrapper for org.eclipse.aether"

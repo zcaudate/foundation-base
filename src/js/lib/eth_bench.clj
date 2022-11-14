@@ -1,0 +1,59 @@
+(ns js.lib.eth-bench
+  (:require [std.lang :as l]
+            [std.lib :as h]
+            [xt.lang.base-notify :as notify]))
+
+(l/script :js
+  {:require [[js.lib.eth-lib :as eth-lib :include [:fn]]
+             [js.lib.eth-solc :as eth-solc  :include [:fn]]
+             [xt.lang.base-lib :as k]
+             [js.core :as j]]
+   :export [MODULE]})
+
+(defn.js send-wei
+  [url private-key to-address amount]
+  (var signer (eth-lib/get-signer url private-key))
+  (return (eth-lib/send-wei signer to-address amount)))
+
+(defn.js contract-deploy
+  "deploys the contract"
+  {:added "4.0"}
+  [url private-key abi bytecode init-args overrides]
+  (var signer (eth-lib/get-signer url private-key))
+  (return (. (eth-lib/contract-deploy signer abi bytecode init-args overrides)
+             (then (fn:> [contract]
+                     {:status true
+                      :size (j/toFixed (/ (k/len bytecode) 2 1024)
+                                       3)
+                      :contractAddress (. contract address)}))
+
+             (catch (fn:> [err]
+                      {:status false
+                       :data err})))))
+
+(defn.js contract-run
+  "runs the contract given address and arguments"
+  {:added "4.0"}
+  [url private-key address abi fn-name args overrides]
+  (var signer (eth-lib/get-signer url private-key))
+  (return (. (eth-lib/contract-run signer address abi fn-name args overrides)
+             (then (fn:> [res]
+                     (:? (and (k/obj? res)
+                              (. res wait))
+                         (. res (wait))
+                         res))))))
+
+(defn.js get-past-events
+  "gets the past events on a contract"
+  {:added "4.0"}
+  [url address abi name opts]
+  (var provider (eth-lib/new-rpc-provider url))
+  (var contract (eth-lib/new-contract address abi provider))
+  (var filter   (. contract filters [name]))
+  (return (. contract (queryFilter filter))))
+
+(def.js MODULE (!:module))
+
+
+(comment
+  )

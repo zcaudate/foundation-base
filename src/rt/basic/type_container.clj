@@ -4,7 +4,7 @@
             [std.fs :as fs]
             [std.string :as str]
             [std.make :as make]
-            [rt.docker :as docker]
+            [lib.docker :as docker]
             [rt.basic.type-common :as common]
             [rt.basic.type-oneshot :as oneshot]))
 
@@ -55,6 +55,6 @@
 
 
 (comment
-  (rt.docker.common/start-container (assoc *container* :cmd ["luajit" "-e" "print(1+1)"])
+  (lib.docker.common/start-container (assoc *container* :cmd ["luajit" "-e" "print(1+1)"])
                                     )
   )

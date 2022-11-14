@@ -56,9 +56,6 @@
    
    ;; rt.basic
    [http-kit "2.5.3"]
-   
-   ;; rt.jocl
-   [org.jocl/jocl "2.0.4"]
 
    ;; rt.graal
    [org.graalvm.sdk/graal-sdk "21.2.0"]

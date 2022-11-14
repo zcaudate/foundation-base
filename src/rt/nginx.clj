@@ -2,13 +2,12 @@
   (:require [rt.nginx.script :as script]
             [rt.nginx.config :as config]
             [rt.basic.impl.process-lua :as lua]
-            [rt.docker :as docker]
+            [lib.docker :as docker]
             [net.http :as http]
             [lua.nginx]
             [std.protocol.context :as protocol.context]
             [std.lang.base.pointer :as ptr]
             [std.lang.base.runtime :as default]
-            [std.lang.base.runtime-wrap :as wrap]
             [std.lang.interface.type-shared :as shared]
             [std.lib :as h :refer [defimpl]]
             [std.json :as json]
@@ -210,9 +209,9 @@
 
 (def ^{:arglists '([pg])}
   stop-nginx
-  (wrap/wrap-stop stop-nginx-raw
-                  [{:key :container
-                    :teardown  docker/stop-runtime}]))
+  (h/wrap-stop stop-nginx-raw
+               [{:key :container
+                 :teardown  docker/stop-runtime}]))
 
 (def kill-nginx stop-nginx)
 

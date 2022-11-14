@@ -3,7 +3,7 @@
   (:require [std.lang :as  l]
             [std.lib :as h]
             [std.fs :as fs]
-            [rt.browser :as browser]
+            [js.cell.playground :as browser]
             [xt.lang.base-notify :as notify]))
 
 (l/script- :js
@@ -704,7 +704,7 @@
    "deps" {}})
 
 (comment
-  (require '[rt.browser :as browser])
+  (require '[js.cell.playground :as browser])
   (def +core+ (browser/play-worker true))
   (do (l/rt:restart :js)
       (l/rt:scaffold-imports :js))

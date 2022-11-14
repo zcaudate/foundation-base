@@ -17,12 +17,7 @@
 (fact "waits for the postgres database to come online")
 
 ^{:refer lib.postgres/start-pg-raw :added "4.0"}
-(fact "starts the database"
-  ^:hidden
-  
-  (def -pg- (base/start-pg-raw (client/rt-postgres:create {:dbname "test"})))
-  
-  (h/stop -pg-))
+(fact "starts the database")
 
 ^{:refer lib.postgres/stop-pg-temp-teardown :added "4.0"}
 (fact "tears down a temp database"

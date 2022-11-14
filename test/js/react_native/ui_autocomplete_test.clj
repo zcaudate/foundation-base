@@ -16,7 +16,7 @@
              [js.react-native :as n :include [:fn]]
              [js.react-native.physical-addon :as physical-addon]
              [js.react-native.ui-autocomplete :as ui-autocomplete]
-             [melbourne.ui-input :as ui-input]
+             [js.react-native.ui-input :as ui-input]
              [xt.lang.base-lib :as k]]
    :export [MODULE]})
 

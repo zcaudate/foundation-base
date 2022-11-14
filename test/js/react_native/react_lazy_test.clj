@@ -2,7 +2,7 @@
   (:use code.test)
   (:require [std.lang :as  l]
             [std.lib :as h]
-            [rt.browser :as browser]))
+            [js.cell.playground :as browser]))
 
 (l/script :js
   {:runtime :websocket
@@ -15,8 +15,8 @@
              [js.react-native :as n :include [:fn]]
              [xt.lang.base-lib :as k]
              [js.core :as j]
-             [melbourne.ui-button :as ui-button]]
-   :static {:import/async #{melbourne.ui-button}}
+             [js.react-native.ui-button :as ui-button]]
+   :static {:import/async #{js.react-native.ui-button}}
    :export [MODULE]})
 
 ^{:refer js.react/useLazy :adopt true :added "4.0"}

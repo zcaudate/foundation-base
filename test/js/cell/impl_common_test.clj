@@ -3,7 +3,7 @@
   (:require [std.lang :as  l]
             [std.lib :as h]
             [std.fs :as fs]
-            [rt.browser :as browser]
+            [js.cell.playground :as browser]
             [xt.lang.base-notify :as notify]))
 
 (l/script- :js

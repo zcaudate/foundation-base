@@ -2,7 +2,7 @@
   (:use code.test)
   (:require [std.lang :as  l]
             [std.lib :as h]
-            [rt.browser :as browser]))
+            [js.cell.playground :as browser]))
 
 (l/script :js
   {:runtime :websocket

@@ -99,16 +99,6 @@
  {:description "js util libraries" 
   :include [[js.lib.valtio :complete]]}
  
- foundation/js.lib.rn
- {:description "js util libraries" 
-  :include [[js.lib.rn-expo :base]
-            [js.lib.rn-gesture :base]
-            [js.lib.rn-paper :base]]}
-
- foundation/js.lib.valtio
- {:description "js util libraries" 
-  :include [[js.lib.valtio :complete]]}
- 
  foundation/js.react
  {:description "js core libraries" 
   :include [[js.react :base]

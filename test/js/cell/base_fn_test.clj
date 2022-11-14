@@ -2,7 +2,7 @@
   (:use code.test)
   (:require [std.lib :as h]
             [std.lang :as l]
-            [rt.browser :as browser]
+            [js.cell.playground :as browser]
             [xt.lang.base-notify :as notify]))
 
 (l/script- :js

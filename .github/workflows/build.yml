@@ -25,7 +25,6 @@ jobs:
           POSTGRES_USER: postgres
         ports:
           - 5432:5432
-          
 
   build-container:
     runs-on: ubuntu-latest

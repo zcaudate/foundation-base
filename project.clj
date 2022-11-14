@@ -53,6 +53,9 @@
 
    ;; math.infix
    [org.scijava/parsington "3.0.0"]
+   
+   ;; rt.basic
+   [http-kit "2.5.3"]
 
    ;; std.pretty
    [org.clojure/core.rrb-vector "0.1.2"]

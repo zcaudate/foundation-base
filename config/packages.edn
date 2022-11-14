@@ -124,16 +124,20 @@
   :bundle
   [{:path "target/classes" :include ["hara/net/resp"]}]}
   
+ foundation/rt.basic
+ {:description "wrapper for nginx" 
+  :include [[rt.basic :complete]]
+  :dependencies [http-kit]}
+
+ foundation/rt.solidity
+ {:description "shell runtime"
+  :include [[rt.solidity :complete]]}
+  
  foundation/script.css
  {:description "read and write css using clojure"
   :include [[lib.css :complete]]
   :dependencies [garden/garden 
                  net.sourceforge.cssparser/cssparser]}
-  
- foundation/script.glsl
- {:description "scripts for glsl"
-  :include [[script.glsl :complete]]
-  :bundle [{:path "resources" :include ["assets/script.glsl"]}]}
   
  foundation/script.graphql
  {:description "scripts for graphql"

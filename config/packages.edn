@@ -88,7 +88,7 @@
   
  foundation/math.parse
  {:description "math and statistics"
-  :include [[math.stats :complete]]
+  :include [[math.parse :complete]]
   :dependencies [org.scijava/parsington]}
   
  foundation/math.stats

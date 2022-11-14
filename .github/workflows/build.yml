@@ -9,9 +9,8 @@ jobs:
       image: ghcr.io/zcaudate/testing-foundation:main
     
     steps:
-       - name: Checkout repository
-         uses: actions/checkout@v3
-
+      - name: Checkout repository
+        uses: actions/checkout@v3
       - name: Installing Jars
         run: lein test
         

@@ -1,0 +1,90 @@
+
+
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <meta name="google" value="notranslate">
+    <link rel="icon" href="<@=theme>.ico" type="image/x-icon" />
+    <title><@=title> - <@=subtitle></title>
+
+    <@=dependencies>
+
+  <script>
+    window.console = window.console || function(t) {};
+    window.open = function(){ console.log("window.open is disabled."); };
+    window.print   = function(){ console.log("window.print is disabled."); };
+  </script>
+
+  <script>
+    var app = angular.module('app', ['hljs']);
+  </script>
+  </head>
+
+  <body ng-app="app" data-spy="scroll" data-target=".scrollspy">
+  
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-fixed-top">
+    <div class="container" style="margin-left: inherit;">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><img src="img/glyph-white.png"></a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Guides <span class="caret"></span></a>
+            <@=top-links>
+          </li>
+          <li>
+            <a href="<@=url>" target="_blank">Github</a></li>
+          <li>
+            <a href="<@=gitter>" target="_blank">Gitter</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  
+  <div class="container row">
+    <div class="col-md-3 scrollspy pull-right">
+      <ul id="nav" class="nav hidden-xs hidden-sm" data-spy="affix">
+        <@=navigation>
+      </ul>
+    </div>
+    <div class="col-md-9" id="content">
+      <div class="jumbotron">
+        <div class="container">
+          <h1><@=title></h1>
+          <h4><@=subtitle></h4>
+        </div>
+      </div>
+      <@=article>
+    </div>
+</div><!--end of .container-->
+
+  <section class="application">
+    <@=footer>
+  </section>
+</body>
+
+<script>
+  $('#nav').affix({
+    offset: {
+        top: $('#nav').offset().top,
+        bottom: $('footer').outerHeight(true) + $('.application').outerHeight(true) + 40
+    }});
+</script>
+
+
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+</body>
+</html>

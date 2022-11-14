@@ -1,0 +1,62 @@
+<div id="sidebar-wrapper">
+  <ul class="sidebar">
+    <li class="sidebar-main">
+      <a ng-click="toggleSidebar()">
+        <span style="padding-left:20px">MENU</span>
+        <!--img src="img/logo.png" height=40 style="padding-left:70px"-->
+        <span ng-show="toggle" class="menu-icon glyphicon glyphicon-transfer"></span>
+      </a>
+    </li>
+    <li class="sidebar-list">
+      <a href="index.html">home <span class="menu-icon fa fa-home"></span></a>
+    </li>
+    <!--li class="sidebar-list">
+      <a href="api.html">api reference <span class="menu-icon fa fa-bank"></span></a>
+    </li-->
+    <li class="sidebar-title"><span>guides</span></li>
+    <li class="sidebar-list" ng-show="toggle">
+      <a href="lucid-core.html">&bull;<span class="submenu-item">core</span></a>
+    </li>
+    <!--li class="sidebar-list" ng-show="toggle">
+      <a href="lucid-deploy.html">&bull;<span class="submenu-item">deploy</span></a>
+    </li-->
+    <!--li class="sidebar-list" ng-show="toggle">
+      <a href="lucid-flow.html">&bull;<span class="submenu-item">flow</span></a>
+    </li-->
+    <li class="sidebar-list" ng-show="toggle">
+      <a href="lucid-mind.html">&bull;<span class="submenu-item">mind</span></a>
+    </li>
+    <li class="sidebar-list" ng-show="toggle">
+      <a href="lucid-publish.html">&bull;<span class="submenu-item">publish</span></a>
+    </li>
+    <li class="sidebar-list" ng-show="toggle">
+      <a href="lucid-query.html">&bull;<span class="submenu-item">query</span></a>
+    </li>
+    <li class="sidebar-list" ng-show="toggle">
+      <a href="lucid-space.html">&bull;<span class="submenu-item">space</span></a>
+    </li>
+    <li class="sidebar-list" ng-show="toggle">
+      <a href="lucid-test.html">&bull;<span class="submenu-item">test</span></a>
+    </li>
+    <li class="sidebar-title"><span>links</span></li>
+    <li class="sidebar-list">
+      <a href="https://gitter.im/zcaudate/lucidity" target="_blank">support <span class="menu-icon fa fa-support"></span></a>
+    </li>
+    <li class="sidebar-list">
+      <a href="https://github.com/zcaudate/lucidity" target="_blank">source code<span class="menu-icon fa fa-github"></span></a>
+    </li>
+
+  </ul>
+  <div class="sidebar-footer">
+    <div class="col-xs-6">
+      <a href="https://github.com/zcaudate/lucidity" target="_blank">
+        Github
+      </a>
+    </div>
+    <div class="col-xs-6">
+      <a href="https://gitter.im/zcaudate/lucidity">
+        Support
+      </a>
+    </div>
+  </div>
+</div>

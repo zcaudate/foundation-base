@@ -1,0 +1,46 @@
+
+.api .entry-description
+{
+ display: flex;
+ }
+ 
+.api ul
+{
+  list-style-type: none;
+  padding-left: 5px;
+}
+
+.api .entry-description h4
+{
+ float: left;
+ width: auto;
+ height 30px;
+ }
+
+.api .entry-description p
+{
+ float: left;
+ margin-bottom: 0px;
+ padding-left:2px;
+ }
+
+.api .entry-option h6
+{
+ float: left;
+ padding-right:5px;
+ }
+
+.api .entry-option .args
+{
+ font-weight: lighter;
+ }
+ 
+.api .entry pre
+ {
+   width: 100%;
+}
+  
+.api .entry pre h6
+{
+ float: right;
+ }

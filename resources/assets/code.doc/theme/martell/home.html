@@ -1,0 +1,111 @@
+
+
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <meta name="google" value="notranslate">
+    <link rel="icon" href="<@=theme>.ico" type="image/x-icon" />
+    <title><@=title> - <@=subtitle></title>
+
+    <@=dependencies>
+
+  <script>
+    window.console = window.console || function(t) {};
+    window.open = function(){ console.log("window.open is disabled."); };
+    window.print   = function(){ console.log("window.print is disabled."); };
+  </script>
+
+  <script>
+  angular.module('app',['ui.bootstrap', 'ngCookies', 'hljs']);
+
+  function rdLoading(){var d={restrict:"AE",template:'<div class="loading"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>'};return d}angular.module("app").directive("rdLoading",rdLoading);
+  function rdWidgetBody(){var d={requires:"^rdWidget",scope:{loading:"@?",classes:"@?"},transclude:!0,template:'<div class="widget-body" ng-class="classes"><rd-loading ng-show="loading"></rd-loading><div ng-hide="loading" class="widget-content" ng-transclude></div></div>',restrict:"E"};return d}angular.module("app").directive("rdWidgetBody",rdWidgetBody);
+  function rdWidgetFooter(){var e={requires:"^rdWidget",transclude:!0,template:'<div class="widget-footer" ng-transclude></div>',restrict:"E"};return e}angular.module("app").directive("rdWidgetFooter",rdWidgetFooter);
+  function rdWidgetTitle(){var e={requires:"^rdWidget",scope:{title:"@",icon:"@"},transclude:!0,template:'<div class="widget-header"><i class="fa" ng-class="icon"></i> {{title}} <div class="pull-right" ng-transclude></div></div>',restrict:"E"};return e}angular.module("app").directive("rdWidgetHeader",rdWidgetTitle);
+  function rdWidget(){var d={transclude:!0,template:'<div class="widget" ng-transclude></div>',restrict:"EA"};return d}angular.module("app").directive("rdWidget",rdWidget);
+  function AlertsCtrl(e){e.alerts=[{type:"success",msg:"Thanks for visiting! Feel free to create pull requests to improve the dashboard!"},{type:"danger",msg:"Found a bug? Create an issue with as many details as you can."}],e.addAlert=function(){e.alerts.push({msg:"Another alert!"})},e.closeAlert=function(t){e.alerts.splice(t,1)}}angular.module("app").controller("AlertsCtrl",["$scope",AlertsCtrl]);
+  function MasterCtrl(t,e){var o=992;t.getWidth=function(){return window.innerWidth},t.$watch(t.getWidth,function(g){t.toggle=g>=o?angular.isDefined(e.get("toggle"))?e.get("toggle")?!0:!1:!0:!1}),t.toggleSidebar=function(){t.toggle=!t.toggle,e.put("toggle",t.toggle)},window.onresize=function(){t.$apply()}}angular.module("app").controller("MasterCtrl",["$scope","$cookieStore",MasterCtrl]);
+
+  </script>
+  </head>
+
+  <body ng-app="app" ng-controller="MasterCtrl" data-spy="scroll" data-target=".scrollspy">
+    <div id="page-wrapper" ng-class="{'open': toggle}" ng-cloak>
+      <!-- Sidebar -->
+      <@=sidebar>
+      <!-- End Sidebar -->
+
+      <div id="content-wrapper">
+        <div class="page-content">
+
+          <div class="container">
+
+<div class="row">
+   <div class="col-xs-10">
+		<rd-widget>
+			<rd-widget-body>
+				<div class="title" style="margin: 0 auto">
+          <img src="<@=logo>" class="img-responsive center-block" style="padding-bottom:20px;height:100px"></div>
+          <div class="text-center"><i><@=subtitle></i></div>
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-10 col-md-5">
+		<rd-widget>
+      <rd-widget-body>
+				<div class="title">Introduction</div>
+        <div class="comment">&nbsp;</div>
+          <div class="comment"><code>lucidity</code> provides a vocabulary for effective development workflow in order to increase developer productivity. See each of the individual guides for more detail:</div>
+          <div class="comment">&nbsp;</div>
+          <div class="comment"><a href="lucid-core.html">core</a> - functions for the code environment</div>
+          <!--div class="comment">&nbsp;</div>
+          <div class="comment"><a href="lucid-deploy.html">deploy</a> - code packaging and distribution</div>
+          <div class="comment">&nbsp;</div>
+          <div class="comment"><a href="lucid-flow.html">flow</a> - enhancing the coding experience</div-->
+          <div class="comment">&nbsp;</div>
+          <div class="comment"><a href="lucid-mind.html">mind</a> - contemplative reflection for the jvm</div>
+          <div class="comment">&nbsp;</div>
+          <div class="comment"><a href="lucid-publish.html">publish</a> - generate documentation from code</div>
+          <div class="comment">&nbsp;</div>
+          <div class="comment"><a href="lucid-query.html">query</a> - intuitive search for code</div>
+          <div class="comment">&nbsp;</div>
+          <div class="comment"><a href="lucid-space.html">space</a> - management of project externals</div>
+          <div class="comment">&nbsp;</div>
+          <div class="comment"><a href="lucid-test.html">test</a> - unit tests for code management</div>
+          <div class="comment">&nbsp;</div>
+      </rd-widget-body>
+		</rd-widget>
+	</div>
+  
+  <div class="col-xs-10 col-md-5">
+  	<rd-widget>
+      <rd-widget-body>
+  			<div class="title">Resources</div>
+        <div class="comment">&nbsp;</div>
+  			<div class="comment"><a href="https://tahto.github.io/lucidity" target="_blank">Reference</a> - api reference documentation</div>
+        <div class="comment">&nbsp;</div>
+  			<div class="comment"><a href="https://github.com/zcaudate/lucidity" target="_blank">Source</a> - code is hosted on github</div>
+        <div class="comment">&nbsp;</div>
+  			<div class="comment"><a href="https://www.gitter.im/zcaudate/lucidity" target="_blank">Support</a> - any questions and feedback</div>
+        <div class="comment">&nbsp;</div>
+  		</rd-widget-body>
+  	</rd-widget>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+</body>
+</html>

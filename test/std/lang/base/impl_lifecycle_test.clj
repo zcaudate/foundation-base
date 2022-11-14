@@ -1,9 +1,8 @@
 (ns std.lang.base.impl-lifecycle-test
   (:use code.test)
   (:require [std.lang.base.impl-lifecycle :refer :all]
-            [rt.postgres.script.scratch]
-            [lua.nginx]
-            [lua.nginx.task]
+            [js.blessed :as blessed]
+            [js.blessed.ui-core :as ui-core]
             [xt.lang.base-lib :as k]
             [xt.lang]
             [std.lang :as l]
@@ -25,23 +24,18 @@
                                     :emit {:compile {:root-ns 'lua}}})))
   => ()
   
-  (:link (second (emit-module-prep 'lua.nginx
-                                   {:lang :lua
-                                    :emit {:compile {:root-ns 'lua}}})))
+  (:link (second (emit-module-prep 'js.blessed
+                                   {:lang :js
+                                    :emit {:compile {:root-ns 'js}}})))
   => ()
   
-  (:link (second (emit-module-prep 'lua.nginx.task
-                                   {:lang :lua
-                                    :emit {:compile {:root-ns 'lua}}})))
+  (:link (second (emit-module-prep 'js.blessed.ui-core
+                                   {:lang :js
+                                    :emit {:compile {:base    'js
+                                                     :root-ns 'js.blessed.ui-core}}})))
   => '(["./xt/lang/base-lib" {:as k, :ns xt.lang.base-lib}]
-       ["./xt/sys/cache-common" {:as cache, :ns xt.sys.cache-common}])
-  
-
-  (:link (second (emit-module-prep 'lua.nginx.task
-                                   {:lang :lua
-                                    :emit {:compile {:root-ns 'xt.lang}}})))
-  => '(["./lang/base-lib" {:as k, :ns xt.lang.base-lib}]
-       ["./sys/cache-common" {:as cache, :ns xt.sys.cache-common}]))
+       ["./js/react" {:as r, :ns js.react}]
+       ["./js/blessed/ui-style" {:as ui-style, :ns js.blessed.ui-style}]))
 
 ^{:refer std.lang.base.impl-lifecycle/emit-module-setup-concat :added "4.0"}
 (fact "joins setup raw into individual blocks")
@@ -50,8 +44,8 @@
 (fact "joins setup raw into the setup code"
   ^:hidden
   
-  (-> (emit-module-setup-raw 'rt.postgres.script.scratch
-                             {:lang :postgres
+  (-> (emit-module-setup-raw 'js.blessed.ui-core
+                             {:lang :js
                               :emit {:export {:suppress true}
                                      :code   {:label true}}})
       (emit-module-setup-join))
@@ -61,44 +55,27 @@
 (fact "creates module setup map of array strings"
   ^:hidden
   
-  (emit-module-setup-raw 'lua.nginx
-                         {:lang :lua})
-  => map?
-  
-  (emit-module-setup-raw 'rt.postgres.script.scratch
-                         {:lang :postgres
-                          :emit {:export {:suppress true}
-                                 :code   {:label true}}})
+  (emit-module-setup-raw 'js.blessed.ui-core
+                         {:lang :js})
   => map?)
 
 ^{:refer std.lang.base.impl-lifecycle/emit-module-setup :added "4.0"}
 (fact "emits the entire module as string"
   ^:hidden
   
-  (:link (second (emit-module-prep 'xt.lang
+  (:link (second (emit-module-prep 'xt.lang.base-lib
                                    {:lang :lua
                                     :graph {:root-ns 'lua}})))
   => '{}
   
   (emit-module-setup 'xt.lang.base-lib
                      {:lang :lua})
-  => string?
-
-  (def -out-
-    (emit-module-setup
-     'rt.postgres.script.scratch
-     {:lang :postgres
-      :emit {:export {:suppress true}
-             :native {:suppress true}
-             :link   {:suppress true}
-             :code   {:label true}}}))
-  -out-
   => string?)
 
 ^{:refer std.lang.base.impl-lifecycle/emit-module-teardown-concat :added "4.0"}
 (fact "joins teardown raw into individual blocks"
 
-  (-> (emit-module-teardown-raw 'xt.lang
+  (-> (emit-module-teardown-raw 'xt.lang.base-lib
                                 {:lang :lua})
       (emit-module-teardown-concat))
   => coll?)
@@ -106,7 +83,7 @@
 ^{:refer std.lang.base.impl-lifecycle/emit-module-teardown-join :added "4.0"}
 (fact "joins teardown raw into code"
 
-  (-> (emit-module-teardown-raw 'xt.lang
+  (-> (emit-module-teardown-raw 'xt.lang.base-lib
                                 {:lang :lua})
       (emit-module-teardown-join))
   => string?)
@@ -118,21 +95,12 @@
 (fact "creates the teardown script"
   ^:hidden
   
-  (def -out-
-    (emit-module-teardown
-     'rt.postgres.script.scratch
-     {:lang :postgres
-      :emit {:code   {:suppress true}}}))
-  
-  -out-
-  => string?
-
-  (emit-module-teardown 'xt.lang
+  (emit-module-teardown 'xt.lang.base-lib
                         {:lang :lua
                          :layout :full})
   => string?
   
-  (emit-module-teardown 'xt.lang
+  (emit-module-teardown 'xt.lang.base-lib
                         {:lang :lua
                          :layout :full
                          :emit {:code {:suppress true}}})

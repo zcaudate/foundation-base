@@ -43,7 +43,7 @@
 ^{:refer code.maven.command/clean :added "3.0"}
 (fact "cleans the interim directory"
 
-  (def -args- ['hara/object nil -collected- (project/project)])
+  (def -args- ['foundation/std.object nil -collected- (project/project)])
 
   (apply package/package -args-)
 
@@ -63,13 +63,13 @@
 ^{:refer code.maven.command/install :added "3.0"}
 (fact "installs a package to the local `.m2` repository"
 
-  (install 'hara/std.object
+  (install 'foundation/std.object
            {}
            -collected-
            (assoc (project/project) :version "3.0.1" :aether (aether/aether)))
   => (contains [artifact/rep? artifact/rep?]) ^:hidden
-
-  (install 'hara/std.object
+  
+  (install 'foundation/std.object
            {:secure true :digest true}
            -collected-
            (assoc (project/project)
@@ -81,7 +81,7 @@
 ^{:refer code.maven.command/deploy :added "3.0"}
 (comment "deploys a package to a test repo"
 
-  (deploy 'hara/base
+  (deploy 'foundation/std.lib
           {:tag :dev}   ;;(read-config)
           -collected-
           (assoc (project/project)

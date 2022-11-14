@@ -10,7 +10,6 @@
    :require [[xt.lang.base-lib :as k]
              [xt.lang.base-repl :as repl]
              [js.core :as j]
-             [js.cell :as cl]
              [js.react.ext-form :as ext-form]]})
 
 (fact:global

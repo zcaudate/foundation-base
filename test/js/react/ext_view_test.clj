@@ -11,7 +11,6 @@
              [xt.lang.base-repl :as repl]
              [xt.lang.event-view :as event-view]
              [js.core :as j]
-             [js.cell :as cl]
              [js.react.ext-view :as ext-view]]})
 
 (fact:global

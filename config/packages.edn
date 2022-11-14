@@ -225,11 +225,27 @@
  {:description "wrapper for nginx" 
   :include [[rt.basic :complete]]
   :dependencies [http-kit]}
-
+ 
+ foundation/rt.graal
+ {:description "wrapper for graal contexts"
+  :include [[rt.graal :complete]]
+  :dependencies [org.graalvm.sdk/graal-sdk
+                 org.graalvm.js/js
+		 org.graalvm.js/js-scriptengine
+		 commons-io/commons-io]}
+ 
+ foundation/rt.nginx
+ {:description "wrapper for nginx" 
+  :include [[rt.nginx :complete]]}
+  
+ foundation/rt.shell
+ {:description "shell runtime"
+  :include [[rt.shell :complete]]}
+ 
  foundation/rt.solidity
  {:description "shell runtime"
   :include [[rt.solidity :complete]]}
-  
+ 
  foundation/script.css
  {:description "read and write css using clojure"
   :include [[lib.css :complete]]
@@ -373,14 +389,6 @@
   :include [[xt.lang     :complete]
             [xt.module   :complete]]}
  
- foundation/xtalk.db
- {:description "xtalk language"
-  :include [[xt.db     :complete]]}
-
- foundation/xtalk.runtime
- {:description "xtalk language"
-  :include [[xt.runtime     :complete]]}
-
  foundation/xtalk.system
  {:description "xtalk language"
   :include [[xt.sys     :complete]]}}

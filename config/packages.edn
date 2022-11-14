@@ -315,7 +315,11 @@
   :bundle
   [{:path "resources" :include ["assets/std.image"]}
    {:path "target/classes" :include ["hara/lib/image"]}]}
-  
+
+ foundation/std.fs
+ {:description "file library"
+  :include [[std.fs :complete]]}
+ 
  foundation/std.json
  {:description "wrapper for com.fasterxml.jackson"
   :include [[std.json :complete]]
@@ -345,13 +349,15 @@
             [std.string :complete]
 	    [std.task :complete]]}
 
- foundation/std.fs
- {:description "file library"
-  :include [[std.fs :complete]]}
+ 
  
  foundation/std.log
  {:description "foundation logging library"
   :include [[std.log :complete]]}
+
+ foundation/std.make
+ {:description "make + tmux"
+  :include [[std.make :complete]]}
  
  foundation/std.math
  {:description "foundation math library"

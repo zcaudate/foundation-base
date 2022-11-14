@@ -14,7 +14,8 @@
 
 ^{:refer rt.basic.server-websocket/raw-eval-websocket-server :added "4.0"}
 (fact "raw eval for websocket connection"
-
+  ^:hidden
+  
   (!.js (+ 1 2 3))
   => 6)
 

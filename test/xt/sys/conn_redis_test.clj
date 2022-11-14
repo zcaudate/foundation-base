@@ -29,19 +29,6 @@
   :teardown [(l/rt:stop)
              (bench/stop-redis-array [17000])]})
 
-^{:refer xt.sys.conn-redis/script-tmpl :added "4.0"}
-(fact "creates a script template"
-  ^:hidden
-  
-  (require 'kmi.queue.common)
-  (redis/script-tmpl '[mq-group-exists
-                       kmi.queue.common/mq-common-group-exists])
-  => h/form?
-  
-  (eval (redis/script-tmpl '[mq-group-not-exists
-                             kmi.queue.common/mq-common-group-not-exists]))
-  => #'xt.sys.conn-redis-test/mq-group-not-exists)
-
 ^{:refer xt.sys.conn-redis/connect :added "4.0"}
 (fact "connects to a datasource"
   ^:hidden
@@ -204,24 +191,4 @@
                                 :body "return 2"}
                           []
                           (repl/<!)))])
-  => ["OK" 2]
-
-  (!.lua
-   (var conn (redis/connect {:constructor lua-driver/connect-constructor
-                             :port 17000}
-                            {}))
-   [(redis/exec conn "flushdb" [])
-    (-/mq-group-not-exists conn "a" "b" "c")])
-  => ["OK" 1]  
-
-  (do
-    (notify/wait-on :js
-      (:= (!:G  conn) (redis/connect {:constructor js-driver/connect-constructor
-                                      :port 17000}
-                                     (repl/<!))))
-    [(notify/wait-on :js
-       (redis/exec conn "flushdb" [] (repl/<!)))
-     (notify/wait-on :js
-       (. (-/mq-group-not-exists conn "a" "b" "c")
-          (then (repl/>notify))))])
-  => ["OK" 1])
+  => ["OK" 2])

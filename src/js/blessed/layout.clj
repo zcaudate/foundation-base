@@ -4,11 +4,7 @@
             [std.string :as str]))
 
 (l/script :js
-  {:runtime :basic
-   :config {:id :playground/tui-008
-            :bench false
-            :emit {:lang/jsx false}}
-   :require [[xt.lang.base-lib :as k]
+  {:require [[xt.lang.base-lib :as k]
              [js.core    :as j]
              [js.react   :as r :include [:fn]]
              [js.lib.chalk :as chalk]]

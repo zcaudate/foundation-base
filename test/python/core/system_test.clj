@@ -9,7 +9,8 @@
    :require [[python.core :as y]]})
 
 (fact:global
- {:setup    [(l/rt:restart)]
+ {:setup    [(l/rt:restart)
+             (Thread/sleep 500)]
   :teardown [(l/rt:stop)]})
 
 ^{:refer python.core.system/thread :added "4.0"}

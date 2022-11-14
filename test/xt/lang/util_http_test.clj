@@ -40,9 +40,10 @@
   ^:hidden
 
   ;; HTTP CALL
+  #_#_#_
   (net.http/get (str "http://localhost:" (:http-port (l/default-notify))))
   => (contains {:status 200, :body "OK"})
-
+  
   (def +events+ (:events (net.http/event-stream
                           (str "http://localhost:" (:port (l/annex:get :es))
                                "/eval/es"))))
@@ -64,8 +65,9 @@
 
 ^{:refer xt.lang.util-http/fetch-call :added "4.0"}
 (fact "completes a http call with options"
-  ^:hidden
-  
+  ;;^:hidden
+
+  #_#_#_
   (notify/wait-on :js
     (-> (http/fetch-call (+ "http://localhost:"
                             (@! (:http-port (l/default-notify))))

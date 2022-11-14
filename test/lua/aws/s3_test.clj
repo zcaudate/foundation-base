@@ -2,7 +2,7 @@
   (:use code.test)
   (:require [std.lang :as l]
             [std.lib :as h]
-            [rt.minio :as minio]))
+            [lib.minio :as minio]))
 
 (l/script- :lua
   {:runtime :basic
@@ -16,7 +16,8 @@
 (fact:global
  {:setup    [(l/rt:restart)
              (minio/start-minio-array [{:port 4489
-                                        :console 4499}])]
+                                        :console 4499}])
+             (Thread/sleep 1000)]
   :teardown [(l/rt:stop)
              (minio/stop-minio-array [{:port 4489
                                         :console 4499}])]})

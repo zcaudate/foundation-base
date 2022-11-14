@@ -11,7 +11,11 @@
              [web3.lib.example-erc20 :as erc20]]})
 
 (fact:global
- {:setup [(l/rt:restart)
+ {:setup [(s/rt:stop-ganache-server)
+          (Thread/sleep 1000)
+          (s/rt:start-ganache-server)
+          (Thread/sleep 500)
+          (l/rt:restart)
           (s/with:params {:caller-address (second env/+default-addresses+)
                           :caller-private-key (second env/+default-private-keys+)}
             (s/rt:deploy source/+default-contract+))]
@@ -50,7 +54,7 @@
      (source/transfer (last env/+default-addresses+)
                       100)))
   => (contains-in
-      [(approx 0.05 0.04) map?]))
+      [(approx 0.1 0.1) map?]))
 
 ^{:refer web3.lib.example-erc20-source/transferFrom :added "4.0"}
 (fact "transfers from account, requires approval")

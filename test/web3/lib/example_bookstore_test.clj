@@ -10,9 +10,10 @@
 
 (fact:global
  {:setup    [(s/rt:stop-ganache-server)
+             (Thread/sleep 1000)
              (s/rt:start-ganache-server)
-             (l/rt:restart)
-             (Thread/sleep 500)]
+             (Thread/sleep 500)
+             (l/rt:restart)]
   :teardown [(l/rt:stop)]})
 
 ^{:refer web3.lib.example-bookstore/createBook :added "4.0"

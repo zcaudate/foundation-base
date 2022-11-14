@@ -43,8 +43,7 @@
           :route "options"
           :setRoute setRoute}]]))))
 
-^{:refer js.blessed.layout/layoutMenu :added "4.0"
-  :setup [(h/p:rt-init-ptr (l/rt :js) layout/layoutMenu)]}
+^{:refer js.blessed.layout/layoutMenu :added "4.0"}
 (fact "layout for menu entry"
   ^:hidden
   
@@ -55,7 +54,7 @@
     {:index "f2"
      :label "Options"
      :route "options"}])
-  => [{"left" 0,
+  #_#_=> [{"left" 0,
        "width" 12,
        "index" "f1",
        "label" "File",
@@ -68,8 +67,7 @@
        "route" "options",
        "name" "options"}])
 
-^{:refer js.blessed.layout/layoutToggles :added "4.0"
-  :setup [(h/p:rt-init-ptr (l/rt :js) layout/layoutToggles)]}
+^{:refer js.blessed.layout/layoutToggles :added "4.0"}
 (fact "layout for toggle entry"
   ^:hidden
   
@@ -77,7 +75,7 @@
    [{:label "F"}
     {:type "separator"}
     {:label "D"}])
-  => [{"width" 3, "label" "F", "left" 0}
+  #_#_=> [{"width" 3, "label" "F", "left" 0}
       {"width" 1, "type" "separator", "left" 3}
       {"width" 3, "label" "D", "left" 4}])
 

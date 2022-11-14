@@ -2,7 +2,8 @@
   (:use code.test)
   (:require [std.lang :as l]
             [std.lib :as h]
-            [xt.lang.base-notify :as notify]))
+            [xt.lang.base-notify :as notify]
+            [lib.redis.bench :as bench]))
 
 (l/script- :lua
   {:runtime :basic
@@ -12,10 +13,10 @@
              [lua.nginx.driver-redis :as lua-driver]]})
 
 (fact:global
- {:setup    [(rt.redis/start-redis-array [17000])
+ {:setup    [(bench/start-redis-array [17000])
              (l/rt:restart)]
   :teardown [(l/rt:stop)
-             (rt.redis/stop-redis-array [17000])]})
+             (bench/stop-redis-array [17000])]})
 
 ^{:refer lua.nginx.driver-redis/connect-constructor :added "4.0"}
 (fact "creates a xt.sys compatible constructor"

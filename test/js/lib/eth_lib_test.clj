@@ -18,7 +18,10 @@
              [js.core :as j]]})
 
 (fact:global
- {:setup    [(solidity/rt:start-ganache-server)
+ {:setup    [(s/rt:stop-ganache-server)
+             (Thread/sleep 1000)
+             (s/rt:start-ganache-server)
+             (Thread/sleep 500)
              (l/rt:restart)
              (l/rt:scaffold :js)
              (!.js

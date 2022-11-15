@@ -43,8 +43,9 @@ jobs:
           labels: '${{ steps.metadata.outputs.labels }}'
           push: true
           
-      - name: Dispatch workflow_dispatch event
-        uses: ph-fritsche/action-dispatch@v1
+      - name: Notify zcaudate/foundation-embed
+        uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
-          ident: build.yml # refer to the filename
+          repository: zcaudate/foundation-embed
+          event-type: notify

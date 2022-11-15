@@ -33,12 +33,14 @@
   => "<Client>\n[object Object]"
 
   
-  (notify/wait-on [:js 5000]
-     (dbsql/connect {:constructor js-postgres/connect-constructor}
-                    {:success (fn [conn]
-                                (dbsql/query conn "SELECT 1;"
-                                             (repl/<!)))}))
-  => 1)
+  (do (notify/wait-on [:js 5000]
+        (dbsql/connect {:constructor js-postgres/connect-constructor}
+                       {:success (fn [conn]
+                                   (:= (!:G CONN) conn)
+                                   (repl/notify true))}))
+      (notify/wait-on :js
+        (dbsql/query (!:G CONN) "SELECT 1;" (repl/<!))))
+  => (any nil 1 [{"?column?" 1}]))
 
 (comment
   (l/with:input

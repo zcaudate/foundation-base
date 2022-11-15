@@ -1,6 +1,7 @@
 (ns jvm.tool
   (:require [std.lib :as h]
-            [std.lib.link :as l]))
+            [std.lib.link :as l]
+            [jvm.require :as require]))
 
 (def hotkey-0 (fn []))
 (def hotkey-1 (fn []))
@@ -11,6 +12,7 @@
 (def hotkey-6 (fn []))
 (def hotkey-7 (fn []))
 (def hotkey-8 (fn []))
+(def hotkey-9 (fn []))
 
 (defn hotkey-set
   "set the hotkey function"
@@ -25,7 +27,8 @@
     5 (alter-var-root #'hotkey-5 (fn [_] f))
     6 (alter-var-root #'hotkey-6 (fn [_] f))
     7 (alter-var-root #'hotkey-7 (fn [_] f))
-    8 (alter-var-root #'hotkey-8 (fn [_] f))))
+    8 (alter-var-root #'hotkey-8 (fn [_] f))
+    9 (alter-var-root #'hotkey-9 (fn [_] f))))
 
 
 (defn- inject-reflectors
@@ -50,7 +53,12 @@
           jvm.tool/hotkey-2
           jvm.tool/hotkey-3
           jvm.tool/hotkey-4
-          jvm.tool/hotkey-set)
+          jvm.tool/hotkey-5
+          jvm.tool/hotkey-6
+          jvm.tool/hotkey-7
+          jvm.tool/hotkey-8
+          jvm.tool/hotkey-set
+          jvm.require/force-require)
   
   (l/link {:ns .}
           std.log/with-logger-basic

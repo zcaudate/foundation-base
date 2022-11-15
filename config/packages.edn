@@ -56,6 +56,10 @@
  {:description "js core libraries" 
   :include [[js.core :complete]
             [js.webpack :complete]]}
+
+ foundation/js.lib.bitcoin
+ {:description "js bitcoin libraries" 
+  :include [[js.lib.bitcoin :complete]]}
  
  foundation/js.lib.chalk
  {:description "js util libraries" 
@@ -116,7 +120,7 @@
  foundation/js.react-native
  {:description "js core libraries" 
   :include [[js.react-native :complete]]}
-	    
+ 
  foundation/lib.aether
  {:description "wrapper for org.eclipse.aether"
   :include [[lib.aether :complete]]

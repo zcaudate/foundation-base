@@ -1,29 +1,8 @@
 name: Build
 
-on: push
+on: [push, workflow_dispatch]
 
 jobs:
-  run-test:
-    runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/zcaudate/testing-foundation:main
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Running Tests
-        run: lein test
-        
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_DB: scratch
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_PORT: 5432
-          POSTGRES_USER: postgres
-        ports:
-          - 5432:5432
 
   build-container:
     runs-on: ubuntu-latest

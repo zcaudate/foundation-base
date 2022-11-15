@@ -44,5 +44,7 @@ jobs:
           push: true
 
       - name: Notify zcaudate/foundation-embed
-        run: curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secret.GH_TOKEN }}"  https://api.github.com/repos/zcaudate/foundation-embed/actions/workflows/build.yml/dispatches -d '{"ref":"main"}'
-          
+        run: >
+          curl -X POST -H "Accept: application/vnd.github+json" 
+               -H "Authorization: Bearer ${{ secret.GH_TOKEN }}"
+               https://api.github.com/repos/zcaudate/foundation-embed/actions/workflows/build.yml/dispatches -d '{"ref":"main"}'

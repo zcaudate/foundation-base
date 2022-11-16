@@ -1,6 +1,6 @@
 name: Run Tests
 
-on: push
+on: [push, workflow_dispatch]
 
 jobs:
   run-test:
@@ -9,7 +9,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Running Tests
-        run: docker run --network host -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):$(pwd) -w $(pwd) ghcr.io/zcaudate/testing-foundation:main lein test
+        run: >
+          docker run
+          --network host
+          -v /var/run/docker.sock:/var/run/docker.sock
+          -v $(pwd):$(pwd) -w $(pwd)
+          ghcr.io/zcaudate/testing-foundation:main lein test
         
     services:
       postgres:

@@ -116,7 +116,7 @@
                 (h/p "--------------------------------------------------------------------")
                 (project/build-all mcfg)
                 (github/gh-dwim-init mcfg message))
-              scaffold))
+              (sort-by first scaffold)))
 
 (defn make-deploy-gh-push
   [scaffold & [message]]
@@ -126,4 +126,4 @@
                 (h/p "--------------------------------------------------------------------")
                 (project/build-all mcfg)
                 (github/gh-dwim-push mcfg message))
-              scaffold))
+              (sort-by first scaffold)))

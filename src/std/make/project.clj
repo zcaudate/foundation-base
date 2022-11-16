@@ -37,7 +37,7 @@
   {:added "4.0"}
   ([{:keys [instance] :as mcfg}]
    (let [{:keys [sections]} @instance
-         all-keys (conj (set (keys sections))
+         all-keys (conj (sort (set (keys sections)))
                         :default)
          _ (common/make-dir-setup mcfg)
          _ (when (readme/has-orgfile? mcfg)

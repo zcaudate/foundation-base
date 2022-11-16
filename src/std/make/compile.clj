@@ -78,7 +78,8 @@
   ([{:keys [main root] :as opts}]
    (mapv (fn [[input file]]
            (let [out-path (compile-out-path (assoc opts :file file))
-                 in-path  (h/sys:resource input)]
+                 in-path  (or (h/sys:resource input)
+                              (h/error "Resource not found:" {:value input}))]
              (if *mock-compile*
                [in-path out-path]
                (if (not (fs/exists? out-path))

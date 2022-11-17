@@ -128,7 +128,7 @@
    (let [[opts args] (if (map? (last args))
                        [(last args) (cons s (butlast args))]
                        [{} (cons s args)])
-         {:keys [print wait trim wrap output inherit root env async]
+         {:keys [print wait trim wrap output inherit root ignore-errors env async]
           :or {inherit false
                wrap   true
                trim   true}} opts
@@ -156,7 +156,8 @@
                  (let [out-fn (fn [process]
                                 (let [{:keys [out err]} (sh-output process)]
                                   (cond (and (empty? out)
-                                             (not-empty err))
+                                             (not-empty err)
+                                             (not ignore-errors))
                                         (h/error err)
 
                                         :else

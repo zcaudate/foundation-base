@@ -2,7 +2,7 @@
   (:use code.test)
   (:require [std.lib :as h]
             [std.lang :as l]
-            [rt.browser :as browser]
+            [js.cell.playground :as playground]
             [xt.lang.base-notify :as notify]))
 
 (l/script- :js
@@ -34,7 +34,7 @@
            (cl/GD-reset
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))]}
+               (eval (@! (playground/play-worker true)))))))]}
 (fact "gets the current cell"
   ^:hidden
   
@@ -47,7 +47,7 @@
             "p0"
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))]}
+               (eval (@! (playground/play-worker true)))))))]}
 (fact "gets the current annex"
   ^:hidden
   
@@ -71,7 +71,7 @@
     "p0"
     (cl/make-cell
      (fn []
-       (eval (@! (browser/play-worker true)))))))
+       (eval (@! (playground/play-worker true)))))))
   => map?)
 
 ^{:refer js.cell/get-cell :added "4.0"}
@@ -115,7 +115,7 @@
            (cl/GD-reset
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))
+               (eval (@! (playground/play-worker true)))))))
           (j/<!
            (. (cl/add-model "hello"
                             {:echo  {:handler link-fn/echo
@@ -142,7 +142,7 @@
            (cl/GD-reset
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))
+               (eval (@! (playground/play-worker true)))))))
           (j/<!
            (. (cl/add-model "hello"
                             {:echo  {:handler link-fn/echo
@@ -224,7 +224,7 @@
            (cl/GD-reset
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))
+               (eval (@! (playground/play-worker true)))))))
           (j/<!
            (. (cl/GD)
               ["init"]
@@ -271,7 +271,7 @@
            (cl/GD-reset
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))]}
+               (eval (@! (playground/play-worker true)))))))]}
 (fact "adds a model"
   ^:hidden
   
@@ -299,7 +299,7 @@
            (cl/GD-reset
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))]}
+               (eval (@! (playground/play-worker true)))))))]}
 (fact "attaches a model"
   ^:hidden
   
@@ -323,7 +323,7 @@
            (cl/GD-reset
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))
+               (eval (@! (playground/play-worker true)))))))
           (j/<!
            (. (cl/GD)
               ["init"]
@@ -362,7 +362,7 @@
            (cl/GD-reset
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))
+               (eval (@! (playground/play-worker true)))))))
           (!.js
            (cl/add-model-attach "hello"
                                 {:echo  {:handler  link-fn/echo
@@ -386,7 +386,7 @@
            (cl/GD-reset
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))
+               (eval (@! (playground/play-worker true)))))))
           (!.js
            (cl/add-model-attach "hello"
                         {:echo  {:handler link-fn/echo
@@ -484,7 +484,7 @@
            (cl/GD-reset
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))
+               (eval (@! (playground/play-worker true)))))))
           (!.js
            (cl/add-model-attach "hello"
                                 {:echo  {:handler link-fn/echo
@@ -604,7 +604,7 @@
            (cl/GD-reset
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))
+               (eval (@! (playground/play-worker true)))))))
           (j/<!
            (. (cl/add-model "hello"
                             {:echo  {:handler link-fn/echo
@@ -660,7 +660,7 @@
            (cl/GD-reset
             (cl/make-cell
              (fn []
-               (eval (@! (browser/play-worker true)))))))]}
+               (eval (@! (playground/play-worker true)))))))]}
 (fact "adds a raw callback (for all events)"
   ^:hidden
   

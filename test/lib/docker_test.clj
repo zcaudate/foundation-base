@@ -2,19 +2,7 @@
   (:use code.test)
   (:require [std.lang :as l]
             [std.lib :as h]
-            [lib.docker :as docker]
-            [rt.redis]))
-
-(l/script- :lua
-  {:runtime :redis.client
-   :config  {:port  6379
-             :container {:group   "lib.docker"
-                         :image   "tahto/kmi.all:v6.2.1"
-                         :ports   [6379]
-                         :cmd     ["redis-server" "--protected-mode" "no"]}}})
-
-(fact:global
- {:teardown [(l/rt:stop)]})
+            [lib.docker :as docker]))
 
 ^{:refer lib.docker/start-runtime :added "4.0"}
 (fact "starts a runtime with attached container")

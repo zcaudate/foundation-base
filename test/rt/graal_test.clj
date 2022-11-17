@@ -9,9 +9,7 @@
   {:runtime :graal
    :require [[xt.lang.base-lib :as k]]})
 
-(l/script- :python
-  {:runtime :graal
-   :require [[xt.lang.base-lib :as k]]})
+
 
 (fact:global
  {:setup [(l/rt:restart)]
@@ -38,24 +36,29 @@
   => -6
 
 
-  ;; PYTHON
-  (str (h/p:rt-raw-eval (l/rt :python)
-                        "globals()"))
-  => string?
-  
-  (!.py 1 2 3 (+ 1 2 3))
-  => 6
-  
-  (!.py {:a 1 :b 2})
-  => {"a" 1, "b" 2}
+  (comment
+    (l/script- :python
+      {:runtime :graal
+       :require [[xt.lang.base-lib :as k]]})
+    
+    ;; PYTHON
+    (str (h/p:rt-raw-eval (l/rt :python)
+                          "globals()"))
+    => string?
+    
+    (!.py 1 2 3 (+ 1 2 3))
+    => 6
+    
+    (!.py {:a 1 :b 2})
+    => {"a" 1, "b" 2}
 
-  (!.py (:- :import json)
-        (json.dumps true))
-  => true
-  
-  (!.py
-   (k/add 1 2))
-  => 3)
+    (!.py (:- :import json)
+          (json.dumps true))
+    => true
+    
+    (!.py
+     (k/add 1 2))
+    => 3))
 
 ^{:refer rt.graal/add-resource-path :added "3.0"
   :setup [(def +js+ (make-raw {:lang :js}))]}

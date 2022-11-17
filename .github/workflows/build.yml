@@ -13,4 +13,5 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           repository: zcaudate/foundation-ci
-          event-type: notify
+          event-type: base-changed
+          client-payload: '{"repo": "${{ github.repository.id }}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "comment": "${{ github.payload.comment }}"}'

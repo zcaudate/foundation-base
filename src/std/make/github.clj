@@ -27,6 +27,7 @@
         dir (str root "/" build)
         opts {:root  dir
               :print *verbose*
+              :ignore-errors (not *verbose*)
               :inherit true
               :wait true}]
     opts))
@@ -106,7 +107,8 @@
    (let [{:keys [root build github]} @instance
          out-dir (str root "/" build)
          {:keys [repo]} github
-         opts {:root out-dir  :print *verbose* :inherit *verbose* :wait true}]
+         opts {:root out-dir  :print *verbose* :inherit *verbose*
+               :ignore-errors (not *verbose*) :wait true}]
      (os/sh "git" "init" "." opts)
      (os/sh "git" "remote" "add" "origin"
             (format "git@github.com:%s.git" repo)
@@ -123,7 +125,9 @@
          {:keys [repo]} github]
      (os/sh "git" "clone" (format "git@github.com:%s.git" repo)
             build
-            {:root root :print *verbose* :inherit *verbose* :wait true}))))
+            {:root root :print *verbose* :inherit *verbose*
+             :ignore-errors (not *verbose*)
+             :wait true}))))
 
 (defn gh-clone
   "forces a git clone"

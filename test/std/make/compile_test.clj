@@ -46,11 +46,7 @@
    (compile-resource 
     {:type :resource
      :target "assets"
-     :main [["assets/expo/demo/adaptive-icon.png" "adaptive-icon.png"]
-            ["assets/expo/demo/favicon.png" "favicon.png"]
-            ["assets/expo/demo/icon.png" "icon.png"]
-            ["assets/expo/demo/snack-icon.png" "snack-icon.png"]
-            ["assets/expo/demo/splash.png" "splash.png"]]}))
+     :main [["assets/std.make/tangle.sh" "tangle.make.sh"]]}))
   => coll?)
 
 ^{:refer std.make.compile/compile-custom :added "4.0"}

@@ -8,7 +8,8 @@
             [rt.basic :as basic]
             [js.lib.eth-solc :as eth-solc]
             [js.core :as j]
-            [xt.lang.base-notify :as notify]))
+            [xt.lang.base-notify :as notify]
+            [xt.lang.base-repl :as repl]))
 
 (defn compile-base-emit
   "emits solidity given entries and interfaces"
@@ -170,11 +171,12 @@
                  {:lang :js
                   :runtime :basic
                   :layout :full})
-        form (h/$ [(:= solc (require "solc"))])
-        _     (h/p:rt-invoke-ptr
-               rt-node
-               (l/ptr :js {:form form})
-               [])]
+        form (h/$ [(xt.lang.base-repl/notify
+                    (:= (!:G solc) (require "solc")))])
+        _    (notify/wait-on-fn
+              rt-node
+              form
+              5000)]
     rt-node))
 
 (defn compile-rt-eval

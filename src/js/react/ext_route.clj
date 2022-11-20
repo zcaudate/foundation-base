@@ -83,9 +83,6 @@
   (return [(or segment  defaultSegment)
            setSegment]))
 
-
-
-
 (defn.js listenRouteParam
   "listens for changes on a route param"
   {:added "4.0"}

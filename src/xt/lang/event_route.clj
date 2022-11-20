@@ -391,4 +391,11 @@
         :else
         (return [])))
 
+(defn.xt reset-route
+  [route url]
+  (k/set-key route "history" [])
+  (k/set-key route "tree"
+             (-/interim-to-tree (-/interim-from-url (or url "")) true))
+  (-/set-url route (or url "") true))
+
 (def.xt MODULE (!:module))

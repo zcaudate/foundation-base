@@ -502,13 +502,15 @@
   [#{[data
       value
       setValue
+      allowNotFound
       (:= valueFn j/identity)]}]
   (var forwardFn (fn [idx]
                    (var out  (and data (. data [(or idx 0)])))
                    (return (:? out (valueFn out)))))
   (var reverseFn (fn [label]
-                   (return (j/max 0 (j/indexOf (j/map data valueFn)
-                                               label)))))
+                   (var idx (j/indexOf (j/map data valueFn)
+                                       label))
+                   (return (:? allowNotFound idx (j/max 0 idx)))))
   (var setIndex (fn [idx] (setValue (forwardFn idx))))
   (var index    (reverseFn value))
   (var items    (j/map data valueFn))

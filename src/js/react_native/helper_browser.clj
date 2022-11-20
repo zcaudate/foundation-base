@@ -42,12 +42,18 @@
                     (when (and (k/not-nil? hash)
                                (not= hash
                                      (+ "#/" (event-route/get-url route))))
-                      #_(k/LOG! #{hash})
                       (setRouteUrl (-/getHashRoute)))))
     (when (n/isWeb)
       (window.addEventListener "popstate" listener)
       (return (fn:> (window.removeEventListener
                      "popstate"
                      listener))))))
+
+(defn.js setHashParam
+  [key value path]
+  (k/LOG! (-/getHashRoute))
+  (var route (event-route/make-route (-/getHashRoute)))
+  (event-route/set-param route key value path)
+  (:= window.location.hash (+ "/" (event-route/get-url route))))
 
 (def.js MODULE (!:module))

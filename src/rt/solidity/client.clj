@@ -52,10 +52,7 @@
                   :layout :full})
         url     (common/get-url rt)
         form  (h/$ [(:= solc (require "solc"))])
-        _     (h/p:rt-invoke-ptr
-               rt-node
-               (l/ptr :js {:form form})
-               [])]
+        _     (notify/wait-on-fn rt-node form 5000)]
     rt-node))
 
 (defn start-web3
@@ -63,7 +60,7 @@
   {:added "4.0"}
   ([{:keys [id lang config] :as rt}]
    (assoc rt
-          :node (create-web3-node rt)
+          :node   (create-web3-node rt)
           :config (assoc config :url (common/get-url rt)))))
 
 (defn stop-web3

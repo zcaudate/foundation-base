@@ -31,23 +31,23 @@
   {:added "4.0"}
   [route]
   (var [routeUrl setRouteUrl] (ext-route/useRouteUrl route))
-  (r/watch [routeUrl]
-    (when (and (k/not-nil? routeUrl)
-               (n/isWeb))
-      (:= window.location.hash
-          (+ "/" routeUrl))))
   (r/init []
     (var listener (fn []
                     (var hash (-/getHash))
                     (when (and (k/not-nil? hash)
                                (not= hash
                                      (+ "#/" (event-route/get-url route))))
-                      (setRouteUrl (-/getHashRoute)))))
+                      (setRouteUrl (-/getHashRoute) true))))
     (when (n/isWeb)
       (window.addEventListener "popstate" listener)
       (return (fn:> (window.removeEventListener
                      "popstate"
-                     listener))))))
+                     listener)))))
+  (r/watch [routeUrl]
+    (when (and (k/not-nil? routeUrl)
+               (n/isWeb))
+      (:= window.location.hash
+          (+ "/" routeUrl)))))
 
 (defn.js setHashParam
   [key value path]

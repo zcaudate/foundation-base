@@ -139,16 +139,24 @@
       (x:arr-push-first arrDigits {:type "decimal"}))
     (x:arr-push-first arrDigits {:type "digit"
                                  :order i}))
+  
   (var digitFn
        (fn [#{type order} i]
+         (var limit (j/pow 10 order))
+         (var hideDigit
+              (:? (== 0 decimal)
+                  (< value limit)
+                  false))
          (cond (== type "digit")
                (return
-                [:% -/SpinnerDigit
+                [:% n/View
                  {:key (+ "digit" i)
-                  :index (j/floor (/ value (j/round (k/pow 10 order))))
-                  :style styleDigit
-                  :styleText styleDigitText
-                  :editable editable}])
+                  :style (:? hideDigit {:opacity 0})}
+                 [:% -/SpinnerDigit
+                  {:index (j/floor (/ value (j/round (k/pow 10 order))))
+                   :style styleDigit
+                   :styleText styleDigitText
+                   :editable editable}]])
 
                (== type "decimal")
                (return
@@ -177,6 +185,7 @@
                                   min max
                                   (- (r/curr valueRef)
                                      (j/round (/ _value 3)))))
+                     
                      (when (not= nValue (r/curr prevRef))
                        (setValue nValue)
                        (r/curr:set prevRef nValue)))))
@@ -200,11 +209,9 @@
       (:.. rprops)]}]
   (var [__value __setValue] (r/local value))
   (var __valueRef     (r/ref __value))
-  
   (var [styleStatic transformFn] (-/spinnerTheme #{[theme
                                                     themePipeline
                                                     (:.. rprops)]}))
-  
   (var position     (-/useSpinnerPosition __value __setValue __valueRef
                                           min
                                           max))

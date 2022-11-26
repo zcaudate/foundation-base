@@ -2,7 +2,8 @@
   (:require [std.lang :as l]))
 
 (l/script :js
-  {:require [[xt.lang.base-lib :as k :suppress true]]
+  {:require [[xt.lang.base-lib :as k :suppress true]
+             [js.core :as j]]
    :export [MODULE]})
 
 (defn.js fetch-call
@@ -69,14 +70,26 @@
          on-message
          on-close
          on-error} opts)
+  (var interval nil)
   (when on-message
     (es.addEventListener "message" on-message))
   (when on-open
-    (es.addEventListener "open" on-open))
+    (es.addEventListener "open" (fn [e]
+                                  (on-open e)
+                                  (:= interval (j/setInterval
+                                                (fn []
+                                                  (. es (send "ping")))
+                                                30000)))))
   (when on-close
-    (es.addEventListener "close" on-close))
+    (es.addEventListener "close"
+                         (fn [e]
+                           (on-close e)
+                           (j/clearInterval interval))))
   (when on-error
-    (es.addEventListener "error" on-error))
+    (es.addEventListener "error"
+                         (fn [e]
+                           (on-error e)
+                           (j/clearInterval interval))))
   (return es))
 
 (defn.js ws-active?

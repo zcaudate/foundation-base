@@ -605,9 +605,10 @@
   {:added "4.0"}
   [arr key-fn val-fn]
   (var out := {})
-  (k/for:array [e arr]
-    (x:set-key out (key-fn e)
-               (val-fn e)))
+  (when (k/not-nil? arr)
+    (k/for:array [e arr]
+      (x:set-key out (key-fn e)
+                 (val-fn e))))
   (return out))
 
 (defn.xt arr-foldl
@@ -647,12 +648,13 @@
   {:added "4.0"}
   ([arr key-fn view-fn]
    (var out := {})
-   (k/for:array [e arr]
-     (var g := (key-fn e))
-     (var garr := (x:get-key out g []))
-     (x:set-key out g [])
-     (x:arr-push garr (view-fn e))
-     (x:set-key out g garr))
+   (when (k/not-nil? arr)
+     (k/for:array [e arr]
+      (var g := (key-fn e))
+      (var garr := (x:get-key out g []))
+      (x:set-key out g [])
+      (x:arr-push garr (view-fn e))
+      (x:set-key out g garr)))
    (return out)))
 
 (defn.xt arr-range

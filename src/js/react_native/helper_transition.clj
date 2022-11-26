@@ -71,7 +71,8 @@
                       margin
                       height
                       width}))
-  (var style {:opacity   (k/mix (or (. effect fade) 0) 1 visible)
+  (var opacity (k/mix (or (. effect fade) 0) 1 visible))
+  (var style {:opacity   (* opacity opacity)
               :transform [(:.. (:? translateKey
                                    [{translateKey (* (- 1 visible)
                                                      magnitude)}]

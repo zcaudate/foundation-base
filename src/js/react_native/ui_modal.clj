@@ -103,7 +103,8 @@
    [:% physical-base/Box
     #{[indicators
        chord
-       :style (j/assign {:position "absolute"}
+       :style (j/assign {:position "absolute"
+                         :opacity 0}
                         absStyle)
        :onLayout getLayout
        :transformations {:visible
@@ -142,6 +143,7 @@
                                             :width 0
                                             :px 0
                                             :py 0}))
+  (k/LOG! layout hostLayout)
   (var layoutRef (r/useFollowRef layout))
   (var hostLayoutRef (r/useFollowRef hostLayout))
   (var contentRef (-/useMeasureContent children visible dimensions setLayout))

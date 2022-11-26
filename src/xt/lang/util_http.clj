@@ -74,22 +74,11 @@
   (when on-message
     (es.addEventListener "message" on-message))
   (when on-open
-    (es.addEventListener "open" (fn [e]
-                                  (on-open e)
-                                  (:= interval (j/setInterval
-                                                (fn []
-                                                  (. es (send "ping")))
-                                                30000)))))
+    (es.addEventListener "open" on-open))
   (when on-close
-    (es.addEventListener "close"
-                         (fn [e]
-                           (on-close e)
-                           (j/clearInterval interval))))
+    (es.addEventListener "close" on-close))
   (when on-error
-    (es.addEventListener "error"
-                         (fn [e]
-                           (on-error e)
-                           (j/clearInterval interval))))
+    (es.addEventListener "error" on-error))
   (return es))
 
 (defn.js ws-active?

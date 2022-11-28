@@ -4,8 +4,9 @@
             [std.lib :as h]))
 
 (l/script- :lua
-  {:runtime :oneshot
-   :require [[lua.core :as u]]})
+  {:runtime :basic
+   :require [[lua.core :as u]
+             [xt.lang.base-iter :as it]]})
 
 ^{:refer lua.core/render :added "4.0"}
 (fact "renders a template"
@@ -63,13 +64,41 @@
   => [24.705293655396
       33.115451958692])
 
+^{:refer lua.core/reduce-iter :added "4.0"}
+(fact "reduces iterate"
+  ^:hidden
+  
+  (!.lua
+   (u/reduce-iter (it/iter [1 2 3 4 5 6])
+                  (fn [arr x]
+                    (x:arr-push arr x)
+                    (return arr))
+                  []))
+  => [1 2 3 4 5 6])
+
+^{:refer lua.core/slurp :added "4.0"}
+(fact "slurps the output from path"
+  
+  (!.lua
+   (-> (u/io-popen "cd")
+       (. (read "*l"))))
+  
+  (!.lua
+   (+ 1 2 3))
+
+  (!.lua
+   (os.getenv "PWD"))
+  
+  (!.lua 
+   (. (debug.getinfo 1)
+      short_src))
+  
+  (!.lua
+   (u/slurp "project.clj")))
+
+^{:refer lua.core/spit :added "4.0"}
+(fact "spits the output from path")
+
+
 (comment
-  (l/with:input []
-    (!.lua
-     (@.c
-      (do (fn ^{:- [:float]
-                :header true}
-            powf [:float x :float y])
-          (fn ^{:- [:double]
-                :header true}
-            exp [:double x]))))))
+  (l/rt:restart))

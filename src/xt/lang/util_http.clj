@@ -85,13 +85,22 @@
   "checks if websocket is active"
   {:added "4.0"}
   [conn]
-  (return true))
+  (return
+   (== (. conn readyState) WebSocket.OPEN)))
 
 (defn.js ws-close
   "closes the websocket"
   {:added "4.0"}
   [conn]
-  (conn.close))
+  (return
+   (. conn (close))))
+
+(defn.js ws-send
+  "closes the websocket"
+  {:added "4.0"}
+  [conn text]
+  (return
+   (. conn (send text))))
 
 ;;
 ;; XTALK 
@@ -115,6 +124,8 @@
 (defabstract.xt ws-active? [conn])
 
 (defabstract.xt ws-close [conn])
+
+(defabstract.xt ws-send [conn text])
 
 
 (def.xt MODULE (!:module))

@@ -1,3 +1,4 @@
+^{:no-test true}
 (ns js.core.fetch
   (:require [std.lang :as l]
             [std.lib :as h]))

@@ -20,6 +20,9 @@
 ^{:refer lib.redis/client-steps :added "3.0"}
 (fact "clients steps for start up and shutdown")
 
+^{:refer lib.redis/client-string :added "4.0"}
+(fact "TODO")
+
 ^{:refer lib.redis/client-start :added "4.0"}
 (fact "starts the client")
 
@@ -30,7 +33,6 @@
   (r/client-create {:id "localhost"
                     :port 17000})
   => map?)
-
 
 (comment
 

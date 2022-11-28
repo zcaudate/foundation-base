@@ -591,10 +591,23 @@
                                      (resolve (~thunk)))))
                     ~ms))))
 
+(defn js-tf-x-start-interval
+  ([[_ thunk ms]]
+   (h/$ (setInterval (fn []
+                      (new Promise (fn [resolve reject]
+                                     (resolve (~thunk)))))
+                    ~ms))))
+
+(defn js-tf-x-stop-interval
+  ([[_ instance]]
+   (h/$ (clearInterval instance))))
+
 (def +js-thread+
-  {:x-thread-spawn   {:macro #'js-tf-x-thread-spawn  :emit :macro}
-   :x-thread-join    {:macro #'js-tf-x-thread-join   :emit :macro}
-   :x-with-delay     {:macro #'js-tf-x-with-delay    :emit :macro}})
+  {:x-thread-spawn   {:macro #'js-tf-x-thread-spawn   :emit :macro}
+   :x-thread-join    {:macro #'js-tf-x-thread-join    :emit :macro}
+   :x-with-delay     {:macro #'js-tf-x-with-delay     :emit :macro}
+   :x-start-interval {:macro #'js-tf-x-start-interval :emit :macro}
+   :x-stop-interval  {:macro #'js-tf-x-stop-interval  :emit :macro}})
 
 (def +js-b64+
   {:x-b64-decode     {:emit :alias :raw 'atob}

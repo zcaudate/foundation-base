@@ -127,3 +127,7 @@
        (es.addEventListener "close" (fn []
                                       (es.close))))))
 
+
+
+^{:refer xt.lang.util-http/ws-send :added "4.0"}
+(fact "TODO")

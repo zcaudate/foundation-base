@@ -9,6 +9,12 @@
 ^{:refer std.make.project/build-default :added "4.0"}
 (fact "builds the default section")
 
+^{:refer std.make.project/changed-files :added "4.0"}
+(fact "TODO")
+
+^{:refer std.make.project/is-changed? :added "4.0"}
+(fact "TODO")
+
 ^{:refer std.make.project/build-all :added "4.0"}
 (fact "builds all sections in a make config")
 

@@ -1,3 +1,4 @@
+^{:no-test true}
 (ns rt.shell.interface-remote
   (:require [std.protocol.component :as protocol.component]
             [std.protocol.context :as protocol.context]

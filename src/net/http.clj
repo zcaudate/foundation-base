@@ -1,3 +1,4 @@
+^{:no-test true}
 (ns net.http
   (:require [net.http.client :as client]
 	    [net.http.websocket :as ws]

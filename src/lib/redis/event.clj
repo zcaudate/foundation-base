@@ -1,3 +1,4 @@
+^{:no-test true}
 (ns lib.redis.event
   (:require [lib.redis.impl.common :as common]
             [net.resp.wire :as wire]

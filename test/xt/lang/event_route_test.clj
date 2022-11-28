@@ -681,3 +681,7 @@
                               (repl/>notify))
     (route/set-param r "auth" "register"))
   => +out+)
+
+
+^{:refer xt.lang.event-route/reset-route :added "4.0"}
+(fact "TODO")

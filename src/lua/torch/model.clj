@@ -1,3 +1,4 @@
+^{:no-test true}
 (ns lua.torch.model
   (:require [std.lib :as h]
             [std.lang :as l]))

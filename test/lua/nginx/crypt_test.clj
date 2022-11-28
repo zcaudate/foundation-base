@@ -21,6 +21,8 @@
   (crypt/crypt "hello" "$1$qI5PyQbL")
   => "$1$qI5PyQbL$CGhOca3eF1M4DEWbsndfv0")
 
+^{:refer lua.nginx.crypt/crypt :added "4.0"}
+(fact "TODO")
 
 ^{:refer lua.nginx.crypt/gen-salt :added "4.0"}
 (fact "generates salt compatible with pgcrypto libraries"

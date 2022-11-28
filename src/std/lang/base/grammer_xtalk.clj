@@ -389,7 +389,9 @@
 (def +op-xtalk-thread+
   [{:op :x-thread-spawn   :symbol #{'x:thread-spawn}    :emit :abstract}
    {:op :x-thread-join    :symbol #{'x:thread-join}     :emit :abstract}
-   {:op :x-with-delay     :symbol #{'x:with-delay}      :emit :abstract}])
+   {:op :x-with-delay     :symbol #{'x:with-delay}      :emit :abstract}
+   {:op :x-start-interval :symbol #{'x:start-interval}  :emit :abstract}
+   {:op :x-stop-interval  :symbol #{'x:stop-interval}   :emit :abstract}])
 
 (def +op-xtalk-file+
   [{:op :x-slurp          :symbol #{'x:slurp}         :emit :abstract}

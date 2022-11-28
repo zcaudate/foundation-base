@@ -192,3 +192,7 @@
     (box/get-data b)])
   [[] {"a" {"b" 2}, "c" 3}
    [] {"a" {"b" 2}}])
+
+
+^{:refer xt.lang.event-box/merge-data :added "4.0"}
+(fact "TODO")

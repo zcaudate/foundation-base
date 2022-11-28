@@ -1,3 +1,4 @@
+^{:no-test true}
 (ns js.react
   (:require [std.lang :as l]
             [std.lib :as h])

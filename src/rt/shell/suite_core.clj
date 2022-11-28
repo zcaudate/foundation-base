@@ -1,3 +1,4 @@
+^{:no-test true}
 (ns rt.shell.suite-core
   (:require [std.lang :as l :refer [defmacro.!]]
             [std.lib :as h]

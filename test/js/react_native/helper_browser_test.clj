@@ -37,6 +37,10 @@
         {:title   "B"
          :onPress (fn:> (event-route/set-url route "hello/b"))}]
        [:% n/Padding {:style {:flex 1}}]
-       [:% n/Text (+ "route: " url)]]]))
+       [:% n/Text (+ "route: " url)]]])))
+
+^{:refer js.react-native.helper-browser/setHashParam :added "4.0"}
+(fact "sets the hash param"
+  ^:hidden
   
   (def.js MODULE (!:module)))

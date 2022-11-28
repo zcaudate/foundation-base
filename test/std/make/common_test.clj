@@ -20,6 +20,9 @@
 ^{:refer std.make.common/get-triggered :added "4.0"}
 (fact "gets all configs given a trigger namespace")
 
+^{:refer std.make.common/with:internal-shell :added "4.0"}
+(fact "TODO")
+
 ^{:refer std.make.common/make-config? :added "4.0"}
 (fact "checks that object is a `make` config")
 
@@ -37,6 +40,9 @@
 
 ^{:refer std.make.common/make-run :added "4.0"}
 (fact "runs the `make` executable")
+
+^{:refer std.make.common/make-run-internal :added "4.0"}
+(fact "TODO")
 
 ^{:refer std.make.common/make-shell :added "4.0"}
 (fact "opens a terminal at the location of the `make` directory")

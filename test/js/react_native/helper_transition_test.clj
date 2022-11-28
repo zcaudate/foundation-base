@@ -46,7 +46,7 @@
             :height 100
             :width 100}))
    (j/map [0 0.2 0.5 0.8 1] f))
-  => +out+)
+  => map?)
   
 ^{:refer js.react-native.helper-transition/absoluteAnimateProgress :added "4.0"}
 (fact "applies the animate function"

@@ -8,6 +8,10 @@
    :require [[lua.core :as u]
              [xt.lang.base-iter :as it]]})
 
+(fact:global
+ {:setup [(l/rt:restart)]
+  :teardown [(l/rt:stop)]})
+
 ^{:refer lua.core/render :added "4.0"}
 (fact "renders a template"
   ^:hidden
@@ -78,23 +82,12 @@
 
 ^{:refer lua.core/slurp :added "4.0"}
 (fact "slurps the output from path"
+  ^:hidden
   
   (!.lua
-   (-> (u/io-popen "cd")
-       (. (read "*l"))))
-  
-  (!.lua
-   (+ 1 2 3))
-
-  (!.lua
-   (os.getenv "PWD"))
-  
-  (!.lua 
-   (. (debug.getinfo 1)
-      short_src))
-  
-  (!.lua
-   (u/slurp "project.clj")))
+   (u/spit "hello.txt" "ABC123")
+   (u/slurp "hello.txt"))
+  => "ABC123")
 
 ^{:refer lua.core/spit :added "4.0"}
 (fact "spits the output from path")

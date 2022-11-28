@@ -672,9 +672,6 @@
    (route/set-param r "auth" nil)
    (route/get-url r))
   
-
-
-  
   (notify/wait-on :lua
     (var r (route/make-route "hello?auth=sign_in"))
     (route/add-param-listener r "auth"  "a1"
@@ -682,6 +679,18 @@
     (route/set-param r "auth" "register"))
   => +out+)
 
-
 ^{:refer xt.lang.event-route/reset-route :added "4.0"}
-(fact "TODO")
+(fact "resets the route, clearing all params"
+  ^:hidden
+  
+  (!.js
+   (var r (route/make-route "hello?auth=sign_in"))
+   (route/reset-route r "world")
+   (route/get-url r))
+  => "world"
+
+  (!.lua
+   (var r (route/make-route "hello?auth=sign_in"))
+   (route/reset-route r "world")
+   (route/get-url r))
+  => "world")

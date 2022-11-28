@@ -1,17 +1,38 @@
 (ns xt.lang.base-interval-test
   (:use code.test)
   (:require [std.lang :as l]
-            [std.lib :as h]))
+            [std.lib :as h]
+            [xt.lang.base-notify :as notify]))
 
-^{:refer xt.lang.base-client/client-basic :added "4.0"}
-(fact "creates a basic client")
+(l/script- :js
+  {:runtime :basic
+   :require [[xt.lang.base-interval :as interval]
+             [xt.lang.base-repl :as repl]]})
 
-^{:refer xt.lang.base-client/client-ws :added "4.0"}
-(fact "creates a basic websocket client")
-
+(fact:global
+ {:setup [(l/rt:restart)]
+  :teardown [(l/rt:stop)]})
 
 ^{:refer xt.lang.base-interval/start-interval :added "4.0"}
-(fact "TODO")
+(fact "starts an interval"
+  ^:hidden
+  
+  (notify/wait-on :js
+    (interval/start-interval
+     (fn []
+       (repl/notify "hello"))
+     500))
+  => "hello")
 
-^{:refer xt.lang.base-interval/stop-interval :added "4.0"}
-(fact "TODO")
+^{:refer xt.lang.base-interval/stop-interval :added "4.0"
+  :setup [(l/rt:restart)]}
+(fact "stops the interval from happening"
+  ^:hidden
+  
+  (!.js
+   (var it (interval/start-interval
+            (fn []
+              )
+            500))
+   (interval/stop-interval))
+  => nil)

@@ -9,6 +9,8 @@
             [std.fs :as fs]))
 
 (defn make-deploy-get-keys
+  "deploy get keys"
+  {:added "4.0"}
   [changed config]
   (let [changed-keys (set (keys (h/filter-vals identity changed)))
         deploy-order  (h/topological-sort
@@ -27,6 +29,8 @@
      deploy-order]))
 
 (defn make-deploy
+  "make deploy"
+  {:added "4.0"}
   [{:keys [name
            build
            refresh
@@ -109,6 +113,8 @@
      :total ms-total}))
 
 (defn make-deploy-gh-init
+  "make deploy init github"
+  {:added "4.0"}
   [scaffold & [message]]
   (h/map-vals (fn [mcfg]
                 (h/p "--------------------------------------------------------------------")
@@ -119,6 +125,8 @@
               (sort-by first scaffold)))
 
 (defn make-deploy-gh-push
+  "make deploy push github"
+  {:added "4.0"}
   [scaffold & [message]]
   (h/map-vals (fn [mcfg]
                 (h/p "--------------------------------------------------------------------")

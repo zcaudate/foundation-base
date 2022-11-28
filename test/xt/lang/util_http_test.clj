@@ -102,6 +102,8 @@
 ^{:refer xt.lang.util-http/ws-close :added "4.0"}
 (fact "closes the websocket")
 
+^{:refer xt.lang.util-http/ws-send :added "4.0"}
+(fact "sends text through websocket")
 
 
 (comment
@@ -127,7 +129,3 @@
        (es.addEventListener "close" (fn []
                                       (es.close))))))
 
-
-
-^{:refer xt.lang.util-http/ws-send :added "4.0"}
-(fact "TODO")

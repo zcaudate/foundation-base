@@ -3,4 +3,4 @@
   (:require [lua.nginx.ws-client :refer :all]))
 
 ^{:refer lua.nginx.ws-client/new :added "4.0"}
-(fact "TODO")
+(fact "creates a new ws client")

@@ -14,15 +14,12 @@
  {:setup    [(l/rt:restart)]
   :teardown [(l/rt:stop)]})
 
-^{:refer lua.nginx.crypt/hmac :added "4.0"}
+^{:refer lua.nginx.crypt/crypt :added "4.0"}
 (fact "same functionality as postgres crypt"
   ^:hidden
 
   (crypt/crypt "hello" "$1$qI5PyQbL")
   => "$1$qI5PyQbL$CGhOca3eF1M4DEWbsndfv0")
-
-^{:refer lua.nginx.crypt/crypt :added "4.0"}
-(fact "TODO")
 
 ^{:refer lua.nginx.crypt/gen-salt :added "4.0"}
 (fact "generates salt compatible with pgcrypto libraries"

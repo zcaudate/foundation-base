@@ -3,7 +3,7 @@
   (:require [std.make.github :refer :all]))
 
 ^{:refer std.make.github/with-verbose :added "4.0"}
-(fact "TODO")
+(fact "with verbose github messages")
 
 ^{:refer std.make.github/gh-sh-opts :added "4.0"}
 (fact "creates standard shell opts")
@@ -48,7 +48,7 @@
 (fact "regenerates the git repo")
 
 ^{:refer std.make.github/gh-dwim-init :added "4.0"}
-(fact "TODO")
+(fact "gh dwim init")
 
 ^{:refer std.make.github/gh-dwim-push :added "4.0"}
-(fact "TODO")
+(fact "gh dwim push")

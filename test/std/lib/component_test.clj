@@ -154,15 +154,16 @@
         (started? db))
   => true)
 
+^{:refer std.lib.component/wrap-start :added "4.0"}
+(fact "wraps the start function with more steps")
+
+^{:refer std.lib.component/wrap-stop :added "4.0"}
+(fact "wraps the stop function with more steps")
+
+
 (comment
   (./create-tests)
   (./import)
 
   (track/tracked [:test :db] stop))
 
-
-^{:refer std.lib.component/wrap-start :added "4.0"}
-(fact "TODO")
-
-^{:refer std.lib.component/wrap-stop :added "4.0"}
-(fact "TODO")

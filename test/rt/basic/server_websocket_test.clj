@@ -21,7 +21,7 @@
   => 6)
 
 ^{:refer rt.basic.server-websocket/create-websocket-handler-receive :added "4.0"}
-(fact "TODO")
+(fact "gets the websocket handler")
 
 ^{:refer rt.basic.server-websocket/create-websocket-handler :added "4.0"}
 (fact "creates the websocket handler")

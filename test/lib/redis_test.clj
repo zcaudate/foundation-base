@@ -1,3 +1,4 @@
+^{:no-test true}
 (ns lib.redis-test
   (:use [code.test :exclude [run]])
   (:require [lib.redis.bench :as bench]
@@ -21,7 +22,7 @@
 (fact "clients steps for start up and shutdown")
 
 ^{:refer lib.redis/client-string :added "4.0"}
-(fact "TODO")
+(fact "creates a cliet string")
 
 ^{:refer lib.redis/client-start :added "4.0"}
 (fact "starts the client")

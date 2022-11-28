@@ -116,7 +116,7 @@
 (fact "measure and prints time taken for a form")
 
 ^{:refer std.lib.env/meter-out :added "4.0"}
-(fact "TODO")
+(fact "measures and output meter")
 
 ^{:refer std.lib.env/throwable-string :added "3.0"}
 (fact "creates a string from a throwable"

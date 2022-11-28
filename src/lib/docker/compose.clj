@@ -1,3 +1,4 @@
+^{:no-test true}
 (ns lib.docker.compose
   (:require [std.lib :as h]
             [std.string :as str]))

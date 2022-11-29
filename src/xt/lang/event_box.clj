@@ -123,4 +123,13 @@
   (return
    (-/set-data box path merged)))
 
+(defn.xt append-data
+  "sets data with a trigger"
+  {:added "4.0"}
+  [box path value]
+  (var arr   (k/arr-clone (-/get-data box path)))
+  (x:arr-push arr value)
+  (return
+   (-/set-data box path arr)))
+
 (def.xt MODULE (!:module))

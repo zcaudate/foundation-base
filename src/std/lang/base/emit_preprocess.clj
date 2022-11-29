@@ -181,7 +181,9 @@
                                    [:fragment e])
                                  (if-let [e (get-in modules [sym-module :header sym-id])]
                                    [:header e])
-                                 (h/error "Upstream not found"
+                                 (h/error (str "Upstream not found: "
+                                               (ut/sym-full {:module sym-module
+                                                             :id sym-id}))
                                           {:entry (ut/sym-full {:module sym-module
                                                                 :id sym-id})
                                            :opts    (select-keys mopts [:lang

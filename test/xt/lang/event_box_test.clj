@@ -193,7 +193,6 @@
   [[] {"a" {"b" 2}, "c" 3}
    [] {"a" {"b" 2}}])
 
-
 ^{:refer xt.lang.event-box/merge-data :added "4.0"}
 (fact "merges the data in the box"
   ^:hidden
@@ -203,3 +202,15 @@
    (box/merge-data b [] {:c 3 :d 4})
    (box/get-data b))
   => {"d" 4, "a" 1, "b" 2, "c" 3})
+
+^{:refer xt.lang.event-box/append-data :added "4.0"}
+(fact "merges the data in the box"
+  ^:hidden
+
+  (!.js
+   (var b (box/make-box (fn:> {:a []})))
+   (box/append-data b ["a"] {:title "Hello"
+                             :body "World"})
+   (box/get-data b))
+  => {"a" [{"body" "World", "title" "Hello"}]})
+

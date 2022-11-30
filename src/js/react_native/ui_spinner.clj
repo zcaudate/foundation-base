@@ -6,7 +6,7 @@
   {:require [[xt.lang.base-lib :as k]
              [js.core :as j]
              [js.react :as r]
-             [js.react-native :as n :include [:fn]]
+             [js.react-native :as n :include [:fn [:icon :entypo]]]
              [js.react-native.animate :as a]
              [js.react-native.physical-base :as physical-base]
              [js.react-native.physical-edit :as physical-edit]
@@ -174,7 +174,7 @@
 (defn.js useSpinnerPosition
   "helper function to connect spinner position"
   {:added "4.0"}
-  [value setValue valueRef min max]
+  [value setValue valueRef min max stride]
   (var position     (a/val 0))
   (var prevRef      (r/ref value))
   (r/init []
@@ -184,7 +184,7 @@
                      (var nValue (k/clamp
                                   min max
                                   (- (r/curr valueRef)
-                                     (j/round (/ _value 3)))))
+                                     (j/round (/ _value (or stride 8))))))
                      
                      (when (not= nValue (r/curr prevRef))
                        (setValue nValue)
@@ -199,6 +199,8 @@
       disabled
       min
       max
+      panDirection
+      panStride
       value
       setValue
       style
@@ -209,18 +211,21 @@
       (:.. rprops)]}]
   (var [__value __setValue] (r/local value))
   (var __valueRef     (r/ref __value))
-  (var [styleStatic transformFn] (-/spinnerTheme #{[theme
-                                                    themePipeline
-                                                    (:.. rprops)]}))
+  (var [styleStatic
+        transformFn]  (-/spinnerTheme #{[theme
+                                         themePipeline
+                                         (:.. rprops)]}))
   (var position     (-/useSpinnerPosition __value __setValue __valueRef
                                           min
-                                          max))
+                                          max
+                                          panStride))
   (var #{touchable
          panHandlers} (physical-edit/usePanTouchable
                        #{[disabled
                           :chord (j/assign {:value __value} chord)
                           (:.. rprops)]}
-                       "vertical"
+                       (or panDirection
+                           "vertical")
                        position
                        false))
   (var  #{setPressing
@@ -235,6 +240,18 @@
   (r/watch [value]
     (when (not= value __value)
       (__setValue value)))
+  (var iconElem
+       [:% n/View
+        {:style {:zIndex -10
+                 :transform
+                 [{:rotateZ (:? (== panDirection "horizontal")
+                                "45deg"
+                                "-45deg")}]}}
+        [:% n/Icon
+         {:name "resize-full-screen"
+          :style [styleStatic
+                  {:paddingLeft 5}]
+          :size 15}]])
   (return
    [:% physical-base/Box
     #{[:indicators touchable.indicators
@@ -247,10 +264,8 @@
                          (setPressing false))
        :style [{:overflow "hidden"
                 :flexDirection "row"
+                :alignItems "center"
                 :padding 5}
-               #_(n/PlatformSelect
-                {:web {:userSelect "none"
-                       :cursor "ns-resize"}})
                styleStatic
                (:.. (j/arrayify style))]
        :transformations transformFn
@@ -264,6 +279,7 @@
                       min
                       max
                       (:.. rprops)]}]
+                  iconElem
                   [:% n/View
                    {:key "background"
                     :style {:position "absolute"
@@ -271,3 +287,8 @@
                             :width "100%"}}]]]}]))
 
 (def.js MODULE (!:module))
+
+(comment
+
+  panDirection
+                  panStride)

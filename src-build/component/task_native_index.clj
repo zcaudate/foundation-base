@@ -10,12 +10,13 @@
 
 (defn task-gh-push
   [& [message]]
+  (make/build-all build-native-index/COMPONENT-NATIVE)
   (make/gh:dwim-push build-native-index/COMPONENT-NATIVE message))
 
 (defn task-gh-init
   [& [message]]
-  (make/with-verbose false
-    (make/gh:dwim-init build-native-index/COMPONENT-NATIVE message)))
+  (make/build-all build-native-index/COMPONENT-NATIVE)
+  (make/gh:dwim-init build-native-index/COMPONENT-NATIVE message))
 
 (defn -main
   []

@@ -10,12 +10,12 @@
 
 (defn task-gh-push
   [& [message]]
-  (make/deploy-gh-push build-native-index/COMPONENT-NATIVE message))
+  (make/gh:dwim-push build-native-index/COMPONENT-NATIVE message))
 
 (defn task-gh-init
   [& [message]]
   (make/with-verbose false
-    (make/deploy-gh-init build-native-index/COMPONENT-NATIVE message)))
+    (make/gh:dwim-init build-native-index/COMPONENT-NATIVE message)))
 
 (defn -main
   []
@@ -35,10 +35,4 @@
   
   (System/exit 0))
 
-
-(comment
-  (make/with-verbose false
-    (make/deploy-gh-init +build-scaffold+))
-  
-  (docker-build)
-  )
+(comment)

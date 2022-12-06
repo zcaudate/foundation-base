@@ -24,12 +24,43 @@
              [npx expo start --android]]
             [:purge   [npx expo r -c]]]})
 
+(def +github-workflows-build+
+  {:type :yaml
+   :file ".github/workflows/build.yml"
+   :main [[:name "build gh-pages"]
+          [:on ["push"]]
+          [:jobs
+           {:build
+            {:runs-on "ubuntu-latest"
+             :steps
+             [{:name "Checkout repo"
+               :uses "actions/checkout@v3"}
+              {:name "Node Setup"
+               :uses "actions/setup-node@v3"
+               :with {:node-version "16.x"}}
+              {:name "SSH Init"
+               :run (str/|
+                     "install -m 600 -D /dev/null ~/.ssh/id_rsa"
+                     "echo '${{ secrets.GH_PRIVATE_COMMIT_KEY }}' > ~/.ssh/id_rsa"
+                     "ssh-keyscan -H www.github.com > ~/.ssh/known_hosts")}
+              
+              {:name "Deploy gh-pages"
+               :run
+               (str/|
+                "make build-web"
+                "git config --global user.name github-actions"
+                "git config --global user.email github-actions@github.com"
+                "cd web-build && git init && git add -A && git commit -m 'deploying to gh-pages'"
+                "git remote add origin git@github.com:zcaudate/foundation.react-native.git"
+                "git push origin HEAD:gh-pages --force")}]}}]]})
+
 (def.make COMPONENT-NATIVE
   {:tag      "native"
    :build    ".build/native"
-   :github   {:repo   "zcaudate/component.native"
+   :github   {:repo   "zcaudate/foundation.react-native"
               :description "Native components"}
-   :sections {:common [+expo-makefile+]
+   :sections {:common [+expo-makefile+
+                       +github-workflows-build+]
               :node   [{:type :gitignore,
                         :main '[dist
                                 node_modules
@@ -53,71 +84,59 @@
                          "yarn-error.log"]}
                        {:type :json
                         :file "app.json"
-                        :main 
-                        {"expo"
-                         {"name" "Native Components"
-                          "slug" "native-components"
-                          "version" "1.0.0",
-                          "orientation" "portrait",
-                          #_#_"icon" "./assets/icon.png",
-                          "entryPoint" "./src/App.js",
-                          "splash"
-                          {#_#_"image" "./assets/splash.png",
-                           "resizeMode" "contain",
-                           "backgroundColor" "#ffffff"}
-                          "updates" {"fallbackToCacheTimeout" 0},
-                          "assetBundlePatterns" ["**/*"]
-                          "ios" {"supportsTablet" true},
-                          #_#_"android" {"adaptiveIcon" {"foregroundImage" "./assets/adaptive-icon.png",
-                                                     "backgroundColor" "#FFFFFF"}},
-                          #_#_"web" {"favicon" "./assets/favicon.png"}}}}
+                        :main  {"expo"
+                                {"name" "Native Components"
+                                 "slug" "native-components"
+                                 "version" "1.0.0",
+                                 "orientation" "portrait",
+                                 "entryPoint" "./src/App.js",
+                                 "splash"
+                                 {"resizeMode" "contain",
+                                  "backgroundColor" "#ffffff"}
+                                 "updates" {"fallbackToCacheTimeout" 0},
+                                 "assetBundlePatterns" ["**/*"]
+                                 "ios" {"supportsTablet" true},}}}
                        
                        {:type :package.json,
-                        :main
-                        {"main" "node_modules/expo/AppEntry.js",
-                         "name" "component-native",
-                         "scripts"
-                         {"start" "expo start",
-                          "android" "expo start --android",
-                          "ios" "expo start --ios",
-                          "web" "expo start --web",
-                          "eject" "expo eject"},
-                         "private" true,
-                         "dependencies"
-                         {"react-native-svg" "12.3.0",
-                          "javascript-time-ago" "2.3.11",
-                          "react-native" "0.68.1",
-                          "expo-media-library" "14.1.0",
-                          "expo-web-browser" "10.2.1",
-                          "uuid" "8.3.2",
-                          "react-dom" "17.0.2",
-                          "lightweight-charts" "3.8.0",
-                          "dateformat" "^4",
-                          "react-native-vector-icons" "9.1.0",
-                          "react-native-web" "0.17.7",
-                          "react-native-error-boundary" "1.1.10",
-                          "base-64" "1.0.0",
-                          "react-native-base64" "0.1.0",
-                          "react" "17.0.2",
-                          "react-native-get-random-values" "1.8.0",
-                          "expo-random" "12.2.0"},
-                         "devDependencies"
-                         {"@babel/core" "7.9.0",
-                          "@babel/preset-env" "7.13.15",
-                          "@types/react" "16.9.35",
-                          "@types/react-native" "0.63.2",
-                          "expo" "45.0.3",
-                          "expo-cli" "6.0.8",
-                          "typescript" "4.3.5"},
-                         "metro" {"watchFolders" ["assets"]}}}
-                       #_{:type :resource,
-                        :target "assets",
-                        :main [["core-assets/demo/adaptive-icon.png"
-                                "adaptive-icon.png"]
-                               ["core-assets/demo/favicon.png" "favicon.png"]
-                               ["core-assets/demo/icon.png" "icon.png"]
-                               ["core-assets/demo/snack-icon.png" "snack-icon.png"]
-                               ["core-assets/demo/splash.png" "splash.png"]]}]}
+                        :main {"main" "node_modules/expo/AppEntry.js",
+                               "name" "component-native",
+                               "private" true,
+                               "homepage" "/foundation.react-native"
+                               
+                               "scripts"
+                               {"start" "expo start",
+                                "android" "expo start --android",
+                                "ios" "expo start --ios",
+                                "web" "expo start --web",
+                                "eject" "expo eject"},
+                               
+                               "dependencies"
+                               {"react-native-svg" "12.3.0",
+                                "javascript-time-ago" "2.3.11",
+                                "react-native" "0.68.1",
+                                "expo-media-library" "14.1.0",
+                                "expo-web-browser" "10.2.1",
+                                "uuid" "8.3.2",
+                                "react-dom" "17.0.2",
+                                "lightweight-charts" "3.8.0",
+                                "dateformat" "^4",
+                                "react-native-vector-icons" "9.1.0",
+                                "react-native-web" "0.17.7",
+                                "react-native-error-boundary" "1.1.10",
+                                "base-64" "1.0.0",
+                                "react-native-base64" "0.1.0",
+                                "react" "17.0.2",
+                                "react-native-get-random-values" "1.8.0",
+                                "expo-random" "12.2.0"},
+                               "devDependencies"
+                               {"@babel/core" "7.9.0",
+                                "@babel/preset-env" "7.13.15",
+                                "@types/react" "16.9.35",
+                                "@types/react-native" "0.63.2",
+                                "expo" "45.0.3",
+                                "expo-cli" "6.0.8",
+                                "typescript" "4.3.5"},
+                               "metro" {"watchFolders" ["assets"]}}}]}
    :default [{:type   :module.graph
               :lang   :js
               :target "src"
@@ -136,6 +155,7 @@
   (do (make/build-all COMPONENT-NATIVE)
       (make/gh:dwim-init COMPONENT-NATIVE))
   (make/gh:dwim-init COMPONENT-NATIVE)
+  (make/gh:dwim-push COMPONENT-NATIVE)
   (def *res*
     (future (make/run-internal COMPONENT-NATIVE :build-web)))
   (def *res*

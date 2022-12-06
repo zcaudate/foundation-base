@@ -12,7 +12,8 @@
             :notify {:host "test.statstrade.io"}}
    :require [[js.react :as r]
              [js.react-native :as n :include [:fn]]
-             [js.react-native.ui-router :as ui-router]]
+             [js.react-native.ui-router :as ui-router]
+             [js.core :as j]]
    :export [MODULE]})
 
 ^{:refer js.react-native.ui-router/useTransition :added "4.0"}
@@ -23,16 +24,14 @@
     []
     (return
      (n/EnclosedCode 
-{:label "js.react-native.ui-router/useTransition"
+      {:label "js.react-native.ui-router/useTransition"
        #_#_:style {:height 300}} 
-[:% n/View
-       {
-        :style {:backfaceVisibility "hidden"
+      [:% n/View
+       {:style {:backfaceVisibility "hidden"
                 :height 100
                 :width 100
                 :backgroundColor "red"
-                :transform [{"rotateY" (+ j/PI "rad")}]}}] 
-#_))))
+                :transform [{"rotateY" (+ j/PI "rad")}]}}] ))))
 
 ^{:refer js.react-native.ui-router/RouterImpl :added "4.0"}
 (fact "creates the transitioning router")
@@ -62,16 +61,16 @@
                       [routeKey]))))
     (return
      (n/EnclosedCode 
-{:label "js.react-native.ui-router/Router"
+      {:label "js.react-native.ui-router/Router"
        :style {:height 400}} 
-[:% n/Tabs
+      [:% n/Tabs
        {:data ["a1"
                "b2"
                "c3"
                "d4"]
         :value routeKey 
         :setValue setRouteKey}] 
-[:% n/Tabs
+      [:% n/Tabs
        {:data ["from_top"
                "from_bottom"
                "from_left"
@@ -80,7 +79,7 @@
                "flip_horizontal"]
         :value  transition
         :setValue setRouteTransition}] 
-[:% ui-router/Router
+      [:% ui-router/Router
        #{routeKey
          routeComponentFn
          transition
@@ -91,5 +90,4 @@
                   :width 350}}}])))
   
   (def.js MODULE (!:module))
-  
   )

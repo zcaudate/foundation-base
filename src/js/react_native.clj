@@ -549,8 +549,9 @@
     {:label label}
     [:% -/View
      {:style {:position "absolute"
-              :right 0
-              :top 0
+              :right -10
+              :top -20
+              :transform [{:scale 0.6}]
               :zIndex 10}}
      [:% -/Button
       {:title (:? showCode "DEMO" "CODE")
@@ -564,7 +565,7 @@
   (let [code (l/emit-str (apply list 'do children) (l/macro-opts))]
     (apply vector
            :% 'js.react-native/EnclosedCodeContainer
-           (assoc props :code code)
+           (assoc props :code (list (list 'fn:> code)))
            children)))
 
 (defn.js Row

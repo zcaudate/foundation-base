@@ -14,8 +14,7 @@
    :require [[js.react :as r :include [:fn]]
              [js.react-native :as n :include [:fn]]
              [js.react.ext-route :as ext-route]
-             [xt.lang.event-route :as event-route]
-             ]
+             [xt.lang.event-route :as event-route]]
    :export [MODULE]})
 
 ^{:refer js.react.ext-route/useRouteSegment :adopt true :added "4.0"}
@@ -31,8 +30,8 @@
     (var getCount (r/useGetCount))
     (return
      (n/EnclosedCode 
-{:label "js.react.ext-route/useRouteSegment"} 
-[:% n/Row
+      {:label "js.react.ext-route/useRouteSegment"} 
+      [:% n/Row
        [:% n/TextInput
         {:value value
          :onChangeText setValue}]
@@ -57,11 +56,10 @@
                          route ["account"]))}]
        [:% n/Text " "]
        ] 
-[:% n/TextDisplay
+      [:% n/TextDisplay
        {:content (n/format-entry {:url url
                                   :tree tree
                                   :value value
                                   :count (getCount)})}])))
 
-  (def.js MODULE (!:module))
-  )
+  (def.js MODULE (!:module)))

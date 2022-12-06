@@ -62,12 +62,6 @@
    :sections {:common [+expo-makefile+
                        +github-workflows-build+]
               :node   [{:type :gitignore,
-                        :main '[dist
-                                node_modules
-                                yarn.lock
-                                pnpm-lock.yaml
-                                bundle.js]}
-                       {:type :gitignore,
                         :main
                         ["node_modules/**/*"
                          ".expo/*"

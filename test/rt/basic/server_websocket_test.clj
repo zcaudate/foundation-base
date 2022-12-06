@@ -18,7 +18,7 @@
   ^:hidden
   
   (!.js (+ 1 2 3))
-  => 6)
+  => (any 6 {:status "not-connected"}))
 
 ^{:refer rt.basic.server-websocket/create-websocket-handler-receive :added "4.0"}
 (fact "gets the websocket handler")

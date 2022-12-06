@@ -537,6 +537,36 @@
      label]
     children]))
 
+(defn.js EnclosedCodeContainer
+  "creates a enclosed section with label"
+  {:added "0.1"}
+  [#{[code
+      label
+      children]}]
+  (var [showCode setShowCode] (r/local))
+  (return
+   [:% -/Enclosed
+    {:label label}
+    [:% -/View
+     {:style {:position "absolute"
+              :right 0
+              :top 0
+              :zIndex 10}}
+     [:% -/Button
+      {:title (:? showCode "DEMO" "CODE")
+       :onPress (fn [] (setShowCode (not showCode)))}]]
+    (:? showCode
+        [:% -/Text code]
+        children)]))
+
+(defmacro.js EnclosedCode
+  [props & children]
+  (let [code (l/emit-str (apply list 'do children) (l/macro-opts))]
+    (apply vector
+           :% 'js.react-native/EnclosedCodeContainer
+           (assoc props :code code)
+           children)))
+
 (defn.js Row
   "constructs a row"
   {:added "0.1"}

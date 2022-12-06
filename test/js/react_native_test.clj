@@ -124,6 +124,32 @@
       [:% n/Row
        [:% n/Text "HELLO"]]])))
 
+^{:refer js.react-native/EnclosedCodeContainer :added "4.0"}
+(fact "creates a enclosed section with label"
+  ^:hidden
+  
+  (defn.js EnclosedCodeContainerDemo
+    []
+    (return
+     [:% n/EnclosedCodeContainer
+      {:label "js.react-native/EnclosedCodeContainer"
+       :code "HELLO THERE"}
+      [:% n/Row
+       [:% n/Text "HELLO"]]])))
+
+^{:refer js.react-native/EnclosedCode :added "4.0"}
+(fact "creates an enclosed code section"
+  ^:hidden
+  
+  (defn.js EnclosedCodeDemo
+    []
+    (return
+     (n/EnclosedCode
+      {:label "js.react-native/EnclosedCode"
+       :code "HELLO THERE"}
+      [:% n/Row
+       [:% n/Text "HELLO"]]))))
+
 ^{:refer js.react-native/Row :added "0.1"}
 (fact "constructs a row"
   ^:hidden
@@ -165,7 +191,7 @@
     []
     (return
      [:% n/Enclosed
-      {:text "js.react-native/H1"}
+      {:label "js.react-native/H1"}
       [:% n/Row
        {:style {:backgroundColor "orange"}}
        [:% n/H1 {:text "HELLO WORLD"}]]])))
@@ -178,7 +204,7 @@
     []
     (return
      [:% n/Enclosed
-      {:text "js.react-native/H2"}
+      {:label "js.react-native/H2"}
       [:% n/Row
        {:style {:backgroundColor "orange"}}
        [:% n/H2 {:text "HELLO WORLD"}]]])))
@@ -191,7 +217,7 @@
     []
     (return
      [:% n/Enclosed
-      {:text "js.react-native/H3"}
+      {:label "js.react-native/H3"}
       [:% n/Row
        {:style {:backgroundColor "orange"}}
        [:% n/H3 {:text "HELLO WORLD"}]]])))
@@ -204,7 +230,7 @@
     []
     (return
      [:% n/Enclosed
-      {:text "js.react-native/H4"}
+      {:label "js.react-native/H4"}
       [:% n/Row
        {:style {:backgroundColor "orange"}}
        [:% n/H4 {:text "HELLO WORLD"}]]])))
@@ -217,7 +243,7 @@
     []
     (return
      [:% n/Enclosed
-      {:text "js.react-native/H5"}
+      {:label "js.react-native/H5"}
       [:% n/Row
        {:style {:backgroundColor "orange"}}
        [:% n/H5 {:text "HELLO WORLD"}]]])))
@@ -230,7 +256,7 @@
     []
     (return
      [:% n/Enclosed
-      {:text "js.react-native/Caption"}
+      {:label "js.react-native/Caption"}
       [:% n/Row
        {:style {:backgroundColor "orange"}}
        [:% n/Caption {:text "HELLO WORLD"}]]])))

@@ -22,7 +22,7 @@
   (j/import-set-global))
 
 (defglobal.js Global
-  (base-box/make-box {:l0 "000-react"}))
+  (base-box/make-box {:l0 "00a-native-text"}))
 
 (defglobal.js Screens
   (base-box/make-box {}))
@@ -40,9 +40,11 @@
   (var tree (ext-box/listenBox -/Screens []))
   (return
    [:% n/View
-    {:style {:position "absolute", :top 0, :bottom 0, :width "100%"}}
-    [:%
-     n/TreePane
+    {:style {:position "absolute",
+             :top 0,
+             :bottom 0,
+             :width "100%"}}
+    [:% n/TreePane
      {:tree tree,
       :levels
       [{:type "list",
@@ -50,7 +52,6 @@
         :setInitial setL0,
         :listWidth 120,
         :displayFn n/displayTarget}]}]]))
-
 
 (defrun.js ^{:rt/init true}
   __main__

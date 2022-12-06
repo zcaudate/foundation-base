@@ -4,19 +4,32 @@
             [std.lib :as h]
             [std.string :as str]
             [std.make :as make :refer [def.make]]
-            [pune.project-web :as project-web]
             [component.web-native-index :as web-native-index]))
 
-;;
-;; NGINX CONF
-;;
-  
+(def +expo-makefile+
+  {:type  :makefile
+   :main  '[[:init
+             [yarn install]]
+            [:build-web
+             [yarn install]
+             [npx expo build:web]]
+            [:dev
+             [yarn install]
+             [npx expo start --web]]
+            [:ios
+             [yarn install]
+             [npx expo start --ios]]
+            [:android
+             [yarn install]
+             [npx expo start --android]]
+            [:purge   [npx expo r -c]]]})
+
 (def.make COMPONENT-NATIVE
   {:tag      "native"
    :build    ".build/native"
    :github   {:repo   "zcaudate/component.native"
               :description "Native components"}
-   :sections {:common [project-web/+expo-makefile+]
+   :sections {:common [+expo-makefile+]
               :node   [{:type :gitignore,
                         :main '[dist
                                 node_modules
@@ -38,8 +51,27 @@
                          ".DS_Store"
                          "yarn.lock"
                          "yarn-error.log"]}
+                       {:type :json
+                        :file "app.json"
+                        :main 
+                        {"expo"
+                         {"name" "Native Components"
+                          "slug" "native-components"
+                          "version" "1.0.0",
+                          "orientation" "portrait",
+                          #_#_"icon" "./assets/icon.png",
+                          "entryPoint" "./src/App.js",
+                          "splash"
+                          {#_#_"image" "./assets/splash.png",
+                           "resizeMode" "contain",
+                           "backgroundColor" "#ffffff"}
+                          "updates" {"fallbackToCacheTimeout" 0},
+                          "assetBundlePatterns" ["**/*"]
+                          "ios" {"supportsTablet" true},
+                          #_#_"android" {"adaptiveIcon" {"foregroundImage" "./assets/adaptive-icon.png",
+                                                     "backgroundColor" "#FFFFFF"}},
+                          #_#_"web" {"favicon" "./assets/favicon.png"}}}}
                        
-                       (project-web/expo-app-json "component-native",)
                        {:type :package.json,
                         :main
                         {"main" "node_modules/expo/AppEntry.js",
@@ -78,25 +110,35 @@
                           "expo-cli" "6.0.8",
                           "typescript" "4.3.5"},
                          "metro" {"watchFolders" ["assets"]}}}
-                       {:type :resource,
+                       #_{:type :resource,
                         :target "assets",
-                        :main
-                        [["core-assets/demo/adaptive-icon.png"
-                          "adaptive-icon.png"]
-                         ["core-assets/demo/favicon.png" "favicon.png"]
-                         ["core-assets/demo/icon.png" "icon.png"]
-                         ["core-assets/demo/snack-icon.png" "snack-icon.png"]
-                         ["core-assets/demo/splash.png" "splash.png"]]}]}
+                        :main [["core-assets/demo/adaptive-icon.png"
+                                "adaptive-icon.png"]
+                               ["core-assets/demo/favicon.png" "favicon.png"]
+                               ["core-assets/demo/icon.png" "icon.png"]
+                               ["core-assets/demo/snack-icon.png" "snack-icon.png"]
+                               ["core-assets/demo/splash.png" "splash.png"]]}]}
    :default [{:type   :module.graph
               :lang   :js
               :target "src"
               :main   'component.web-native-index
               :emit   {:code   {:label true}}}]})
 
+(def +init+
+  (make/triggers-set
+   COMPONENT-NATIVE
+   #{"js"
+     "component.web-native"}))
+
 (comment
+
+  (make/build-all COMPONENT-NATIVE)
   (do (make/build-all COMPONENT-NATIVE)
       (make/gh:dwim-init COMPONENT-NATIVE))
   (make/gh:dwim-init COMPONENT-NATIVE)
   (def *res*
     (future (make/run-internal COMPONENT-NATIVE :build-web)))
+  (def *res*
+    (make/run COMPONENT-NATIVE :build-web))
+  (make/run COMPONENT-NATIVE :dev)
   )

@@ -343,6 +343,16 @@
                            {:query [(list '#{defn defmacro} '_ '^:%?- string? '^:%?- map? 'vector? '& '_)]
                             :print {:function true :item true :result true :summary true}}))
 
+(definvoke locate-test
+  "refactors code tests based on given `:edits`"
+  {:added "4.0"}
+  [:task {:template :code.locate
+          :params {:title "LOCATE TEST"
+                   :parallel true}
+          :item {:list template/test-namespaces}
+          :main {:fn #'base/locate-code}}])
+
+
 (definvoke grep
   "finds a string or regular expression in files
  

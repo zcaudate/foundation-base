@@ -72,6 +72,8 @@
   (return
    [:<>
     [:% react-native-test/EnclosedDemo]
+    [:% react-native-test/EnclosedCodeContainerDemo]
+    [:% react-native-test/EnclosedCodeDemo]
     [:% react-native-test/RowDemo]
     [:% react-native-test/FillDemo]
     [:% react-native-test/H1Demo]

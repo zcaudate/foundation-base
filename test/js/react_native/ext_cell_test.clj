@@ -53,22 +53,22 @@
                              :defaultOutput {:output "NOT AVAILABLE"}}}
                     cell))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ext-cell-test/SimpleCell"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ext-cell-test/SimpleCell"} 
+[:% n/Row
        [:% n/Button
         {:title "Print"
          :onPress (fn:> (console.log cell))}]
        [:% n/Text " "]
        [:% n/Button
         {:title "Trigger"
-         :onPress (fn:> (cl/view-refresh ["basic" "ping"] cell))}]]
-      [:% n/Caption
+         :onPress (fn:> (cl/view-refresh ["basic" "ping"] cell))}]] 
+[:% n/Caption
        {:text (k/js-encode {:count (getCount)
                             :data (cl/get-val ["basic" "ping"]
                                               []
                                               cell)})
-        :style {:marginTop 10}}]])))
+        :style {:marginTop 10}}]))))
 
 ^{:refer js.react-native.ext-cell-test/SimpleCellViews :adopt true :added "0.1"}
 (fact "creates a  Tree Pane"
@@ -133,9 +133,9 @@
                                         cell)))
                    600)
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ext-cell-test/SimpleCellViews"}
-      [:% n/TreePane
+     (n/EnclosedCode 
+{:label "js.react-native.ext-cell-test/SimpleCellViews"} 
+[:% n/TreePane
        {:tree  cell
         :levels [{:type "list"
                   :initial l0
@@ -166,13 +166,13 @@
                     (return (cl/get-val [(:.. (j/arrayify parents))
                                          modelKey]
                                         []
-                                        cell)))}]}]
-      [:% n/Caption
+                                        cell)))}]}] 
+[:% n/Caption
        {:text (n/format-entry
                #{[:count (getCount)
                   :data (cl/cell-vals cell)
                   l1 l0]})
-        :style {:marginTop 10}}]])))
+        :style {:marginTop 10}}]))))
 
 ^{:refer js.react-native.ext-cell-test/listen-current :adopt true :added "0.1"}
 (fact "creates a  Tree Pane"
@@ -182,14 +182,14 @@
     []
     (var [initial setInitial] (r/local "a"))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ext-cell-test/listen-current"}
-      [:% n/TreePane
+     (n/EnclosedCode 
+{:label "js.react-native.ext-cell-test/listen-current"} 
+[:% n/TreePane
        {:tree  {}
-        :levels []}]
-      [:% n/Caption
+        :levels []}] 
+[:% n/Caption
        {:text (k/js-encode #{initial})
-        :style {:marginTop 10}}]]))
+        :style {:marginTop 10}}])))
   
   (def.js MODULE (!:module))
   

@@ -45,14 +45,14 @@
     (var [position setPosition] (r/local "centered"))
     (var [transition setTransition] (r/local "from_top"))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-notify/Notify"
-       :style {}}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-notify/Notify"
+       :style {}} 
+[:% n/Row
        [:% n/Button
         {:title "T"
-         :onPress (fn:> (setVisible (not visible)))}]]
-      [:% n/Tabs
+         :onPress (fn:> (setVisible (not visible)))}]] 
+[:% n/Tabs
        {:data ["centered"
                "top"
                "left"
@@ -63,15 +63,15 @@
                "bottom_right"
                "bottom_left"]
         :value position
-        :setValue setPosition}]
-      [:% n/Tabs
+        :setValue setPosition}] 
+[:% n/Tabs
        {:data ["from_top"
                "from_bottom"
                "from_left"
                "from_right"]
         :value transition
-        :setValue setTransition}]
-      [:% n/Row
+        :setValue setTransition}] 
+[:% n/Row
        {:style {:backgroundColor "#eee"}}
        [:% n/PortalProvider
         [:% n/PortalSink
@@ -82,11 +82,11 @@
           #{visible
             position
             transition
-            setVisible}]]]]
-      [:% n/TextDisplay
+            setVisible}]]]] 
+[:% n/TextDisplay
        {:content (n/format-entry #{visible
                                    position
-                                   transition})}]]))
+                                   transition})}])))
   
   (def.js MODULE
     (do (:# (!:uuid))

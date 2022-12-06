@@ -22,16 +22,17 @@
   (defn.js UseTransitionDemo
     []
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-router/useTransition"
-       #_#_:style {:height 300}}
-      #_[:% n/View
+     (n/EnclosedCode 
+{:label "js.react-native.ui-router/useTransition"
+       #_#_:style {:height 300}} 
+[:% n/View
        {
         :style {:backfaceVisibility "hidden"
                 :height 100
                 :width 100
                 :backgroundColor "red"
-                :transform [{"rotateY" (+ j/PI "rad")}]}}]])))
+                :transform [{"rotateY" (+ j/PI "rad")}]}}] 
+#_))))
 
 ^{:refer js.react-native.ui-router/RouterImpl :added "4.0"}
 (fact "creates the transitioning router")
@@ -60,17 +61,17 @@
                                                      :flex 1}}])}
                       [routeKey]))))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-router/Router"
-       :style {:height 400}}
-      [:% n/Tabs
+     (n/EnclosedCode 
+{:label "js.react-native.ui-router/Router"
+       :style {:height 400}} 
+[:% n/Tabs
        {:data ["a1"
                "b2"
                "c3"
                "d4"]
         :value routeKey 
-        :setValue setRouteKey}]
-      [:% n/Tabs
+        :setValue setRouteKey}] 
+[:% n/Tabs
        {:data ["from_top"
                "from_bottom"
                "from_left"
@@ -78,9 +79,8 @@
                "flip_vertical"
                "flip_horizontal"]
         :value  transition
-        :setValue setRouteTransition}]
-      
-      [:% ui-router/Router
+        :setValue setRouteTransition}] 
+[:% ui-router/Router
        #{routeKey
          routeComponentFn
          transition
@@ -88,7 +88,7 @@
           :debug true
           :fade 0.2
           :style {:height 200
-                  :width 350}}}]]))
+                  :width 350}}}])))
   
   (def.js MODULE (!:module))
   

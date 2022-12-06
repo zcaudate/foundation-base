@@ -29,9 +29,9 @@
       (n/measureRef boxRef
                  setDisplay))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.physical-modal-test/GetPositionDemo"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.physical-modal-test/GetPositionDemo"} 
+[:% n/Row
        {:style {:marginBottom 10}}
        [:% n/Button
         {:title "RAND"
@@ -47,12 +47,11 @@
         {:title "MEASURE"
          :onPress
          (fn:> (n/measureRef boxRef
-                          setDisplay))}]]
-      
-      [:% n/Row
+                          setDisplay))}]] 
+[:% n/Row
        {:style {:height height
-                 :backgroundColor "green"}}]
-      [:% n/Row
+                 :backgroundColor "green"}}] 
+[:% n/Row
        [:% n/View
         {:style {:width width
                  :backgroundColor "green"}}]
@@ -62,7 +61,7 @@
                  :width 100
                  :backgroundColor "red"}}]
        [:% n/TextDisplay
-        {:content (n/format-obj display)}]]])))
+        {:content (n/format-obj display)}]]))))
 
 ^{:refer js.react-native.physical-modal/displayModal :adopt true :added "4.0"}
 (fact "gets the position of a component"
@@ -81,9 +80,9 @@
                       setDisplay)
       (setShowModal false))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.physical-modal-test/displayModalDemo"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.physical-modal-test/displayModalDemo"} 
+[:% n/Row
        {:style {:marginBottom 10}}
        [:% n/Button
         {:title "DISPLAY"
@@ -97,16 +96,15 @@
         {:title "MEASURE"
          :onPress
          (fn:> (n/measureRef boxRef
-                          setDisplay))}]]
-      [:% n/View
+                          setDisplay))}]] 
+[:% n/View
         {:ref boxRef
          :style {:height 100
                  :width 100
-                 :backgroundColor "red"}}]
-      [:% n/TextDisplay
-       {:content (n/format-obj display)}]
-      
-      [:% n/Modal
+                 :backgroundColor "red"}}] 
+[:% n/TextDisplay
+       {:content (n/format-obj display)}] 
+[:% n/Modal
        {:visible showModal
         :animationType "fade"
         :transparent true
@@ -126,7 +124,7 @@
                    :left (+ display.px display.width)}}
           [:% n/Button
            {:title "MODAL"
-            :onPress (fn:>)}]]]]]]))
+            :onPress (fn:>)}]]]]])))
   
   (def.js MODULE (!:module))
 

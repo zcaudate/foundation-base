@@ -24,10 +24,10 @@
   (defn.js PageDemo
     []
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-util/Page"
-       :style {:height 200}}
-      [:% ui-util/Page
+     (n/EnclosedCode 
+{:label "js.react-native.ui-util/Page"
+       :style {:height 200}} 
+[:% ui-util/Page
        {:headerComponent (fn:> [:% n/View {:style {:height 30
                                                    :backgroundColor "red"}}])
         :footerComponent (fn:> [:% n/View {:style {:height 30
@@ -43,7 +43,7 @@
                                                    :backgroundColor "blue"}}])}
        [:% n/View
         {:style {:flex 1
-                 :backgroundColor "black"}}]]])))
+                 :backgroundColor "black"}}]]))))
 
 ^{:refer js.react-native.ui-util/Fade :added "4.0"}
 (fact "creates a Fade"
@@ -54,18 +54,18 @@
     (var [visible setVisible] (r/local true))
     (var [size setSize] (r/local 100))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-util/Fade"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-util/Fade"} 
+[:% n/Row
        [:% n/Button
         {:title "V"
-         :onPress (fn:> (setVisible (not visible)))}]]
-      [:% ui-util/Fade
+         :onPress (fn:> (setVisible (not visible)))}]] 
+[:% ui-util/Fade
        {:visible visible}
        [:% n/View
         {:style {:height size
                  :width 100
-                 :backgroundColor "red"}}]]])))
+                 :backgroundColor "red"}}]]))))
 
 ^{:refer js.react-native.ui-util/useFoldContent :added "4.0"}
 (fact "creates the fold inner helper")
@@ -80,17 +80,17 @@
     (var [size setSize] (r/local 100))
     (var vindicator (a/useBinaryIndicator visible))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-util/FoldInner"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-util/FoldInner"} 
+[:% n/Row
        [:% n/Button
         {:title "V"
          :onPress (fn:> (setVisible (not visible)))}]
        [:% n/Tabs
         {:value size
          :setValue setSize
-         :data [100 200]}]]
-      [:% n/Row
+         :data [100 200]}]] 
+[:% n/Row
        {:style {:height 100}}
        [:% ui-util/FoldInner
         {:aspect "width"
@@ -100,7 +100,7 @@
         [:% n/View
          {:style {:height 100
                   :width size
-                  :backgroundColor "red"}}]]]])))
+                  :backgroundColor "red"}}]]]))))
 
 ^{:refer js.react-native.ui-util/FoldImpl :added "4.0"}
 (fact "creates the transitioning fold")
@@ -114,17 +114,17 @@
     (var [visible setVisible] (r/local true))
     (var [size setSize] (r/local 100))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-util/Fold"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-util/Fold"} 
+[:% n/Row
        [:% n/Button
         {:title "V"
          :onPress (fn:> (setVisible (not visible)))}]
        [:% n/Tabs
         {:value size
          :setValue setSize
-         :data [100 200]}]]
-      [:% n/Row
+         :data [100 200]}]] 
+[:% n/Row
        {:style {:height 100}}
        [:% ui-util/Fold
         {:visible visible}
@@ -138,7 +138,7 @@
         [:% n/View
          {:style {:height 100
                   :width size
-                  :backgroundColor "blue"}}]]]]))
+                  :backgroundColor "blue"}}]]])))
   
   (def.js MODULE (!:module))
 

@@ -35,21 +35,20 @@
        k/id-fn
        k/identity))
     (return
-     [:% n/Enclosed
-      {:label "js.react.ext-log/listenLogLatest"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react.ext-log/listenLogLatest"} 
+[:% n/Row
        [:% n/Button
         {:title "QUEUE"
          :onPress (fn:> (event-log/queue-entry
                          log
                          {:id (j/randomId 6)}
                          k/id-fn
-                         k/identity))}]]
-      
-      [:% n/TextDisplay
+                         k/identity))}]] 
+[:% n/TextDisplay
        {:content (n/format-entry {:latest latest
                                   :count (event-log/get-count log)
-                                  :tail (event-log/get-tail log 5)})}]]))
+                                  :tail (event-log/get-tail log 5)})}])))
   
   (def.js MODULE (!:module))
   )

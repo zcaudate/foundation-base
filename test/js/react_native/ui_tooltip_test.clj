@@ -113,15 +113,15 @@
     (var [highlighted setHighlighted] (r/local false))
     (var [disabled setDisabled] (r/local false))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-tooltip/Tooltip"
-       :style {:height 400}}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-tooltip/Tooltip"
+       :style {:height 400}} 
+[:% n/Row
        {:style {:flex 1}}
        [:% n/PortalProvider
         [:% n/PortalSink
          {:style {:flex 1}}
-         [:% -/TooltipPane]]]]]))
+         [:% -/TooltipPane]]]])))
   
   (def.js MODULE (!:module))
 

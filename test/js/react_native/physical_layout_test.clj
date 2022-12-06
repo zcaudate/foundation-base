@@ -27,9 +27,9 @@
   (defn.js GridDemo
     []
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.physical-layout/Grid"}
-      [:% n/View
+     (n/EnclosedCode 
+{:label "js.react-native.physical-layout/Grid"} 
+[:% n/View
        {:style {:flexDirection "row"
                 :flexWrap "wrap"
                 :align-content "space-between"}}
@@ -52,7 +52,7 @@
             :style {:flex 1
                     :marginHorizontal 5
                     :minWidth 150
-                    :maxWidth 180}}]))]])))
+                    :maxWidth 180}}]))]))))
 
 ^{:refer js.react-native.physical-layout/FlexWrap
   :adopt true
@@ -69,15 +69,15 @@
                              :duration 200
                              :easing a/linear}})]
       (return
-       [:% n/Enclosed
-        {:label "js.react-native.physical-layout/FlexWrap"}
-        [:% n/Row
+       (n/EnclosedCode 
+{:label "js.react-native.physical-layout/FlexWrap"} 
+[:% n/Row
          [:% n/Button
           {:title "PUSH"
            :onPress (fn [] (setActive (not active)))}]
          [:% n/Fill]
          [:% physical-base/Tag
-          {:indicator ind}]]])))
+          {:indicator ind}]]))))
 
   (def.js MODULE (!:module))
   

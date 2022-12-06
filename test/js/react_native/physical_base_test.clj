@@ -32,15 +32,15 @@
                              :duration 200
                              :easing a/linear}})]
       (return
-       [:% n/Enclosed
-        {:label "js.react-native.physical-base/Tag"}
-        [:% n/Row
+       (n/EnclosedCode 
+{:label "js.react-native.physical-base/Tag"} 
+[:% n/Row
          [:% n/Button
           {:title "PUSH"
            :onPress (fn [] (setActive (not active)))}]
          [:% n/Fill]
          [:% ui/Tag
-          {:indicator ind}]]]))))
+          {:indicator ind}]])))))
 
 ^{:refer js.react-native.physical-base/transformInner :added "4.0"}
 (fact "allow inner components access to chords and indicators")
@@ -78,9 +78,9 @@
                              :duration 500
                              :easing a/linear}})]
       (return
-       [:% n/Enclosed
-        {:label "js.react-native.physical-base/Box"}
-        [:% n/Row 
+       (n/EnclosedCode 
+{:label "js.react-native.physical-base/Box"} 
+[:% n/Row 
          [:% n/Row
           {:style {:flex 1}}
           [:% n/Button
@@ -104,8 +104,8 @@
             :onPress (fn [] (setVal2 (not val2)))}]
           [:% n/Padding {:style {:width 10}}]
           [:% ui/Tag
-           {:indicator ind2}]]]
-        [:% ui/Box
+           {:indicator ind2}]]] 
+[:% ui/Box
          {:style {:height 200
                   :backgroundColor "hsl(12,100.00%,47.51%)"}
           :indicators #{ind0 ind1 ind2}
@@ -140,7 +140,7 @@
                    {:ind2 (fn [v]
                             (return {:style {:transform [{:scale (+ 1 v)}]
                                              :backgroundColor (c/mix ["orange" "purple"]
-                                                                     v)}}))}}]}]]))))
+                                                                     v)}}))}}]}])))))
 
 ^{:refer js.react-native.physical-base/Text :added "4.0"}
 (fact "creates a text element"
@@ -155,24 +155,24 @@
                              :duration 500
                              :easing a/linear}})]
       (return
-       [:% n/Enclosed
-        {:label "js.react-native.physical-base/Text"}
-        [:% n/Row
+       (n/EnclosedCode 
+{:label "js.react-native.physical-base/Text"} 
+[:% n/Row
          {:style {:height 50}}
          [:% ui/Text
               {:indicators {:ind0 ind0}
                :value "HELLO"
                :transformations
                {:ind0 (fn:> [v]
-                        {:style {:fontSize (+ 20 (* 20 v))}})}}]]
-        [:% n/Row
+                        {:style {:fontSize (+ 20 (* 20 v))}})}}]] 
+[:% n/Row
           {:style {:flex 1}}
           [:% n/Button
            {:title "Ind0"
             :onPress (fn [] (setVal0 (not val0)))}]
           [:% n/Padding {:style {:width 10}}]
           [:% ui/Tag
-           {:indicator ind0}]]]))))
+           {:indicator ind0}]])))))
 
 ^{:refer js.react-native.physical-base/useChordDisabled :added "4.0"}
 (fact "constructs chord and indicator for disable flag")
@@ -240,9 +240,9 @@
     []
     (let [[active setActive]   (r/local true)]
       (return
-       [:% n/Enclosed
-        {:label "js.react-native.physical-base/TouchableBasePressing"}
-        [:% ui/TouchableBasePressing
+       (n/EnclosedCode 
+{:label "js.react-native.physical-base/TouchableBasePressing"} 
+[:% ui/TouchableBasePressing
          {:style {:justifyContent "center"
                   :alignItems "center"
                   :width 100}
@@ -268,7 +268,7 @@
                                  :height 110}
                     :transformations
                     (fn [data chord]
-                      (return {:text (n/format-obj #{data chord})}))}]}]]))))
+                      (return {:text (n/format-obj #{data chord})}))}]}])))))
 
 ^{:refer js.react-native.physical-base/TouchableBinary :added "4.0"}
 (fact "base touchable with single state"
@@ -278,9 +278,9 @@
     []
     (var [active setActive]    (r/local true))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.physical-base/TouchableBinary"}
-      [:% ui/TouchableBinary
+     (n/EnclosedCode 
+{:label "js.react-native.physical-base/TouchableBinary"} 
+[:% ui/TouchableBinary
        {:style {:justifyContent "center"
                 :alignItems "center"
                 :width 100}
@@ -319,7 +319,7 @@
                                :height 130}
                   :transformations
                   (fn [data chord]
-                    (return {:text (n/format-obj #{data chord})}))}]}]])))
+                    (return {:text (n/format-obj #{data chord})}))}]}]))))
 
 ^{:refer js.react-native.physical-base/useInputable :added "4.0"}
 (fact "helper function for inputable components")
@@ -333,9 +333,9 @@
     (var [active setActive]    (r/local true))
     (var [value setValue] (r/local ""))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.physical-base/TouchableInput"}
-      [:% ui/TouchableInput
+     (n/EnclosedCode 
+{:label "js.react-native.physical-base/TouchableInput"} 
+[:% ui/TouchableInput
        {:style {:justifyContent "center"
                 :alignItems "center"
                 :backgroundColor "black"
@@ -358,7 +358,7 @@
                                :height 120}
                   :transformations
                   (fn [data chord]
-                    (return {:text (n/format-obj #{data chord})}))}]}]]))
+                    (return {:text (n/format-obj #{data chord})}))}]}])))
 
   (def.js MODULE
     (do (:# (!:uuid))

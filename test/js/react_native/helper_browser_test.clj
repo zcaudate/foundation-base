@@ -26,9 +26,9 @@
     (var url (ext-route/listenRouteUrl route))
     (helper-browser/useHashRoute route)
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.helper-browser/useHashRoute"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.helper-browser/useHashRoute"} 
+[:% n/Row
        [:% n/Button
         {:title   "A"
          :onPress (fn:> (event-route/set-url route "hello/a"))}]
@@ -37,7 +37,7 @@
         {:title   "B"
          :onPress (fn:> (event-route/set-url route "hello/b"))}]
        [:% n/Padding {:style {:flex 1}}]
-       [:% n/Text (+ "route: " url)]]])))
+       [:% n/Text (+ "route: " url)]]))))
 
 ^{:refer js.react-native.helper-browser/setHashParam :added "4.0"}
 (fact "sets the hash param"

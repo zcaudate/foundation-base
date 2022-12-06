@@ -46,14 +46,14 @@
       (j/future-delayed [500]
         (refresh)))
     (return
-     [:% n/Enclosed
-      {:label "js.react/useLazy"}
-      [:% r/Suspense
+     (n/EnclosedCode 
+{:label "js.react/useLazy"} 
+[:% r/Suspense
        {:fallback [:% n/Text "LOADING"]}
        [:% LazyComponent]
        [:% LazyButton {:text "HELLO"}]
-       (r/createElement (r/lazy (fn:> module.lazyView)))]
-      [:% n/TextDisplay
-       {:count (getCount)}]]))
+       (r/createElement (r/lazy (fn:> module.lazyView)))] 
+[:% n/TextDisplay
+       {:count (getCount)}])))
   
   (def.js MODULE (!:module)))

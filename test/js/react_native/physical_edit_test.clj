@@ -36,9 +36,9 @@
                                                                :useNativeDriver false})
                                                     (start)))})]
       (return
-       [:% n/Enclosed
-        {:label "js.react-native.physical-edit/createPan"}
-        [:% n/Row
+       (n/EnclosedCode 
+{:label "js.react-native.physical-edit/createPan"} 
+[:% n/Row
          [:% physical-base/Box
           #{[:indicators #{position}
              :style [{:justifyContent "center"
@@ -65,7 +65,7 @@
                       
                       responder.panHandlers)]]}]
          [:% physical-base/Tag
-          {:indicator position}]]]))))
+          {:indicator position}]])))))
 
 ^{:refer js.react-native.physical-edit/createPanVelocity
   :adopt true
@@ -102,9 +102,9 @@
         (return (fn []
                   (j/clearInterval interval))))
       (return
-       [:% n/Enclosed
-        {:label "js.react-native.physical-edit/createPanVelocity"}
-        [:% n/Row
+       (n/EnclosedCode 
+{:label "js.react-native.physical-edit/createPanVelocity"} 
+[:% n/Row
          [:% physical-base/Box
           {:indicators #{rotation}
            :style {:height 40
@@ -140,7 +140,7 @@
                       
                       responder.panHandlers)]]}]
          [:% physical-base/Tag
-          {:indicator position}]]]))))
+          {:indicator position}]])))))
 
 
 ^{:refer js.react-native.physical-edit/Progress
@@ -159,9 +159,9 @@
                                 {:pan {:dx position}
                                  :absolute true})))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.physical-edit/ProgressDemo"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.physical-edit/ProgressDemo"} 
+[:% n/Row
        [:% n/View
         [:% physical-base/Box
          {:indicators #{position
@@ -196,7 +196,7 @@
                         (return {:style {:width (* 2.2 v)}}))}}]}]}]]
        [:% n/Fill]
        [:% physical-base/Tag
-        {:indicator percentage}]]])))
+        {:indicator percentage}]]))))
 
 ^{:refer js.react-native.physical-edit/usePanTouchable :added "4.0"}
 (fact "creates a pan touchable responder for slider, picker and spinner"

@@ -44,9 +44,9 @@
                                                                :useNativeDriver false})
                                                     (start)))})]
       (return
-       [:% n/Enclosed
-        {:label "js.react-native.physical-dnd/DragAndDropDemo"}
-        [:% n/Row
+       (n/EnclosedCode 
+{:label "js.react-native.physical-dnd/DragAndDropDemo"} 
+[:% n/Row
          [:% physical-base/HoverableTarget
           {:indicators {:dragging idragging}
            :style [{:justifyContent "center"
@@ -108,7 +108,7 @@
                                
                                responder.panHandlers)]}]]}]
          [:% physical-base/Tag
-          {:indicator position}]]])))
+          {:indicator position}]]))))
   
   (def.js MODULE (!:module))
   

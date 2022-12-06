@@ -54,9 +54,9 @@
     (var #{fields} result)
     (var getCount (r/useGetCount))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ext-form-test/RegistrationForm"}
-      [:% n/View
+     (n/EnclosedCode 
+{:label "js.react-native.ext-form-test/RegistrationForm"} 
+[:% n/View
        {}
        [:% n/Row
         [:% n/TextInput
@@ -84,8 +84,8 @@
                   :padding 5
                   :backgroundColor "#eee"}}]
         [:% n/Text (:? (== "errored" (k/get-path fields ["email" "status"]))
-                       (k/get-path fields ["email" "message"]))]]]
-      [:% n/Row
+                       (k/get-path fields ["email" "message"]))]]] 
+[:% n/Row
        [:% n/Button
         {:title "Validate"
          :onPress (fn:> (event-form/validate-all form))}]
@@ -94,14 +94,14 @@
          :onPress (fn:> (event-form/reset-all-validators form))}]
        [:% n/Button
         {:title "Reset"
-         :onPress (fn:> (event-form/reset-all-data form))}]]
-      [:% n/Caption
+         :onPress (fn:> (event-form/reset-all-data form))}]] 
+[:% n/Caption
        {:text (n/format-entry #{fields
                                 {:count (getCount)
                                  :data #{first-name
                                          last-name
                                          email}}})
-        :style {:marginTop 10}}]]))
+        :style {:marginTop 10}}])))
   
 
   (def.js MODULE

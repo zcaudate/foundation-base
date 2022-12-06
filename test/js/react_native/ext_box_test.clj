@@ -30,9 +30,9 @@
     (var getCount (r/useGetCount))
     (var [value setValue] (ext-box/useBox box ["account"]))
     (return
-     [:% n/Enclosed
-      {:label "js.react.ext-box/useBox"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react.ext-box/useBox"} 
+[:% n/Row
        [:% n/TextInput
         {:value value
          :onChangeText setValue}]
@@ -58,12 +58,11 @@
                          ["account"]
                          (event-box/get-data
                           box
-                          ["account"])))}]]
-      
-      [:% n/TextDisplay
+                          ["account"])))}]] 
+[:% n/TextDisplay
        {:content (n/format-entry {:data (event-box/get-data box)
                                   :value value
-                                  :counter (getCount)})}]]))
+                                  :counter (getCount)})}])))
   
   (def.js MODULE (!:module))
   )

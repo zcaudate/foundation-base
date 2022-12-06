@@ -35,9 +35,9 @@
                         {:style {:padding 5}}
                         (k/js-encode entry)]))))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-autocomplete/AutocompleteModal"}
-      [:% n/Isolation
+     (n/EnclosedCode 
+{:label "js.react-native.ui-autocomplete/AutocompleteModal"} 
+[:% n/Isolation
        [:% n/View
         {:style {:width 300
                  :height 150}}
@@ -52,7 +52,7 @@
                      {:name "DEF"}
                      {:name "GHI"}]
            :visible true
-           component]}]]])))
+           component]}]]))))
 
 ^{:refer js.react-native.ui-autocomplete/Autocomplete :added "4.0"}
 (fact "creates the autocomplete"
@@ -90,9 +90,9 @@
                         {:style {:padding 5}}
                         (k/js-encode entry)]))))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-autocomplete/Autocomplete"}
-      [:% n/Isolation
+     (n/EnclosedCode 
+{:label "js.react-native.ui-autocomplete/Autocomplete"} 
+[:% n/Isolation
        [:% n/View
         {:style {:width 300
                  :height 150}}
@@ -109,6 +109,6 @@
            :hostRef inputRef
            :sourceView view
            :sourceInput [value]
-           :styleContainer {:backgroundColor "red"}]}]]]))
+           :styleContainer {:backgroundColor "red"}]}]])))
   
   (def.js MODULE (!:module)))

@@ -46,9 +46,9 @@
     (r/init []
       (ext-view/refresh-view view))
     (return
-     [:% n/Enclosed
-      {:label "js.react.ext-view/listenView"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react.ext-view/listenView"} 
+[:% n/Row
        [:% n/Button
         {:title "R"
          :onPress (fn:> (ext-view/refresh-args
@@ -65,10 +65,10 @@
        [:% n/Tabs
         {:data ["input" "output" "pending" "elapsed" "disabled" "success"]
          :value type
-         :setValue setType}]]
-      [:% -/ListenViewPane
+         :setValue setType}]] 
+[:% -/ListenViewPane
        #{view type
-         {:key type}}]])))
+         {:key type}}]))))
 
 
 ^{:refer js.react.ext-view/listenViewOutput :adopt true :added "4.0"}
@@ -100,9 +100,9 @@
     (r/init []
       (ext-view/refresh-view view))
     (return
-     [:% n/Enclosed
-      {:label "js.react.ext-view/listenViewOutput"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react.ext-view/listenViewOutput"} 
+[:% n/Row
        [:% n/Button
         {:title "R"
          :onPress (fn:> (ext-view/refresh-args
@@ -119,10 +119,10 @@
        [:% n/TabsMulti
         {:data ["input" "output" "pending" "elapsed" "disabled"]
          :values types
-         :setValues setTypes}]]
-      [:% -/ListenViewOutputPane
+         :setValues setTypes}]] 
+[:% -/ListenViewOutputPane
        #{view types
-         {:key types}}]])))
+         {:key types}}]))))
 
 
 ^{:refer js.react.ext-view/listenViewOutput.MULTI :adopt true :added "4.0"}
@@ -166,9 +166,9 @@
     (r/init []
       (ext-view/refresh-view view))
     (return
-     [:% n/Enclosed
-      {:label "js.react.ext-view/listenViewOutput.SYNC"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react.ext-view/listenViewOutput.SYNC"} 
+[:% n/Row
        [:% n/Button
         {:title "M"
          :onPress (fn:> (ext-view/refresh-args
@@ -201,10 +201,10 @@
        [:% n/TabsMulti
         {:data ["input" "output" "pending" "elapsed" "disabled"]
          :values types
-         :setValues setTypes}]]
-      [:% -/ListenViewOutputMultiPane
+         :setValues setTypes}]] 
+[:% -/ListenViewOutputMultiPane
        #{view types
-         {:key types}}]]))
+         {:key types}}])))
   
   (def.js MODULE (!:module)))
 

@@ -30,9 +30,9 @@
     (var [highlighted setHighlighted] (r/local false))
     (var [disabled setDisabled] (r/local false))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-slider/Slider"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-slider/Slider"} 
+[:% n/Row
        {:style {:alignItems "center"
                 :justifyContent "center"}}
        [:% n/Text
@@ -62,8 +62,8 @@
          :addons [(physical-addon/tagAll
                    {:style {:paddingHorizontal 20
                             :height 80
-                            :flex 1}})]}]]
-      [:% n/Row
+                            :flex 1}})]}]] 
+[:% n/Row
        [:% n/Button
         {:title "H"
          :onPress (fn:> (setHighlighted (not highlighted)))}]
@@ -72,7 +72,7 @@
         {:title "D"
          :onPress (fn:> (setDisabled (not disabled)))}]
        [:% n/Text
-        (n/format-entry #{first})]]]))
+        (n/format-entry #{first})]])))
 
   (defn.js SliderVDemo
     []
@@ -80,9 +80,9 @@
     (var [highlighted setHighlighted] (r/local false))
     (var [disabled setDisabled] (r/local false))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-slider/SliderV"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-slider/SliderV"} 
+[:% n/Row
        {:style {:alignItems "center"
                 :justifyContent "center"}}
        [:% n/Text
@@ -113,8 +113,8 @@
          :addons [(physical-addon/tagAll
                    {:style {:paddingHorizontal 20
                             :height 80
-                            :flex 1}})]}]]
-      [:% n/Row
+                            :flex 1}})]}]] 
+[:% n/Row
        [:% n/Button
         {:title "H"
          :onPress (fn:> (setHighlighted (not highlighted)))}]
@@ -123,7 +123,7 @@
         {:title "D"
          :onPress (fn:> (setDisabled (not disabled)))}]
        [:% n/Text
-        (n/format-entry #{first})]]]))
+        (n/format-entry #{first})]])))
   
   (def.js MODULE (!:module))
   

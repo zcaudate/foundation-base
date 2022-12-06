@@ -30,9 +30,9 @@
     (var [highlighted setHighlighted]   (r/local true))
     (var [disabled setDisabled]   (r/local false))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-check-box/CheckBoxSimple"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-check-box/CheckBoxSimple"} 
+[:% n/Row
        {:style {:alignItems "center"
                 #_#_:margin 3}}
        [:% n/Text
@@ -56,15 +56,15 @@
          :addons [(physical-addon/tagAll
                    {:style {:paddingHorizontal 20
                             :height 80
-                            :flex 1}})]}]]
-      [:% n/Row
+                            :flex 1}})]}]] 
+[:% n/Row
        [:% n/Button
         {:title "H"
          :onPress (fn:> (setHighlighted (not highlighted)))}]
        [:% n/Text " "]
        [:% n/Button
         {:title "D"
-         :onPress (fn:> (setDisabled (not disabled)))}]]])))
+         :onPress (fn:> (setDisabled (not disabled)))}]]))))
 
 ^{:refer js.react-native.ui-check-box/checkBoxTheme :added "4.0"}
 (fact "creates the checkbox theme")
@@ -80,9 +80,9 @@
     (var [highlighted setHighlighted] (r/local true))
     (var [errored setErrored] (r/local true))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-check-box/CheckBox"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-check-box/CheckBox"} 
+[:% n/Row
        {:style {:alignItems "center"
                 #_#_:margin 3}}
        [:% n/Text
@@ -127,7 +127,7 @@
          :selected errored
          :theme {:fgHighlighted "white"
                  :bgHighlighted "red"}
-         :outlined true}]]]))
+         :outlined true}]])))
 
   (def.js MODULE (!:module))
   

@@ -50,9 +50,9 @@
     (var modelFn (r/const (model-roller/roller-model -/DIVISIONS 10)))
     
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.physical-carosel/DigitCaroselManual"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.physical-carosel/DigitCaroselManual"} 
+[:% n/Row
        [:% n/View
         {:style {:flex 1
                  :height 200
@@ -113,8 +113,8 @@
                                 {:translateX (* 8
                                                 (k/sign translate)
                                                 translate translate)}
-                                #_{:translateY (* 0.5 (j/abs translate))}]}}))}]))]]
-      [:% n/Row
+                                #_{:translateY (* 0.5 (j/abs translate))}]}}))}]))]] 
+[:% n/Row
        
        [:% n/Button
         {:title "-1"
@@ -124,7 +124,7 @@
         {:title "+1"
          :onPress (fn:> (setOffset0 (+ offset0 1)))}]
        [:% n/Text " "]
-       [:% n/Fill]]]))
+       [:% n/Fill]])))
 
   (def.js MODULE (!:module))
   

@@ -29,9 +29,9 @@
     (var [highlighted setHighlighted] (r/local false))
     (var [disabled setDisabled] (r/local false))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-radio-box/RadioBoxSimple"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-radio-box/RadioBoxSimple"} 
+[:% n/Row
        {:style {:alignItems "center"}}
        [:% n/Text
         {:style {:width 80
@@ -56,15 +56,15 @@
          :addons [(physical-addon/tagAll
                    {:style {:paddingHorizontal 20
                             :height 80
-                            :flex 1}})]}]]
-      [:% n/Row
+                            :flex 1}})]}]] 
+[:% n/Row
        [:% n/Button
         {:title "H"
          :onPress (fn:> (setHighlighted (not highlighted)))}]
        [:% n/Text " "]
        [:% n/Button
         {:title "D"
-         :onPress (fn:> (setDisabled (not disabled)))}]]])))
+         :onPress (fn:> (setDisabled (not disabled)))}]]))))
 
 ^{:refer js.react-native.ui-radio-box/radioBoxTheme :added "4.0"}
 (fact "creates a radio box theme")
@@ -80,9 +80,9 @@
     (var [highlighted setHighlighted] (r/local true))
     (var [errored setErrored] (r/local true))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-radio-box/RadioBox"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-radio-box/RadioBox"} 
+[:% n/Row
        {:style {:alignItems "center"
                 #_#_:margin 3}}
        [:% n/Text
@@ -128,10 +128,9 @@
          :setSelected setErrored
          :selected errored
          :theme {:fgHighlighted "white"
-                 :bgHighlighted "red"}}]]
-      [:% n/Padding {:style {:height 10}}]
-      
-      [:% n/Row
+                 :bgHighlighted "red"}}]] 
+[:% n/Padding {:style {:height 10}}] 
+[:% n/Row
        {:style {:alignItems "center"
                 #_#_:margin 3}}
        [:% n/Text
@@ -163,7 +162,7 @@
                       :borderStyle "solid"
                       :borderRadius 3}
          :innerStyle {:borderRadius 0}
-         :sizeInner 12}]]]))
+         :sizeInner 12}]])))
 
   (def.js MODULE (!:module))
   

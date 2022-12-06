@@ -36,9 +36,9 @@
     (var [highlighted setHighlighted] (r/local false))
     (var [disabled setDisabled] (r/local false))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-swiper/Swiper"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-swiper/Swiper"} 
+[:% n/Row
        #_{:style {:alignItems "center"
                 :justifyContent "center"}}
        [:% n/Text
@@ -78,8 +78,8 @@
                    {:style {:paddingHorizontal 20
                             :height 300
                             :width 200
-                            :flex 1}})]}]]
-      [:% n/Row
+                            :flex 1}})]}]] 
+[:% n/Row
        [:% n/Button
         {:title "+1"
          :onPress (fn:> (setFirst (+ first 1)))}]
@@ -94,7 +94,7 @@
         {:title "D"
          :onPress (fn:> (setDisabled (not disabled)))}]
        [:% n/Text
-        (n/format-entry #{first disabled highlighted})]]]))
+        (n/format-entry #{first disabled highlighted})]])))
   
   (def.js MODULE (!:module))
   

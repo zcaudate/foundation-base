@@ -30,9 +30,9 @@
     (var [value setValue] (ext-route/useRouteSegment route ["account"]))
     (var getCount (r/useGetCount))
     (return
-     [:% n/Enclosed
-      {:label "js.react.ext-route/useRouteSegment"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react.ext-route/useRouteSegment"} 
+[:% n/Row
        [:% n/TextInput
         {:value value
          :onChangeText setValue}]
@@ -56,13 +56,12 @@
          :onPress (fn:> (event-route/set-path
                          route ["account"]))}]
        [:% n/Text " "]
-       ]
-      
-      [:% n/TextDisplay
+       ] 
+[:% n/TextDisplay
        {:content (n/format-entry {:url url
                                   :tree tree
                                   :value value
-                                  :count (getCount)})}]]))
+                                  :count (getCount)})}])))
 
   (def.js MODULE (!:module))
   )

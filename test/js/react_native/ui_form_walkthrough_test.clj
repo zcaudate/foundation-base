@@ -227,9 +227,9 @@
            (setPassword "")
            (setStep 0)))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-form-walkthrough-test/LoginFormWalkthroughCarosel"}
-      [:% n/View
+     (n/EnclosedCode 
+{:label "js.react-native.ui-form-walkthrough-test/LoginFormWalkthroughCarosel"} 
+[:% n/View
        {:style {:justifyContent "center"
                 :alignItems "center"}}
        [:% n/View
@@ -254,21 +254,21 @@
             :else
             [:% -/LoginFormReset
              #{[:onSubmit submitReset
-                (:.. form)]}])]]
-      [:% n/Row
+                (:.. form)]}])]] 
+[:% n/Row
        [:% n/Button
         {:title "WAITING"
          :onPress (fn:> (setWaiting (not waiting)))}]
        [:% n/Text " "]
        [:% n/Button
         {:title "STEP"
-         :onPress (fn:> (setStep (mod (+ 1 step) 3)))}]]
-      [:% n/Caption
+         :onPress (fn:> (setStep (mod (+ 1 step) 3)))}]] 
+[:% n/Caption
        {:text (n/format-entry #{login
                                 step
                                 waiting
                                 password})
-        :style {:marginTop 10}}]])))
+        :style {:marginTop 10}}]))))
 
 
 
@@ -331,9 +331,9 @@
                      :transform
                      [{:translateX (* -30 translate)}]}})))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-form-walkthrough-test/LoginFormStepper"}
-      [:% n/View
+     (n/EnclosedCode 
+{:label "js.react-native.ui-form-walkthrough-test/LoginFormStepper"} 
+[:% n/View
        {:style {:justifyContent "center"
                 :alignItems "center"}}
        [:% n/View
@@ -387,21 +387,21 @@
                           (:.. form)]}]]
            :transformations
            {:offset (fn [offset]
-                      (return (offsetFn offset 2)))}}]]]]
-      [:% n/Row
+                      (return (offsetFn offset 2)))}}]]]] 
+[:% n/Row
        [:% n/Button
         {:title "WAITING"
          :onPress (fn:> (setWaiting (not waiting)))}]
        [:% n/Text " "]
        [:% n/Button
         {:title "STEP"
-         :onPress (fn:> (setStep (mod (+ step 1) 3)))}]]
-      [:% n/Caption
+         :onPress (fn:> (setStep (mod (+ step 1) 3)))}]] 
+[:% n/Caption
        {:text (n/format-entry #{login
                                 step
                                 waiting
                                 password})
-        :style {:marginTop 10}}]]))
+        :style {:marginTop 10}}])))
   
 
   (def.js MODULE

@@ -32,9 +32,9 @@
     []
     (var modelFn (model-roller/roller-model 10 30))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.physical-play/DigitRollerStatic"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.physical-play/DigitRollerStatic"} 
+[:% n/Row
        [:% n/View
         {:style {:height 80
                  :width 80}}
@@ -57,7 +57,7 @@
                                             {:translateX (* 0.15 (j/abs translate))}
                                             {:scaleY scale}]}}
                         date]]))))]
-       [:% n/Fill]]])))
+       [:% n/Fill]]))))
 
 ^{:refer js.react-native.physical-play/DigitRoller
   :adopt true
@@ -144,9 +144,9 @@
   
     (var HOURS_ARRAY (r/const (-/make-values -/HOURS -/DIVISIONS)))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.physical-play/DigitRollerSingle"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.physical-play/DigitRollerSingle"} 
+[:% n/Row
        [:% physical-base/Box
         {:indicators {:offset0 offset0} 
          :style {:height 80
@@ -170,7 +170,7 @@
          {:title "-1"
           :onPress (fn:> (setPosition0 (- position0 1)))}]
         ]
-       [:% n/Fill]]]))
+       [:% n/Fill]])))
 
   (defn.js doubleTransform
     [offset i modelFn]
@@ -206,9 +206,9 @@
     (r/watch [position0]
       (setPosition1 (j/floor (/ position0 10))))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.physical-play/DigitRollerDouble"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.physical-play/DigitRollerDouble"} 
+[:% n/Row
        [:% physical-base/Box
         {:indicators {:offset0 offset0
                       :offset1 offset1} 
@@ -243,7 +243,7 @@
          {:title "-1"
           :onPress (fn:> (setPosition0 (- position0 1)))}]
         ]
-       [:% n/Fill]]])))
+       [:% n/Fill]]))))
 
 ^{:refer js.react-native.physical-play/DigitClock
   :adopt true
@@ -318,9 +318,9 @@
     (r/watch [minutes0]
       (setMinutes1 (j/floor (/ seconds0 600))))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.physical-play/DigitClock"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.physical-play/DigitClock"} 
+[:% n/Row
        [:% n/View
         [:% physical-base/Box
          {:indicators {:minutes1 iminutes1} 
@@ -390,14 +390,13 @@
                                                     {:top 10
                                                      :left 2}
                                                     -/CLOCK_DIVISIONS
-                                                    DIGITS_ARRAY))))]}]]]
-      [:% n/View
+                                                    DIGITS_ARRAY))))]}]]] 
+[:% n/View
        [:% n/Button
         {:title "CLOCK"
-         :onPress (fn:> (setActive (not active)))}]]
-      [:% n/Text seconds0]
-       
-      [:% n/Fill]]))
+         :onPress (fn:> (setActive (not active)))}]] 
+[:% n/Text seconds0] 
+[:% n/Fill])))
 
   (def.js MODULE (!:module))
   

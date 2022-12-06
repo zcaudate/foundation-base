@@ -27,15 +27,15 @@
     []
     (var [text setText] (r/local "."))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-spinner/SpinnerStatic"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-spinner/SpinnerStatic"} 
+[:% n/Row
        [:% n/Row
         {:style {:backgroundColor "#eee"
                  :flex 1
                  :padding 10}}
         [:% ui-spinner/SpinnerStatic
-         #{text}]]]])))
+         #{text}]]]))))
 
 ^{:refer js.react-native.ui-spinner/SpinnerDigit :added "4.0"}
 (fact  "creates the spinner digit"
@@ -45,9 +45,9 @@
     []
     (var [index setIndex] (r/local 5))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-spinner/SpinnerDigit"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-spinner/SpinnerDigit"} 
+[:% n/Row
        [:% n/Row
         {:style {:backgroundColor "#eee"
                  :flex 1
@@ -60,7 +60,7 @@
           :onPress (fn:> (setIndex (+ index 1)))}]
         [:% n/Button
          {:title "-1"
-          :onPress (fn:> (setIndex (- index 1)))}]]]])))
+          :onPress (fn:> (setIndex (- index 1)))}]]]))))
 
 ^{:refer js.react-native.ui-spinner/SpinnerValues :added "4.0"}
 (fact "creates the spinner values"
@@ -71,9 +71,9 @@
     (var [value setValue] (r/local 155))
     (var [max min step decimal] [100 0 1 2])
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-spinner/SpinnerValues"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-spinner/SpinnerValues"} 
+[:% n/Row
        [:% n/Row
         {:style {:backgroundColor "#eee"
                  :flex 1
@@ -86,7 +86,7 @@
           :onPress (fn:> (setValue (+ value 1)))}]
         [:% n/Button
          {:title "-1"
-          :onPress (fn:> (setValue (- value 1)))}]]]])))
+          :onPress (fn:> (setValue (- value 1)))}]]]))))
 
 ^{:refer js.react-native.ui-spinner/useSpinnerPosition :added "4.0"}
 (fact "helper function to connect spinner position")
@@ -100,9 +100,9 @@
     (var [value setValue] (r/local 155))
     (var [max min step decimal] [100 0 1 2])
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-spinner/Spinner"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-spinner/Spinner"} 
+[:% n/Row
        [:% n/Row
         {:style {:backgroundColor "#eee"
                  :flex 1
@@ -115,7 +115,7 @@
           :onPress (fn:> (setValue (+ value 1)))}]
         [:% n/Button
          {:title "-1"
-          :onPress (fn:> (setValue (- value 1)))}]]]]))
+          :onPress (fn:> (setValue (- value 1)))}]]])))
   
   (def.js MODULE (!:module))
   

@@ -28,9 +28,9 @@
     []
     (var [visible setVisible] (r/local true))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-frame/FramePane"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-frame/FramePane"} 
+[:% n/Row
        {:style {:paddingBottom 10}}
        [:% n/Button
         {:title "T"
@@ -41,11 +41,10 @@
          :fade false}
         [:% n/Text {:style {:backgroundColor "red"
                             :width 100}}
-         "HELLO"]]]
-      
-      [:% n/Caption
+         "HELLO"]]] 
+[:% n/Caption
        {:text (n/format-obj #{visible})
-        :style {:marginTop 10}}]])))
+        :style {:marginTop 10}}]))))
 
 ^{:refer js.react-native.ui-frame/Frame :added "4.0"}
 (fact "creates a Frame"
@@ -58,10 +57,10 @@
     (var [rightVisible setRightVisible] (r/local true))
     (var [leftVisible setLeftVisible] (r/local true))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-frame/Frame"
-       :style {:height 350}}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-frame/Frame"
+       :style {:height 350}} 
+[:% n/Row
        {:style {:paddingBottom 10}}
        [:% n/Button
         {:title "T"
@@ -77,8 +76,8 @@
        [:% n/Text " "]
        [:% n/Button
         {:title "R"
-         :onPress (fn:> (setRightVisible (not rightVisible)))}]]
-      [:% ui-frame/Frame
+         :onPress (fn:> (setRightVisible (not rightVisible)))}]] 
+[:% ui-frame/Frame
        #{[topVisible
           bottomVisible
           leftVisible
@@ -111,14 +110,14 @@
                      :easing a/linear}}]}
        [:% n/View
         {:style {:padding 10}}
-        [:% n/Text "BODY"]]]
-      [:% n/TextDisplay
+        [:% n/Text "BODY"]]] 
+[:% n/TextDisplay
        {:style {:flex nil
                 :height 80}
         :content (n/format-entry #{topVisible
                                    bottomVisible
                                    leftVisible
-                                   rightVisible})}]]))
+                                   rightVisible})}])))
   
   (def.js MODULE (!:module))
   

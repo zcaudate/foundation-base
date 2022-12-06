@@ -26,9 +26,9 @@
     []
     (var [active setActive] (r/local true))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-button/ButtonOpacity"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-button/ButtonOpacity"} 
+[:% n/Row
        {:style {:alignItems "center"
                 :backgroundColor "yellow"
                 :height 100}}
@@ -55,10 +55,10 @@
                             :flex 1}})]
          :transformations
          {:bg (fn:> [#{pressing}]
-                {:style {:opacity (- 1 (* 0.8 pressing))}})}}]]
-      [:% n/Caption
+                {:style {:opacity (- 1 (* 0.8 pressing))}})}}]] 
+[:% n/Caption
        {:text (n/format-obj #{active})
-        :style {:marginTop 10}}]])))
+        :style {:marginTop 10}}]))))
 
 ^{:refer js.react-native.ui-button-test/ButtonSize
   :adopt true
@@ -70,9 +70,9 @@
     []
     (var [active setActive] (r/local true))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-button/ButtonSize"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-button/ButtonSize"} 
+[:% n/Row
        {:style {:alignItems "center"}}
        [:% n/Text
         {:style {:width 80
@@ -100,10 +100,10 @@
          :transformations
          {:bg (fn:> [#{pressing}]
                 {:style {:transform [{:scaleY (+ 1 pressing)}
-                                     {:scaleX (+ 1 pressing)}]}})}}]]
-      [:% n/Caption
+                                     {:scaleX (+ 1 pressing)}]}})}}]] 
+[:% n/Caption
        {:text (n/format-obj #{active})
-        :style {:marginTop 10}}]])))
+        :style {:marginTop 10}}]))))
 
 ^{:refer js.react-native.ui-button/ButtonFraction
   :adopt true
@@ -115,9 +115,9 @@
     []
     (var [active setActive] (r/local true))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-button/ButtonFraction"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-button/ButtonFraction"} 
+[:% n/Row
        {:style {:alignItems "center"}}
        [:% n/Text
         {:style {:width 80
@@ -142,10 +142,10 @@
                    {:style {:paddingHorizontal 20
                             :height 80
                             :flex 1}})]}]
-       [:% n/Padding {:style {:width 10}}]]
-      [:% n/Caption
+       [:% n/Padding {:style {:width 10}}]] 
+[:% n/Caption
        {:text (n/format-obj #{active})
-        :style {:marginTop 10}}]])))
+        :style {:marginTop 10}}]))))
 
 ^{:refer js.react-native.ui-button/buttonTheme :added "4.0"}
 (fact "creates the botton theme")
@@ -160,9 +160,9 @@
     (var [highlighted setHighlighted]   (r/local false))
     (var [disabled setDisabled]   (r/local false))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-button/ButtonSimple"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-button/ButtonSimple"} 
+[:% n/Row
        {:style {:alignItems "center"}}
        [:% n/Text
         {:style {:width 80
@@ -185,18 +185,18 @@
          :addons [(physical-addon/tagAll
                    {:style {:paddingHorizontal 20
                             :height 80
-                            :flex 1}})]}]]
-      [:% n/Row
+                            :flex 1}})]}]] 
+[:% n/Row
        [:% n/Button
         {:title "H"
          :onPress (fn:> (setHighlighted (not highlighted)))}]
        [:% n/Text " "]
        [:% n/Button
         {:title "D"
-         :onPress (fn:> (setDisabled (not disabled)))}]]
-      [:% n/Caption
+         :onPress (fn:> (setDisabled (not disabled)))}]] 
+[:% n/Caption
        {:text (n/format-obj #{active})
-        :style {:marginTop 10}}]]))
+        :style {:marginTop 10}}])))
 
   
   (def.js MODULE (!:module))

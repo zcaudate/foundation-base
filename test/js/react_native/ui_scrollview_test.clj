@@ -25,13 +25,13 @@
   (defn.js ScrollViewDemo
     []
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-scrollview/ScrollView"}
-      [:% ui-scrollview/ScrollView
+     (n/EnclosedCode 
+{:label "js.react-native.ui-scrollview/ScrollView"} 
+[:% ui-scrollview/ScrollView
        {:style {:height 300
                 :width 400}}
        [:% n/View
         {:style {:height 500
-                 :backgroundColor "yellow"}}]]]))
+                 :backgroundColor "yellow"}}]])))
   
   (def.js MODULE (!:module)))

@@ -43,14 +43,13 @@
     (r/init []
       (setVisible false))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-modal/Modal"}
-      
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-modal/Modal"} 
+[:% n/Row
        [:% n/Button
         {:title "T"
-         :onPress (fn:> (setVisible true))}]]
-      [:% n/Tabs
+         :onPress (fn:> (setVisible true))}]] 
+[:% n/Tabs
        {:data ["centered"
                "top"
                "left"
@@ -61,15 +60,15 @@
                "bottom_right"
                "bottom_left"]
         :value position
-        :setValue setPosition}]
-      [:% n/Tabs
+        :setValue setPosition}] 
+[:% n/Tabs
        {:data ["from_top"
                "from_bottom"
                "from_left"
                "from_right"]
         :value transition
-        :setValue setTransition}]
-      [:% ui-modal/Modal
+        :setValue setTransition}] 
+[:% ui-modal/Modal
        {:visible visible
         :position position
         :transition transition
@@ -81,9 +80,9 @@
         [:% n/Text
          {:style {:flex 1
                   :backgroundColor "yellow"}}
-         "HELLO"]]]
-      [:% n/Caption
+         "HELLO"]]] 
+[:% n/Caption
        {:text (n/format-obj #{visible})
-        :style {:marginTop 10}}]]))
+        :style {:marginTop 10}}])))
   
   (def.js MODULE (!:module)))

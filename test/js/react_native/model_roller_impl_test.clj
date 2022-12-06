@@ -56,9 +56,9 @@
        offset0
        (k/len -/DIGITS)))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.model-roller/DigitRollerManual"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.model-roller/DigitRollerManual"} 
+[:% n/Row
        [:% n/View
         {:style {:height 80
                  :width 80
@@ -100,7 +100,7 @@
          {:title "+1"
           :onPress (fn:> (setOffset0 (+ offset0 1)))}]]
        [:% n/Text offset0]
-       [:% n/Fill]]])))
+       [:% n/Fill]]))))
 
 ^{:refer js.react-native.model-roller/DigitRollerPan
   :adopt true
@@ -195,9 +195,9 @@
     (r/watch [position0]
       (setPosition1 (j/floor (/ position0 10))))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.model-roller/DigitRollerPan"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.model-roller/DigitRollerPan"} 
+[:% n/Row
        [:% physical-base/Box
         {:indicators {:offset0 offset0
                       :offset1 offset1} 
@@ -248,7 +248,7 @@
        [:% n/Fill]
        [:% physical-base/Tag
         {:indicator position}]
-       ]]))
+       ])))
   
   (def.js MODULE (!:module))
   
@@ -278,9 +278,9 @@
         (return (fn []
                   (j/clearInterval interval))))
       (return
-       [:% n/Enclosed
-        {:label "js.react-native.physical-edit/createPanVelocity"}
-        [:% n/Row
+       (n/EnclosedCode 
+{:label "js.react-native.physical-edit/createPanVelocity"} 
+[:% n/Row
          [:% physical-base/Box
           {:indicators #{rotation}
            :style {:height 40
@@ -316,5 +316,5 @@
                       
                       responder.panHandlers)]]}]
          [:% physical-base/Tag
-          {:indicator position}]]])))
+          {:indicator position}]]))))
   )

@@ -42,9 +42,9 @@
     (var [password  setPassword]  (r/local "" #_"World"))
     (var refLink (r/ref))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-form-basic-test/LoginForm"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-form-basic-test/LoginForm"} 
+[:% n/Row
        [:% ui-input/Input
         {:refLink refLink
          :selectionColor "white"
@@ -90,10 +90,10 @@
                           focusing}]
                      (var active (j/min (- 1 emptying)
                                         focusing))
-                     (return {:style {:opacity active}}))}]}]]
-      [:% n/Caption
+                     (return {:style {:opacity active}}))}]}]] 
+[:% n/Caption
        {:text (n/format-entry #{login})
-        :style {:marginTop 10}}]])))
+        :style {:marginTop 10}}]))))
 
 
 ^{:refer js.react-native.ui-form-basic/LoginFormTop
@@ -113,9 +113,9 @@
     (var [login  setLogin]  (r/local "" #_"World"))
     (var refLink (r/ref))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-form-basic-test/LoginFormTop"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-form-basic-test/LoginFormTop"} 
+[:% n/Row
        {:style {:paddingTop 20}}
        [:% ui-input/Input
         {
@@ -152,11 +152,10 @@
                                                        (- 1 emptying)))
                                       :transform
                                       (-/toTop (- 1 emptying)
-                                               #_active)}}))}]}]]
-      
-      [:% n/Caption
+                                               #_active)}}))}]}]] 
+[:% n/Caption
        {:text (n/format-entry #{login})
-        :style {:marginTop 10}}]])))
+        :style {:marginTop 10}}]))))
 
 ^{:refer js.react-native.ui-form-basic/PasswordForm
   :adopt true
@@ -169,9 +168,9 @@
     (var [password setPassword] (r/local "oeu"))
     (var refLink (r/ref))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-form-basic-test/PasswordForm"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-form-basic-test/PasswordForm"} 
+[:% n/Row
        [:% ui-input/Input
         {:refLink refLink
          :selectionColor "white"
@@ -217,10 +216,10 @@
                           focusing}]
                      (var active (j/min (- 1 emptying)
                                         focusing))
-                     (return {:style {:opacity active}}))}]}]]
-      [:% n/Caption
+                     (return {:style {:opacity active}}))}]}]] 
+[:% n/Caption
        {:text (n/format-entry #{password})
-        :style {:marginTop 10}}]]))
+        :style {:marginTop 10}}])))
 
   (def.js MODULE (!:module))
   

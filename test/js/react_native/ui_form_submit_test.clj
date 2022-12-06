@@ -192,9 +192,9 @@
            waiting setWaiting
            done setDone} form)
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-form-submit-test/FavoriteForm"}
-      [:% n/View
+     (n/EnclosedCode 
+{:label "js.react-native.ui-form-submit-test/FavoriteForm"} 
+[:% n/View
        {:style {:justifyContent "center"
                 :alignItems "center"}}
        [:% n/View
@@ -208,20 +208,20 @@
             [[:% -/FaroriteFormReset
               #{[(:.. form)]}]
              [:% -/FavoriteForm
-              #{[(:.. form)]}]])]]
-      [:% n/Row
+              #{[(:.. form)]}]])]] 
+[:% n/Row
        [:% n/Button
         {:title "WAITING"
          :onPress (fn:> (setWaiting (not waiting)))}]
        [:% n/Text " "]
        [:% n/Button
         {:title "DONE"
-         :onPress (fn:> (setDone (not done)))}]]
-      [:% n/Caption
+         :onPress (fn:> (setDone (not done)))}]] 
+[:% n/Caption
        {:text (n/format-entry #{favorite
                                 waiting
                                 expected})
-        :style {:marginTop 10}}]]))
+        :style {:marginTop 10}}])))
   
   (def.js MODULE (!:module))
   

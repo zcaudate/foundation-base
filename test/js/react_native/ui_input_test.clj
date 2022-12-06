@@ -29,9 +29,9 @@
     (var [highlighted setHighlighted] (r/local false))
     (var [disabled setDisabled] (r/local false))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-input/InputSimple"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-input/InputSimple"} 
+[:% n/Row
        {:style {:alignItems "center"
                 :justifyContent "center"
                 :height 40}}
@@ -53,15 +53,15 @@
          :addons [(physical-addon/tagAll
                    {:style {:paddingHorizontal 20
                             :height 80
-                            :flex 1}})]}]]
-      [:% n/Row
+                            :flex 1}})]}]] 
+[:% n/Row
        [:% n/Button
         {:title "H"
          :onPress (fn:> (setHighlighted (not highlighted)))}]
        [:% n/Text " "]
        [:% n/Button
         {:title "D"
-         :onPress (fn:> (setDisabled (not disabled)))}]]])))
+         :onPress (fn:> (setDisabled (not disabled)))}]]))))
 
 ^{:refer js.react-native.ui-input/inputTheme :added "4.0"}
 (fact "creates the input theme")
@@ -75,9 +75,9 @@
     (var [first setFirst] (r/local "Hello"))
     (var [last  setLast]  (r/local "World"))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-core/TextInput"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-core/TextInput"} 
+[:% n/Row
        {:style {:alignItems "center"
                 :justifyContent "center"
                 :height 40}}
@@ -93,9 +93,8 @@
          :value first
          :onChangeText setFirst
          :style {:flex 1}
-         :styleContainer {:flex 1}}]]
-
-      [:% n/Row
+         :styleContainer {:flex 1}}]] 
+[:% n/Row
        {:style {:alignItems "center"
                 :justifyContent "center"
                 :height 40}}
@@ -111,10 +110,10 @@
          :value last
          :onChangeText setLast
          :style {:flex 1}
-         :styleContainer {:flex 1}}]]
-      [:% n/Caption
+         :styleContainer {:flex 1}}]] 
+[:% n/Caption
        {:text (n/format-obj #{first last})
-        :style {:marginTop 10}}]]))
+        :style {:marginTop 10}}])))
 
   (def.js MODULE (!:module))
   

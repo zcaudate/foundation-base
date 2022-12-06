@@ -34,9 +34,9 @@
     (var [highlighted setHighlighted] (r/local false))
     (var [disabled setDisabled] (r/local false))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-range/Range"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-range/Range"} 
+[:% n/Row
        {:style {:alignItems "center"
                 :justifyContent "center"}}
        [:% n/Text
@@ -67,8 +67,8 @@
                      {:style {:paddingHorizontal 20
                               :height 250
                               :width 300
-                              :flex 1}})]}}]]
-      [:% n/Row
+                              :flex 1}})]}}]] 
+[:% n/Row
        [:% n/Button
         {:title "H"
          :onPress (fn:> (setHighlighted (not highlighted)))}]
@@ -77,7 +77,7 @@
         {:title "D"
          :onPress (fn:> (setDisabled (not disabled)))}]
        [:% n/Text
-        (n/format-entry #{lower upper})]]]))
+        (n/format-entry #{lower upper})]])))
 
   (defn.js RangeVDemo
     []
@@ -86,9 +86,9 @@
     (var [highlighted setHighlighted] (r/local false))
     (var [disabled setDisabled] (r/local false))
     (return
-     [:% n/Enclosed
-      {:label "js.react-native.ui-range/RangeV"}
-      [:% n/Row
+     (n/EnclosedCode 
+{:label "js.react-native.ui-range/RangeV"} 
+[:% n/Row
        {:style {:alignItems "center"
                 :justifyContent "center"}}
        [:% n/Text
@@ -119,8 +119,8 @@
                      {:style {:paddingHorizontal 20
                               :height 250
                               :width 300
-                              :flex 1}})]}}]]
-      [:% n/Row
+                              :flex 1}})]}}]] 
+[:% n/Row
        [:% n/Button
         {:title "H"
          :onPress (fn:> (setHighlighted (not highlighted)))}]
@@ -129,7 +129,7 @@
         {:title "D"
          :onPress (fn:> (setDisabled (not disabled)))}]
        [:% n/Text
-        (n/format-entry #{lower upper})]]]))
+        (n/format-entry #{lower upper})]])))
   
   (def.js MODULE (!:module))
   

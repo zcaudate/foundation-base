@@ -34,7 +34,7 @@
  
    (common/set-accessible (.getDeclaredMethod String \"charAt\"
                                               (doto ^\"[Ljava.lang.Class;\"
-                                              (make-array Class 1)
+                                                (make-array Class 1)
                                                 (aset 0 Integer/TYPE)))
                           true)"
   {:added "3.0"}

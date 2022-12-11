@@ -1,5 +1,5 @@
 (ns std.lib.foundation
-  (:require [clojure.set])
+  (:require [clojure.set :as set])
   (:import (hara.lib.foundation Clock Flake Counter)
            (java.util Date))
   (:refer-clojure :exclude [-> ->> keyword reset! aget set! assert
@@ -407,9 +407,7 @@
    (var-sym #'var-sym)
    => 'std.lib.foundation/var-sym"
   {:added "3.0"}
-  ([^clojure.lang.Var var]
-   (symbol (str (.getName (.ns var)))
-           (str (.sym var)))))
+  ([^clojure.lang.Var var] (symbol var)))
 
 (defn unbound?
   "checks if a variable is unbound
@@ -845,7 +843,7 @@
        (mapv (fn [e]
                (try (tmpl-fn e)
                     (catch Throwable t
-                      (eval (list 'std.lib/prn (list 'quote e)))
+                      ((requiring-resolve 'std.lib/prn) e)
                       (throw t))))
              entries)))))
 
@@ -863,15 +861,14 @@
   "ensures that the templated entries are the same as the input"
   {:added "4.0"}
   [syms vars]
-  (let [diff (clojure.set/difference (set (map (fn [[sym _]]
+  (let [diff (set/difference (set (map (fn [[sym _]]
                                                  (symbol (str (.getName *ns*))
                                                          (name sym)))
                                                syms))
                                      (set (map var-sym vars)))]
     (when (not-empty diff)
-      (eval (list 'do
-                  (list 'std.lib/beep)
-                  (list 'std.lib/prn diff))))
+      ((requiring-resolve 'std.lib/beep))
+      ((requiring-resolve 'std.lib/prn) diff))
     vars))
 
 (deftype Wrapped [val show type]

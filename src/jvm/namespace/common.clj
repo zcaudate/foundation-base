@@ -50,7 +50,7 @@
    => nil
  
    ;; error if a new namespace is set to the same alias
-   (require '[clojure.set :as string])
+   (require '[clojure.string :as str])
    => (throws) ;;  Alias string already exists in namespace
  
    ;; clearing all aliases
@@ -60,7 +60,7 @@
    => {}
  
    ;; okay to require
-   (require '[clojure.set :as string])
+   (require '[clojure.string :as str])
    => nil"
   {:added "3.0"}
   ([ns]

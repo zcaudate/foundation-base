@@ -2,9 +2,11 @@
 
 A Clojure library designed to ... well, that part is up to you.
 
-## Usage
+## Setup
 
-FIXME
+- Requires Java 11.
+- [ganache](https://github.com/trufflesuite/ganache)
+  - `npm install ganache --global`
 
 ## License
 

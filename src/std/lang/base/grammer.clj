@@ -24,7 +24,7 @@
                   [k (symbol shortcut (name (h/var-sym var)))]))))
 
 (defn collect-ops
-  "collects alll ops together
+  "collects all ops together
  
    (collect-ops +op-all+)
    => map?"

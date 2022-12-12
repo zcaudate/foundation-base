@@ -91,7 +91,8 @@
    => '[(def a 1) (def b 2)]"
   {:added "3.0"}
   ([m]
-   (map (fn [[id value]]
+   (map (fn [[id value :as e]]
+          (assert (= 2 (count e)) (str "Bad `:let`: " (:let m)))
           (list 'def (with-meta id {:dynamic true})
                 value))
         (concat (map (juxt identity fact-use-setup-eval) (:use m))
@@ -144,10 +145,10 @@
    (let [replace (->> (concat (:let m))
                       (apply hash-map)
                       (merge (:replace m)))]
-     `(fn [~'thunk]
+     `(fn [thunk#]
         (fn []
           (binding [rt/*eval-replace* (quote ~replace)]
-            (~'thunk)))))))
+            (thunk#)))))))
 
 (defn fact-wrap-ceremony
   "creates the setup/teardown wrapper
@@ -156,13 +157,13 @@
                          :teardown (prn \"goodbye\")})"
   {:added "3.0"}
   ([{:keys [setup teardown guard] :as m}]
-   `(fn [~'thunk]
+   `(fn [thunk#]
       (fn []
-        (let [~'_ ~(if setup setup)
-              ~'out (~'thunk)
-              ~'_ ~(if teardown teardown)
-              ~'_ (do ~@(map fact-use-teardown (reverse (:use m))))]
-          ~'out)))))
+        (let [_# ~setup
+              out# (thunk#)
+              _# ~teardown
+              _# (do ~@(map fact-use-teardown (reverse (:use m))))]
+          out#)))))
 
 (defn fact-wrap-bindings
   "creates a wrapper for bindings
@@ -170,18 +171,19 @@
    (fact-wrap-bindings '{:let [a 1 b (+ a 1)]})"
   {:added "3.0"}
   ([m]
-   `(fn [~'thunk]
-      (fn []
-        ~(wrap-bindings `(~'thunk)
-                        (concat (mapcat (juxt identity fact-use-setup) (:use m))
-                                (:let m)))))))
+   (let [gthunk (gensym 'thunk)]
+     `(fn [~gthunk]
+        (fn []
+          ~(wrap-bindings `(~gthunk)
+                          (concat (mapcat (juxt identity fact-use-setup) (:use m))
+                                  (:let m))))))))
 
 (defn fact-wrap-check
   "creates a wrapper for before and after arrows"
   {:added "3.0"}
   ([{:keys [check guard] :as m}]
    (let [{:keys [before after]} check]
-     `(fn [~'thunk]
+     `(fn [thunk#]
         (fn []
           (binding [rt/*eval-check* {:guard  ~guard
                                      :before (fn []
@@ -190,7 +192,7 @@
                                      :after  (fn []
                                                ~@(vecify after)
                                                ~@(mapcat #(fact-use % [:check :after]) (:use m)))}]
-            (~'thunk)))))))
+            (thunk#)))))))
 
 (defn fact-slim
   "creates the slim thunk

@@ -227,9 +227,10 @@
   (h/prewalk (fn [form]
                (cond (and (h/form? form)
                           (symbol? (first form))
-                          (resolve (first form))
-                          (= (h/var-sym (resolve (first form)))
-                             `async-post))
+                          (let [v (resolve (first form))]
+                            (when (var? v)
+                              (= (h/var-sym v)
+                                 `async-post))))
                      (list 'postMessage
                            {:op "eval"
                             :id id
@@ -237,9 +238,10 @@
                             :body (list 'JSON.stringify {:type "data"
                                                          :value (second form)})})
                      (and (symbol? form)
-                          (resolve form)
-                          (= (h/var-sym (resolve form))
-                             `async-post))
+                          (let [v (resolve form)]
+                            (when (var? v)
+                              (= (h/var-sym v)
+                                 `async-post))))
                      (list 'fn '[value]
                            (list 'postMessage
                                  {:op "eval"
@@ -249,7 +251,7 @@
                                                                :value 'value})}))
                      
                      :else form))
-             body))  
+             body))
 
 (defmacro.js ^{:style/indent 1}
   post-eval

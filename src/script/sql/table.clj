@@ -11,12 +11,16 @@
   {:added "4.0"}
   ([fsym var]
    (let [{:keys [arglists]} (meta var)
-         args (butlast (first arglists))]
+         args (vec (butlast (first arglists)))
+         opts 'opts
+         gargs (mapv gensym args)
+         gopts (gensym 'opts)]
      `(defn ~fsym
-        ([~@args]
+        ~{:arglists [args (conj args opts)]}
+        ([~@gargs]
          (~fsym ~@args common/*options*))
-        ([~@args ~'opts]
-         (->> (~(h/var-sym var) ~@args ~'opts)
+        ([~@gargs ~gopts]
+         (->> (~(h/var-sym var) ~@gargs ~gopts)
               (apply common/sql:format)))))))
 
 (h/template-vars [sql-tmpl]

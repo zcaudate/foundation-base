@@ -71,7 +71,7 @@
                (intern *ns* sym out)
                cvar)
         {:keys [triggers]} @(:instance out)
-        _ (if triggers (common/triggers-set (h/var-sym cvar)))]
+        _ (if triggers (common/triggers-set (h/var-sym cvar) triggers))]
     cvar))
 
 (defmacro def.make

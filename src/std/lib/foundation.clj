@@ -1,5 +1,5 @@
 (ns std.lib.foundation
-  (:require [clojure.data :as data])
+  (:require [clojure.set])
   (:import (hara.lib.foundation Clock Flake Counter)
            (java.util Date))
   (:refer-clojure :exclude [-> ->> keyword reset! aget set! assert
@@ -917,8 +917,7 @@
   "defs multiple vars"
   {:added "4.0"}
   [syms call]
-  (let [gout (gensym 'out)]
-    `(let [~gout ~call]
-       ~@(map-indexed (fn [i sym]
-                        `(def ~sym (nth ~gout ~i)))
-                      syms))))
+  `(let [~'out ~call]
+     ~@(map-indexed (fn [i sym]
+                      `(def ~sym (nth ~'out ~i)))
+                    syms)))

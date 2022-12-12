@@ -271,9 +271,8 @@
   "moves to the left-most expression"
   {:added "3.0"}
   ([nav]
-   (if-some [pnav (left nav)]
-     (recur pnav)
-     nav)))
+   (or (some-> (left nav) recur)
+       nav)))
 
 (defn left-most?
   "checks if navigator is at left-most"
@@ -291,9 +290,8 @@
   "moves to the right-most expression"
   {:added "3.0"}
   ([nav]
-   (if-some [pnav (right nav)]
-     (recur pnav)
-     nav)))
+   (or (some-> (right nav) recur)
+       nav)))
 
 (defn right-most?
   "checks if navigator is at right-most"
@@ -380,9 +378,8 @@
   "moves to the left-most token"
   {:added "3.0"}
   ([nav]
-   (if-some [pnav (left-token nav)]
-     (recur pnav)
-     nav)))
+   (or (some-> (left-token nav) recur)
+       nav)))
 
 (defn right-token
   "moves to the right token"
@@ -394,9 +391,8 @@
   "moves to the right-most token"
   {:added "3.0"}
   ([nav]
-   (if-some [pnav (right-token nav)]
-     (recur pnav)
-     nav)))
+   (or (some-> (right-token nav) recur)
+       nav)))
 
 (defn prev-token
   "moves to the previous token"

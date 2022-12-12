@@ -19,7 +19,7 @@
 
   (redis-template 'eval-redis #'script/in:eval)
   => '(clojure.core/defn eval-redis
-        ([redis script numkeys keys args] (lib.redis.impl.template-test/eval-redis redis script numkeys keys args {}))
+        ([redis script numkeys keys args] (eval-redis redis script numkeys keys args {}))
         ([redis script numkeys keys args opts]
          (clojure.core/let [cmd (lib.redis.script/in:eval script numkeys keys args opts)]
            (if (clojure.core/empty? args)

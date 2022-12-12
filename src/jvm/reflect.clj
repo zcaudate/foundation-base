@@ -44,9 +44,9 @@
           java.lang.CharSequence}]]"
   {:added "3.0"}
   ([obj]
-   `(let [result# (element/class-hierarchy ~obj)]
-      (print-hierarchy result#)
-      result#)))
+   `(let [~'result (element/class-hierarchy ~obj)]
+      (print-hierarchy ~'result)
+      ~'result)))
 
 (defmacro .&
   "pretty prints  the data representation of a value
@@ -54,9 +54,9 @@
    (.& {:a 1 :b 2 :c 3})"
   {:added "3.0"}
   ([obj]
-   `(let [res# (query/delegate ~obj)]
+   `(let [~'res (query/delegate ~obj)]
       (h/local :println (str "\n#" (type ~obj)))
-      (doto res#
+      (doto ~'res
         (->> (into {})
              (pretty/pprint-str)
              (h/local :println))))))
@@ -73,7 +73,7 @@
          elems (query-fn obj (input/args-convert selectors))
          title (str "QUERY "
                     type
-                    (some->> (not-empty selectors) (str " ")))]
+                    (if (seq selectors) (str " " selectors)))]
      (cond (common/element? elems)
            elems
 

@@ -3,15 +3,12 @@
             [std.lib :as h]))
 
 (defn redis-pipeline
-  "constructs a pipeline for `gopts` (defaults to 'opts)"
+  "constructs a pipeline for `opts`"
   {:added "3.0"}
-  ([return m]
-   (redis-pipeline return m nil))
-  ([return {:keys [post pre chain raw string namespace]} gopts]
-   (let [gopts (or 'opts gopts)
-         post (if (and (symbol? return)
+  ([return {:keys [post pre chain raw string namespace]}]
+   (let [post (if (and (symbol? return)
                        (not raw))
-                (vec (cons `(fn [data#] (~return data# ~gopts)) post))
+                (vec (cons `(fn [~'data] (~return ~'data ~'opts)) post))
                 post)]
      (cond-> nil
        pre       (assoc :pre pre)
@@ -41,53 +38,42 @@
          ilen  (count inputs)
          fargs (or (-> custom :args :symbols)
                    (vec (drop ilen fargs)))
-         gfargs (mapv gensym fargs)
          dargs (or (-> custom :args :display)
                    (vec (drop ilen dargs)))
-         gdargs (mapv gensym dargs)
          iargs (reduce-kv (fn [iargs i prepend]
                             (update iargs i #(concat (h/seqify prepend) [%])))
                           fargs
                           (-> custom :args :format))
-         redis 'redis
-         opts 'opts
-         gredis (gensym redis)
-         gopts (gensym opts)
-         pipeline (redis-pipeline return custom gopts)
-         form  `(cc/req ~gredis ~gcmd
-                        ~(if pipeline
-                           `(cc/req:opts ~gopts
-                                         ~pipeline)
-                           gopts))
+         pipeline (redis-pipeline return custom)
+         form  `(cc/req ~'redis ~'cmd
+                       ~(if pipeline
+                          `(cc/req:opts ~'opts
+                                       ~pipeline)
+                          'opts))
          opts-pipeline (keep (fn [[k val]]
                                (if (some? val) `(assoc ~k ~val)))
-                             (select-keys pipeline [:namespace :format]))
-         qfsym (symbol (-> *ns* ns-name name) (name fsym))
-         gcmd (gensym 'cmd)]
+                             (select-keys pipeline [:namespace :format]))]
      `(defn ~fsym
-        {:arglists [[~redis ~@fargs]
-                    [~redis ~@(butlast dargs) ~opts]]}
-        ([~gredis ~@fargs]
-         (~qfsym ~gredis ~@fargs {}))
-        ([~gredis ~@(butlast gdargs) ~gopts]
+        ([~'redis ~@fargs]
+         (~fsym ~'redis ~@fargs {}))
+        ([~'redis ~@(butlast dargs) ~'opts]
          (let [~@(if (not-empty opts-pipeline)
-                   [gopts `(-> ~gopts ~@opts-pipeline)])
-               ~gcmd  (~(h/var-sym var) ~@inputs ~@iargs ~gopts)]
+                   ['opts `(-> ~'opts ~@opts-pipeline)])
+               ~'cmd  (~(h/var-sym var) ~@inputs ~@iargs ~'opts)]
            ~@(if debug
                [`(h/prn :REDIS
-                        '~fsym
-                        '~pipeline
+                        (quote ~fsym)
+                        (quote ~pipeline)
                         ~return
-                        (cc/req:opts ~gopts
-                                     ~pipeline)
-                        ~gopts
-                        ~gcmd)])
+                        (cc/req:opts ~'opts
+                                    ~pipeline)
+                        ~'opts ~'cmd)])
            ~(if (and multiple
                      (not allow-empty))
               (let [varg (if (integer? multiple)
                            (get fargs multiple)
                            (last fargs))]
                 `(if (empty? ~varg)
-                   (common/return-default ~default ~gopts)
+                   (common/return-default ~default ~'opts)
                    ~form))
               form)))))))

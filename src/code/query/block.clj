@@ -271,9 +271,9 @@
   "moves to the left-most expression"
   {:added "3.0"}
   ([nav]
-   (if (nil? (left nav))
-     nav
-     (recur (left nav)))))
+   (if-some [pnav (left nav)]
+     (recur pnav)
+     nav)))
 
 (defn left-most?
   "checks if navigator is at left-most"
@@ -291,9 +291,9 @@
   "moves to the right-most expression"
   {:added "3.0"}
   ([nav]
-   (if (nil? (right nav))
-     nav
-     (recur (right nav)))))
+   (if-some [pnav (right nav)]
+     (recur pnav)
+     nav)))
 
 (defn right-most?
   "checks if navigator is at right-most"
@@ -380,9 +380,9 @@
   "moves to the left-most token"
   {:added "3.0"}
   ([nav]
-   (if (nil? (left-token nav))
-     nav
-     (recur (left-token nav)))))
+   (if-some [pnav (left-token nav)]
+     (recur pnav)
+     nav)))
 
 (defn right-token
   "moves to the right token"
@@ -394,9 +394,9 @@
   "moves to the right-most token"
   {:added "3.0"}
   ([nav]
-   (if (nil? (right-token nav))
-     nav
-     (recur (right-token nav)))))
+   (if-some [pnav (right-token nav)]
+     (recur pnav)
+     nav)))
 
 (defn prev-token
   "moves to the previous token"
@@ -488,7 +488,7 @@
   "checks if current container has expressions"
   {:added "3.0"}
   ([nav]
-   (empty? (filter base/expression? (zip/current-elements nav)))))
+   (not-any? base/expression? (zip/current-elements nav))))
 
 (defn insert-empty
   "inserts an element into an empty container"
@@ -553,7 +553,7 @@
    (insert-newline nav 1))
   ([nav num]
    (reduce zip/insert-left nav
-           (take num (repeatedly (fn [] (construct/newline)))))))
+           (take num (repeatedly construct/newline)))))
 
 (defn insert-space
   "insert space/s into the block"
@@ -562,7 +562,7 @@
    (insert-space nav 1))
   ([nav num]
    (reduce zip/insert-left nav
-           (take num (repeatedly (fn [] (construct/space)))))))
+           (take num (repeatedly construct/space)))))
 
 (defn delete-left
   "deletes left of the current expression"

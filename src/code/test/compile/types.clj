@@ -18,7 +18,7 @@
   {:added "4.0"}
   ([m]
    (dissoc m :path :eval :full :code :wrap
-                     :function :setup :let :teardown :use)))
+           :function :setup :let :teardown :use)))
 
 (defn fact-display
   "displays a fact"

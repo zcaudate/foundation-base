@@ -1,7 +1,7 @@
 ^{:no-test true}
 (ns net.http
   (:require [net.http.client :as client]
-	    [net.http.websocket :as ws]
+            [net.http.websocket :as ws]
             [std.object :as obj]
             [std.lib :as h])
   (:refer-clojure :exclude [get]))
@@ -20,8 +20,8 @@
              client/http-request
              client/+http-response-handler+
 	     
-	     ws/websocket
-	     ws/send!
+             ws/websocket
+             ws/send!
              ws/close!
              ws/abort!)
 
@@ -41,9 +41,8 @@
                   (foreach-fn
                    lines
                    (h/fn:consumer [e]
-                     (let [out (re-find #"data: (.*)" e)]
-                       (if out
-                         (swap! events conj (nth out 1)))))))]
+                     (if-let [out (re-find #"data: (.*)" e)]
+                       (swap! events conj (nth out 1))))))]
      {:events events
       :lines lines
       :thread thread})))

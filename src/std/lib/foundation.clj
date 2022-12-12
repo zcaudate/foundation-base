@@ -747,9 +747,8 @@
   ([ns sym var]
    (intern-var ns sym var nil))
   ([ns sym var ext]
-   (let [out (intern ns sym  (deref var))]
-     (alter-meta! out merge (meta var) ext)
-     out)))
+   (doto (intern ns sym @var)
+     (alter-meta! merge (meta var) ext))))
 
 (defn intern-form
   "creates base form for `intern-in` and `intern-all`
@@ -915,7 +914,8 @@
   "defs multiple vars"
   {:added "4.0"}
   [syms call]
-  `(let [~'out ~call]
-     ~@(map-indexed (fn [i sym]
-                      `(def ~sym (nth ~'out ~i)))
-                    syms)))
+  (let [gout (gensym 'out)]
+    `(let [~gout ~call]
+       ~@(map-indexed (fn [i sym]
+                        `(def ~sym (nth ~gout ~i)))
+                      syms))))

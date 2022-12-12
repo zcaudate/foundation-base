@@ -69,8 +69,8 @@
                                                :err {:return :passive
                                                      :watch  err}}}
                                     (h/merge-nested process)))]
-     (map->ShellBasic (merge (dissoc m :process)
-                             {:relay relay :error err})))))
+     (map->ShellBasic (-> (dissoc m :process)
+                          (assoc :relay relay :error err))))))
 
 
 (defn shell-basic

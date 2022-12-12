@@ -26,11 +26,11 @@
 
 (defn changed-files
   [build-result]
-  (vec (filter string? (h/flatten-nested build-result))))
+  (filterv string? (h/flatten-nested build-result)))
 
 (defn is-changed?
   [build-result]
-  (not (empty? (filter string? (h/flatten-nested build-result)))))
+  (boolean (some string? (h/flatten-nested build-result))))
 
 (defn build-all
   "builds all sections in a make config"
@@ -71,7 +71,7 @@
                (intern *ns* sym out)
                cvar)
         {:keys [triggers]} @(:instance out)
-        _ (if triggers (common/triggers-set (h/var-sym cvar) triggers))]
+        _ (if triggers (common/triggers-set (h/var-sym cvar)))]
     cvar))
 
 (defmacro def.make

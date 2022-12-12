@@ -34,8 +34,9 @@
           :redis/keys [return multiple]} (meta var)
          return   (or (:return custom)
                       return)
-         multiple (or (:multiple custom)
-                      multiple)
+         multiple (if (some? (:multiple custom))
+                    (:multiple custom)
+                    multiple)
          [fargs dargs] arglists
          ilen  (count inputs)
          fargs (or (-> custom :args :symbols)

@@ -11,18 +11,12 @@
   "helper function for importing vars"
   {:added "3.0"}
   ([sym var]
-   (let [step 'step
-         zip 'zip
-         gzip (gensym zip)
-         gstep (gensym step)
-         qsym (symbol (-> *ns* ns-name name) (name sym))]
-     `(defn ~sym
-        ~{:arglists [[zip] [zip step]]}
-        ([~gzip]
-         (~qsym ~gzip :right))
-        ([~gzip ~gstep]
-         (if-let [elem# (zip/get ~gzip)]
-           (~(h/var-sym var) elem#)))))))
+   `(defn ~sym
+      ([~'zip]
+       (~sym ~'zip :right))
+      ([~'zip ~'step]
+       (if-let [~'elem (zip/get ~'zip)]
+         (~(h/var-sym var) ~'elem))))))
 
 (h/template-vars [nav-template]
   (block?       base/block?)

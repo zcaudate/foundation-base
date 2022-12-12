@@ -97,14 +97,14 @@
   "updates the step position to the right"
   {:added "3.0"}
   ([nav block]
-   (-> (update-in nav
-                  [:position]
-                  (fn [[row col]]
-                    (let [rows (base/block-height block)
-                          cols (base/block-width block)]
-                      (if (pos? rows)
-                        [(+ row rows) cols]
-                        [row (+ col cols)])))))))
+   (update-in nav
+              [:position]
+              (fn [[row col]]
+                (let [rows (base/block-height block)
+                      cols (base/block-width block)]
+                  (if (pos? rows)
+                    [(+ row rows) cols]
+                    [row (+ col cols)]))))))
 
 (defn update-step-inside
   "updates the step position to within a block"

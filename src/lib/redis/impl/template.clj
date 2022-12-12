@@ -3,7 +3,7 @@
             [std.lib :as h]))
 
 (defn redis-pipeline
-  "constructs a pipeline for `opts`"
+  "constructs a pipeline for `gopts` (defaults to 'opts)"
   {:added "3.0"}
   ([return m]
    (redis-pipeline return m nil))
@@ -40,8 +40,10 @@
          ilen  (count inputs)
          fargs (or (-> custom :args :symbols)
                    (vec (drop ilen fargs)))
+         gfargs (mapv gensym fargs)
          dargs (or (-> custom :args :display)
                    (vec (drop ilen dargs)))
+         gdargs (mapv gensym dargs)
          iargs (reduce-kv (fn [iargs i prepend]
                             (update iargs i #(concat (h/seqify prepend) [%])))
                           fargs
@@ -66,7 +68,7 @@
                     [~redis ~@(butlast dargs) ~opts]]}
         ([~gredis ~@fargs]
          (~qfsym ~gredis ~@fargs {}))
-        ([~gredis ~@(butlast dargs) ~gopts]
+        ([~gredis ~@(butlast gdargs) ~gopts]
          (let [~@(if (not-empty opts-pipeline)
                    [gopts `(-> ~gopts ~@opts-pipeline)])
                ~gcmd  (~(h/var-sym var) ~@inputs ~@iargs ~gopts)]
@@ -85,6 +87,6 @@
                            (get fargs multiple)
                            (last fargs))]
                 `(if (empty? ~varg)
-                   (common/return-default ~default ~'opts)
+                   (common/return-default ~default ~gopts)
                    ~form))
               form)))))))

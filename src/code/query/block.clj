@@ -553,7 +553,7 @@
    (insert-newline nav 1))
   ([nav num]
    (reduce zip/insert-left nav
-           (take num (repeatedly construct/newline)))))
+           (repeatedly num construct/newline))))
 
 (defn insert-space
   "insert space/s into the block"
@@ -562,7 +562,7 @@
    (insert-space nav 1))
   ([nav num]
    (reduce zip/insert-left nav
-           (take num (repeatedly construct/space)))))
+           (repeatedly num construct/space))))
 
 (defn delete-left
   "deletes left of the current expression"

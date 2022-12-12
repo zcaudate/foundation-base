@@ -14,7 +14,7 @@
 
   (nav-template '-tag- #'std.block.base/block-tag)
   => '(clojure.core/defn -tag-
-        ([zip] (-tag- zip :right))
+        ([zip] (code.query.block-test/-tag- zip :right))
         ([zip step]
          (clojure.core/if-let [elem (std.lib.zip/get zip)]
            (std.block.base/block-tag elem)))))

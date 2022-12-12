@@ -19,10 +19,10 @@
 
   (redis-template 'eval-redis #'script/in:eval)
   => '(clojure.core/defn eval-redis
-        ([redis script numkeys keys args] (eval-redis redis script numkeys keys args {}))
+        ([redis script numkeys keys args] (lib.redis.impl.template-test/eval-redis redis script numkeys keys args {}))
         ([redis script numkeys keys args opts]
          (clojure.core/let [cmd (lib.redis.script/in:eval script numkeys keys args opts)]
-           (if (clojure.core/and (clojure.core/empty? args))
+           (if (clojure.core/empty? args)
              (common/return-default nil opts)
              (std.concurrent/req redis cmd
                                  (std.concurrent/req:opts opts {:deserialize true})))))))

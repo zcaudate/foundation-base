@@ -82,7 +82,7 @@
   {:added "3.0"}
   ([vsym]
    (let [{:keys [teardown]} (rt/get-global (h/ns-sym) :component vsym)]
-     `(~(if teardown teardown `identity) ~vsym))))
+     `(~(or teardown `identity) ~vsym))))
 
 (defn fact-let-defs
   "create def forms for symbols

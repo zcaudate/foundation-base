@@ -90,7 +90,9 @@
         (= 'clojure.core/deref tag)
         (if (and (h/form? input)
                  (= 'var (first input)))
-          (list '!:deref (list 'var (or (h/var-sym (resolve (second input)))
+          (list '!:deref (list 'var (or (let [v (resolve (second input))]
+                                          (when (var? v)
+                                            (h/var-sym v)))
                                         (h/error "Var not found" {:input (second input)}))))
           (list '!:eval input))))
 

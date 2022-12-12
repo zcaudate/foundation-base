@@ -1,5 +1,5 @@
 (ns std.lib.foundation
-  (:require [clojure.set :as set])
+  (:require [clojure.data :as data])
   (:import (hara.lib.foundation Clock Flake Counter)
            (java.util Date))
   (:refer-clojure :exclude [-> ->> keyword reset! aget set! assert
@@ -860,14 +860,15 @@
   "ensures that the templated entries are the same as the input"
   {:added "4.0"}
   [syms vars]
-  (let [diff (set/difference (set (map (fn [[sym _]]
-                                                 (symbol (str (.getName *ns*))
-                                                         (name sym)))
-                                               syms))
-                                     (set (map var-sym vars)))]
-    (when (not-empty diff)
+  (let [qsyms (into #{} (map (fn [[sym _]]
+                               (symbol (str (.getName *ns*))
+                                       (name sym))))
+                    syms)
+        vsyms (into #{} (map var-sym) vars)]
+    (when (not= qsyms vsyms)
       ((requiring-resolve 'std.lib/beep))
-      ((requiring-resolve 'std.lib/prn) diff))
+      ((requiring-resolve 'std.lib/prn)
+       (data/diff qsyms vsyms)))
     vars))
 
 (deftype Wrapped [val show type]

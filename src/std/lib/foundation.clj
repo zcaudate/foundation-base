@@ -844,7 +844,7 @@
        (mapv (fn [e]
                (try (tmpl-fn e)
                     (catch Throwable t
-                      ((requiring-resolve 'std.lib/prn) e)
+                      (eval (list 'std.lib/prn (list 'quote e)))
                       (throw t))))
              entries)))))
 
@@ -862,15 +862,15 @@
   "ensures that the templated entries are the same as the input"
   {:added "4.0"}
   [syms vars]
-  (let [qsyms (into #{} (map (fn [[sym _]]
-                               (symbol (str (.getName *ns*))
-                                       (name sym))))
-                    syms)
-        vsyms (into #{} (map var-sym) vars)]
-    (when (not= qsyms vsyms)
-      ((requiring-resolve 'std.lib/beep))
-      ((requiring-resolve 'std.lib/prn)
-       (data/diff qsyms vsyms)))
+  (let [diff (clojure.set/difference (set (map (fn [[sym _]]
+                                                 (symbol (str (.getName *ns*))
+                                                         (name sym)))
+                                               syms))
+                                     (set (map var-sym vars)))]
+    (when (not-empty diff)
+      (eval (list 'do
+                  (list 'std.lib/beep)
+                  (list 'std.lib/prn diff))))
     vars))
 
 (deftype Wrapped [val show type]

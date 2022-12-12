@@ -11,8 +11,10 @@
   "helper function for importing vars"
   {:added "3.0"}
   ([sym var]
-   (let [zip 'zip
+   (let [step 'step
+         zip 'zip
          gzip (gensym zip)
+         gstep (gensym step)
          qsym (symbol (-> *ns* ns-name name) (name sym))]
      `(defn ~sym
         ~{:arglists [[zip] [zip step]]}

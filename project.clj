@@ -1,13 +1,6 @@
-(require '[clojure.string :as str])
-(def jvm-major-version
-  (let [[v1 v2] (->> (str/split (System/getProperty "java.version") #"\.")
-                     (take 2)
-                     (map #(Long/parseLong %)))]
-    ;; 1.6.x, 1.7.x, 1.8.x, 9.x.y, 10.x.y ....
-    (if (= v1 1) v2 v1)))
 (defproject zcaudate/foundation-base "4.0.1"
   :description "base libraries for foundation"
-  :url "https://github.com/zcaudate/foundation-base"
+  :url "https://www.gitlab.com/zcaudate/foundation-base"
   :aliases
   {"test"  ["exec" "-ep" "(use 'code.test) (def res (run :all)) (System/exit (+ (:failed res) (:thrown res)))"]
    "test-unit"   ["run" "-m" "code.test" "exit"]
@@ -120,6 +113,7 @@
 
    ;; std.text.diff
    [com.googlecode.java-diff-utils/diffutils "1.3.0"]
+   
 
    ;; TESTS - std.object
    [org.eclipse.jgit/org.eclipse.jgit "5.13.0.202109080827-r"]]
@@ -141,39 +135,35 @@
   :java-output-path  "target/classes"
   :repl-options {:host "0.0.0.0" :port 51311}
   :jvm-opts
-  ~(concat
-     ["-Xms2048m"
-      "-Xmx2048m"
-      "-XX:MaxMetaspaceSize=1048m"
-      "-XX:-OmitStackTraceInFastThrow"
+  ["-Xms2048m"
+   "-Xmx2048m"
+   "-XX:MaxMetaspaceSize=1048m"
+   "-XX:-OmitStackTraceInFastThrow"
+   
+   ;;
+   ;; GC FLAGS
+   ;;
+   "-XX:+UseAdaptiveSizePolicy"
+   "-XX:+AggressiveHeap"
+   "-XX:+ExplicitGCInvokesConcurrent"
+   "-XX:+UseCMSInitiatingOccupancyOnly"
+   "-XX:+CMSClassUnloadingEnabled"
+   "-XX:+CMSParallelRemarkEnabled"
 
-      ;;
-      ;; GC FLAGS
-      ;;
-      "-XX:+UseAdaptiveSizePolicy"
-      "-XX:+AggressiveHeap"
-      "-XX:+ExplicitGCInvokesConcurrent"]
-     (when (< jvm-major-version 14)
-       ["-XX:+UseCMSInitiatingOccupancyOnly"
-        "-XX:+CMSParallelRemarkEnabled"])
-     (when (< jvm-major-version 8)
-       ["-XX:+CMSClassUnloadingEnabled"])
-     [;;
-      ;; GC TUNING
-      ;;   
-      "-XX:MaxNewSize=256m"
-      "-XX:NewSize=256m"]
-     (when (< jvm-major-version 14)
-       ["-XX:CMSInitiatingOccupancyFraction=60"])
-     ["-XX:MaxTenuringThreshold=8"
-      "-XX:SurvivorRatio=4"
-
-      ;;
-      ;; JVM
-      ;;
-      "-Djdk.tls.client.protocols=\"TLSv1,TLSv1.1,TLSv1.2\""
-      "-Djdk.attach.allowAttachSelf=true"
-      "--add-opens" "javafx.graphics/com.sun.javafx.util=ALL-UNNAMED"
-      "--add-opens" "java.base/java.lang=ALL-UNNAMED"]
-     (when (< jvm-major-version 17)
-       ["--illegal-access=permit"])))
+   ;;
+   ;; GC TUNING
+   ;;   
+   "-XX:MaxNewSize=256m"
+   "-XX:NewSize=256m"
+   "-XX:CMSInitiatingOccupancyFraction=60"
+   "-XX:MaxTenuringThreshold=8"
+   "-XX:SurvivorRatio=4"
+   
+   ;;
+   ;; JVM
+   ;;
+   "-Djdk.tls.client.protocols=\"TLSv1,TLSv1.1,TLSv1.2\""
+   "-Djdk.attach.allowAttachSelf=true"
+   "--add-opens" "javafx.graphics/com.sun.javafx.util=ALL-UNNAMED"
+   "--add-opens" "java.base/java.lang=ALL-UNNAMED"
+   "--illegal-access=permit"])

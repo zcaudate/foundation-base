@@ -101,11 +101,10 @@
    (vargs? (fn [x & xs])) => true"
   {:added "3.0"}
   ([^Fn f]
-   (if (some (fn [^Method mthd]
-               (= "getRequiredArity" (.getName mthd)))
-             (.getDeclaredMethods (class f)))
-     true
-     false)))
+   (boolean
+     (some (fn [^Method mthd]
+             (= "getRequiredArity" (.getName mthd)))
+           (.getDeclaredMethods (class f))))))
 
 (defn varg-count
   "counts the number of arguments types before variable arguments

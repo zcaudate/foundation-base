@@ -91,7 +91,10 @@
    => {1 :a, 2 :b, 3 :c}"
   {:added "3.0"}
   ([f m]
-   (update-keys m f)))
+   (reduce (fn [out [k v]]
+             (assoc out (f k) v))
+           {}
+           m)))
 
 (defn map-vals
   "changes the values of a map
@@ -100,7 +103,10 @@
    => {:a 2, :b 3, :c 4}"
   {:added "3.0"}
   ([f m]
-   (update-vals m f)))
+   (reduce (fn [out [k v]]
+             (assoc out k (f v)))
+           {}
+           m)))
 
 (defn map-juxt
   "creates a map from sequence with key and val functions

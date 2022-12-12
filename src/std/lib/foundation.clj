@@ -407,7 +407,9 @@
    (var-sym #'var-sym)
    => 'std.lib.foundation/var-sym"
   {:added "3.0"}
-  ([^clojure.lang.Var var] (symbol var)))
+  ([^clojure.lang.Var var]
+   (symbol (str (.getName (.ns var)))
+           (str (.sym var)))))
 
 (defn unbound?
   "checks if a variable is unbound

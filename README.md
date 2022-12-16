@@ -65,6 +65,10 @@ Guided walkthroughs are provided for
 - 04 creating a language
 - 05 creating a runtime
 
+### std.lang - examples
+
+- [react native components](https://github.com/zcaudate/foundation.react-native), generated from [build namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/component/build_native_index.clj), [index page](https://github.com/zcaudate/foundation-base/blob/main/src-build/component/web_native_index.clj).
+
 ## License
 
 Copyright © 2022 Chris Zheng

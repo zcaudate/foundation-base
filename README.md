@@ -73,7 +73,7 @@ Guided walkthroughs are provided for
 - [ngx server](https://github.com/zcaudate/play.ngx-000-hello), generated from [build namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/ngx_001_eval/build.clj) and [main namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/ngx_001_eval/main.clj)
 - [tui counter](https://github.com/zcaudate/play.tui-000-counter), generated from [build namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/tui_000_counter/build.clj) and [main namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/tui_000_counter/main.clj)
 - [tui fetch](https://github.com/zcaudate/play.tui-001-fetch), generated from [build namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/tui_001_fetch/build.clj) and [main namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/tui_001_fetch/main.clj)
-- [tui game of life](https://github.com/zcaudate/play.tui-002-fetch), generated from [build namespace](https://github.com/zcaudate/foundation-base/tree/main/src-build/play/tui_002_game_of_life/build.clj) and [main namespace](https://github.com/zcaudate/foundation-base/tree/main/src-build/play/tui_002_game_of_life/main.clj)
+- [tui game of life](https://github.com/zcaudate/play.tui-002-game-of-life), generated from [build namespace](https://github.com/zcaudate/foundation-base/tree/main/src-build/play/tui_002_game_of_life/build.clj) and [main namespace](https://github.com/zcaudate/foundation-base/tree/main/src-build/play/tui_002_game_of_life/main.clj)
 
 ## License
 

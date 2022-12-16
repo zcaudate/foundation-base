@@ -1,0 +1,45 @@
+
+#+BEGIN_SRC vhdl :tangle .build/hello.vhdl
+--  Hello world program
+use std.textio.all; -- Imports the standard textio package.
+
+--  Defines a design entity, without any ports.
+entity hello_world is
+end hello_world;
+
+architecture behaviour of hello_world is
+begin
+  process
+    variable l : line;
+  begin
+    write (l, String'("Hello world!"));
+    writeline (output, l);
+    wait;
+  end process;
+end behaviour;
+#+END_SRC
+
+
+
+#+BEGIN_SRC vhdl :tangle .build/heartbeat.vhdl
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity heartbeat is
+  port ( clk: out std_logic);
+end heartbeat;
+
+architecture behaviour of heartbeat
+is
+  constant clk_period : time := 10 ns;
+begin
+  -- Clock process definition
+  clk_process: process
+  begin
+    clk <= '0';
+    wait for clk_period/2;
+    clk <= '1';
+    wait for clk_period/2;
+  end process;
+end behaviour;
+#+END_SRC

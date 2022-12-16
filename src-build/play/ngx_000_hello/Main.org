@@ -1,0 +1,19 @@
+#+STARTUP: showall
+#+DESCRIPTION: Simple Openresty Nxg Threads Example
+
+* Abc Openresty Ngx Threads Example
+	
+This is an example of using ngx threads via open resty.
+
+[[https://user-images.githubusercontent.com/1455572/105681392-0ad71680-5f2c-11eb-9f9f-57ed7179d9e3.png]]
+
+*** Requirements
+
+- [[https://github.com/openresty/openresty][openresty]]
+- [[https://github.com/eradman/entr/][entr]]
+
+*** Dev
+
+#+BEGIN_SRC shell :results output silent :cache no :eval no
+make run
+#+END_SRC

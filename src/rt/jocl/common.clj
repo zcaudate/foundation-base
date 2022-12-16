@@ -63,7 +63,7 @@
   {:added "3.0"}
   ([entry optm]
    (let [args (-> (nth (:form entry) 2)
-                  (helper/emit-typed-args c/+grammer+))]
+                  (helper/emit-typed-args c/+grammar+))]
      (map #(parse-spec % optm) args))))
 
 (defmacro with-error

@@ -155,7 +155,7 @@
   => "((!= 1 x))")
 
 ^{:refer std.lang.base.emit-common/wrapped-str :added "3.0"}
-(fact "wrapped string using `:start` and `:end` keys of grammer"
+(fact "wrapped string using `:start` and `:end` keys of grammar"
   ^:hidden
 
   (wrapped-str "hello" [:data :map] helper/+default+)
@@ -547,7 +547,7 @@
   => "add(1,((int)1))")
 
 ^{:refer std.lang.base.emit-common/emit-common :added "4.0"}
-(fact "emits a string based on grammer"
+(fact "emits a string based on grammar"
   ^:hidden
   
   (emit-common '(add 1

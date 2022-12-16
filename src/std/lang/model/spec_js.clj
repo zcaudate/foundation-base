@@ -8,8 +8,8 @@
             [std.lang.base.emit-common :as common]
             [std.lang.base.emit-helper :as helper]
             [std.lang.base.emit-preprocess :as preprocess]
-            [std.lang.base.grammer :as grammer]
-            [std.lang.base.grammer-spec :as spec]
+            [std.lang.base.grammar :as grammar]
+            [std.lang.base.grammar-spec :as spec]
             [std.lang.base.util :as ut]
 	    [std.lang.base.book :as book]
             [std.lang.base.script :as script]
@@ -36,33 +36,33 @@
 (defn js-map-key
   "emits a map key"
   {:added "4.0"}
-  ([key grammer nsp]
+  ([key grammar nsp]
    (cond (or (symbol? key) (h/form? key))
-         (str  "[" (common/*emit-fn* key grammer nsp) "]")
+         (str  "[" (common/*emit-fn* key grammar nsp) "]")
 
          :else
-         (data/default-map-key key grammer nsp))))
+         (data/default-map-key key grammar nsp))))
 
 (defn js-vector
   "emits a js vector"
   {:added "4.0"}
-  ([arr grammer nsp]
+  ([arr grammar nsp]
    (let [o (first arr)]
      (cond (empty? arr) "[]"
            
            (keyword? o)
-           (*template-fn* arr grammer nsp)
+           (*template-fn* arr grammar nsp)
            
            :else
-           (data/emit-coll :vector arr grammer nsp)))))
+           (data/emit-coll :vector arr grammar nsp)))))
 
 (defn js-set
   "emits a js set"
   {:added "4.0"}
-  ([arr grammer mopts]
+  ([arr grammar mopts]
    (cond (vector? (first arr))
          (common/*emit-fn* (apply list 'tab (first arr))
-                           grammer
+                           grammar
                            mopts)
          
          :else
@@ -75,13 +75,13 @@
                        (cond (map? e)
                              (->> e
                                   (map (fn [pair]
-                                         (data/emit-map-entry pair grammer mopts)))
+                                         (data/emit-map-entry pair grammar mopts)))
                                   (str/join ","))
 
                              (or (symbol? e)
                                  (and (h/form? e)
                                       (#{:..} (first e))))
-                             (common/*emit-fn* e grammer mopts)
+                             (common/*emit-fn* e grammar mopts)
                              
                              :else
                              (h/error "Not allowed" {:entry e}))))
@@ -89,11 +89,11 @@
                 (str "{" % "}")))))
 
 (defn- js-symbol-global
-  [fsym grammer mopts]
+  [fsym grammar mopts]
   (list '. 'globalThis [(helper/emit-symbol-full
                          fsym
                          (namespace fsym)
-                         grammer)]))
+                         grammar)]))
 
 (defn js-defclass
   "creates a defclass function"
@@ -213,10 +213,10 @@
                            finally))]))))
 
 (def +features+
-  (-> (grammer/build :exclude [:pointer
+  (-> (grammar/build :exclude [:pointer
                                :block
                                :data-range])
-      (grammer/build:override
+      (grammar/build:override
        {:var        {:symbol '#{var*}}
         :mul        {:value true}
         :defn       {:symbol '#{defn defn- defelem}}
@@ -228,8 +228,8 @@
         :for-return {:macro  #'tf-for-return  :emit :macro}
         :for-try    {:macro  #'tf-for-try     :emit :macro}
         :for-async  {:macro  #'tf-for-async :emit :macro}})
-      (grammer/build:override fn/+js+)
-      (grammer/build:extend
+      (grammar/build:override fn/+js+)
+      (grammar/build:extend
        {:property   {:op :property  :symbol  '#{property}   :assign ":" :raw "property" :emit :def-assign}
         :teq        {:op :teq       :symbol  '#{===}        :raw "===" :emit :bi}
         :tneq       {:op :tneq      :symbol  '#{!==}        :raw "!==" :emit :bi}
@@ -262,18 +262,18 @@
                    :def       {:raw "var"}
                    :declare   {:raw "var"}}
         :xtalk    {:notify    {:custom true}}}
-       (h/merge-nested (emit/default-grammer))))
+       (h/merge-nested (emit/default-grammar))))
 
-(def +grammer+
-  (grammer/grammer :js
-    (grammer/to-reserved +features+)
+(def +grammar+
+  (grammar/grammar :js
+    (grammar/to-reserved +features+)
     +template+))
 
 (def +book+
   (book/book {:lang :js
               :parent :xtalk
               :meta meta/+meta+
-              :grammer +grammer+}))
+              :grammar +grammar+}))
 
 (def +init+
   (script/install +book+))

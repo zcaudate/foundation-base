@@ -6,7 +6,7 @@
             [std.lang.base.emit-common :as emit-common]
             [std.lang.base.impl-entry :as entry]
             [std.lang.base.impl-deps :as deps]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.base.library-snapshot :as snap]
             [std.lang.base.library :as lib]
             [std.lang.base.util :as ut]))
@@ -40,7 +40,7 @@
        (h/res :hara/lang.library))))
 
 (defn default-library:reset
-  "clears the default library, including all grammers"
+  "clears the default library, including all grammars"
   {:added "4.0"}
   ([& [override]]
    (h/res:stop :hara/lang.library)))
@@ -56,11 +56,11 @@
       (:library (h/p:space-rt-get :lang.annex))
       (default-library)))
 
-(defn grammer
-  "gets the grammer"
+(defn grammar
+  "gets the grammar"
   {:added "4.0"}
   [lang]
-  (:grammer (lib/get-book (runtime-library) lang)))
+  (:grammar (lib/get-book (runtime-library) lang)))
 
 ;;
 ;;
@@ -93,8 +93,8 @@
   "input to form"
   {:added "4.0"}
   [form meta]
-  (let [[stage grammer book namespace mopts] (emit-options meta)]
-    (first (emit/prep-form stage form grammer book mopts))))
+  (let [[stage grammar book namespace mopts] (emit-options meta)]
+    (first (emit/prep-form stage form grammar book mopts))))
 
 (defmacro %.form
   "converts to a form"
@@ -114,19 +114,19 @@
 (defn emit-direct
   "adds additional controls to transform form"
   {:added "4.0"}
-  [grammer form namespace {:keys [lang
+  [grammar form namespace {:keys [lang
                                   emit
                                   bulk]
                            :as mopts}]
   (or lang (h/error "Lang required." {:input (keys mopts)}))
-  (binding [preprocess/*macro-grammer* grammer
+  (binding [preprocess/*macro-grammar* grammar
             preprocess/*macro-opts* mopts]
     (if (not (:suppress emit))
       (let [{:keys [trim transform]} emit
             form (cond-> form transform (transform mopts))
             _    (if *print-form* (h/prn :FORM form))
             body (emit/emit form
-                            grammer
+                            grammar
                             (the-ns namespace)
                             mopts)
             body (cond-> body trim (trim))]
@@ -136,10 +136,10 @@
   "converts to an output string"
   {:added "4.0"}
   [form meta]
-  (let [[stage grammer book namespace mopts] (emit-options meta)
+  (let [[stage grammar book namespace mopts] (emit-options meta)
         bulk (emit-bulk? form)
-        [form]  (emit/prep-form stage form grammer book mopts)]
-    (emit-direct grammer
+        [form]  (emit/prep-form stage form grammar book mopts)]
+    (emit-direct grammar
                  form
                  namespace
                  (assoc mopts :bulk bulk))))
@@ -160,12 +160,12 @@
        (str/join "\n\n")))
 
 (defn emit-symbol
-  "emits string given symbol and grammer"
+  "emits string given symbol and grammar"
   {:added "4.0"}
   [lang sym & [mopts]]
   (let [[_ book] (emit-options-raw nil nil lang)
-        {:keys [grammer]} book]
-    (emit-common/emit-symbol sym grammer (merge {:layout :flat}
+        {:keys [grammar]} book]
+    (emit-common/emit-symbol sym grammar (merge {:layout :flat}
                                                 mopts))))
 
 (defn get-entry
@@ -186,11 +186,11 @@
            section]
     :or {section :code}}
    {:keys [library] :as meta}]
-  (let [[stage grammer book namespace mopts] (emit-options meta)
+  (let [[stage grammar book namespace mopts] (emit-options meta)
         {:keys [snapshot]} mopts  
         module  (get-in snapshot [lang :book :modules module])
         entry   (get-in module [section id])]
-    (entry/emit-entry grammer
+    (entry/emit-entry grammar
                       entry
                       (assoc mopts :module module))))
 
@@ -201,7 +201,7 @@
            module
            id] :as ptr}
    {:keys [library] :as meta}]
-  (let [[stage grammer book namespace mopts] (emit-options meta)]
+  (let [[stage grammar book namespace mopts] (emit-options meta)]
     (first (deps/collect-script-entries book [(ut/sym-full ptr)]))))
 
 (defn emit-entry-deps
@@ -211,7 +211,7 @@
            module
            id] :as ptr}
    {:keys [library] :as meta}]
-  (let [[stage grammer book namespace mopts] (emit-options meta)
+  (let [[stage grammar book namespace mopts] (emit-options meta)
         [deps] (deps/collect-script-entries book [(ut/sym-full ptr)])]
     (str/join "\n\n"
               (map #(emit-entry % mopts) deps))))
@@ -219,13 +219,13 @@
 (defn emit-script-imports
   "emit imports"
   {:added "4.0"}
-  [natives emit [stage grammer book namespace mopts]]
+  [natives emit [stage grammar book namespace mopts]]
   (if (not (-> emit :native :suppress))
     (let [imports-opts (update mopts :emit merge (:native emit))]
       (keep (fn [[name module]]
               (let [form (deps/module-import-form book name module imports-opts)]
                 (if form
-                  (emit-direct grammer
+                  (emit-direct grammar
                                (list 'do form)
                                namespace
                                imports-opts))))
@@ -234,12 +234,12 @@
 (defn emit-script-deps
   "emits the script deps"
   {:added "4.0"}
-  [entries emit [stage grammer book namespace mopts]]
+  [entries emit [stage grammar book namespace mopts]]
   (let [deps-opts    (-> mopts
                          (update :emit merge (:code emit))
                          (dissoc :module))
         deps-arr     (keep (fn [entry]
-                             (entry/emit-entry grammer entry deps-opts))
+                             (entry/emit-entry grammar entry deps-opts))
                            entries)]
     deps-arr))
 
@@ -262,12 +262,12 @@
    {:keys [library
            lang
            emit] :as meta}]
-  (let [[stage grammer book namespace mopts] (emit-options meta)
+  (let [[stage grammar book namespace mopts] (emit-options meta)
         bulk (emit-bulk? form)
         [form deps natives]  (deps/collect-script book form mopts)
-        imports-arr  (emit-script-imports natives emit [stage grammer book namespace mopts])
-        deps-arr     (emit-script-deps deps emit [stage grammer book namespace mopts])
-        body         (emit-direct grammer
+        imports-arr  (emit-script-imports natives emit [stage grammar book namespace mopts])
+        deps-arr     (emit-script-deps deps emit [stage grammar book namespace mopts])
+        body         (emit-direct grammar
                                   form
                                   namespace
                                   (-> mopts
@@ -278,9 +278,9 @@
 (defn emit-scaffold-raw-imports
   "gets only the scaffold imports"
   {:added "4.0"}
-  [modules emit [stage grammer book namespace mopts] ]
+  [modules emit [stage grammar book namespace mopts] ]
   (let [natives      (deps/collect-script-natives modules {})]
-    [natives (emit-script-imports natives emit [stage grammer book namespace mopts])]))
+    [natives (emit-script-imports natives emit [stage grammar book namespace mopts])]))
 
 (defn emit-scaffold-raw
   "creates entries only for defglobal and defrun entries"
@@ -290,12 +290,12 @@
    {:keys [library
            lang
            emit] :as meta}]
-  (let [[stage grammer book namespace mopts] (emit-options meta)
+  (let [[stage grammar book namespace mopts] (emit-options meta)
         module-ids   (transform (h/deps:ordered book [module-id]))
         modules      (map (:modules book) module-ids)
         [_ imports-arr]  (emit-scaffold-raw-imports
                           modules emit
-                          [stage grammer book namespace mopts] )
+                          [stage grammar book namespace mopts] )
         globals      (vec (mapcat (fn [module]
                                    (keep (fn [{:keys [op] :as entry}]
                                            (if ('#{defrun defglobal} op)
@@ -303,8 +303,8 @@
                                          (vals (:code module))))
                                   modules))
         [deps]       (deps/collect-script-entries book globals)
-        deps-arr     (emit-script-deps deps emit [stage grammer book namespace mopts])
-        body         (emit-direct grammer
+        deps-arr     (emit-script-deps deps emit [stage grammar book namespace mopts])
+        body         (emit-direct grammar
                                   (mapv (juxt h/strn identity)
                                         globals)
                                   namespace
@@ -328,14 +328,14 @@
   "create scaggold to expose native imports"
   {:added "4.0"}
   [module-id {:keys [emit] :as meta}]
-  (let [[stage grammer book namespace mopts] (emit-options meta)
+  (let [[stage grammar book namespace mopts] (emit-options meta)
         module-ids   (h/deps:ordered book [module-id])
         modules      (map (:modules book) module-ids)
         [natives imports-arr] (emit-scaffold-raw-imports
                                modules emit
-                               [stage grammer book namespace mopts])]
+                               [stage grammar book namespace mopts])]
     (str/join "\n" (conj (vec imports-arr)
-                         (emit-direct grammer
+                         (emit-direct grammar
                                       (list 'do:>
                                             (list 'return (h/postwalk (fn [x]
                                                                         (if (or (symbol? x)

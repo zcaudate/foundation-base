@@ -1,6 +1,6 @@
-(ns std.lang.base.grammer-macro
+(ns std.lang.base.grammar-macro
   (:require [std.lib :as h :refer [defimpl]]
-            [std.lang.base.grammer-spec :as spec]))
+            [std.lang.base.grammar-spec :as spec]))
 
 ;;
 ;; macros

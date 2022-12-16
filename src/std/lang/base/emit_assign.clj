@@ -32,7 +32,7 @@
 (defn emit-def-assign-inline
   "assigns an inline form"
   {:added "4.0"}
-  [sym [link & input] grammer {:keys [lang book snapshot] :as mopts}]
+  [sym [link & input] grammar {:keys [lang book snapshot] :as mopts}]
   (let [[link-module link-id] (ut/sym-pair link)
         book     (or book (get-in snapshot [lang :book]))
         entry    (or (get-in book [:modules link-module :code link-id])
@@ -88,19 +88,19 @@
 (defn emit-def-assign
   "emits a declare expression"
   {:added "3.0"}
-  ([_ {:keys [raw] :as props} [_ & args] grammer mopts]
-   (let [{:keys [sep space assign]} (helper/get-options grammer [:default :define])
-         args     (helper/emit-typed-args args grammer)
+  ([_ {:keys [raw] :as props} [_ & args] grammar mopts]
+   (let [{:keys [sep space assign]} (helper/get-options grammar [:default :define])
+         args     (helper/emit-typed-args args grammar)
          argstrs  (map (fn [{:keys [value symbol] :as arg}]
                          (let [{:assign/keys [inline template] :as aopts} (meta value)
                                custom (cond (:assign/fn aopts) [:raw  ((:assign/fn aopts) symbol)]
                                              template [:template (h/prewalk-replace {template symbol} value)]
                                              inline   [:inline   (emit-def-assign-inline symbol
                                                                                          value
-                                                                                         grammer mopts)])]
+                                                                                         grammar mopts)])]
                             (if custom
-                              (common/*emit-fn* (second custom) grammer mopts)
-                              (fn/emit-input-default arg assign grammer mopts))))
+                              (common/*emit-fn* (second custom) grammar mopts)
+                              (fn/emit-input-default arg assign grammar mopts))))
                        args)
          vstr    (str/join (str sep space) argstrs)
          rawstr  (if (not-empty raw) (str raw space))]
@@ -114,48 +114,48 @@
   "emit do
  
    (assign/test-assign-loop '(var a 1)
-                            +grammer+
+                            +grammar+
                             {})
    => \"a = 1\"
  
    (assign/test-assign-loop '(var :int [] a)
-                            +grammer+
+                            +grammar+
                             {})
    => \"int a[]\"
  
    (assign/test-assign-loop '(var :int :* a)
-                            +grammer+
+                            +grammar+
                             {})
    => \"int * a\"
    
    
    (assign/test-assign-loop '(var :const a (+ b1 2))
-                            +grammer+
+                            +grammar+
                             {})
    => \"const a = (+ b1 2)\"
    
    
    (assign/test-assign-emit '(var a (+ 1 2))
-                            +grammer+
+                            +grammar+
                             {})
    => \"a = 1 + 2\"
    
    (assign/test-assign-emit '(var :const a (+ b1 2))
-                            +grammer+
+                            +grammar+
                             {})
    => \"const a = b1 + 2\""
   {:added "4.0" :adopt true}
-  [form grammer mopts]
+  [form grammar mopts]
   (common/emit-common-loop form
-                           grammer
+                           grammar
                            mopts
                            (assoc common/+emit-lookup+
                                   :data data/emit-data
                                   :block block/emit-block)
-                           (fn [key form grammer mopts]
+                           (fn [key form grammar mopts]
                              (case key
-                               :fn (fn/emit-fn :function form grammer mopts)
-                               (common/emit-op key form grammer mopts
+                               :fn (fn/emit-fn :function form grammar mopts)
+                               (common/emit-op key form grammar mopts
                                                {:def-assign emit-def-assign
                                                 :quote data/emit-quote
                                                 :table data/emit-table})))))
@@ -166,30 +166,30 @@
    (assign/test-assign-loop (list 'var 'a := (with-meta ()
                                                {:assign/fn (fn [sym]
                                                              (list sym :as [1 2 3]))}))
-                            +grammer+
+                            +grammar+
                             {})
    => \"(a :as [1 2 3])\"
  
    (assign/test-assign-loop (list 'var 'a := (with-meta '(sym :as [1 2 3])
                                                {:assign/template 'sym}))
-                            +grammer+
+                            +grammar+
                             {})
    => \"(a :as [1 2 3])\"
  
    (assign/test-assign-loop (list 'var 'a := (with-meta '(x.core/identity-fn 1)
                                                {:assign/inline 'x.core/identity-fn}))
-                            +grammer+
+                            +grammar+
                             {:lang :x
                              :snapshot +snap+})
    => \"(do* (var a := 1))\"
  
    (assign/test-assign-loop (list 'var 'a := (with-meta '(x.core/complex-fn 1)
                                                {:assign/inline 'x.core/complex-fn}))
-                            +grammer+
+                            +grammar+
                             {:lang :x
                              :snapshot +snap+})
    => \"(do* (var a := 1) (:= a (+ a 1)))\""
   {:added "4.0"}
-  [form grammer mopts]
+  [form grammar mopts]
   (binding [common/*emit-fn* test-assign-loop]
-    (test-assign-loop form grammer mopts)))
+    (test-assign-loop form grammar mopts)))

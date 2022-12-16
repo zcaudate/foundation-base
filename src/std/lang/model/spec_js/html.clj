@@ -50,7 +50,7 @@
           (str (common/with-indent [2]
                  (str (common/newline-indent)
                       (common/emit-main (:form (lib/lib:get-entry lang (ut/sym-full module id)))
-                                        (lib/lib:get-grammer lang)
+                                        (lib/lib:get-grammar lang)
                                         nsp)))
                (common/newline-indent)))
         form))

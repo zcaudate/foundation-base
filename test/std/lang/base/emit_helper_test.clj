@@ -2,14 +2,14 @@
   (:use code.test)
   (:require [std.lang.base.emit-helper :refer :all :as helper]
             [std.lang.base.emit-common :as common]
-            [std.lang.base.grammer :as grammer]))
+            [std.lang.base.grammar :as grammar]))
 
 (def +reserved+
-  (-> (grammer/build)
-      (grammer/to-reserved)))
+  (-> (grammar/build)
+      (grammar/to-reserved)))
 
-(def +grammer+
-  (grammer/grammer :test +reserved+ helper/+default+))
+(def +grammar+
+  (grammar/grammar :test +reserved+ helper/+default+))
 
 ^{:refer std.lang.base.emit-helper/default-emit-fn :added "4.0"}
 (fact "the default emit function")
@@ -66,7 +66,7 @@
   => :expression)
 
 ^{:refer std.lang.base.emit-helper/basic-typed-args :added "4.0"}
-(fact "typed args without grammer checks"
+(fact "typed args without grammar checks"
 
   (mapv (juxt meta identity)
         (basic-typed-args '(:int i, :const :int j)))
@@ -81,7 +81,7 @@
   ^:hidden
 
   (emit-typed-args '(:int i := 9, :const :int j := 10)
-                   +grammer+)
+                   +grammar+)
   => '[{:modifiers [:int],
         :symbol i,
         :assign true,
@@ -97,7 +97,7 @@
 (fact "emits a full symbol"
   ^:hidden
 
-  (emit-symbol-full 'hello 'ns +grammer+)
+  (emit-symbol-full 'hello 'ns +grammar+)
   => "ns____hello")
 
 

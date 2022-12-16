@@ -4,7 +4,7 @@
             [std.lang.base.emit-data :as data]
             [std.lang.base.emit-fn :as fn]
             [std.lang.base.emit-top-level :as top]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.base.util :as ut]
             [std.lang.base.book :as book]
             [std.lang.base.script :as script]
@@ -15,23 +15,23 @@
 (defn bash-quote-item
   "quotes an item"
   {:added "4.0"}
-  [v grammer mopts]
+  [v grammar mopts]
   (if (vector? v)
-    (data/emit-data :free v grammer mopts)
-    (str "\"" (.replaceAll ^String (common/*emit-fn* v grammer mopts)
+    (data/emit-data :free v grammar mopts)
+    (str "\"" (.replaceAll ^String (common/*emit-fn* v grammar mopts)
                            "\"" "\\\\\"") "\"")))
 
 (defn bash-set
   "quotes a string value"
   {:added "4.0"}
-  [set grammer mopts]
-  (bash-quote-item (first set) grammer mopts))
+  [set grammar mopts]
+  (bash-quote-item (first set) grammar mopts))
 
 (defn bash-quote
   "quotes a string value"
   {:added "4.0"}
-  [[_ item] grammer mopts]
-  (bash-quote-item item grammer mopts))
+  [[_ item] grammar mopts]
+  (bash-quote-item item grammar mopts))
 
 (defn bash-dash-param
   "if keyword, replace `:` with `-`"
@@ -44,36 +44,36 @@
 (defn bash-map
   "outputs a map"
   {:added "4.0"}
-  [form grammer mopts]
+  [form grammar mopts]
   (let [arr (reduce-kv (fn [acc k v]
                          (cond-> acc
                            (not (false? v))  (conj (bash-dash-param k))
                            (not (boolean? v)) (conj v)))
                         []
                         form)]
-    (str/join " " (common/emit-array arr grammer mopts))))
+    (str/join " " (common/emit-array arr grammar mopts))))
 
 (defn bash-invoke
   "outputs an invocation (same as vector)"
   {:added "4.0"}
-  [[f & args] grammer mopts]
+  [[f & args] grammar mopts]
   (let [args (map (fn [x]
                     (if (and (h/form? x)
-                             (not (get-in grammer [:reserved (first x)])))
+                             (not (get-in grammar [:reserved (first x)])))
                       (list '$ x)
                       x))
                   args)]
-    (str/join " " (common/emit-array (cons f args) grammer mopts))))
+    (str/join " " (common/emit-array (cons f args) grammar mopts))))
 
 (defn- bash-vector
-  [arr grammer mopts]
-  (str/join " " (common/emit-array arr grammer mopts)))
+  [arr grammar mopts]
+  (str/join " " (common/emit-array arr grammar mopts)))
 
 (defn bash-assign
   "outputs an assignment"
   {:added "4.0"}
-  [[_ & args :as form] grammer mopts]
-  (common/emit-assign "=" args (assoc-in grammer [:default :common :space] "") mopts))
+  [[_ & args :as form] grammar mopts]
+  (common/emit-assign "=" args (assoc-in grammar [:default :common :space] "") mopts))
 
 (defn bash-var
   "transforms to var"
@@ -95,8 +95,8 @@
 (defn bash-defn-
   "emits a non paramerised version"
   {:added "4.0"}
-  [[_ sym args & body] grammer mopts]
-  (top/emit-top-level :defn (apply list nil sym [] body) grammer mopts))
+  [[_ sym args & body] grammar mopts]
+  (top/emit-top-level :defn (apply list nil sym [] body) grammar mopts))
 
 (defn bash-expand
   "brace expansion syntax"
@@ -178,7 +178,7 @@
            `[(~'else ~(second el))])))))
 
 (def +features+
-  (-> (grammer/build :include [:builtin
+  (-> (grammar/build :include [:builtin
                                :builtin-helper
                                :free-control
                                :free-literal
@@ -192,7 +192,7 @@
                                :top-base
                                [:macro :include [:if :cond :when]]
                                :macro-case])
-      (grammer/build:override
+      (grammar/build:override
        {:mul       {:value true}
         :add       {:value true}
         :sub       {:value true}
@@ -208,7 +208,7 @@
         :when      {:macro  #'bash-when}
         :cond      {:macro  #'bash-cond}
         :quote     {:op :quote     :symbol '#{quote}  :emit #'bash-quote}})
-      (grammer/build:extend
+      (grammar/build:extend
        {:defn-     {:op :defn-     :symbol #{'defn-}  :type :block :emit #'bash-defn-}
         :andflow   {:op :andflow   :symbol '#{&&}   :raw "&&" :value true  :emit :infix}
         :orflow    {:op :orflow    :symbol '#{||}   :raw "||" :value true  :emit :infix}
@@ -254,20 +254,20 @@
                               :control {:default {:raw ""
                                                   :parameter {:start "" :end ""}
                                                   :body      {:start ")" :end ";;"}}}}}}
-       (h/merge-nested (update-in (emit/default-grammer)
+       (h/merge-nested (update-in (emit/default-grammar)
                                   [:token :symbol]
                                   dissoc :replace))))
 
-(def +grammer+
-  (grammer/grammer :sh
-    (grammer/to-reserved +features+)
+(def +grammar+
+  (grammar/grammar :sh
+    (grammar/to-reserved +features+)
     +template+))
 
 (def +book+
   (book/book {:lang :bash
               :parent :xtalk
               :meta (book/book-meta {})
-              :grammer +grammer+}))
+              :grammar +grammar+}))
 
 (def +init+
   (script/install +book+))

@@ -1,6 +1,6 @@
 (ns std.lang.model.spec-scheme
   (:require [std.lang.base.emit :as emit]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.base.util :as ut]
             [std.lang.base.book :as book]
             [std.lang.base.script :as script]
@@ -19,7 +19,7 @@
                (first args))})
 
 (def +features+
-  (grammer/build-min [:coroutine
+  (grammar/build-min [:coroutine
                       :xtalk
                       :xtalk-math
                       :xtalk-type
@@ -47,9 +47,9 @@
                   x))
               form)))
 
-(def +grammer+
-  (grammer/grammer :scm
-    (grammer/to-reserved +features+)
+(def +grammar+
+  (grammar/grammar :scm
+    (grammar/to-reserved +features+)
     {:emit #'emit-scheme}))
 
 (def +meta+ (book/book-meta {}))
@@ -58,7 +58,7 @@
   (book/book {:lang :scheme
               :parent :xtalk
               :meta +meta+
-              :grammer +grammer+}))
+              :grammar +grammar+}))
 
 (def +init+
   (script/install +book+))

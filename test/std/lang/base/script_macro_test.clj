@@ -209,7 +209,7 @@
     (macro/intern-top-level-fn
      :lua
      ['defn (get-in (lib/get-book +library+ :lua)
-                    [:grammer :reserved 'defn])]
+                    [:grammar :reserved 'defn])]
      (with-meta
        '(defn.lua ^{:b 2} add-more
           "hello"
@@ -256,19 +256,19 @@
   => "def abc = 1;")
 
 ^{:refer std.lang.base.script-macro/intern-macros :added "4.0"}
-(fact "interns the top-level macros in the grammer")
+(fact "interns the top-level macros in the grammar")
 
 ^{:refer std.lang.base.script-macro/intern-highlights :added "4.0"}
-(fact "interns the highlight macros in the grammer")
+(fact "interns the highlight macros in the grammar")
 
-^{:refer std.lang.base.script-macro/intern-grammer :added "4.0"}
+^{:refer std.lang.base.script-macro/intern-grammar :added "4.0"}
 (fact "interns a bunch of macros in the namespace"
 
-  (:macros (:grammer (lib/get-book +library+ :lua)))
+  (:macros (:grammar (lib/get-book +library+ :lua)))
   => '#{defrun defn defglobal defgen defn- deftemp defclass defabstract def}
   
   (impl/with:library [+library+]
-    (macro/intern-grammer :lua (:grammer (lib/get-book +library+ :lua))))
+    (macro/intern-grammar :lua (:grammar (lib/get-book +library+ :lua))))
   => map?)
 
 ^{:refer std.lang.base.script-macro/intern-defmacro-rt-fn :added "4.0"}

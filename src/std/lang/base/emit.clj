@@ -7,13 +7,13 @@
             [std.lang.base.emit-top-level :as top]
             [std.lang.base.emit-preprocess :as preprocess]
             [std.lang.base.emit-fn :as fn]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.base.util :as ut]))
 
-(defn default-grammer
-  "returns the default grammer
+(defn default-grammar
+  "returns the default grammar
  
-   (emit/default-grammer)
+   (emit/default-grammar)
    => map?"
   {:added "4.0"}
   [& [m]]
@@ -32,13 +32,13 @@
   "creates the raw emit
  
    (emit/emit-main-loop '(not (+ 1 2 3))
-                       +grammer+
+                       +grammar+
                        {})
    => \"!((+ 1 2 3))\""
   {:added "4.0"}
-  ([form grammer mopts]
+  ([form grammar mopts]
    (common/emit-common-loop form
-                            grammer
+                            grammar
                             mopts
                             top/+emit-lookup+
                             top/emit-form)))
@@ -47,34 +47,34 @@
   "creates the raw emit with loop
  
    (emit/emit-main '(not (+ 1 2 3))
-                   +grammer+
+                   +grammar+
                    {})
    => \"!(1 + 2 + 3)\""
   {:added "4.0"}
-  ([form grammer mopts]
+  ([form grammar mopts]
    (binding [common/*emit-fn* emit-main-loop]
-     (emit-main-loop form grammer mopts))))
+     (emit-main-loop form grammar mopts))))
 
 (defn emit
   "emits form to output string"
   {:added "4.0"}
-  ([form grammer namespace mopts]
+  ([form grammar namespace mopts]
    (let [mopts (select-keys mopts +option-keys+)]
      (binding [*ns* (or (if namespace
                           (the-ns namespace))
                         *ns*)]
-       (cond (:emit grammer)
-             ((:emit grammer) form mopts)
+       (cond (:emit grammar)
+             ((:emit grammar) form mopts)
              
              :else
-             (emit-main form grammer mopts))))))
+             (emit-main form grammar mopts))))))
 
 (defmacro with:emit
   "binds the top-level emit function to common/*emit-fn*
  
    (emit/with:emit
     (common/*emit-fn* '(not (+ 1 2 3))
-                      +grammer+
+                      +grammar+
                       {}))
    => \"!(1 + 2 + 3)\""
   {:added "4.0"}
@@ -88,16 +88,16 @@
 ;;
 
 
-(def +test-grammer+
-  (delay (grammer/grammer :test
-           (grammer/to-reserved (grammer/build))
+(def +test-grammar+
+  (delay (grammar/grammar :test
+           (grammar/to-reserved (grammar/build))
            helper/+default+)))
 
 (defn prep-options
   "prepares the options for processing"
   {:added "4.0"}
   [meta]
-  (let [{:keys [lang grammer book namespace snapshot]
+  (let [{:keys [lang grammar book namespace snapshot]
          step :-} meta
         step (or step
                  (if (or (and lang snapshot)
@@ -110,13 +110,13 @@
                        @(resolve book)
                        book)
                      (get-in snapshot [lang :book]))
-        grammer  (or (if (symbol? grammer)
-                       @(resolve grammer)
-                       grammer)
-                     (if book (:grammer book))
-                     @+test-grammer+)
+        grammar  (or (if (symbol? grammar)
+                       @(resolve grammar)
+                       grammar)
+                     (if book (:grammar book))
+                     @+test-grammar+)
         mopts (select-keys meta +option-keys+)]
-    [step grammer book namespace mopts]))
+    [step grammar book namespace mopts]))
 
 (def +steps+
   [[:raw]
@@ -126,11 +126,11 @@
 (defn prep-form
   "prepares the form"
   {:added "4.0"}
-  [step form grammer book mopts]
+  [step form grammar book mopts]
   (case step
     :raw     [form]
     :input   [(preprocess/to-input form)]
     :staging (preprocess/to-staging (preprocess/to-input form)
-                                    grammer
+                                    grammar
                                     (:modules book)
                                     mopts)))

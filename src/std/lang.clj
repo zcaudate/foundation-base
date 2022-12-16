@@ -51,7 +51,7 @@
 
  preprocess/macro-form
  preprocess/macro-opts
- preprocess/macro-grammer
+ preprocess/macro-grammar
  preprocess/with:macro-opts
  
  impl/emit-script
@@ -65,7 +65,7 @@
  impl/default-library:reset
  impl/runtime-library
  impl/with:library
- impl/grammer
+ impl/grammar
 
  notify/default-notify
  notify/default-notify:reset
@@ -233,5 +233,5 @@
    :js '[(if (->> a b c)
            a b)])
   
-  (get (:reserved (grammer :xtalk))
+  (get (:reserved (grammar :xtalk))
        '->>))

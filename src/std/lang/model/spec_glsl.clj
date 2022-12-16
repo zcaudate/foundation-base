@@ -1,6 +1,6 @@
 (ns std.lang.model.spec-glsl
   (:require [std.lang.base.emit :as emit]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.base.util :as ut]
             [std.lang.base.book :as book]
             [std.lang.base.script :as script]
@@ -30,10 +30,10 @@
               +types+))
 
 (def +features+
-  (-> (grammer/build :exclude [:data-shortcuts
+  (-> (grammar/build :exclude [:data-shortcuts
                                :control-try-catch
                                :class])
-      (grammer/build:extend +typeops+)))
+      (grammar/build:extend +typeops+)))
 
 (def +template+
   (->> {:banned #{:set :map :regex}
@@ -43,11 +43,11 @@
                   :tuple     {:start "(" :end ")" :space ""}}
         :block  {:for       {:parameter {:sep ","}}}
         :define {:def       {:raw ""}}}
-       (h/merge-nested (emit/default-grammer))))
+       (h/merge-nested (emit/default-grammar))))
 
-(def +grammer+
-  (grammer/grammer :gl
-    (grammer/to-reserved +features+)
+(def +grammar+
+  (grammar/grammar :gl
+    (grammar/to-reserved +features+)
     +template+))
 
 (def +meta+
@@ -58,7 +58,7 @@
 (def +book+
   (book/book {:lang :glsl
               :meta +meta+
-              :grammer +grammer+}))
+              :grammar +grammar+}))
 
 (def +init+
   (script/install +book+))

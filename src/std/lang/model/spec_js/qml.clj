@@ -79,43 +79,43 @@
 (defn emit-value
   "emits a value string"
   {:added "4.0"}
-  [{:keys [value]} grammer mopts]
+  [{:keys [value]} grammar mopts]
   (cond (h/form? value)
         (case (first value)
           %  (str " {"
                   (common/with-indent [2]
                     (str (common/newline-indent)
                          (common/*emit-fn* (cons 'do (rest value))
-                                           grammer
+                                           grammar
                                            mopts)))
                   (common/newline-indent)
                   "}")
           var (common/*emit-fn* (cons 'property (rest value))
-                                (assoc-in grammer [:default :common :assign] ":")
+                                (assoc-in grammar [:default :common :assign] ":")
                                 mopts)
           fn  (common/*emit-fn* (cons 'fn.inner (rest value))
-                                grammer
+                                grammar
                                 mopts)
           (common/*emit-fn* value
-                            grammer
+                            grammar
                             mopts))
         
         :else
         (common/*emit-fn* value
-                          grammer
+                          grammar
                           mopts)))
 
 (defn emit-container
   "emits a container string"
   {:added "4.0"}
-  [{:keys [title props children]} grammer mopts]
+  [{:keys [title props children]} grammar mopts]
   (str title " {"
        (common/with-indent [2]
          (str (common/newline-indent)
               (->> (concat (mapv (fn [[k node]]
-                                   (str (h/strn k) ": " (emit-node node grammer mopts)))
+                                   (str (h/strn k) ": " (emit-node node grammar mopts)))
                                  props)
-                           (mapv #(emit-node %  grammer mopts) children))
+                           (mapv #(emit-node %  grammar mopts) children))
                    (str/join (common/newline-indent)))))
        (common/newline-indent)
        "}"))
@@ -123,10 +123,10 @@
 (defn emit-node
   "emits either container or value string"
   {:added "4.0"}
-  [{:keys [type value] :as node} grammer mopts]
+  [{:keys [type value] :as node} grammar mopts]
   (case type
-    :qml/container (emit-container node grammer mopts)
-    :qml/value (emit-value node grammer mopts)))
+    :qml/container (emit-container node grammar mopts)
+    :qml/value (emit-value node grammar mopts)))
 
 (defn emit-qml
   "emits a qml string
@@ -134,7 +134,7 @@
    (l/with:emit
     (qml/emit-qml [:qml/Window #{[:a 1 :b [:qml/Item]]}
                    '(fn hello [] (+ 1 2))]
-                  js/+grammer+
+                  js/+grammar+
                   {}))
    (std.string/|
    \"Window {\"
@@ -147,9 +147,9 @@
     \"  }\"
     \"}\")"
   {:added "4.0"}
-  [form grammer mopts]
+  [form grammar mopts]
   (let [tree (classify form)]
-    (emit-node tree grammer mopts)))
+    (emit-node tree grammar mopts)))
 
 (comment
   (./import))

@@ -3,22 +3,22 @@
   (:require [std.lang.base.emit-block :refer :all]
             [std.lang.base.emit-common :as common]
             [std.lang.base.emit-helper :as helper]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lib :as h]))
 
 (def +reserved+
-  (-> (grammer/build)
-      (grammer/to-reserved)))
+  (-> (grammar/build)
+      (grammar/to-reserved)))
 
-(def +grammer+
-  (grammer/grammer :test +reserved+ helper/+default+))
+(def +grammar+
+  (grammar/grammar :test +reserved+ helper/+default+))
 
 ^{:refer std.lang.base.emit-block/emit-statement :added "3.0"}
-(fact "emits a statement given grammer"
+(fact "emits a statement given grammar"
   ^:hidden
 
   (binding [common/*emit-fn* common/emit-common]
-    (emit-statement '(+ 1 2) +grammer+ {}))
+    (emit-statement '(+ 1 2) +grammar+ {}))
   => "1 + 2;")
 
 ^{:refer std.lang.base.emit-block/emit-do :added "3.0"}
@@ -26,7 +26,7 @@
   ^:hidden
 
   (binding [common/*emit-fn* common/emit-common]
-    (emit-do '((add 1 2) (add 3 4)) +grammer+ {}))
+    (emit-do '((add 1 2) (add 3 4)) +grammar+ {}))
   => "add(1,2);\nadd(3,4);")
 
 ^{:refer std.lang.base.emit-block/emit-do* :added "3.0"}
@@ -36,7 +36,7 @@
 (fact "gets the block options"
   ^:hidden
 
-  (block-options :for {:parameter {:space "|"}} :parameter +grammer+)
+  (block-options :for {:parameter {:space "|"}} :parameter +grammar+)
   => {:statement ";",
       :sep ",",
       :space "|",
@@ -59,7 +59,7 @@
                    {}
                    '[(add 1 2 3)
                      (add 1 2 3)]
-                   +grammer+
+                   +grammar+
                    {})
   
   => (std.string/| "{"
@@ -81,7 +81,7 @@
 (fact "emits the params for statement"
   ^:hidden
 
-  (emit-params-statement :for {} '[i v :in (pairs x)] +grammer+ {})
+  (emit-params-statement :for {} '[i v :in (pairs x)] +grammar+ {})
   => "i, v in (pairs x)")
 
 ^{:refer std.lang.base.emit-block/emit-params :added "3.0"}
@@ -90,13 +90,13 @@
 
   (emit-params :for {:parameter {:sep ";" :space " "}}
                '[(:= i 1) (< i 1) (inc i)]
-               +grammer+
+               +grammar+
                {})
   => "((:= i 1); (< i 1); (inc i))"
 
   (emit-params :for {:parameter {:statement ";"}}
                '[[(:= i 1) (:= j 0)] (< (* i j) 1) [(inc i) (inc j)]]
-               +grammer+
+               +grammar+
                {})
   => "((:= i 1), (:= j 0); (< (* i j) 1); (inc i), (inc j))")
 
@@ -105,10 +105,10 @@
   ^:hidden
 
   (emit-block-controls :catch
-                       (get-in +grammer+ '[:reserved try :block])
-                       (get-in +grammer+ '[:reserved try :block :control])
+                       (get-in +grammar+ '[:reserved try :block])
+                       (get-in +grammar+ '[:reserved try :block :control])
                        '{:catch [(catch e (print e))]}
-                       +grammer+ {})
+                       +grammar+ {})
   => "\ncatch(e){\n  (print e);\n}")
 
 ^{:refer std.lang.base.emit-block/emit-block-controls :added "3.0"}
@@ -116,11 +116,11 @@
   ^:hidden
 
   (emit-block-controls :catch
-                       (get-in +grammer+ '[:reserved try :block])
-                       (get-in +grammer+ '[:reserved try :block :control])
+                       (get-in +grammar+ '[:reserved try :block])
+                       (get-in +grammar+ '[:reserved try :block :control])
                        '{:catch [(catch e (print e))]
                          :finally [(finally print 123)]}
-                       +grammer+ {})
+                       +grammar+ {})
   => (std.string/|
              ""
              "catch(e){"
@@ -136,14 +136,14 @@
   ^:hidden
   
   (emit-block-setup :br
-                    (get-in +grammer+ '[:reserved br* :block])
+                    (get-in +grammar+ '[:reserved br* :block])
                     '(br*
                       (if (= x 1) (pr 1) (pr 2))
                       (elseif (= x 2) (pr 3) (pr 4))
                       (elseif (= x 3) (pr 5) (pr 6))
                       (elseif (= x 4) (pr 7))
                       (else (pr 8)))
-                    +grammer+
+                    +grammar+
                     {})
   => '["" nil ()
        {:if [(if (= x 1) (pr 1) (pr 2))],
@@ -158,13 +158,13 @@
   ^:hidden
   
   (emit-block-inner :switch
-                    (get-in +grammer+ '[:reserved switch :block])
+                    (get-in +grammar+ '[:reserved switch :block])
                     '(switch
                       [(type obj)]
                       (case [:A] (return A))
                       (case [:B] (return B))
                       (default (return X)))
-                    +grammer+
+                    +grammar+
                     {})
   => (std.string/|
       "switch((type obj)){"
@@ -184,14 +184,14 @@
 
   (binding [common/*emit-fn* common/emit-common]
     (emit-block-standard :br
-                         (get-in +grammer+ '[:reserved br* :block])
+                         (get-in +grammar+ '[:reserved br* :block])
                          '(br
                            (if (== x 1) (pr 1) (pr 2))
                            (elseif (== x 2) (pr 3) (pr 4))
                            (elseif (== x 3) (pr 5) (pr 6))
                            (elseif (== x 4) (pr 7))
                            (else (pr 8)))
-                         +grammer+
+                         +grammar+
                          {}))
   
   => (std.string/|
@@ -222,7 +222,7 @@
               '(while (< 1 2)
                  (add 1 2 3)
                  (add 1 2 3))
-              +grammer+
+              +grammar+
               {})
   => (std.string/|
    "while((< 1 2)){"

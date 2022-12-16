@@ -7,7 +7,7 @@
             [std.lang.base.book-meta :as meta]
             [std.lang.base.book-module :as module]
             [std.lang.base.book-entry :as entry]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.model.spec-lua :as lua]
             [std.lang.base.emit-common :as common]
 	    [std.lang.base.emit-helper :as helper]
@@ -102,8 +102,8 @@
                  (b/book (b/book {:lang :js
                                   :parent  :x
                                   :meta    (meta/book-meta {})
-                                  :grammer (grammer/grammer :js
-                                             (grammer/to-reserved (grammer/build))
+                                  :grammar (grammar/grammar :js
+                                             (grammar/to-reserved (grammar/build))
                                              helper/+default+)})))
 
   (lib/wait-apply +library+ h/deps:ordered [:js])

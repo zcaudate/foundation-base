@@ -3,17 +3,17 @@
   (:require [std.lang.base.emit-preprocess :refer :all]
             [std.lang.base.emit-common :as common]
             [std.lang.base.emit-helper :as helper]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.base.emit-prep-test :as prep]
             [std.lang.base.book-entry :as entry]
             [std.lib :as h]))
 
 (def +reserved+
-  (-> (grammer/build)
-      (grammer/to-reserved)))
+  (-> (grammar/build)
+      (grammar/to-reserved)))
 
-(def +grammer+
-  (grammer/grammer :test +reserved+ helper/+default+))
+(def +grammar+
+  (grammar/grammar :test +reserved+ helper/+default+))
 
 ^{:refer std.lang.base.emit-preprocess/macro-form :added "4.0"}
 (fact "gets the current macro form")
@@ -21,8 +21,8 @@
 ^{:refer std.lang.base.emit-preprocess/macro-opts :added "4.0"}
 (fact "gets current macro-opts")
 
-^{:refer std.lang.base.emit-preprocess/macro-grammer :added "4.0"}
-(fact "gets the current grammer")
+^{:refer std.lang.base.emit-preprocess/macro-grammar :added "4.0"}
+(fact "gets the current grammar")
 
 ^{:refer std.lang.base.emit-preprocess/with:macro-opts :added "4.0"}
 (fact "bind macro opts")

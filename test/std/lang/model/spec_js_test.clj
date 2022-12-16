@@ -8,7 +8,7 @@
 (fact "emits html"
   ^:hidden
   
-  (emit-html [:hello] +grammer+ {})
+  (emit-html [:hello] +grammar+ {})
   => "<hello></hello>")
 
 ^{:refer std.lang.model.spec-js/js-regex :added "4.0"}
@@ -22,30 +22,30 @@
 (fact "emits a map key"
   ^:hidden
   
-  (js-map-key 'hello +grammer+ {})
+  (js-map-key 'hello +grammar+ {})
   => "[hello]"
 
-  (js-map-key :hello +grammer+ {})
+  (js-map-key :hello +grammar+ {})
   => "\"hello\"")
 
 ^{:refer std.lang.model.spec-js/js-vector :added "4.0"}
 (fact "emits a js vector"
   ^:hidden
   
-  (js-vector [1 2 3 4] +grammer+ {})
+  (js-vector [1 2 3 4] +grammar+ {})
   => "[1,2,3,4]"
 
-  (js-vector [:div {} "hello"] +grammer+ {})
+  (js-vector [:div {} "hello"] +grammar+ {})
   => "(\n  <div>hello</div>)")
 
 ^{:refer std.lang.model.spec-js/js-set :added "4.0"}
 (fact "emits a js set"
   ^:hidden
   
-  (js-set '#{...x y {a 1 :b 2}} +grammer+ {})
+  (js-set '#{...x y {a 1 :b 2}} +grammar+ {})
   => "{...x,y,[a]:1,\"b\":2}"
 
-  (js-set '#{[...x y (% a) 1 :b 2]} +grammer+ {})
+  (js-set '#{[...x y (% a) 1 :b 2]} +grammar+ {})
   => "(tab ...x y (% a) 1 :b 2)")
 
 

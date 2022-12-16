@@ -1,6 +1,6 @@
 (ns std.lang.model.spec-c
   (:require [std.lang.base.emit :as emit]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.base.util :as ut]
             [std.lang.base.book :as book]
             [std.lang.base.script :as script]
@@ -21,10 +21,10 @@
       (list :- "#define" sym body))))
 
 (def +features+
-  (-> (grammer/build :exclude [:data-shortcuts
+  (-> (grammar/build :exclude [:data-shortcuts
                                :control-try-catch
                                :class])
-      (grammer/build:extend
+      (grammar/build:extend
        {:define  {:op :define  :symbol '#{define}  :macro #'tf-define
                   :type :def :emit :macro
                   :section :code :priority 1}})))
@@ -37,11 +37,11 @@
                   :tuple     {:start "(" :end ")" :space ""}}
         :block  {:for       {:parameter {:sep ","}}}
         :define {:def       {:raw ""}}}
-       (h/merge-nested (emit/default-grammer))))
+       (h/merge-nested (emit/default-grammar))))
 
-(def +grammer+
-  (grammer/grammer :c
-    (grammer/to-reserved +features+)
+(def +grammar+
+  (grammar/grammar :c
+    (grammar/to-reserved +features+)
     +template+))
 
 (def +meta+
@@ -54,7 +54,7 @@
 (def +book+
   (book/book {:lang :c
               :meta +meta+
-              :grammer +grammer+}))
+              :grammar +grammar+}))
 
 (def +init+
   (script/install +book+))

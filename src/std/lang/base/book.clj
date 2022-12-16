@@ -54,7 +54,7 @@
 (defn get-code-deps
   "gets `:deps` or if a `:static/template` calculate dependencies"
   {:added "4.0"}
-  ([{:keys [modules grammer lang] :as book} id]
+  ([{:keys [modules grammar lang] :as book} id]
    (let [entry (get-code-entry book id)]
      (if-not (:static/template entry)
        (:deps entry)
@@ -64,10 +64,10 @@
                           m
                           (let [input (:form entry)
                                 mopts {:modules modules
-                                       :grammer grammer
+                                       :grammar grammar
                                        :entry entry}
                                 
-                                [form deps] (preprocess/to-staging input grammer modules mopts)]
+                                [form deps] (preprocess/to-staging input grammar modules mopts)]
                             (assoc-in m [lang :deps]  deps)))))
                [lang :deps])))))
 
@@ -96,7 +96,7 @@
   {:added "4.0"}
   ([{:keys [lang
             meta
-            grammer
+            grammar
             modules
             parent
             scope]}]
@@ -108,7 +108,7 @@
 
 (defimpl Book [lang
                meta
-               grammer
+               grammar
                modules
                parent
                referenced]
@@ -127,12 +127,12 @@
   {:added "4.0"}
   ([{:keys [lang
             meta
-            grammer
+            grammar
             modules
             parent
             merged] :as m}]
    (assert (not-empty meta) "Meta required")
-   (assert (not-empty grammer) "Grammer required")
+   (assert (not-empty grammar) "Grammer required")
    (map->Book (merge {:parent nil
                       :modules {}}
                      m
@@ -302,7 +302,7 @@
   {:added "4.0"}
   [book module-id]
   (let [suffix   (or (get-in book [:file :suffix])
-                     (name (get-in book [:grammer :tag])))]
+                     (name (get-in book [:grammar :tag])))]
     (str (last (str/split (name module-id) #"\."))
          "." suffix)))
 

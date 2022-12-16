@@ -18,12 +18,12 @@
 (defn install
   "installs a language"
   {:added "4.0"}
-  [{:keys [lang grammer] :as book}]
+  [{:keys [lang grammar] :as book}]
   (let [lib (impl/default-library)]
     [(lib/install-book! lib book)
      (rt/install-lang! lang)
-     (macro/intern-grammer lang
-                           grammer)]))
+     (macro/intern-grammar lang
+                           grammar)]))
 
 (def +module-keys+
   [;; builtin

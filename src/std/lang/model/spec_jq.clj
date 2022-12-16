@@ -4,7 +4,7 @@
             [std.lang.base.emit-data :as data]
             [std.lang.base.emit-fn :as fn]
             [std.lang.base.emit-top-level :as top]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.base.util :as ut]
             [std.lang.base.book :as book]
             [std.lang.base.script :as script]

@@ -157,13 +157,13 @@
   [snapshot entry & [mopts]]
   (let [{:keys [lang module section]} entry
         shadow-snapshot (snapshot-merge *parent* snapshot)
-        {:keys [grammer modules]
+        {:keys [grammar modules]
          :as book} (get-book shadow-snapshot lang)
         entry  (if (= section :fragment)
                  entry
                  (entry/create-code-hydrate entry
-                                            (get-in grammer [:reserved (:op entry)])
-                                            grammer
+                                            (get-in grammar [:reserved (:op entry)])
+                                            grammar
                                             modules
                                             (merge {:lang lang
                                                     :snapshot shadow-snapshot
@@ -259,20 +259,20 @@
 ;;
 
 (defn install-book-update
-  "updates the book grammer, meta and parent"
+  "updates the book grammar, meta and parent"
   {:added "4.0"}
-  [snapshot {:keys [lang grammer parent meta]}]
+  [snapshot {:keys [lang grammar parent meta]}]
   (let [new-book  (-> (get-book-raw snapshot lang)
                       (assoc :meta meta))
         [diffs new-book] (atom/atom-set-keys-fn new-book []
                                                 {:parent parent
-                                                 :grammer grammer})]
+                                                 :grammar grammar})]
     (if (empty? diffs)
       [new-book :no-change]
       (vec (cons (add-book snapshot new-book) (atom/atom:set-changed diffs))))))
 
 (defn install-book
-  "adds a new book or updates grammer if exists"
+  "adds a new book or updates grammar if exists"
   {:added "4.0"}
   [snapshot {:keys [lang parent] :as new-book}]
   (let [_ (if parent

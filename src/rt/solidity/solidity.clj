@@ -8,7 +8,7 @@
             [rt.solidity.compile-node :as compile-node]
             [rt.solidity.compile-solc :as compile-solc]
             [rt.solidity.compile-deploy :as compile-deploy]
-            [rt.solidity.grammer :as grammer]
+            [rt.solidity.grammar :as grammar]
             [rt.solidity.script.builtin :as builtin]
             [rt.solidity.script.util :as util])
   (:refer-clojure :exclude [assert require bytes]))

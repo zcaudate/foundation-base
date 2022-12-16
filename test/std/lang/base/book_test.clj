@@ -4,7 +4,7 @@
             [std.lang.base.book-meta :as meta]
             [std.lang.base.book-module :as module]
             [std.lang.base.book-entry :as entry]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.base.emit-common :as common]
 	    [std.lang.base.emit-helper :as helper]
             [std.lang.base.util :as ut]
@@ -20,8 +20,8 @@
                                                     (list 'not= (ut/sym-full ptr) nil))
                                   :teardown-ptr   (fn [ptr]
                                                     (list := (ut/sym-full ptr) nil))})
-           :grammer (grammer/grammer :lua
-                      (grammer/build)
+           :grammar (grammar/grammar :lua
+                      (grammar/build)
                       helper/+default+)}))
 
 (def +module+
@@ -142,7 +142,7 @@
   
   (b/book {:lang :redis
            :meta    (:meta +book+)
-           :grammer (:grammer +book+)
+           :grammar (:grammar +book+)
            :parent  :lua
            :merged  #{}})
   => b/book?)
@@ -153,7 +153,7 @@
   
   (b/book-merge (b/book {:lang    :redis
                          :meta    (:meta +book+)
-                         :grammer (:grammer +book+)
+                         :grammar (:grammar +book+)
                          :parent  :lua
                          :merged  #{}})
                 +sample+)
@@ -166,7 +166,7 @@
   :setup [(def +redis+
             (b/book-merge (b/book {:lang    :redis
                                    :meta    (:meta +book+)
-                                   :grammer (:grammer +book+)
+                                   :grammar (:grammar +book+)
                                    :parent  :lua
                                    :merged  #{}})
                           +sample+))]}

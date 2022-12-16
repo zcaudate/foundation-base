@@ -3,15 +3,15 @@
   (:require [std.lang.base.emit-top-level :refer :all]
             [std.lang.base.emit-common :as common]
             [std.lang.base.emit-helper :as helper]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lib :as h]))
 
 (def +reserved+
-  (-> (grammer/build-min [:macro-case])
-      (grammer/to-reserved)))
+  (-> (grammar/build-min [:macro-case])
+      (grammar/to-reserved)))
 
-(def +grammer+
-  (grammer/grammer :test +reserved+ helper/+default+))
+(def +grammar+
+  (grammar/grammar :test +reserved+ helper/+default+))
 
 ^{:refer std.lang.base.emit-top-level/transform-defclass-inner :added "4.0"}
 (fact "transforms the body to be fn.inner and var.inner"
@@ -29,14 +29,14 @@
   (binding [common/*emit-fn* common/emit-common]
     (emit-def :def
               '(def hello (table 1 2 3))
-              +grammer+
+              +grammar+
               {}))
   => "def hello = table(1,2,3);"
 
   (binding [common/*emit-fn* common/emit-common]
     (emit-def :defglobal
               '(defglobal hello (table 1 2 3))
-              +grammer+
+              +grammar+
               {}))
   => "global hello = table(1,2,3);")
 
@@ -45,7 +45,7 @@
 
   (emit-declare :def
                 '(declare a b c)
-                +grammer+
+                +grammar+
                 {})
   => "def a,b,c")
 
@@ -56,7 +56,7 @@
     (emit-top-level :defn
                     '(defn abc [a := 0]
                        (+ 1 2 3))
-                    +grammer+
+                    +grammar+
                     {}))
   => "function abc(a = 0){\n  1 + 2 + 3;\n}")
 
@@ -66,7 +66,7 @@
   
   (emit-form :custom
              '(custom 1 2 3)
-             (assoc-in +grammer+
+             (assoc-in +grammar+
                        [:reserved 'custom]
                        {:emit  (fn [_ _ _]
                                  'CUSTOM)})

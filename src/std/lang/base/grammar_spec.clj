@@ -1,4 +1,4 @@
-(ns std.lang.base.grammer-spec
+(ns std.lang.base.grammar-spec
   (:require [std.lib :as h :refer [defimpl]]
             [std.string :as str]))
 	   
@@ -8,8 +8,8 @@
    (get-comment helper/+default+ {})
    => \"//\""
   {:added "4.0"}
-  [grammer _] 
-  (-> grammer :default :comment :prefix))
+  [grammar _] 
+  (-> grammar :default :comment :prefix))
 
 (defn format-fargs
   "formats function inputs"

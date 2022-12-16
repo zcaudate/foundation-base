@@ -1,5 +1,9 @@
 # foundation
 
+### pre open source notice
+
+Hi all. I'm hoping to get some eyes for `std.lang` before going ahead for the open source release . Please play with it and leave feedback via issues.
+
 ### prerequisites
 
 Please see setup for [the testing environment](https://github.com/zcaudate/infra-testing/blob/main/infra/Dockerfile_foundation) which builds the docker container that is running the [base tests](https://github.com/zcaudate/foundation-ci/actions/workflows/test-base.yml). VNC is not needed for desktop testing.
@@ -9,15 +13,15 @@ Please see setup for [the testing environment](https://github.com/zcaudate/infra
 To run all test:
 
 ```
-> git clone git@github.com:zcaudate/foundation-base.git
-> cd foundation-base
-> lein test
+git clone git@github.com:zcaudate/foundation-base.git
+cd foundation-base
+lein test
 ```
 
 Currently clojars deploy is broken. To install jars to `.m2` for use in other projects run:
 
 ```
-> lein install
+lein install
 ```
 
 ### std.lang - overview

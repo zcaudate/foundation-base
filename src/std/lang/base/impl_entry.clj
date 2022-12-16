@@ -65,23 +65,23 @@
 (defn create-code-base
   "creates the base code entry"
   {:added "4.0"}
-  ([[op sym & body :as form] meta grammer]
-   (let [reserved (get-in grammer [:reserved op])]
+  ([[op sym & body :as form] meta grammar]
+   (let [reserved (get-in grammar [:reserved op])]
      (second (create-code-raw form reserved meta)))))
 
 (defn create-code-hydrate
   "hydrates the forms"
   {:added "4.0"}
-  ([entry reserved grammer modules & [mopts]]
+  ([entry reserved grammar modules & [mopts]]
    (let [{:keys [hydrate hydrate-hook]} reserved
          {:keys [form-input]} entry
          [hmeta form-hydrate] (if hydrate
-                                (hydrate form-input grammer mopts)
+                                (hydrate form-input grammar mopts)
                                 [nil form-input])
          module (assoc (get modules (:module entry))
                        :display :brief)
          [form deps] (preprocess/to-staging form-hydrate
-                                            grammer
+                                            grammar
                                             modules
                                             (merge {:module module
                                                     :entry (assoc entry :display :brief)}
@@ -105,18 +105,18 @@
   ([form meta book mopts]
    (let [{:keys [modules]} book]
      (create-code form meta
-                  (:grammer book)
+                  (:grammar book)
                   (:modules book)
                   (merge {:module (-> modules
                                       (get (:module meta))
                                       (assoc :display :brief))}
                          mopts))))
-  ([[op sym & body :as form] meta grammer modules mopts]
-   (let [reserved (get-in grammer [:reserved op])]
+  ([[op sym & body :as form] meta grammar modules mopts]
+   (let [reserved (get-in grammar [:reserved op])]
      (-> form
          (create-code-raw reserved meta)
          second
-         (create-code-hydrate reserved grammer modules mopts)))))
+         (create-code-hydrate reserved grammar modules mopts)))))
 
 (defn create-fragment
   "creates a fragment"
@@ -184,7 +184,7 @@
 (defn emit-entry-raw
   "emits using the raw entry"
   {:added "4.0"}
-  ([grammer entry {:keys [emit]
+  ([grammar entry {:keys [emit]
                    :as mopts}]
    (assert entry "Entry cannot be null")
    (let [{:keys [form]}  entry
@@ -193,9 +193,9 @@
                 form)
          mopts (assoc mopts :entry (assoc entry :display :brief))]
      (binding [preprocess/*macro-opts* mopts
-               preprocess/*macro-grammer* grammer]
+               preprocess/*macro-grammar* grammar]
        (try
-         (emit/emit form grammer
+         (emit/emit form grammar
                     (:namespace entry)
                     mopts)
          (catch Throwable t
@@ -217,26 +217,26 @@
   {:added "4.0"}
   [:recent {:key (fn [{:keys [entry mopts]}]
                    [(ut/sym-full entry) (select-keys mopts +cached-keys+)])
-            :compare (fn [{:keys [grammer entry mopts]}]
+            :compare (fn [{:keys [grammar entry mopts]}]
                        [(:lang mopts)
-                        (h/hash-id grammer)
+                        (h/hash-id grammar)
                         (h/hash-id entry)
                         (select-keys mopts +cached-keys+)
                         (h/qualified-keys mopts :lang)])}]
-  ([{:keys [grammer entry mopts]}]
-   (emit-entry-raw grammer entry mopts)))
+  ([{:keys [grammar entry mopts]}]
+   (emit-entry-raw grammar entry mopts)))
 
 (defn emit-entry-label
   "emits the entry label"
   {:added "4.0"}
-  [grammer entry]
-  (let [{:keys [prefix suffix]} (get-in grammer [:default :comment])]
+  [grammar entry]
+  (let [{:keys [prefix suffix]} (get-in grammar [:default :comment])]
     (str prefix " " (ut/sym-full entry) " [" (:line entry) "] " suffix)))
 
 (defn emit-entry
   "emits a given entry"
   {:added "4.0"}
-  ([grammer entry {:keys [snapshot module emit]
+  ([grammar entry {:keys [snapshot module emit]
                    :as mopts}]
    (if (not (:suppress emit))
      (let [mopts  (or (and (not module)
@@ -248,14 +248,14 @@
            body (cond (or *cache-none*
                           (:static/no-cache entry)
                           (= cache :none))
-                      (emit-entry-raw grammer entry mopts)
+                      (emit-entry-raw grammar entry mopts)
                       
                       :else
                       (binding [std.lib.invoke/*force* (or *cache-force* (= cache :force))]
-                        (emit-entry-cached {:grammer grammer
+                        (emit-entry-cached {:grammar grammar
                                             :entry   entry
                                             :mopts   mopts})))
            body (cond->> body
-                  label (str (emit-entry-label grammer entry) "\n")
+                  label (str (emit-entry-label grammar entry) "\n")
                   trim  (trim))]
        body))))

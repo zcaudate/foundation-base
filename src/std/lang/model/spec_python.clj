@@ -1,7 +1,7 @@
 (ns std.lang.model.spec-python
   (:require [std.lang.base.emit :as emit]
-            [std.lang.base.grammer :as grammer]
-            [std.lang.base.grammer-spec :as spec]
+            [std.lang.base.grammar :as grammar]
+            [std.lang.base.grammar-spec :as spec]
             [std.lang.base.emit-preprocess :as preprocess]
             [std.lang.base.emit-common :as common]
             [std.lang.base.emit-helper :as helper]
@@ -21,10 +21,10 @@
 ;;
 
 (defn- python-symbol-global
-  [fsym grammer mopts]
+  [fsym grammar mopts]
   (list '. '(globals) [(helper/emit-symbol-full fsym
                                                 (namespace fsym)
-                                                grammer)]))
+                                                grammar)]))
 
 (defn- python-token-boolean
   [v]
@@ -33,8 +33,8 @@
 (defn python-defn-
   "hidden function without decorators"
   {:added "4.0"}
-  [form grammer mopts]
-  (top/emit-top-level :defn form grammer mopts))
+  [form grammar mopts]
+  (top/emit-top-level :defn form grammar mopts))
 
 (defn python-defn
   "creates a defn function for python"
@@ -157,9 +157,9 @@
              (catch [Exception :as ~err] ~error))))
 
 (def +features+
-  (-> (grammer/build :exclude [:pointer
+  (-> (grammar/build :exclude [:pointer
                                :block])
-      (grammer/build:override
+      (grammar/build:override
        {:pow         {:raw "**"}
         :and         {:raw "and"}
         :or          {:raw "or"}
@@ -177,8 +177,8 @@
         :for-iter    {:macro #'tf-for-iter   :emit :macro}
         :for-index   {:macro #'tf-for-index  :emit :macro}
         :for-return  {:macro #'tf-for-return :emit :macro}})
-      (grammer/build:override fn/+python+)
-      (grammer/build:extend
+      (grammar/build:override fn/+python+)
+      (grammar/build:extend
        {:defn-     {:op :defn-   :symbol #{'defn-}  :type :block :emit #'python-defn-}
         :var-let   {:op :var-let :symbol #{'var}  :macro #'python-var :type :macro}
         :unarr     {:op :unarr   :symbol #{:*}    :raw "*"    :emit :pre}
@@ -224,11 +224,11 @@
                                  :args   {:start "(" :end "):" :space ""}}}
         :define   {:defglobal  {:raw ""}
                    :def        {:raw ""}}}
-       (h/merge-nested (emit/default-grammer))))
+       (h/merge-nested (emit/default-grammar))))
 
-(def +grammer+
-  (grammer/grammer :py
-    (grammer/to-reserved +features+)
+(def +grammar+
+  (grammar/grammar :py
+    (grammar/to-reserved +features+)
     +template+))
 
 (def +meta+
@@ -249,7 +249,7 @@
   (book/book {:lang :python
               :parent :xtalk
               :meta +meta+
-              :grammer +grammer+}))
+              :grammar +grammar+}))
 
 (def +init+
   (script/install +book+))

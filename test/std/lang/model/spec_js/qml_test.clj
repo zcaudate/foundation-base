@@ -115,7 +115,7 @@
    (qml/emit-value '{:type :qml/value,
                      :value (% (:= circle.x 84)
                                (:= box.rotation 0))}
-                   js/+grammer+
+                   js/+grammar+
                    {}))
   => " {\n  circle.x = 84;\n  box.rotation = 0;\n}")
 
@@ -139,7 +139,7 @@
                            :value (fn _test_transformed [] (:+= circle.x 20))}
                           {:type :qml/value,
                            :value (fn _test_overlap [] (:+= circle.x 20))}]}
-                       js/+grammer+
+                       js/+grammar+
                        {}))
   => (std.string/|
       "MouseAria {"
@@ -190,7 +190,7 @@
                         :value (fn _test_transformed [] (:+= circle.x 20))}
                        {:type :qml/value,
                         :value (fn _test_overlap [] (:+= circle.x 20))}]}]}
-                  js/+grammer+
+                  js/+grammar+
                   {}))
   => (std.string/|
       "Item {"
@@ -223,7 +223,7 @@
   (l/with:emit
    (qml/emit-qml [:qml/Window #{[:a 1 :b [:qml/Item]]}
                   '(fn hello [] (+ 1 2))]
-                 js/+grammer+
+                 js/+grammar+
                  {}))
   (std.string/|
    "Window {"

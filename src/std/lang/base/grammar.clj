@@ -1,14 +1,14 @@
-(ns std.lang.base.grammer
+(ns std.lang.base.grammar
   (:require [std.lib :as h :refer [defimpl]]
             [std.string :as str]
-            [std.lang.base.grammer-spec :as spec]
-            [std.lang.base.grammer-macro :as macro]
-            [std.lang.base.grammer-xtalk :as xtalk]))
+            [std.lang.base.grammar-spec :as spec]
+            [std.lang.base.grammar-macro :as macro]
+            [std.lang.base.grammar-xtalk :as xtalk]))
 
 (defn gen-ops
   "generates ops
  
-   (gen-ops 'std.lang.base.grammer-spec \"spec\")
+   (gen-ops 'std.lang.base.grammar-spec \"spec\")
    => vector?"
   {:added "4.0"}
   [ns shortcut]
@@ -39,9 +39,9 @@
        (into {})))
 
 (def ^{:generator (fn []
-                    (vec (concat (gen-ops 'std.lang.base.grammer-spec "spec")
-                                 (gen-ops 'std.lang.base.grammer-macro "macro")
-                                 (gen-ops 'std.lang.base.grammer-xtalk "xtalk"))))}
+                    (vec (concat (gen-ops 'std.lang.base.grammar-spec "spec")
+                                 (gen-ops 'std.lang.base.grammar-macro "macro")
+                                 (gen-ops 'std.lang.base.grammar-xtalk "xtalk"))))}
   +op-all+
   (->> [[:builtin spec/+op-builtin+]
         [:builtin-global spec/+op-builtin-global+]
@@ -102,7 +102,7 @@
        (collect-ops)))
 
 (defn ops-list
-  "lists all ops in the grammer"
+  "lists all ops in the grammar"
   {:added "4.0"}
   ([]
    (map first (sort-by (comp :order meta second) +op-all+))))
@@ -137,7 +137,7 @@
 ;;
 
 (defn build
-  "selector for picking required ops in grammer"
+  "selector for picking required ops in grammar"
   {:added "3.0"}
   ([]
    (apply merge (vals +op-all+)))
@@ -253,7 +253,7 @@
                        (:symbol m))))
         (into {}))))
 
-(defn grammer-structure
+(defn grammar-structure
   "returns all the `:block` and `:fn` forms"
   {:added "3.0"}
   ([reserved]
@@ -261,21 +261,21 @@
                 (fn [k] (set (keys (h/filter-vals (comp #{k} :type) reserved))))]
                [:block :def :fn])))
 
-(defn grammer-sections
-  "process sections witihin the grammer"
+(defn grammar-sections
+  "process sections witihin the grammar"
   {:added "3.0"}
   ([reserved]
    (set (vals (h/keep-vals :section reserved)))))
 
-(defn grammer-macros
-  "process macros within the grammer"
+(defn grammar-macros
+  "process macros within the grammar"
   {:added "3.0"}
   ([reserved]
    (set (keys (h/filter-vals (comp #{:def} :type) reserved)))))
 
-(defn- grammer-string
-  ([{:keys [tag structure reserved banned highlight macros sections] :as grammer}]
-   (str "#grammer " [tag] " "
+(defn- grammar-string
+  ([{:keys [tag structure reserved banned highlight macros sections] :as grammar}]
+   (str "#grammar " [tag] " "
         (assoc structure
                :sections sections
                :ops (count reserved)
@@ -284,23 +284,23 @@
                :macros macros))))
 
 (defimpl Grammer [tag emit structure reserved banned highlight]
-  :string grammer-string)
+  :string grammar-string)
 
-(defn grammer?
-  "checks that an object is instance of grammer"
+(defn grammar?
+  "checks that an object is instance of grammar"
   {:added "3.0"}
   ([obj]
    (instance? Grammer obj)))
 
-(defn grammer
-  "constructs a grammer"
+(defn grammar
+  "constructs a grammar"
   {:added "3.0" :style/indent 1}
   ([tag reserved template]
    (-> template
        (assoc :tag tag
               :reserved reserved
-              :sections  (grammer-sections reserved)
-              :macros    (grammer-macros reserved)
-              :structure (grammer-structure reserved))
+              :sections  (grammar-sections reserved)
+              :macros    (grammar-macros reserved)
+              :structure (grammar-structure reserved))
        (map->Grammer))))
 

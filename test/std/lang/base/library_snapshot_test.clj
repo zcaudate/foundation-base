@@ -274,23 +274,23 @@
   => vector?)
 
 ^{:refer std.lang.base.library-snapshot/install-book-update :added "4.0"}
-(fact "updates the book grammer, meta and parent")
+(fact "updates the book grammar, meta and parent")
 
 ^{:refer std.lang.base.library-snapshot/install-book :added "4.0"}
-(fact "adds a new book or updates grammer if exists"
+(fact "adds a new book or updates grammar if exists"
   ^:hidden
   
   (snap/install-book prep/+snap+
                      (b/book {:lang :hello
                               :meta (b/book-meta {})
-                              :grammer (assoc (:grammer prep/+book-x+)
+                              :grammar (assoc (:grammar prep/+book-x+)
                                               :tag :hello)}))
   => vector?
 
   (snap/install-book prep/+snap+
                      (b/book {:lang :redis
                               :meta    (b/book-meta {})
-                              :grammer (assoc lua/+grammer+
+                              :grammar (assoc lua/+grammar+
                                               :tag :redis)}))
   => vector?)
 

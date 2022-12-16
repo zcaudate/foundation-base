@@ -5,7 +5,7 @@
             [js.blessed]))
 
 ^{:refer std.lang.base.script-lint/get-reserved-raw :added "4.0"}
-(fact "gets all reserved symbols in the grammer")
+(fact "gets all reserved symbols in the grammar")
 
 ^{:refer std.lang.base.script-lint/collect-vars :added "4.0"}
 (fact "collects all vars"
@@ -66,4 +66,4 @@
   
   (get 
    (set (keys
-         (:reserved (std.lang/grammer :js))))))
+         (:reserved (std.lang/grammar :js))))))

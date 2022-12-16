@@ -3,22 +3,22 @@
   (:require [std.lang.base.emit-fn :refer :all]
             [std.lang.base.emit-common :as common]
             [std.lang.base.emit-helper :as helper]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lib :as h]))
 
 (def +reserved+
-  (-> (grammer/build)
-      (grammer/to-reserved)))
+  (-> (grammar/build)
+      (grammar/to-reserved)))
 
-(def +grammer+
-  (grammer/grammer :test +reserved+ helper/+default+))
+(def +grammar+
+  (grammar/grammar :test +reserved+ helper/+default+))
 
 ^{:refer std.lang.base.emit-fn/emit-input-default :added "3.0"}
 (fact "create input arg strings"
   ^:hidden
 
   (-> (helper/emit-typed-args '(:int i := 9, :const :int j := 10)
-                              +grammer+)
+                              +grammar+)
       first
       (emit-input-default "=" {} {}))
   => "int i = 9")
@@ -34,20 +34,20 @@
   ^:hidden
   
   (emit-fn-type (with-meta 'hello {:- [:char]}) nil
-                +grammer+
+                +grammar+
                 {})
   => "char"
 
   (emit-fn-type nil "function"
-                +grammer+
+                +grammar+
                 {})
   => "function")
 
 ^{:refer std.lang.base.emit-fn/emit-fn-block :added "4.0"}
-(fact "gets the block options for a given grammer"
+(fact "gets the block options for a given grammar"
   ^:hidden
   
-  (emit-fn-block :default +grammer+)
+  (emit-fn-block :default +grammar+)
   => {:raw "function",
       :args {:start "(", :end ")", :space ""},
       :body {:start "{", :end "}"}})
@@ -57,8 +57,8 @@
   ^:hidden
   
   (emit-fn-preamble [:defn 'sym '[:int i 9, :const :int j 10]]
-                    (emit-fn-block :default +grammer+)
-                    +grammer+
+                    (emit-fn-block :default +grammar+)
+                    +grammar+
                     {})
   => "sym(int i = 9,const int j = 10)")
 
@@ -71,7 +71,7 @@
              '[function sym [:int i 9, :const :int j 10]
                (for [(:= i 0) (< i j) (:++ i)]
                  (return i))]
-             +grammer+
+             +grammar+
              {}))
   => (std.string/|
       "function sym(int i = 9,const int j = 10){"

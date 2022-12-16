@@ -13,41 +13,41 @@
 (defn default-map-key
   "emits a default map key"
   {:added "4.0"}
-  [key grammer nsp]
+  [key grammar nsp]
   (let [key-str (if (keyword? key)
                   (ut/sym-default-str key)
                   key)]
-    (common/*emit-fn* key-str grammer nsp)))
+    (common/*emit-fn* key-str grammar nsp)))
 
 (defn emit-map-key
   "emits the map key"
   {:added "4.0"}
-  ([form grammer mopts]
+  ([form grammar mopts]
    (cond (keyword? form)
-         (let [convert (or (get-in grammer [:data :map-entry :keyword])
+         (let [convert (or (get-in grammar [:data :map-entry :keyword])
                            :string)
                tok (case convert
                      :symbol  (symbol (h/strn form))
                      :string  (h/strn form)
                      :keyword form)]
-           (common/*emit-fn* tok grammer mopts))
+           (common/*emit-fn* tok grammar mopts))
          
          :else
-         (common/*emit-fn* form grammer mopts))))
+         (common/*emit-fn* form grammar mopts))))
 
 (defn emit-map-entry
   "emits the map entry"
   {:added "3.0"}
-  ([[k v] grammer mopts]
+  ([[k v] grammar mopts]
    (let [{:keys [start end sep space assign key-fn val-fn]
           :or {key-fn emit-map-key
-               val-fn common/*emit-fn*}} (helper/get-options grammer [:data :map-entry])
-         val-e (val-fn v grammer mopts)
+               val-fn common/*emit-fn*}} (helper/get-options grammar [:data :map-entry])
+         val-e (val-fn v grammar mopts)
          val-e (if (str/multi-line? val-e)
                  (str/indent-rest val-e 2)
                  val-e)]
      (str start (str/join (str assign space)
-                          [(key-fn k grammer mopts)
+                          [(key-fn k grammar mopts)
                            val-e])
           end))))
 
@@ -83,15 +83,15 @@
 (defn emit-coll-layout
   "constructs the collection"
   {:added "4.0"}
-  ([key indent str-array grammer mopts]
-   (let [{:keys [sep space tighten] :as opts} (helper/get-options grammer [:data key])]
+  ([key indent str-array grammar mopts]
+   (let [{:keys [sep space tighten] :as opts} (helper/get-options grammar [:data key])]
      (cond (emit-singleline-array? str-array)
            (-> (str/join sep str-array)
-               (common/wrapped-str [:data key] grammer))
+               (common/wrapped-str [:data key] grammar))
 
            tighten
            (-> (str/join (str sep "\n  ") str-array)
-               (common/wrapped-str [:data key] grammer)
+               (common/wrapped-str [:data key] grammar)
                (str/indent indent))
            
            :else
@@ -101,61 +101,61 @@
                           (str/join (str sep "\n  ") str-array)
                           "\n")
                      indent))
-               (common/wrapped-str [:data key] grammer))))))
+               (common/wrapped-str [:data key] grammar))))))
 
 (defn emit-coll
   "emits a collection"
   {:added "3.0"}
-  ([key form grammer mopts]
-   (emit-coll key form grammer mopts common/*emit-fn*))
-  ([key form grammer mopts emit-fn]
+  ([key form grammar mopts]
+   (emit-coll key form grammar mopts common/*emit-fn*))
+  ([key form grammar mopts emit-fn]
    (let [indent     common/*indent*
          str-array (binding [common/*indent* 0]
-                     (common/emit-array form grammer mopts emit-fn))]
-     (emit-coll-layout key indent str-array grammer mopts))))
+                     (common/emit-array form grammar mopts emit-fn))]
+     (emit-coll-layout key indent str-array grammar mopts))))
 
 (defn emit-data-standard
   "emits either a custom string or default coll"
   {:added "4.0"}
-  ([key form grammer mopts]
-   (let [{:keys [custom]} (helper/get-options grammer [:data key])]
+  ([key form grammar mopts]
+   (let [{:keys [custom]} (helper/get-options grammar [:data key])]
      (if custom
-       (custom form grammer mopts)
-       (emit-coll key form grammer mopts)))))
+       (custom form grammar mopts)
+       (emit-coll key form grammar mopts)))))
 
 
 (defn emit-data
   "main function for data forms"
   {:added "3.0"}
-  ([key form grammer mopts]
-   (let [emit (get-in grammer [:data key :emit])]
+  ([key form grammar mopts]
+   (let [emit (get-in grammar [:data key :emit])]
      (cond emit
-           (emit form grammer mopts)
+           (emit form grammar mopts)
            
            (= key :map-entry)
-           (emit-map-entry form grammer mopts)
+           (emit-map-entry form grammar mopts)
 
            :else
-           (emit-data-standard key form grammer mopts)))))
+           (emit-data-standard key form grammar mopts)))))
 
 (defn emit-quote
   "emit quote structures
  
-   (emit-quote nil nil ''(1 2 3) +grammer+ {})
+   (emit-quote nil nil ''(1 2 3) +grammar+ {})
    => \"(1,2,3)\""
   {:added "4.0"}
-  [key props [sym & args :as form] grammer mopts]
+  [key props [sym & args :as form] grammar mopts]
   (if (== 1 (count args))
     (let [coll (first args)]
       (cond (vector? coll)
-            (emit-data :free coll grammer mopts)
+            (emit-data :free coll grammar mopts)
             
             (h/form? coll)
-            (emit-data :tuple coll  grammer mopts)
+            (emit-data :tuple coll  grammar mopts)
 
             :else
-            (emit-data :tuple [coll] grammer mopts)))
-    (emit-data :tuple args grammer mopts)))
+            (emit-data :tuple [coll] grammar mopts)))
+    (emit-data :tuple args grammar mopts)))
 
 (defn emit-table-group
   "gets table group
@@ -188,19 +188,19 @@
 (defn emit-table
   "emit quote structures
  
-   (emit-table nil nil '(tab :a 1 :b 2) +grammer+ {})
+   (emit-table nil nil '(tab :a 1 :b 2) +grammar+ {})
    => \"{\\\"a\\\":1,\\\"b\\\":2}\""
   {:added "4.0"}
-  ([_ _ [_ & args] grammer mopts]
+  ([_ _ [_ & args] grammar mopts]
    (let [args (emit-table-group args)
          entry-fn (fn [e]
                     (if (vector? e)
-                      (emit-map-entry e grammer mopts)
-                      (common/*emit-fn* e grammer mopts)))
+                      (emit-map-entry e grammar mopts)
+                      (common/*emit-fn* e grammar mopts)))
          indent     common/*indent*
          str-array (binding [common/*indent* 0]
                      (mapv entry-fn args))]
-     (emit-coll-layout :map indent str-array grammer mopts))))
+     (emit-coll-layout :map indent str-array grammar mopts))))
 
 ;;
 ;; TESTING
@@ -210,63 +210,63 @@
   "emit for data structures
  
    (test-data-loop '[(+ 1 2)]
-                         +grammer+
+                         +grammar+
                          {})
    => \"[(+ 1 2)]\"
  
    (test-data-loop '{:a (+ 1 2)}
-                         +grammer+
+                         +grammar+
                          {})
    => \"{[:a (+ 1 2)]}\"
  
    (test-data-loop '#{(+ 1 2)}
-                         +grammer+
+                         +grammar+
                          {})
    => throws
  
    
    [:quote]
    (test-data-loop ''((+ A B) C)
-                         +grammer+
+                         +grammar+
                          {})
    => \"((+ A B),C)\"
  
    (test-data-loop ''[(+ A B) C]
-                         +grammer+
+                         +grammar+
                          {})
    => \"(+ A B),C\"
    
    [:table]
    (test-data-loop '(tab :a (+ 1 2) :b 2)
-                         +grammer+
+                         +grammar+
                          {})
    => \"{\\\"a\\\":(+ 1 2),\\\"b\\\":2}\"
    
    (test-data-loop '(tab 1 (+ 1 2) 3 4 5)
-                         +grammer+
+                         +grammar+
                          {})
    => \"{1,(+ 1 2),3,4,5}\""
   {:added "4.0" :adopt true}
-  [form grammer mopts]
+  [form grammar mopts]
   (common/emit-common-loop form
-                           grammer
+                           grammar
                            mopts
                            (assoc common/+emit-lookup+
                                   :data emit-data)
-                           (fn [key form grammer mopts]
-                             (common/emit-op key form grammer mopts
+                           (fn [key form grammar mopts]
+                             (common/emit-op key form grammar mopts
                                              {:quote emit-quote
                                               :table emit-table}))))
 
 (defn test-data-emit
-  [form grammer mopts]
+  [form grammar mopts]
   (binding [common/*emit-fn* test-data-loop]
-    (test-data-loop form grammer mopts)))
+    (test-data-loop form grammar mopts)))
 
 (comment
 
   (comment
-    :quote         (emit-quote args grammer mopts)
-    :table         (emit-table form grammer mopts))
+    :quote         (emit-quote args grammar mopts)
+    :table         (emit-table form grammar mopts))
   
   )

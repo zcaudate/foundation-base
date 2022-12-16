@@ -1,11 +1,11 @@
 (ns std.lang.base.registry)
 
 (def +registry+
-  (atom {[:postgres :default]          'rt.postgres.grammer
+  (atom {[:postgres :default]          'rt.postgres.grammar
          [:postgres :jdbc]             'rt.postgres.client
          [:postgres :jdbc.client]      'rt.postgres.client
          
-         [:solidity :default]          'rt.solidity.grammer
+         [:solidity :default]          'rt.solidity.grammar
          #_#_#_#_
          [:solidity :truffle]          'rt.solidity.client
          [:solidity :truffle.shared]   'rt.solidity.client

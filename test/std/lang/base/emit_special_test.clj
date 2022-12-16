@@ -53,14 +53,14 @@
   ^:hidden
   
   (emit-with-module nil nil '(module :lua L.util)
-                    (:grammer prep/+book-min+)
+                    (:grammar prep/+book-min+)
                     {:snapshot (lib/get-snapshot +library-ext+)})
   => "{\"sub_fn\":L.util/sub-fn,\"add_fn\":L.util/add-fn}"
 
 
   (binding [common/*emit-fn* test-special-loop]
     (emit-with-module nil nil '(module :lua L.util)
-                      (:grammer prep/+book-min+)
+                      (:grammar prep/+book-min+)
                       {:snapshot (lib/get-snapshot +library-ext+)
                        :module (lib/get-module +library-ext+ :lua 'L.util)
                        :layout :full}))
@@ -70,7 +70,7 @@
 (fact "emits an eval form"
 
   (emit-with-preprocess '(L.core/sub 1 2)
-                        (:grammer prep/+book-min+)
+                        (:grammar prep/+book-min+)
                         {:lang :lua
                          :module   (lib/get-module +library-ext+ :lua 'L.core)
                          :snapshot (lib/get-snapshot +library-ext+)})
@@ -83,7 +83,7 @@
   
   (emit-with-eval nil nil
                   '(!:eval (+ 1 2 3))
-                  (:grammer prep/+book-min+)
+                  (:grammar prep/+book-min+)
                   {:lang :lua
                    :module   (lib/get-module +library-ext+ :lua 'L.util)
                    :snapshot (lib/get-snapshot +library-ext+)})
@@ -91,7 +91,7 @@
   
   (emit-with-eval nil nil
                   '(!:eval '(+ 1 2 3))
-                  (:grammer prep/+book-min+)
+                  (:grammar prep/+book-min+)
                   {:lang :lua
                    :module   (lib/get-module +library-ext+ :lua 'L.util)
                    :snapshot (lib/get-snapshot +library-ext+)})
@@ -100,7 +100,7 @@
   (binding [common/*emit-fn* test-special-loop]
     (emit-with-eval nil nil
                     '(!:eval '(+ 1 2 3))
-                    (:grammer prep/+book-min+)
+                    (:grammar prep/+book-min+)
                     {:lang :lua
                      :module   (lib/get-module +library-ext+ :lua 'L.util)
                      :snapshot (lib/get-snapshot +library-ext+)}))
@@ -113,7 +113,7 @@
   (def hello 1)
   
   (emit-with-deref nil nil '(!:deref (var hello))
-                   (:grammer prep/+book-min+)
+                   (:grammar prep/+book-min+)
                    {:lang :lua
                     :module   (lib/get-module +library-ext+ :lua 'L.util)
                     :snapshot (lib/get-snapshot +library-ext+)})
@@ -122,7 +122,7 @@
   (def world '(L.core/sub 1 2))
   
   (emit-with-deref nil nil '(!:deref (var world))
-                   (:grammer prep/+book-min+)
+                   (:grammar prep/+book-min+)
                    {:lang :lua
                     :module   (lib/get-module +library-ext+ :lua 'L.util)
                     :snapshot (lib/get-snapshot +library-ext+)})
@@ -133,14 +133,14 @@
   ^:hidden
   
   (emit-with-lang nil nil '(!:lang {:lang :lua} (+ @1 2 3))
-                  (:grammer prep/+book-min+)
+                  (:grammar prep/+book-min+)
                   {:snapshot (lib/get-snapshot +library-ext+)
                    })
   => "(+ (!:eval 1) 2 3)"
 
   (binding [common/*emit-fn* test-special-loop]
     (emit-with-lang nil nil '(!:lang {:lang :lua} (+ @1 2 3))
-                    (:grammer prep/+book-min+)
+                    (:grammar prep/+book-min+)
                     {:snapshot (lib/get-snapshot +library-ext+)}))
   => "1 + 2 + 3")
 
@@ -149,7 +149,7 @@
   ^:hidden
   
   (test-special-loop '(!:lang {:lang :lua} (+ @1 2 3))
-                           (:grammer prep/+book-min+)
+                           (:grammar prep/+book-min+)
                            {:snapshot (lib/get-snapshot +library-ext+)})
   => "(+ (!:eval 1) 2 3)")
 
@@ -158,6 +158,6 @@
   ^:hidden
   
   (test-special-emit '(!:lang {:lang :lua} (+ @1 2 3))
-                       (:grammer prep/+book-min+)
+                       (:grammar prep/+book-min+)
                        {:snapshot (lib/get-snapshot +library-ext+)})
   => "1 + 2 + 3")

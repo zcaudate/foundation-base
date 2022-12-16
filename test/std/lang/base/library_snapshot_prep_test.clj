@@ -3,7 +3,7 @@
   (:require [std.lang.base.library-snapshot :as snap]
             [std.lang.base.emit-prep-test :as prep]
             [std.lang.base.book :as b]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.base.emit-common :as common]
 	    [std.lang.base.emit-helper :as helper]
             [std.lang.base.util :as ut]
@@ -12,16 +12,16 @@
 (def +book-x-empty+
   (b/book {:lang :x
            :meta    (b/book-meta {})
-           :grammer (grammer/grammer :x
-                      (grammer/to-reserved (grammer/build))
+           :grammar (grammar/grammar :x
+                      (grammar/to-reserved (grammar/build))
                       helper/+default+)}))
 
 (def +book-redis-empty+
   (b/book {:lang :redis
            :parent :lua
            :meta    (b/book-meta {})
-           :grammer (grammer/grammer :redis
-                      (grammer/to-reserved (grammer/build))
+           :grammar (grammar/grammar :redis
+                      (grammar/to-reserved (grammar/build))
                       helper/+default+)}))
 
 (def +x-module+

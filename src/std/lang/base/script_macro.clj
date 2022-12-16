@@ -3,7 +3,7 @@
             [std.lang.base.library :as lib]
             [std.lang.base.emit-preprocess :as preprocess]
             [std.lang.base.emit :as emit]
-            [std.lang.base.grammer-spec :as grammer]
+            [std.lang.base.grammar-spec :as grammar]
             [std.lang.base.impl :as impl]
             [std.lang.base.impl-entry :as entry]
             [std.lang.base.script-annex :as annex]
@@ -83,7 +83,7 @@
   "function to intern a macro"
   {:added "4.0"}
   ([lang [op sym & body :as form] smeta]
-   (let [[doc attr body] (grammer/format-fargs body)
+   (let [[doc attr body] (grammar/format-fargs body)
          [module fmeta]  (intern-prep lang form)
          entry  (entry/create-macro (apply list 'defmacro sym body)
                                     (merge smeta
@@ -249,10 +249,10 @@
   {:added "4.0"}
   ([lang tag op]
    (let [lib  (impl/runtime-library)
-         {:keys [grammer]} (lib/get-book lib lang)]
-     (intern-top-level lang tag op grammer)))
-  ([lang tag op grammer]
-   (let [reserved (or (get-in grammer [:reserved op])
+         {:keys [grammar]} (lib/get-book lib lang)]
+     (intern-top-level lang tag op grammar)))
+  ([lang tag op grammar]
+   (let [reserved (or (get-in grammar [:reserved op])
                       (h/error "Not found" {:op op
                                             :tag tag
                                             :lang lang}))]
@@ -266,23 +266,23 @@
                                      {:time (h/time-ns)})))))))
 
 (defn intern-macros
-  "interns the top-level macros in the grammer"
+  "interns the top-level macros in the grammar"
   {:added "4.0"}
-  ([lang grammer]
-   (let [{:keys [macros reserved tag]} grammer
+  ([lang grammar]
+   (let [{:keys [macros reserved tag]} grammar
          fvar   (intern-def$ lang tag)
          mvar   (intern-defmacro lang tag)
          evar   (intern-! lang tag)
          pvar   (intern-free lang tag)
-         tvars  (mapv (fn [op] (intern-top-level lang tag op grammer))
+         tvars  (mapv (fn [op] (intern-top-level lang tag op grammar))
                       macros)]
      [[fvar mvar evar pvar] tvars])))
 
 (defn intern-highlights
-  "interns the highlight macros in the grammer"
+  "interns the highlight macros in the grammar"
   {:added "4.0"}
-  ([lang grammer]
-   (let [{:keys [highlight reserved]} grammer]
+  ([lang grammar]
+   (let [{:keys [highlight reserved]} grammar]
      (vec (keep (fn [sym]
                   (let [op (get reserved sym)]
                     (intern (h/ns-sym)
@@ -291,21 +291,21 @@
                             (fn [_ _ & args]))))
                 highlight)))))
 
-(defn intern-grammer
+(defn intern-grammar
   "interns a bunch of macros in the namespace
  
-   (:macros (:grammer (lib/get-book +library+ :lua)))
+   (:macros (:grammar (lib/get-book +library+ :lua)))
    => '#{defrun defn defglobal defgen defn- deftemp defclass defabstract def}
    
    (impl/with:library [+library+]
-     (macro/intern-grammer :lua (:grammer (lib/get-book +library+ :lua))))
+     (macro/intern-grammar :lua (:grammar (lib/get-book +library+ :lua))))
    => map?"
   {:added "4.0"}
-  [lang grammer]
+  [lang grammar]
   (let [lib  (impl/runtime-library)
-        {:keys [grammer]} (lib/get-book lib lang)
-        m  {:macros     (intern-macros lang grammer)
-            :highlights (intern-highlights lang grammer)}]
+        {:keys [grammar]} (lib/get-book lib lang)
+        m  {:macros     (intern-macros lang grammar)
+            :highlights (intern-highlights lang grammar)}]
     (lib/wait-mutate!
      lib
      (fn [snapshot]

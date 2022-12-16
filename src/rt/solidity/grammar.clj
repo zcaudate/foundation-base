@@ -1,11 +1,11 @@
-(ns rt.solidity.grammer
+(ns rt.solidity.grammar
   (:require [std.lang.base.emit :as emit]
             [std.lang.base.emit-common :as emit-common]
             [std.lang.base.emit-fn :as emit-fn]
             [std.lang.base.emit-block :as emit-block]
             [std.lang.base.emit-helper :as helper]
-            [std.lang.base.grammer :as grammer]
-            [std.lang.base.grammer-spec :as grammer-spec]
+            [std.lang.base.grammar :as grammar]
+            [std.lang.base.grammar-spec :as grammar-spec]
             [std.lang.base.util :as ut]
             [std.lang.base.book :as book]
             [std.lang.base.script :as script]
@@ -50,7 +50,7 @@
 (defn sol-map-key
   "formats sol map key"
   {:added "4.0"}
-  ([key grammer mopts]
+  ([key grammar mopts]
    (str/replace-all
     (h/strn key)
     "-"
@@ -59,37 +59,37 @@
 (defn sol-keyword-fn
   "no typecast, straight forward print"
   {:added "4.0"}
-  [form grammer mopts]
-  (emit-common/*emit-fn* (apply list :- form) grammer mopts))
+  [form grammar mopts]
+  (emit-common/*emit-fn* (apply list :- form) grammar mopts))
 
 (defn sol-def
   "creates a definition string"
   {:added "4.0"}
-  [[_ sym & [value]] grammer mopts]
-  (let [typestr  (emit-fn/emit-fn-type sym nil grammer mopts)]
-    (str typestr " " (emit-common/*emit-fn* sym grammer mopts)
+  [[_ sym & [value]] grammar mopts]
+  (let [typestr  (emit-fn/emit-fn-type sym nil grammar mopts)]
+    (str typestr " " (emit-common/*emit-fn* sym grammar mopts)
          (if value
-           (str " = " (emit-common/*emit-fn* value grammer mopts))
+           (str " = " (emit-common/*emit-fn* value grammar mopts))
            "")
          ";")))
 
 (defn sol-fn-elements
   "creates elements for function"
   {:added "4.0"}
-  [sym args body grammer mopts]
-  (let [block    (emit-fn/emit-fn-block :defn grammer)
-        typestr  (emit-fn/emit-fn-type sym nil grammer mopts) 
+  [sym args body grammar mopts]
+  (let [block    (emit-fn/emit-fn-block :defn grammar)
+        typestr  (emit-fn/emit-fn-type sym nil grammar mopts) 
         preamble (emit-fn/emit-fn-preamble [:defn sym args]
                                            block
-                                           grammer
+                                           grammar
                                            mopts)
-        codebody (emit-block/emit-block-body nil block body grammer mopts)]
+        codebody (emit-block/emit-block-body nil block body grammar mopts)]
     [typestr preamble codebody]))
 
 (defn sol-emit-returns
   "emits returns"
   {:added "4.0"}
-  [[_ returns] grammer mopts]
+  [[_ returns] grammar mopts]
   (emit-common/*emit-fn*
    (list 'returns
          (cond (and (list? returns)
@@ -100,35 +100,35 @@
                (apply list :- returns)
 
                :else (list :- returns)))
-   grammer mopts))
+   grammar mopts))
 
 (defn sol-defn
   "creates def contstructor form"
   {:added "4.0"}
-  [[_ sym args & body :as form] grammer mopts]
+  [[_ sym args & body :as form] grammar mopts]
   (let [{:static/keys [returns
                        modifiers]} (meta sym)
-        [typestr preamble codebody] (sol-fn-elements sym args body grammer mopts)]
+        [typestr preamble codebody] (sol-fn-elements sym args body grammar mopts)]
     (str/join " " (filter not-empty ["function" preamble typestr
                                      (if returns
-                                       (sol-emit-returns [nil returns] grammer mopts))
+                                       (sol-emit-returns [nil returns] grammar mopts))
                                      codebody]))))
 
 (defn sol-defconstructor
   "creates the constructor"
   {:added "4.0"}
-  [[_ sym args & body :as form] grammer mopts]
-  (let [[typestr preamble codebody] (sol-fn-elements 'constructor args body grammer mopts)]
+  [[_ sym args & body :as form] grammar mopts]
+  (let [[typestr preamble codebody] (sol-fn-elements 'constructor args body grammar mopts)]
     (str/join " " (filter not-empty [preamble typestr codebody]))))
 
 (defn sol-defevent
   "creates an event"
   {:added "4.0"}
-  [[_ sym & args] grammer mopts]
-  (let [block    (emit-fn/emit-fn-block :defn grammer)
+  [[_ sym & args] grammar mopts]
+  (let [block    (emit-fn/emit-fn-block :defn grammar)
         preamble (emit-fn/emit-fn-preamble [:defn sym (vec (mapcat identity args))]
                                            block
-                                           grammer
+                                           grammar
                                            mopts)]
     (str "event " preamble ";")))
 
@@ -188,14 +188,14 @@
 (defn sol-definterface
   "transforms a interface call"
   {:added "4.0"}
-  [[_ sym body] grammer mopts]
+  [[_ sym body] grammar mopts]
   (let [fns (->> (partition 2 body)
                  (map (fn [[sym args]]
                         (let [{:static/keys [returns]} (meta sym)
-                              [typestr preamble _] (sol-fn-elements sym args body grammer mopts)]
+                              [typestr preamble _] (sol-fn-elements sym args body grammar mopts)]
                           (str/join " " (filter not-empty ["function" preamble typestr
                                                            (str (if returns
-                                                                  (sol-emit-returns [nil returns] grammer mopts))
+                                                                  (sol-emit-returns [nil returns] grammar mopts))
                                                                 ";")])))))
                  (str/join "\n"))]
     (str "interface " sym " {\n"
@@ -203,7 +203,7 @@
          "\n}")))
 
 (def +features+
-  (-> (grammer/build :include [:builtin
+  (-> (grammar/build :include [:builtin
                                :builtin-global
                                :builtin-module
                                :builtin-helper
@@ -233,13 +233,13 @@
                                :macro-xor
                                :macro-forange
                                :macro-case])
-      (grammer/build:override
+      (grammar/build:override
        {:var       {:symbol '#{var*}}
         :defn      {:emit    #'sol-defn
                     :static/type :function}
         :def       {:emit    #'sol-def}})
       
-      (grammer/build:extend
+      (grammar/build:extend
        {:delete    {:op :delete  :symbol  '#{delete} :raw "delete" :emit :prefix}
         :emit      {:op :emit    :symbol  '#{emit}  :raw "emit" :emit :prefix}
         :mapping   {:op :mapping  :symbol #{:mapping}
@@ -247,7 +247,7 @@
         :blank     {:op :blank    :symbol  '#{_} :raw ""
                     :value true :emit :throw}})
       
-      (grammer/build:extend
+      (grammar/build:extend
        {:definterface   {:op :definterface :symbol '#{definterface}
                          :type :def :section :header
                          :emit   #'sol-definterface
@@ -295,11 +295,11 @@
                   :tuple     {:start "(" :end ")" :sep ", "}}
         :block  {:for       {:parameter {:sep ","}}}
         :define {:def       {:raw ""}}}
-       (h/merge-nested (emit/default-grammer))))
+       (h/merge-nested (emit/default-grammar))))
 
-(def +grammer+
-  (grammer/grammer :sol
-    (grammer/to-reserved +features+)
+(def +grammar+
+  (grammar/grammar :sol
+    (grammar/to-reserved +features+)
     +template+))
 
 (def +meta+
@@ -312,7 +312,7 @@
 (def +book+
   (book/book {:lang :solidity
               :meta +meta+
-              :grammer +grammer+}))
+              :grammar +grammar+}))
 
 (def +init+
   (script/install +book+))

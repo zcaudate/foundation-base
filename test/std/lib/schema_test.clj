@@ -5,7 +5,7 @@
 
 (comment
   ;; PREVIOUS SETUP
-  [rt.postgres.grammer.common-application :as app]
+  [rt.postgres.grammar.common-application :as app]
   [rt.postgres.script.scratch :as scratch]
   (def -tsch- (get-in (app/app "scratch")
                       [:schema

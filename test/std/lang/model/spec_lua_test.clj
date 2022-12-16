@@ -48,17 +48,17 @@
 (fact "custom lua map key"
   ^:hidden
 
-  (lua-map-key 123 +grammer+ {})
+  (lua-map-key 123 +grammar+ {})
   => "[123]"
 
-  (lua-map-key "123" +grammer+ {})
+  (lua-map-key "123" +grammar+ {})
   => "['123']"
   
 
-  (lua-map-key "abc" +grammer+ {})
+  (lua-map-key "abc" +grammar+ {})
   => "abc"
 
-  (lua-map-key :abc +grammer+ {})
+  (lua-map-key :abc +grammar+ {})
   => "abc")
 
 ^{:refer std.lang.model.spec-lua/tf-for-object :added "4.0"}

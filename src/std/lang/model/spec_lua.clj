@@ -2,8 +2,8 @@
   (:require [std.lang.model.spec-xtalk]
             [std.lang.base.emit-common :as common]
             [std.lang.base.emit :as emit]
-            [std.lang.base.grammer :as grammer]
-            [std.lang.base.grammer-spec :as spec]
+            [std.lang.base.grammar :as grammar]
+            [std.lang.base.grammar-spec :as spec]
             [std.lang.base.impl :as impl]
             [std.lang.base.util :as ut]
             [std.lang.base.book :as book]
@@ -55,7 +55,7 @@
 (defn lua-map-key
   "custom lua map key"
   {:added "3.0"}
-  ([key grammer mopts]
+  ([key grammar mopts]
    (cond (not (or (h/form? key)
                   (symbol? key)
                   (number? key)))
@@ -78,7 +78,7 @@
            key-str)
 
          :else
-         (str  "[" (common/*emit-fn* key grammer mopts) "]"))))
+         (str  "[" (common/*emit-fn* key grammar mopts) "]"))))
 
 (defn tf-for-object
   "for object transform"
@@ -158,7 +158,7 @@
                             (apply list 'fn [] body)))))
 
 (def +features+
-  (-> (grammer/build :include [:builtin
+  (-> (grammar/build :include [:builtin
                                :builtin-global
                                :builtin-module
                                :builtin-helper
@@ -183,8 +183,8 @@
                                :macro-arrow
                                :macro-let
                                :macro-xor])
-      (merge (grammer/build-xtalk))
-      (grammer/build:override
+      (merge (grammar/build-xtalk))
+      (grammar/build:override
        {:var    {:symbol '#{var*}}
         :not    {:raw "not "}
         :and    {:raw "and"}
@@ -199,8 +199,8 @@
         :for-async  {:macro #'tf-for-async  :emit :macro}
         :defgen     {:macro #'tf-defgen     :emit :macro}
         :yield      {:macro #'tf-yield      :emit :macro}})
-      (grammer/build:override fn/+lua+)
-      (grammer/build:extend
+      (grammar/build:override fn/+lua+)
+      (grammar/build:extend
        {:cat    {:op :cat    :symbol '#{cat}       :raw ".."   :emit :infix}
         :len    {:op :len    :symbol '#{len}       :raw "#"    :emit  :pre}
         :local  {:op :local  :symbol '#{local var} :macro  #'tf-local :type :macro}
@@ -246,7 +246,7 @@
         :define   {:def       {:raw "local"}
                    :defglobal {:raw ""}
                    :declare   {:raw "local"}}}
-       (h/merge-nested (emit/default-grammer))))
+       (h/merge-nested (emit/default-grammar))))
 
 (defn lua-module-link
   "gets the absolute lua based module
@@ -281,16 +281,16 @@
     :has-ptr        (fn [ptr] (list 'not= (ut/sym-full ptr) nil))
     :teardown-ptr   (fn [ptr] (list := (ut/sym-full ptr) nil))}))
 
-(def +grammer+
-  (grammer/grammer :lua
-    (grammer/to-reserved +features+)
+(def +grammar+
+  (grammar/grammar :lua
+    (grammar/to-reserved +features+)
     +template+))
 
 (def +book+
   (book/book {:lang :lua
               :parent :xtalk
               :meta +meta+
-              :grammer +grammer+}))
+              :grammar +grammar+}))
 
 (def +init+
   (script/install +book+))
@@ -299,7 +299,7 @@
   (book/book {:lang :redis
               :parent :lua
               :meta +meta+
-              :grammer (assoc +grammer+ :tag :redis)}))
+              :grammar (assoc +grammar+ :tag :redis)}))
 
 (def +init-redis+
   (script/install +book-redis+))

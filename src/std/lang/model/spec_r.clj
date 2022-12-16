@@ -2,8 +2,8 @@
   (:require [std.lang.base.emit :as emit]
             [std.lang.base.emit-common :as common]
             [std.lang.base.emit-top-level :as top]
-            [std.lang.base.grammer :as grammer]
-            [std.lang.base.grammer-spec :as spec]
+            [std.lang.base.grammar :as grammar]
+            [std.lang.base.grammar-spec :as spec]
             [std.lang.base.util :as ut]
 	    [std.lang.base.book :as book]
             [std.lang.base.script :as script]
@@ -100,7 +100,7 @@
   (if bool "TRUE" "FALSE"))
 
 (def +features+
-  (-> (merge (grammer/build :include [:builtin
+  (-> (merge (grammar/build :include [:builtin
                                       :builtin-global
                                       :builtin-module
                                       :builtin-helper
@@ -125,8 +125,8 @@
                                       :macro-arrow
                                       :macro-let
                                       :macro-xor])
-             (grammer/build-xtalk))
-      (grammer/build:override
+             (grammar/build-xtalk))
+      (grammar/build:override
        {:seteq       {:op :seteq :symbol '#{:=} :raw "<-"}
         :mod         {:raw "%%"}
         :defn        {:op :defn  :symbol '#{defn}     :macro  #'tf-defn :type :macro}
@@ -136,8 +136,8 @@
         :for-iter    {:macro #'tf-for-iter   :emit :macro}
         :for-index   {:macro #'tf-for-index  :emit :macro}
         :for-return  {:macro #'tf-for-return :emit :macro}})
-      (grammer/build:override fn/+r+ )
-      (grammer/build:extend
+      (grammar/build:override fn/+r+ )
+      (grammar/build:extend
        {:na     {:op :na    :symbol '#{NA}    :raw "NA"    :value true :emit :throw}
         :next   {:op :next  :symbol '#{:next} :raw "next"  :emit :return}
         :throw  {:op :next  :symbol '#{throw} :raw 'stop :emit :alias}
@@ -166,11 +166,11 @@
                  :map-entry {:start ""  :end ""  :space "" :assign "=" :keyword :symbol}}
         :define {:def       {:raw ""}
                  :defn      {:raw ""}}}
-       (h/merge-nested (emit/default-grammer))))
+       (h/merge-nested (emit/default-grammar))))
 
-(def +grammer+
-  (grammer/grammer :R
-    (grammer/to-reserved +features+)
+(def +grammar+
+  (grammar/grammar :R
+    (grammar/to-reserved +features+)
     +template+))
 
 (def +meta+
@@ -184,7 +184,7 @@
   (book/book {:lang :r
               :parent :xtalk
               :meta +meta+
-              :grammer +grammer+}))
+              :grammar +grammar+}))
 
 (def +init+
   (script/install +book+))
@@ -198,7 +198,7 @@
   
 
 (def +reserved+
-  (-> (grammer/ops :exclude [[:general :exclude [:try]]
+  (-> (grammar/ops :exclude [[:general :exclude [:try]]
                              :type
                              :counter
                              :yield
@@ -216,6 +216,6 @@
                  :symbol '#{prog} :type :block
                  :block {:raw ""
                          :main    #{:body}}}})
-      (grammer/map-symbols)))
+      (grammar/map-symbols)))
   
   )

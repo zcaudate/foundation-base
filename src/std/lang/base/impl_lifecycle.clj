@@ -16,10 +16,10 @@
            lang
            emit] :as meta}]
   (let [_ (assert lang "Lang required.")
-        [stage grammer book namespace mopts] (impl/emit-options (merge {:layout :module}
+        [stage grammar book namespace mopts] (impl/emit-options (merge {:layout :module}
                                                                        meta))
         module (get-in book [:modules module-id])]
-    [[stage grammer book namespace (assoc mopts :module module)]
+    [[stage grammar book namespace (assoc mopts :module module)]
      (deps/collect-module book module (:compile emit))]))
 
 ;;
@@ -70,7 +70,7 @@
    {:keys [library
            lang
            emit] :as meta}]
-  (let [[[stage grammer book namespace mopts]
+  (let [[[stage grammar book namespace mopts]
          {:keys [setup
                  native
                  link
@@ -79,7 +79,7 @@
                  export]}] (emit-module-prep module-id meta)
         setup-body   (if (and (not (-> emit :setup :suppress))
                               setup)
-                       (impl/emit-direct grammer
+                       (impl/emit-direct grammar
                                          setup
                                          namespace
                                          (update mopts :emit merge (:setup emit))))
@@ -88,7 +88,7 @@
                        (let [native-opts  (update mopts :emit merge (:native emit))]
                          (keep (fn [[name module]]
                                  (if-let [form (deps/module-import-form book name module native-opts)]
-                                   (impl/emit-direct grammer
+                                   (impl/emit-direct grammar
                                                      form
                                                      namespace
                                                      native-opts)))
@@ -98,7 +98,7 @@
                        (let [link-opts    (update mopts :emit merge (:link emit))]
                          (keep (fn [[name module]]
                                  (if-let [form (deps/module-import-form book name module link-opts)]
-                                   (impl/emit-direct grammer
+                                   (impl/emit-direct grammar
                                                      form
                                                      namespace
                                                      link-opts)))
@@ -107,14 +107,14 @@
                        (let [header-opts  (update mopts :emit merge (:header emit))]
                          (keep (fn [entry]
                                  (binding [*ns* (:namespace entry)]
-                                   (entry/emit-entry grammer entry header-opts)))
+                                   (entry/emit-entry grammar entry header-opts)))
                                header)))
         
         code-arr     (if (not (-> emit :code :suppress))
                        (let [code-opts    (update mopts :emit merge (:code emit))]
                          (keep (fn [entry]
                                  (binding [*ns* (:namespace entry)]
-                                   (entry/emit-entry grammer entry code-opts)))
+                                   (entry/emit-entry grammar entry code-opts)))
                                code)))
         export-body  (when (and (= :module (:layout mopts))
                                 (-> mopts :module :export :as)
@@ -129,11 +129,11 @@
                                                                    :module module-id})
                          (h/error "Missing export `:entry` field" {:input export
                                                                    :module module-id}))
-                       (str (entry/emit-entry grammer (:entry export)
+                       (str (entry/emit-entry grammar (:entry export)
                                               (update mopts :emit merge (:export emit)))
                             "\n\n"
                             (impl/emit-direct
-                             grammer
+                             grammar
                              (deps/module-export-form book
                                                       (-> mopts :module :export)
                                                       mopts)
@@ -202,7 +202,7 @@
    {:keys [library
            lang
            emit] :as meta}]
-  (let [[[stage grammer book namespace mopts]
+  (let [[[stage grammar book namespace mopts]
          {:keys [teardown
                  native
                  code]}] (emit-module-prep module-id meta)
@@ -210,7 +210,7 @@
                          (let [code-opts    (assoc mopts :emit (:code emit))]
                            (keep (fn [entry]
                                    (if-let [form (deps/teardown-ptr-form book entry)]
-                                     (impl/emit-direct grammer
+                                     (impl/emit-direct grammar
                                                        form
                                                        namespace
                                                        code-opts)))
@@ -219,14 +219,14 @@
                          (let [native-opts  (assoc mopts :emit (:native emit))]
                            (keep (fn [[name module]]
                                    (if-let [form (deps/teardown-module-form book module)]
-                                     (impl/emit-direct grammer
+                                     (impl/emit-direct grammar
                                                        form
                                                        namespace
                                                        native-opts)))
                                  native)))
         teardown-body  (if (and (not (-> emit :teardown :suppress))
                                 teardown)
-                         (impl/emit-direct grammer
+                         (impl/emit-direct grammar
                                            teardown
                                            namespace
                                            (assoc mopts :emit (:teardown emit))))]

@@ -1,7 +1,7 @@
 ^{:no-test true}
 (ns std.lang.model.spec-xtalk.fn-r
   (:require [std.lib :as h]
-            [std.lang.base.grammer-xtalk :as default]))
+            [std.lang.base.grammar-xtalk :as default]))
 
 ;;
 ;; CORE

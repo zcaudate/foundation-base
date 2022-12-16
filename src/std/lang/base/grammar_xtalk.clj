@@ -1,4 +1,4 @@
-(ns std.lang.base.grammer-xtalk
+(ns std.lang.base.grammar-xtalk
   (:require [std.string :as str]
             [std.lang.base.emit-preprocess :as preprocess]
             [std.lib :as h]))
@@ -83,19 +83,19 @@
 ;;
 ;;
 
-(defn tf-grammer-offset
+(defn tf-grammar-offset
   "del-key transform"
   {:added "4.0"}
   []
-  (let [grammer preprocess/*macro-grammer*]
-    (or (get-in grammer [:default :index :offset]) 0)))
+  (let [grammar preprocess/*macro-grammar*]
+    (or (get-in grammar [:default :index :offset]) 0)))
 
-(defn tf-grammer-end-inclusive
+(defn tf-grammar-end-inclusive
   "gets the end inclusive flag"
   {:added "4.0"}
   []
-  (let [grammer preprocess/*macro-grammer*]
-    (get-in grammer [:default :index :end-inclusive])))
+  (let [grammar preprocess/*macro-grammar*]
+    (get-in grammar [:default :index :end-inclusive])))
 
 (defn tf-offset-base
   "calculates the offset"
@@ -115,21 +115,21 @@
   "gets the offset"
   {:added "4.0"}
   [[_ n]]
-  (tf-offset-base (tf-grammer-offset)
+  (tf-offset-base (tf-grammar-offset)
                   n))
 
 (defn tf-offset-rev
   "gets the reverse offset"
   {:added "4.0"}
   [[_ n]]
-  (tf-offset-base (- (tf-grammer-offset) 1)
+  (tf-offset-base (- (tf-grammar-offset) 1)
                   n))
 
 (defn tf-offset-len
   "gets the length offset"
   {:added "4.0"}
   [[_ n]]
-  (tf-offset-base (if (tf-grammer-end-inclusive)
+  (tf-offset-base (if (tf-grammar-end-inclusive)
                     0 -1) 
                   n))
 
@@ -137,7 +137,7 @@
   "gets the reverse length offset"
   {:added "4.0"}
   [[_ n]]
-  (tf-offset-base (if (tf-grammer-end-inclusive)
+  (tf-offset-base (if (tf-grammar-end-inclusive)
                     -1 0) 
                   n))
 

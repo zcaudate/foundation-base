@@ -15,11 +15,11 @@
   "emits solidity given entries and interfaces"
   {:added "4.0"}
   [entries interfaces]
-  (let [grammer    (l/grammer :solidity)
+  (let [grammar    (l/grammar :solidity)
 
         emit-fn    (fn [entry]
                      (binding [std.lang.base.impl-entry/*cache-none* true]
-                       (l/emit-entry grammer entry {:layout :flat})))
+                       (l/emit-entry grammar entry {:layout :flat})))
         body       (str/join
                     "\n\n"
                     (map emit-fn entries))

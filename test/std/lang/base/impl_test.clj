@@ -90,7 +90,7 @@
   => lib/library?)
 
 ^{:refer std.lang.base.impl/default-library:reset :added "4.0"}
-(fact "clears the default library, including all grammers")
+(fact "clears the default library, including all grammars")
 
 ^{:refer std.lang.base.impl/runtime-library :added "4.0"}
 (fact "gets the current runtime (annex or default)"
@@ -98,11 +98,11 @@
   (runtime-library)
   => lib/library?)
 
-^{:refer std.lang.base.impl/grammer :added "4.0"}
-(fact "gets the grammer"
+^{:refer std.lang.base.impl/grammar :added "4.0"}
+(fact "gets the grammar"
   ^:hidden
   
-  (grammer :xtalk)
+  (grammar :xtalk)
   => map?)
 
 ^{:refer std.lang.base.impl/emit-options :added "4.0"}
@@ -139,7 +139,7 @@
 (fact "adds additional controls to transform form"
   ^:hidden
   
-  (emit-direct (:grammer prep/+book-min+)
+  (emit-direct (:grammar prep/+book-min+)
                '(:% (:- "   ") (+ 1 2 3)  (:- "   "))
                 *ns*
                 {:emit {:trim str/trim}
@@ -241,7 +241,7 @@
   => "1 + 2 + 3\n\n4 + 5 + 6")
 
 ^{:refer std.lang.base.impl/emit-symbol :added "4.0"}
-(fact "emits string given symbol and grammer"
+(fact "emits string given symbol and grammar"
   ^:hidden
 
   (emit-symbol :lua 'L.core/identity-fn
@@ -336,13 +336,13 @@
 (fact "emits the script deps"
   ^:hidden
   
-  (let [[stage grammer book namespace mopts] (emit-options
+  (let [[stage grammar book namespace mopts] (emit-options
                                               {:lang :lua
                                                :library +library-ext+
                                                :module (lib/get-module +library-ext+ :lua 'L.util)
                                                :layout :flat})
         [deps _]  (deps/collect-script-entries book `[L.util/add-fn])]
-    (emit-script-deps deps nil [stage grammer book namespace mopts]))
+    (emit-script-deps deps nil [stage grammar book namespace mopts]))
   => coll?)
 
 ^{:refer std.lang.base.impl/emit-script-join :added "4.0"}

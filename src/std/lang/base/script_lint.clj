@@ -10,10 +10,10 @@
 
 
 (defn get-reserved-raw
-  "gets all reserved symbols in the grammer"
+  "gets all reserved symbols in the grammar"
   {:added "4.0"}
   [lang]
-  (set (keys (:reserved (impl/grammer lang)))))
+  (set (keys (:reserved (impl/grammar lang)))))
 
 (def get-reserved (memoize get-reserved-raw))
 

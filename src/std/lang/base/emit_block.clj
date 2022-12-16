@@ -8,12 +8,12 @@
 ;;
 
 (defn emit-statement
-  "emits a statement given grammer"
+  "emits a statement given grammar"
   {:added "3.0"}
-  ([form grammer mopts]
-   (let [[_ type] (common/form-key form grammer)
-         {:keys [statement]} (get-in grammer [:default :common])
-         body (common/*emit-fn*  form grammer mopts)]
+  ([form grammar mopts]
+   (let [[_ type] (common/form-key form grammar)
+         {:keys [statement]} (get-in grammar [:default :common])
+         body (common/*emit-fn*  form grammar mopts)]
      (if (#{:block :free :fn :def} type)
        body
        (str body statement)))))
@@ -21,21 +21,21 @@
 (defn emit-do
   "emits a do block"
   {:added "3.0"}
-  ([args grammer mopts]
-   (let [spacing (or (get-in grammer [:default :common :line-spacing]) 1)
+  ([args grammar mopts]
+   (let [spacing (or (get-in grammar [:default :common :line-spacing]) 1)
          cols    (repeat spacing (common/newline-indent))
          lines   (apply str cols)]
      (str/join lines
                (filter (comp not empty?)
-                       (map (fn [form] (emit-statement form grammer mopts))
+                       (map (fn [form] (emit-statement form grammar mopts))
                             args))))))
 
 (defn emit-do*
   "like do but removes the statment at the end, useful for macros"
   {:added "3.0"}
-  ([args grammer mopts]
-   (let [out (emit-do args grammer mopts)
-         statement (get-in grammer [:default :common :statement])]
+  ([args grammar mopts]
+   (let [out (emit-do args grammar mopts)
+         statement (get-in grammar [:default :common :statement])]
      (if (str/ends-with? out statement)
        (h/lsubs out (count statement))
        out))))
@@ -43,21 +43,21 @@
 (defn block-options
   "gets the block options"
   {:added "3.0"}
-  ([key block segment grammer]
-   (merge (get-in grammer [:default :common])
-          (get-in grammer [:default :block segment])
-          (get-in grammer [:block key segment])
+  ([key block segment grammar]
+   (merge (get-in grammar [:default :common])
+          (get-in grammar [:default :block segment])
+          (get-in grammar [:block key segment])
           (get-in block   [segment]))))
 
 (defn emit-block-body
   "helper to emit a block body"
   {:added "3.0"}
-  ([key block args grammer mopts]
-   (let [{:keys [start end append]} (block-options key block :body grammer)]
+  ([key block args grammar mopts]
+   (let [{:keys [start end append]} (block-options key block :body grammar)]
      (str start
-          (common/with-indent [(get-in grammer [:default :common :indent])]
+          (common/with-indent [(get-in grammar [:default :common :indent])]
             (str (common/newline-indent)
-                 (emit-do args grammer mopts)))
+                 (emit-do args grammar mopts)))
           (if (not append)
             (common/newline-indent))
           end))))
@@ -81,7 +81,7 @@
 (defn emit-params-statement
   "emits the params for statement"
   {:added "3.0"}
-  ([key block args grammer mopts]
+  ([key block args grammar mopts]
    (let [acc (loop [acc  []
                     curr []
                     [x & more :as args] args]
@@ -89,12 +89,12 @@
                      (keyword? x) (recur (conj acc curr) [x] more)
                      :else (recur acc (conj curr x) more)))
          acc (remove empty? acc)
-         {:keys [sep space]} (block-options key block :parameter grammer)]
+         {:keys [sep space]} (block-options key block :parameter grammar)]
      (str/join space (map (fn [[k & more]]
                             (let [[k args] (if (keyword? k)
                                              [(.replaceAll (h/strn k) "-" " ") more]
                                              [nil (cons k more)])]
-                              (cond->> (common/emit-array args grammer mopts)
+                              (cond->> (common/emit-array args grammar mopts)
                                 :then (map str/trim-right)
                                 :then (str/join (str sep space))
                                 k  (str k space))))
@@ -103,14 +103,14 @@
 (defn emit-params
   "constructs string to for loop args"
   {:added "3.0"}
-  ([key block params grammer mopts]
+  ([key block params grammar mopts]
    (let [parsed (parse-params params)
-         {:keys [statement space start end]} (block-options key block :parameter grammer)
+         {:keys [statement space start end]} (block-options key block :parameter grammar)
          pstr (case (first parsed)
-                :raw (common/*emit-fn*  (second parsed) grammer mopts)
-                :statement (emit-params-statement key block (second parsed) grammer mopts)
+                :raw (common/*emit-fn*  (second parsed) grammar mopts)
+                :statement (emit-params-statement key block (second parsed) grammar mopts)
                 (str/join (str statement space)
-                          (map #(emit-params-statement key block % grammer mopts)
+                          (map #(emit-params-statement key block % grammar mopts)
                                (map second parsed))))]
      (str start pstr end))))
 
@@ -121,7 +121,7 @@
 (defn emit-block-control
   "emits a control form code"
   {:added "3.0"}
-  ([ck {:keys [main] :as cblock} opts [tag & args] grammer mopts]
+  ([ck {:keys [main] :as cblock} opts [tag & args] grammar mopts]
    (let [main (or main #{:parameter :body})
          [params body] (if (:parameter main)
                          [(first args) (rest args)]
@@ -129,15 +129,15 @@
          cblock (h/merge-nested cblock opts)]
      (str (or (:raw opts) tag)
           (if (:parameter main)
-            (emit-params ck cblock params grammer mopts))
+            (emit-params ck cblock params grammar mopts))
           (if (:body main)
-            (emit-block-body ck cblock body grammer mopts))))))
+            (emit-block-body ck cblock body grammar mopts))))))
 
 (defn emit-block-controls
   "emits control blocks for a form"
   {:added "3.0"}
-  ([key block control ctl-args grammer mopts]
-   (let [{:keys [begin append main]} (merge (get-in grammer [:default :block])
+  ([key block control ctl-args grammar mopts]
+   (let [{:keys [begin append main]} (merge (get-in grammar [:default :block])
                                             block)
          sep (cond append " "
                    :else (common/newline-indent))]
@@ -145,11 +145,11 @@
                     (let [margs (get ctl-args ck)
                           _     (if (and required (empty? margs))
                                   (h/error "Form is required in body" {:main key :control ck}))
-                          opts  (merge (get-in grammer [:default :block])
-                                       (get-in grammer [:block key :control :default])
-                                       (get-in grammer [:block key :control ck]))]
+                          opts  (merge (get-in grammar [:default :block])
+                                       (get-in grammar [:block key :control :default])
+                                       (get-in grammar [:block key :control ck]))]
                       (map (fn [args]
-                             (emit-block-control ck cblock opts args grammer mopts))
+                             (emit-block-control ck cblock opts args grammar mopts))
                            margs)))
                   control)
           (str/join sep)
@@ -162,7 +162,7 @@
 (defn emit-block-setup
   "parses main and control blocks"
   {:added "4.0"}
-  ([key {:keys [raw main control] :as block} [tag & args] grammer mopts]
+  ([key {:keys [raw main control] :as block} [tag & args] grammar mopts]
    (let [main (or main #{:parameter :body})
          [params args] (if (:parameter main)
                          [(first args) (rest args)]
@@ -172,26 +172,26 @@
          ctl-args  (->> (filter ctl-fn args)
                         (group-by (comp ctl first)))
          args      (remove ctl-fn args)
-         raw   (or (get-in grammer [:block key :raw])
+         raw   (or (get-in grammar [:block key :raw])
                    raw
                    tag)
-         {:keys [start end append] :as wrap} (get-in grammer [:block key :wrap])]
+         {:keys [start end append] :as wrap} (get-in grammar [:block key :wrap])]
      [raw params args ctl-args wrap])))
 
 (defn emit-block-inner
   "returns the inner block"
   {:added "4.0"}
-  ([key {:keys [main control] :as block} form grammer mopts]
-   (let [[raw params args ctl-args wrap] (emit-block-setup key block form grammer mopts)
-         {:keys [start end append]} (block-options key block :body grammer)]
+  ([key {:keys [main control] :as block} form grammar mopts]
+   (let [[raw params args ctl-args wrap] (emit-block-setup key block form grammar mopts)
+         {:keys [start end append]} (block-options key block :body grammar)]
      (str (:start wrap)
           raw
           (if (:parameter main)
-            (emit-params key block params grammer mopts))
+            (emit-params key block params grammar mopts))
           start
           (str/trim-right
-           (common/with-indent [(get-in grammer [:default :common :indent])]
-             (emit-block-controls key block control ctl-args grammer mopts)))
+           (common/with-indent [(get-in grammar [:default :common :indent])]
+             (emit-block-controls key block control ctl-args grammar mopts)))
           (common/newline-indent)
           end
           (if (and wrap (not (:append wrap))) (common/newline-indent))
@@ -201,33 +201,33 @@
 (defn emit-block-standard
   "emits a generic block"
   {:added "3.0"}
-  ([key {:keys [main control] :as block} form grammer mopts]
-   (let [[raw params args ctl-args wrap] (emit-block-setup key block form grammer mopts)
+  ([key {:keys [main control] :as block} form grammar mopts]
+   (let [[raw params args ctl-args wrap] (emit-block-setup key block form grammar mopts)
          {:keys [start end append]} wrap]
      (str start
           raw
           (if (:parameter main)
-            (emit-params key block params grammer mopts))
+            (emit-params key block params grammar mopts))
           (if (:body main)
-            (emit-block-body key block args grammer mopts))
+            (emit-block-body key block args grammar mopts))
           (if control
-            (emit-block-controls key block control ctl-args grammer mopts))
+            (emit-block-controls key block control ctl-args grammar mopts))
           (if (and wrap (not append)) (common/newline-indent))
           end))))
 
 (defn emit-block
   "emits a minimal block expression"
   {:added "3.0"}
-  ([key [sym & args :as form] {:keys [reserved] :as grammer} mopts]
+  ([key [sym & args :as form] {:keys [reserved] :as grammar} mopts]
    (let [{:keys [emit block macro] :as op} (get reserved sym)]
      (case emit
-       :do    (emit-do  args grammer mopts)
-       :do*   (emit-do* args grammer mopts)
-       :macro (common/emit-macro key form grammer mopts)
-       :inner (emit-block-inner key block form grammer mopts)
+       :do    (emit-do  args grammar mopts)
+       :do*   (emit-do* args grammar mopts)
+       :macro (common/emit-macro key form grammar mopts)
+       :inner (emit-block-inner key block form grammar mopts)
        (if (or (fn? emit) (var? emit))
-         (emit form grammer mopts)
-         (emit-block-standard key block form grammer mopts))))))
+         (emit form grammar mopts)
+         (emit-block-standard key block form grammar mopts))))))
 
 
 ;;
@@ -237,9 +237,9 @@
 (defn test-block-loop
   "emits with blocks"
   {:added "4.0"}
-  [form grammer mopts]
+  [form grammar mopts]
   (common/emit-common-loop form
-                           grammer
+                           grammar
                            mopts
                            (assoc common/+emit-lookup+ :block emit-block)
                            common/emit-op))
@@ -247,9 +247,9 @@
 (defn test-block-emit
   "emit with blocks"
   {:added "4.0"}
-  [form grammer mopts]
+  [form grammar mopts]
   (binding [common/*emit-fn* test-block-loop]
-    (test-block-loop form grammer mopts)))
+    (test-block-loop form grammar mopts)))
 
 
 (comment

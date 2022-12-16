@@ -11,7 +11,7 @@
 
   (jsx-arr-prep [:div {:className 'a}
                  [:p '(hello 1 2 3)]]
-                js/+grammer+
+                js/+grammar+
                 {})
   => '[:div {:className a} [:p (hello 1 2 3)]])
 
@@ -25,7 +25,7 @@
 (fact "emits jsx map params"
   
   (emit-jsx-map-params '{:a (+ 1 2 3) :b "abc"}
-                       js/+grammer+
+                       js/+grammar+
                        {})
   => '("a={1 + 2 + 3}" "b=\"abc\""))
 
@@ -33,12 +33,12 @@
 (fact "emits jsx set params"
 
   (emit-jsx-set-params '#{a b c}
-                       js/+grammer+
+                       js/+grammar+
                        {})
   => '(("a={a}" "c={c}" "b={b}"))
 
   (emit-jsx-set-params '#{[a b (:.. c)]}
-                       js/+grammer+
+                       js/+grammar+
                        {})
   => '(("a={a}" "b={b}") "{...c}"))
 
@@ -46,12 +46,12 @@
 (fact "emits jsx params"
   
   (emit-jsx-params {:a 1 :b 2}
-                   js/+grammer+
+                   js/+grammar+
                    {})
   => [" " "a={1} b={2}"]
 
   (emit-jsx-params '#{[a b (:.. c)]}
-                   js/+grammer+
+                   js/+grammar+
                    {})
   => [" " "a={a} b={b} {...c}"])
 
@@ -63,16 +63,16 @@
   
   (emit-jsx-raw [:div {:className 'a}
                  [:p '(hello 1 2 3)]]
-                js/+grammer+
+                js/+grammar+
                 {})
   => "(\n  <div className={a}><p>{hello(1,2,3)}</p></div>)")
 
 ^{:refer std.lang.model.spec-js.jsx/emit-jsx :added "4.0"}
-(fact "can perform addition transformation if [:grammer :jsx] is false"
+(fact "can perform addition transformation if [:grammar :jsx] is false"
 
   (emit-jsx [:div {:className 'a}
              [:p '(hello 1 2 3)]]
-            js/+grammer+
+            js/+grammar+
             {:emit {:lang/jsx false}})
   => (std.string/|
       "React.createElement("

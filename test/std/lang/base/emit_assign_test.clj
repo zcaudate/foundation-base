@@ -5,16 +5,16 @@
             [std.lang.base.emit-helper :as helper]
             [std.lang.base.library-snapshot :as snap]
             [std.lang.base.book :as b]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.base.library-snapshot-prep-test :as prep]
             [std.lib :as h]))
 
 (def +reserved+
-  (-> (grammer/build)
-      (grammer/to-reserved)))
+  (-> (grammar/build)
+      (grammar/to-reserved)))
 
-(def +grammer+
-  (grammer/grammer :test +reserved+ helper/+default+))
+(def +grammar+
+  (grammar/grammar :test +reserved+ helper/+default+))
 
 
 (def +x-code-complex-fn+
@@ -47,7 +47,7 @@
   (emit-def-assign :def-assign
                    {:raw "var"}
                    '(var :int i := 9, :const :int j := 10)
-                   +grammer+
+                   +grammar+
                 {})
   => "var int i = 9, const int j = 10")
 
@@ -55,34 +55,34 @@
 (fact "emit do"
 
   (assign/test-assign-loop '(var a 1)
-                           +grammer+
+                           +grammar+
                            {})
   => "a = 1"
 
   (assign/test-assign-loop '(var :int [] a)
-                           +grammer+
+                           +grammar+
                            {})
   => "int a[]"
 
   (assign/test-assign-loop '(var :int :* a)
-                           +grammer+
+                           +grammar+
                            {})
   => "int * a"
   
   
   (assign/test-assign-loop '(var :const a (+ b1 2))
-                           +grammer+
+                           +grammar+
                            {})
   => "const a = (+ b1 2)"
   
   
   (assign/test-assign-emit '(var a (+ 1 2))
-                           +grammer+
+                           +grammar+
                            {})
   => "a = 1 + 2"
   
   (assign/test-assign-emit '(var :const a (+ b1 2))
-                           +grammer+
+                           +grammar+
                            {})
   => "const a = b1 + 2")
 
@@ -92,26 +92,26 @@
   (assign/test-assign-loop (list 'var 'a := (with-meta ()
                                               {:assign/fn (fn [sym]
                                                             (list sym :as [1 2 3]))}))
-                           +grammer+
+                           +grammar+
                            {})
   => "(a :as [1 2 3])"
 
   (assign/test-assign-loop (list 'var 'a := (with-meta '(sym :as [1 2 3])
                                               {:assign/template 'sym}))
-                           +grammer+
+                           +grammar+
                            {})
   => "(a :as [1 2 3])"
 
   (assign/test-assign-loop (list 'var 'a := (with-meta '(x.core/identity-fn 1)
                                               {:assign/inline 'x.core/identity-fn}))
-                           +grammer+
+                           +grammar+
                            {:lang :x
                             :snapshot +snap+})
   => "(do* (var a := 1))"
 
   (assign/test-assign-loop (list 'var 'a := (with-meta '(x.core/complex-fn 1)
                                               {:assign/inline 'x.core/complex-fn}))
-                           +grammer+
+                           +grammar+
                            {:lang :x
                             :snapshot +snap+})
   => "(do* (var a := 1) (:= a (+ a 1)))")

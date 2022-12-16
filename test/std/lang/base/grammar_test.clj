@@ -1,22 +1,22 @@
-(ns std.lang.base.grammer-test
+(ns std.lang.base.grammar-test
   (:use code.test)
-  (:require [std.lang.base.grammer :refer :all]
-            [std.lang.base.grammer-spec :as spec]))
+  (:require [std.lang.base.grammar :refer :all]
+            [std.lang.base.grammar-spec :as spec]))
 
-^{:refer std.lang.base.grammer/gen-ops :added "4.0"}
+^{:refer std.lang.base.grammar/gen-ops :added "4.0"}
 (fact "generates ops"
 
-  (gen-ops 'std.lang.base.grammer-spec "spec")
+  (gen-ops 'std.lang.base.grammar-spec "spec")
   => vector?)
 
-^{:refer std.lang.base.grammer/collect-ops :added "4.0"}
+^{:refer std.lang.base.grammar/collect-ops :added "4.0"}
 (fact "collects alll ops together"
 
   (collect-ops +op-all+)
   => map?)
 
-^{:refer std.lang.base.grammer/ops-list :added "4.0"}
-(fact "lists all ops in the grammer"
+^{:refer std.lang.base.grammar/ops-list :added "4.0"}
+(fact "lists all ops in the grammar"
   ^:hidden
   
   (vec (ops-list))
@@ -77,14 +77,14 @@
       :xtalk-uri
       :xtalk-special])
   
-^{:refer std.lang.base.grammer/ops-symbols :added "4.0"}
+^{:refer std.lang.base.grammar/ops-symbols :added "4.0"}
 (fact "gets a list of symbols"
   ^:hidden
 
   (ops-symbols)
   => coll?)
   
-^{:refer std.lang.base.grammer/ops-summary :added "4.0"}
+^{:refer std.lang.base.grammar/ops-summary :added "4.0"}
 (fact "gets the symbol and op name for a given category"
   ^:hidden
   
@@ -94,34 +94,34 @@
   (ops-summary [:counter])
   => [[:counter {:incby #{:+=}, :decby #{:-=}, :mulby #{:*=}, :incto #{:++}, :decto #{:--}}]])
 
-^{:refer std.lang.base.grammer/ops-detail :added "4.0"}
+^{:refer std.lang.base.grammar/ops-detail :added "4.0"}
 (fact "get sthe detail of the ops"
   ^:hidden
   
   (ops-detail :macro-arrow)
   => map?)
 
-^{:refer std.lang.base.grammer/build :added "3.0"}
-(fact "selector for picking required ops in grammer"
+^{:refer std.lang.base.grammar/build :added "3.0"}
+(fact "selector for picking required ops in grammar"
   ^:hidden
 
   (build :include [:vars])
   => map?)
 
-^{:refer std.lang.base.grammer/build-min :added "4.0"}
+^{:refer std.lang.base.grammar/build-min :added "4.0"}
 (fact "minimum ops example for a language"
   ^:hidden
   
   (build-min)
   => map?)
 
-^{:refer std.lang.base.grammer/build-xtalk :added "4.0"}
+^{:refer std.lang.base.grammar/build-xtalk :added "4.0"}
 (fact "xtalk ops"
 
   (build-xtalk)
   => map?)
 
-^{:refer std.lang.base.grammer/build:override :added "4.0"}
+^{:refer std.lang.base.grammar/build:override :added "4.0"}
 (fact "overrides existing ops in the map"
   ^:hidden
   
@@ -133,7 +133,7 @@
                   {:ret {}})
   => map?)
 
-^{:refer std.lang.base.grammer/build:extend :added "4.0"}
+^{:refer std.lang.base.grammar/build:extend :added "4.0"}
 (fact "adds new  ops in the map"
   ^:hidden
   
@@ -145,7 +145,7 @@
                 {:ret {}})
   => (throws))
 
-^{:refer std.lang.base.grammer/to-reserved :added "3.0"}
+^{:refer std.lang.base.grammar/to-reserved :added "3.0"}
 (fact "convert op map to symbol map"
   ^:hidden
   
@@ -157,54 +157,54 @@
                 :raw "",
                 :assign "="}})
 
-^{:refer std.lang.base.grammer/grammer-structure :added "3.0"}
+^{:refer std.lang.base.grammar/grammar-structure :added "3.0"}
 (fact "returns all the `:block` and `:fn` forms"
   ^:hidden
   
-  (grammer-structure (build :include [:vars]))
+  (grammar-structure (build :include [:vars]))
   => {:block #{}, :def #{}, :fn #{}}
 
 
-  (grammer-structure (build :include [:control-general]))
+  (grammar-structure (build :include [:control-general]))
   => {:block #{:for :while :branch}, :def #{}, :fn #{}}
 
-  (grammer-structure (build :include [:top-base]))
+  (grammar-structure (build :include [:top-base]))
   => {:block #{},
       :def #{:defn :def :defrun},
       :fn #{}})
 
-^{:refer std.lang.base.grammer/grammer-sections :added "3.0"}
-(fact "process sections witihin the grammer"
+^{:refer std.lang.base.grammar/grammar-sections :added "3.0"}
+(fact "process sections witihin the grammar"
   ^:hidden
   
-  (grammer-sections (build :include [:top-base]))
+  (grammar-sections (build :include [:top-base]))
   => #{:code}
 
-  (grammer-sections (build))
+  (grammar-sections (build))
   => #{:code})
 
-^{:refer std.lang.base.grammer/grammer-macros :added "3.0"}
-(fact "process macros within the grammer"
+^{:refer std.lang.base.grammar/grammar-macros :added "3.0"}
+(fact "process macros within the grammar"
   ^:hidden
   
-  (grammer-macros (build-min))
+  (grammar-macros (build-min))
   => #{:defn :defglobal :def :defrun})
 
-^{:refer std.lang.base.grammer/grammer? :added "3.0"}
-(fact "checks that an object is instance of grammer"
+^{:refer std.lang.base.grammar/grammar? :added "3.0"}
+(fact "checks that an object is instance of grammar"
   ^:hidden
 
-  (grammer? (grammer :test
+  (grammar? (grammar :test
               (to-reserved (build))
               {}))
   => true)
 
-^{:refer std.lang.base.grammer/grammer :added "3.0"
+^{:refer std.lang.base.grammar/grammar :added "3.0"
   :style/indent 1}
-(fact "constructs a grammer"
+(fact "constructs a grammar"
   ^:hidden
 
-  (grammer :test
+  (grammar :test
     (to-reserved (build-min))
     {})
   => map?)

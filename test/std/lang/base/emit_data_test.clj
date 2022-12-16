@@ -3,15 +3,15 @@
   (:require [std.lang.base.emit-common :as common]
             [std.lang.base.emit-helper :as helper]
             [std.lang.base.emit-data :as data :refer :all]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lib :as h]))
 
 (def +reserved+
-  (-> (grammer/build)
-      (grammer/to-reserved)))
+  (-> (grammar/build)
+      (grammar/to-reserved)))
 
-(def +grammer+
-  (grammer/grammer :test +reserved+ helper/+default+))
+(def +grammar+
+  (grammar/grammar :test +reserved+ helper/+default+))
 
 ^{:refer std.lang.base.emit-data/default-map-key :added "4.0"}
 (fact "emits a default map key"
@@ -118,7 +118,7 @@
 ^{:refer std.lang.base.emit-data/emit-quote :added "4.0"}
 (fact "emit quote structures"
 
-  (emit-quote nil nil ''(1 2 3) +grammer+ {})
+  (emit-quote nil nil ''(1 2 3) +grammar+ {})
   => "(1,2,3)")
 
 ^{:refer std.lang.base.emit-data/emit-table-group :added "4.0"}
@@ -129,47 +129,47 @@
 ^{:refer std.lang.base.emit-data/emit-table :added "4.0"}
 (fact "emit quote structures"
 
-  (emit-table nil nil '(tab :a 1 :b 2) +grammer+ {})
+  (emit-table nil nil '(tab :a 1 :b 2) +grammar+ {})
   => "{\"a\":1,\"b\":2}")
 
 ^{:refer std.lang.base.emit-data/test-data-loop :adopt true :added "4.0"}
 (fact "emit for data structures"
 
   (test-data-loop '[(+ 1 2)]
-                        +grammer+
+                        +grammar+
                         {})
   => "[(+ 1 2)]"
 
   (test-data-loop '{:a (+ 1 2)}
-                        +grammer+
+                        +grammar+
                         {})
   => "{[:a (+ 1 2)]}"
 
   (test-data-loop '#{(+ 1 2)}
-                        +grammer+
+                        +grammar+
                         {})
   => throws
 
   
   [:quote]
   (test-data-loop ''((+ A B) C)
-                        +grammer+
+                        +grammar+
                         {})
   => "((+ A B),C)"
 
   (test-data-loop ''[(+ A B) C]
-                        +grammer+
+                        +grammar+
                         {})
   => "(+ A B),C"
   
   [:table]
   (test-data-loop '(tab :a (+ 1 2) :b 2)
-                        +grammer+
+                        +grammar+
                         {})
   => "{\"a\":(+ 1 2),\"b\":2}"
   
   (test-data-loop '(tab 1 (+ 1 2) 3 4 5)
-                        +grammer+
+                        +grammar+
                         {})
   => "{1,(+ 1 2),3,4,5}")
 
@@ -177,56 +177,56 @@
 (fact "emit for data structures"
 
   (test-data-emit '[(+ 1 2)]
-                    +grammer+
+                    +grammar+
                     {})
   => "[1 + 2]"
 
   (test-data-emit '[(+ 1 2) (+ 3 4)]
-                    +grammer+
+                    +grammar+
                     {})
   => "[1 + 2,3 + 4]"
 
   (test-data-emit '[(+ 1 2) \0]
-                    +grammer+
+                    +grammar+
                     {})
   => "[1 + 2,]"
   
 
   (test-data-emit '{:a (+ 1 2)}
-                    +grammer+
+                    +grammar+
                     {})
   => "{\"a\":1 + 2}"
 
   (test-data-emit '{:a (not (+ 1 2))}
-                    +grammer+
+                    +grammar+
                     {})
   => "{\"a\":!(1 + 2)}"
 
 
   (test-data-emit '{(not (+ 1 2)) A}
-                    +grammer+
+                    +grammar+
                     {})
   => "{!(1 + 2):A}"
   
   
   [:quote]
   (test-data-emit ''((+ A B) C)
-                    +grammer+
+                    +grammar+
                     {})
   => "(A + B,C)"
   
   (test-data-emit ''[(+ A B) C]
-                    +grammer+
+                    +grammar+
                     {})
   => "A + B,C"
   
   [:table]
   (test-data-emit '(tab :a (+ 1 2) :b 2)
-                    +grammer+
+                    +grammar+
                     {})
   => "{\"a\":1 + 2,\"b\":2}"
   
   (test-data-emit '(tab 1 (+ 1 2) 3 4 5)
-                    +grammer+
+                    +grammar+
                     {})
   => "{1,1 + 2,3,4,5}")

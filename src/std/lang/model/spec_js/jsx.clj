@@ -20,15 +20,15 @@
  
    (jsx-arr-prep [:div {:className 'a}
                   [:p '(hello 1 2 3)]]
-                 js/+grammer+
+                 js/+grammar+
                  {})
    => '[:div {:className a} [:p (hello 1 2 3)]]"
   {:added "4.0"}
-  ([arr grammer mopts]
+  ([arr grammar mopts]
    (cond (= :% (first arr))
          (if (second arr)
            (let [tag (keyword (common/emit-symbol (second arr)
-                                                  grammer
+                                                  grammar
                                                   mopts))]
              (cons tag (drop 2 arr)))
            (h/error "MISSING TAG"))
@@ -59,11 +59,11 @@
   "emits jsx map params
    
    (emit-jsx-map-params '{:a (+ 1 2 3) :b \"abc\"}
-                        js/+grammer+
+                        js/+grammar+
                         {})
    => '(\"a={1 + 2 + 3}\" \"b=\\\"abc\\\"\")"
   {:added "4.0"}
-  ([params grammer mopts]
+  ([params grammar mopts]
    (binding [common/*indent* (+ common/*indent* 2)]
      (->> params
           (map (fn [[k v]]
@@ -71,7 +71,7 @@
                                   (pr-str v)
                                   
                                   :else
-                                  (let [body (emit/emit-main v grammer mopts)
+                                  (let [body (emit/emit-main v grammar mopts)
                                         body (if (str/multi-line? body)
                                                (str/indent-rest body 2)
                                                body)]
@@ -82,22 +82,22 @@
   "emits jsx set params
  
    (emit-jsx-set-params '#{a b c}
-                        js/+grammer+
+                        js/+grammar+
                         {})
    => '((\"a={a}\" \"c={c}\" \"b={b}\"))
  
    (emit-jsx-set-params '#{[a b (:.. c)]}
-                        js/+grammer+
+                        js/+grammar+
                         {})
    => '((\"a={a}\" \"b={b}\") \"{...c}\")"
   {:added "4.0"}
-  ([params grammer mopts]
+  ([params grammar mopts]
    (let [emit-fn (fn [svar mvar fvar]
                    (let [mvar (merge mvar (zipmap svar svar))
                          mstr (if (not-empty mvar)
-                                (emit-jsx-map-params mvar grammer mopts))
+                                (emit-jsx-map-params mvar grammar mopts))
                          fstr (if (not-empty fvar)
-                                (emit/emit-main (set fvar) grammer mopts))]
+                                (emit/emit-main (set fvar) grammar mopts))]
                      (filter identity [mstr fstr])))
          is-sym (fn [x]
                   (and (symbol? x)
@@ -128,23 +128,23 @@
   "emits jsx params
    
    (emit-jsx-params {:a 1 :b 2}
-                    js/+grammer+
+                    js/+grammar+
                     {})
    => [\" \" \"a={1} b={2}\"]
  
    (emit-jsx-params '#{[a b (:.. c)]}
-                    js/+grammer+
+                    js/+grammar+
                     {})
    => [\" \" \"a={a} b={b} {...c}\"]"
   {:added "4.0"}
-  ([params grammer mopts]
+  ([params grammar mopts]
    (let [body-arr (cond (empty? params) []
 
                         (set? params)
-                        (flatten (emit-jsx-set-params params grammer mopts))
+                        (flatten (emit-jsx-set-params params grammar mopts))
                         
                         (map? params)
-                        (emit-jsx-map-params params grammer mopts)
+                        (emit-jsx-map-params params grammar mopts)
                         
                               :else (h/error "Not valid input." {:input params}))]
      (cond (empty? body-arr)
@@ -160,9 +160,9 @@
 (defn emit-jsx-inner
   "emits the inner blocks for a jsx form"
   {:added "4.0"}
-  ([arr grammer mopts]
+  ([arr grammar mopts]
    (let [[tag params children] (-> arr
-                                   (jsx-arr-prep grammer mopts)
+                                   (jsx-arr-prep grammar mopts)
                                    (jsx-arr-norm))
          
          ntag   (name tag)
@@ -170,7 +170,7 @@
                   (.startsWith ntag "<") (subs 1)
                   (.endsWith ntag ">") (h/lsubs 1))
          end    (str  "</" ntag ">")
-         [prefix params] (emit-jsx-params params grammer mopts)
+         [prefix params] (emit-jsx-params params grammar mopts)
          start  (str  "<" ntag prefix params
                       ">")
          indent   common/*indent*
@@ -181,9 +181,9 @@
                                        
                                        (and (vector? form)
                                          (keyword? (first form)))
-                                       (emit-jsx-inner form grammer mopts)
+                                       (emit-jsx-inner form grammar mopts)
                                        
-                                       :else (str "{" (emit/emit-main form grammer mopts) "}"))))))
+                                       :else (str "{" (emit/emit-main form grammar mopts) "}"))))))
          single?  (data/emit-singleline-array? body-arr)
          body     (if single?
                     (str/join "" body-arr)
@@ -201,22 +201,22 @@
    
    (emit-jsx-raw [:div {:className 'a}
                   [:p '(hello 1 2 3)]]
-                 js/+grammer+
+                 js/+grammar+
                  {})
    => \"(\\n  <div className={a}><p>{hello(1,2,3)}</p></div>)\""
   {:added "4.0"}
-  ([arr grammer mopts]
+  ([arr grammar mopts]
    (binding [common/*indent* (+ common/*indent* 2)]
      (str "("
           (common/newline-indent)
-          (emit-jsx-inner arr grammer mopts)")"))))
+          (emit-jsx-inner arr grammar mopts)")"))))
 
 (defn emit-jsx
-  "can perform addition transformation if [:grammer :jsx] is false
+  "can perform addition transformation if [:grammar :jsx] is false
  
    (emit-jsx [:div {:className 'a}
               [:p '(hello 1 2 3)]]
-             js/+grammer+
+             js/+grammar+
              {:emit {:lang/jsx false}})
    => (std.string/|
        \"React.createElement(\"
@@ -225,7 +225,7 @@
       \"  React.createElement(\\\"p\\\",{},hello(1,2,3))\"
        \")\")"
   {:added "4.0"}
-  ([arr grammer mopts]
+  ([arr grammar mopts]
    (if (= false (-> mopts :emit :lang/jsx))
      (let [child-fn (fn [children]
                       (cond (or (empty? children)
@@ -279,27 +279,27 @@
                        (if (volatile? form)
                          @form
                          form))))]
-       (emit/emit-main arr grammer mopts))
-     (emit-jsx-raw arr grammer mopts))))
+       (emit/emit-main arr grammar mopts))
+     (emit-jsx-raw arr grammar mopts))))
 
 
 (comment
   (./create-tests)
   
   (emit/emit-main (:form (std.lang/ptr-entry js.ext.react/createStoreProvider))
-             (std.lang/grammer:js)
+             (std.lang/grammar:js)
              )
   
   (emit-jsx [:h1 "hello"]
-            (std.lang/grammer:js)
-            {:grammer {:jsx false}})
+            (std.lang/grammar:js)
+            {:grammar {:jsx false}})
   
 
   (emit-jsx
    '[:div
      (js/write [(S.group {"test/FooHello" {:a 10 :b 20}})])]
-   (std.lang/grammer:js)
-   {:grammer {:jsx false}})
+   (std.lang/grammar:js)
+   {:grammar {:jsx false}})
   
   
   (emit-jsx
@@ -307,9 +307,9 @@
      [:h1 (+ "HELLO " val)]
      [:button {test (fn []
                       (setVal (Math.random {rt.javafx.test/BarHello 1})))}]]
-   (std.lang/grammer:js)
-   {:grammer {:jsx false}})
+   (std.lang/grammar:js)
+   {:grammar {:jsx false}})
   
   (emit/emit-main '(React.createElement "h1" {} "hello")
-             (std.lang/grammer:js)
-             {:grammer {:jsx false}}))
+             (std.lang/grammar:js)
+             {:grammar {:jsx false}}))

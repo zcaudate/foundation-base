@@ -5,7 +5,7 @@
 
 (def ^:dynamic *macro-form* nil)
 
-(def ^:dynamic *macro-grammer* nil)
+(def ^:dynamic *macro-grammar* nil)
 
 (def ^:dynamic *macro-opts* nil)
 
@@ -25,11 +25,11 @@
   []
   *macro-opts*)
 
-(defn macro-grammer
-  "gets the current grammer"
+(defn macro-grammar
+  "gets the current grammar"
   {:added "4.0"}
   []
-  *macro-grammer*)
+  *macro-grammar*)
 
 (defmacro ^{:style/indent 1}
   with:macro-opts
@@ -234,9 +234,9 @@
 (defn to-staging-form
   "different staging forms"
   {:added "4.0"}
-  [form grammer modules mopts walk-fn]
+  [form grammar modules mopts walk-fn]
   (let [fsym      (first form)
-        reserved  (get-in grammer [:reserved (first form)])]
+        reserved  (get-in grammar [:reserved (first form)])]
     (cond (= fsym '!:template)
           (walk-fn (eval (second form)))
           
@@ -268,15 +268,15 @@
 (defn to-staging
   "converts the stage"
   {:added "4.0"}
-  [input grammer modules mopts]
+  [input grammar modules mopts]
   (binding [*macro-skip-deps* false
-            *macro-grammer* grammer
+            *macro-grammar* grammar
             *macro-opts* mopts]
     (let [deps  (volatile! #{})
           form  (h/prewalk
                  (fn walk-fn [form]
                    (cond (h/form? form)
-                         (to-staging-form form grammer modules mopts walk-fn)
+                         (to-staging-form form grammar modules mopts walk-fn)
                          
                          
                          (and (symbol? form)
@@ -294,9 +294,9 @@
 (defn to-resolve
   "resolves only the code symbols (no macroexpansion)"
   {:added "4.0"}
-  [input grammer modules mopts]
+  [input grammar modules mopts]
   (binding [*macro-skip-deps* true
-            *macro-grammer* grammer
+            *macro-grammar* grammar
             *macro-opts* mopts]
     (let [form  (h/prewalk
                  (fn walk-fn [form]
@@ -317,4 +317,4 @@
 (comment
   
   (comment
-  (get-in (std.lang/grammer :lua) [:reserved 'var*])))
+  (get-in (std.lang/grammar :lua) [:reserved 'var*])))

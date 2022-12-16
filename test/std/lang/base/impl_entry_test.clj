@@ -28,7 +28,7 @@
       {:a 1}
       [a b]
       (return (+ a b)))
-   (get-in @emit/+test-grammer+ [:reserved 'defn])
+   (get-in @emit/+test-grammar+ [:reserved 'defn])
    {:lang :lua
     :namespace 'L.core
     :module 'L.core})
@@ -46,7 +46,7 @@
    {:lang :lua
     :namespace 'L.core
     :module 'L.core}
-   @emit/+test-grammer+)
+   @emit/+test-grammar+)
   => e/book-entry?)
 
 ^{:refer std.lang.base.impl-entry/create-code-hydrate :added "4.0"
@@ -58,13 +58,13 @@
              {:lang :lua
               :namespace 'L.core
               :module 'L.core}
-             @emit/+test-grammer+))]}
+             @emit/+test-grammar+))]}
 (fact "hydrates the forms"
   ^:hidden
   
   (-> (entry/create-code-hydrate +entry+
-                                 (get-in @emit/+test-grammer+ [:reserved 'defn])
-                                 @emit/+test-grammer+
+                                 (get-in @emit/+test-grammar+ [:reserved 'defn])
+                                 @emit/+test-grammar+
                                  (:modules prep/+book-min+)
                                  '{:id L.core
                                    :alias {}
@@ -129,7 +129,7 @@
 (fact "emits using the raw entry"
   ^:hidden
   
-  (entry/emit-entry-raw @emit/+test-grammer+
+  (entry/emit-entry-raw @emit/+test-grammar+
                         +entry+
                         '{:module {:internal #{L.core}}
                           :layout :full})
@@ -158,7 +158,7 @@
 (fact "emits using a potentially cached entry"
   ^:hidden
   
-  (entry/emit-entry-cached {:grammer (:grammer +book+)
+  (entry/emit-entry-cached {:grammar (:grammar +book+)
                             :entry (get-in +book+ '[:modules L.core :code add-fn])
                             :mopts {:layout :full
                                     :module (assoc (get-in +book+ '[:modules L.core])
@@ -169,7 +169,7 @@
 (fact "emits the entry label"
   ^:hidden
   
-  (entry/emit-entry-label (:grammer +book+)
+  (entry/emit-entry-label (:grammar +book+)
                           (get-in +book+ '[:modules L.core :code add-fn]))
   => "// L.core/add-fn [] ")
 
@@ -177,7 +177,7 @@
 (fact "emits a given entry"
   ^:hidden
   
-  (entry/emit-entry (:grammer +book+)
+  (entry/emit-entry (:grammar +book+)
                     (get-in +book+ '[:modules L.core :code add-fn])
                     {:layout :full
                      :module (assoc (get-in +book+ '[:modules L.core])

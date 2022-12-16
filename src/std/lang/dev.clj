@@ -5,9 +5,9 @@
   "reloads the specs"
   {:added "4.0"}
   []
-  (require 'std.lang.base.grammer-spec :reload)
-  (require 'std.lang.base.grammer-xtalk :reload)
-  (require 'std.lang.base.grammer :reload)
+  (require 'std.lang.base.grammar-spec :reload)
+  (require 'std.lang.base.grammar-xtalk :reload)
+  (require 'std.lang.base.grammar :reload)
   (require 'std.lang.model.spec-xtalk.com-js :reload)
   (require 'std.lang.model.spec-xtalk.com-lua :reload)
   (require 'std.lang.model.spec-xtalk.com-python :reload)

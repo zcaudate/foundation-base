@@ -30,19 +30,19 @@
 (defn emit-def
   "creates the def string"
   {:added "3.0"}
-  ([key [tag sym body :as form] grammer mopts]
-   (let [{:keys [raw space assign statement] :as props} (helper/get-options grammer [:define key])
+  ([key [tag sym body :as form] grammar mopts]
+   (let [{:keys [raw space assign statement] :as props} (helper/get-options grammar [:define key])
          typestr (fn/emit-def-type sym (or raw
                                            (h/strn tag))
-                                   grammer mopts)
+                                   grammar mopts)
          sym-str   (case key
-                     :defglobal (common/emit-with-global nil [nil sym] grammer mopts)
-                     (common/*emit-fn* sym grammer mopts))]
+                     :defglobal (common/emit-with-global nil [nil sym] grammar mopts)
+                     (common/*emit-fn* sym grammar mopts))]
      (str typestr
           (if (not-empty typestr) space)
           sym-str
           space assign space
-          (common/*emit-fn* body grammer mopts)
+          (common/*emit-fn* body grammar mopts)
           statement))))
 
 (defn emit-declare
@@ -50,14 +50,14 @@
  
    (emit-declare :def
                  '(declare a b c)
-                 +grammer+
+                 +grammar+
                  {})
    => \"def a,b,c\""
   {:added "4.0"}
-  ([key [tag & syms] grammer mopts]
-   (let [{:keys [raw space sep]}  (helper/get-options grammer [:define key])
+  ([key [tag & syms] grammar mopts]
+   (let [{:keys [raw space sep]}  (helper/get-options grammar [:define key])
          pre (str (or raw tag))]
-     (str pre space (str/join sep (common/emit-array (vec syms) grammer mopts))))))
+     (str pre space (str/join sep (common/emit-array (vec syms) grammar mopts))))))
 
 (defn emit-top-level
   "generic define form
@@ -66,11 +66,11 @@
      (emit-top-level :defn
                      '(defn abc [a := 0]
                         (+ 1 2 3))
-                     +grammer+
+                     +grammar+
                      {}))
    => \"function abc(a = 0){\\n  1 + 2 + 3;\\n}\""
   {:added "3.0"}
-  ([key [tag sym & more :as form] grammer mopts]
+  ([key [tag sym & more :as form] grammar mopts]
    (let [module-id (or (-> mopts :entry :module)
                        (-> mopts :module :id))
          sym (if (and
@@ -86,12 +86,12 @@
                sym)
          form (apply list tag sym more)]
      (case key
-       :def         (emit-def key form grammer mopts)
-       :defglobal   (emit-def key form grammer mopts)
-       :defrun      (block/emit-do  (drop 2 form) grammer mopts)
-       :defn        (fn/emit-fn  key form grammer mopts)
-       :defgen      (fn/emit-fn  key form grammer mopts)
-       :declare     (emit-declare key form grammer mopts)))))
+       :def         (emit-def key form grammar mopts)
+       :defglobal   (emit-def key form grammar mopts)
+       :defrun      (block/emit-do  (drop 2 form) grammar mopts)
+       :defn        (fn/emit-fn  key form grammar mopts)
+       :defgen      (fn/emit-fn  key form grammar mopts)
+       :declare     (emit-declare key form grammar mopts)))))
 
 (def +emit-lookup+
   (assoc common/+emit-lookup+
@@ -104,24 +104,24 @@
    
    (emit-form :custom
               '(custom 1 2 3)
-              (assoc-in +grammer+
+              (assoc-in +grammar+
                         [:reserved 'custom]
                         {:emit  (fn [_ _ _]
                                   'CUSTOM)})
              [])
    => 'CUSTOM"
   {:added "4.0"}
-  ([key [sym & args :as form] {:keys [reserved] :as grammer} mopts]
+  ([key [sym & args :as form] {:keys [reserved] :as grammar} mopts]
    (let [{:keys [emit type] :as props} (get reserved sym)]
      (if common/*trace*
        (h/prn form))
      (try
        (cond (or (fn? emit)
                  (var? emit))
-             (emit form grammer mopts)
+             (emit form grammar mopts)
 
              (keyword? emit)
-             (common/emit-op key form grammer mopts
+             (common/emit-op key form grammar mopts
                              {:def-assign #'assign/emit-def-assign
                               :quote #'data/emit-quote
                               :table #'data/emit-table
@@ -132,10 +132,10 @@
              
              :else
              (case type
-               :fn         (fn/emit-fn key form grammer mopts)
-               :def        (emit-top-level key form grammer mopts)
+               :fn         (fn/emit-fn key form grammar mopts)
+               :def        (emit-top-level key form grammar mopts)
                :hard-link  (common/*emit-fn* (cons (:raw props) (rest form))
-                                             grammer mopts)
+                                             grammar mopts)
                (h/error "Missing key" {:key key
                                        :symbol sym
                                        :props props

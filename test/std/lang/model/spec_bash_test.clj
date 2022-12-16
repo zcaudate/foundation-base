@@ -118,14 +118,14 @@
 (fact "quotes an item"
   ^:hidden
   
-  (bash-quote-item "hello" +grammer+ {})
+  (bash-quote-item "hello" +grammar+ {})
   => "\"\\\"hello\\\"\"")
 
 ^{:refer std.lang.model.spec-bash/bash-set :added "4.0"}
 (fact "quotes a string value"
   ^:hidden
   
-  (bash-set #{"hello"} +grammer+ {})
+  (bash-set #{"hello"} +grammar+ {})
   => "\"\\\"hello\\\"\""
   
   (!.sh (echo #{"hello"}))
@@ -135,7 +135,7 @@
 (fact "quotes a string value"
   ^:hidden
   
-  (bash-quote '(quote "hello") +grammer+ {})
+  (bash-quote '(quote "hello") +grammar+ {})
   => "\"\\\"hello\\\"\""
   
   (!.sh (echo '"hello"))
@@ -154,7 +154,7 @@
   
   (bash-map {:hello 1
              :world "hello"}
-            +grammer+ {})
+            +grammar+ {})
   => "\"-hello\" 1 \"-world\" \"hello\""
   
   (l/emit-as
@@ -170,10 +170,10 @@
 (fact "outputs an invocation (same as vector)"
   ^:hidden
   
-  (bash-invoke '(ls {:l true}) +grammer+ {})
+  (bash-invoke '(ls {:l true}) +grammar+ {})
   => "ls {:l true}"
 
-  (bash-invoke '(echo (ls)) +grammer+ {})
+  (bash-invoke '(echo (ls)) +grammar+ {})
   => "echo ($ (ls))"
   
   (l/emit-as
@@ -196,7 +196,7 @@
 (fact "outputs an assignment"
   ^:hidden
   
-  (bash-assign '(:= a 1) +grammer+ {})
+  (bash-assign '(:= a 1) +grammar+ {})
   => "a=1")
 
 ^{:refer std.lang.model.spec-bash/bash-var :added "4.0"}

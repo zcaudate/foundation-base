@@ -1,7 +1,7 @@
 (ns std.lang.base.emit-prep-test
   (:use code.test)
   (:require [std.lang.base.book :as b]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lang.base.emit-common :as common]
             [std.lang.base.emit-helper :as helper]
             [std.lang.base.util :as ut]
@@ -11,8 +11,8 @@
 (def +book-empty+
   (b/book {:lang :lua
            :meta lua/+meta+
-           :grammer (grammer/grammer :lua
-                      (grammer/to-reserved (grammer/build))
+           :grammar (grammar/grammar :lua
+                      (grammar/to-reserved (grammar/build))
                       helper/+default+)}))
 
 (def +core-module+

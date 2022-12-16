@@ -6,7 +6,7 @@
 (defn default-emit-fn
   "the default emit function"
   {:added "4.0"}
-  [form grammer mopts]
+  [form grammar mopts]
   (pr-str form))
 
 (defn pr-single
@@ -78,17 +78,17 @@
 (defn get-option
   "gets either the path option or the default one"
   {:added "3.0"}
-  ([grammer path option]
+  ([grammar path option]
    (let [default [:default :common]]
-     (or (get-in grammer (conj path option))
-         (get-in grammer (conj default option))))))
+     (or (get-in grammar (conj path option))
+         (get-in grammar (conj default option))))))
 
 (defn get-options
   "gets the path option merged with defaults"
   {:added "3.0"}
-  ([grammer path]
-   (merge (get-in grammer [:default :common])
-          (get-in grammer path))))
+  ([grammar path]
+   (merge (get-in grammar [:default :common])
+          (get-in grammar path))))
 
 ;;
 ;; CLASSIFY
@@ -126,7 +126,7 @@
                                     :type (type form)})))
 
 (defn basic-typed-args
-  "typed args without grammer checks
+  "typed args without grammar checks
  
    (mapv (juxt meta identity)
          (basic-typed-args '(:int i, :const :int j)))
@@ -151,10 +151,10 @@
 (defn emit-typed-allowed-args
   "allowed declared args other than symbols"
   {:added "4.0"}
-  [[all curr] grammer]
+  [[all curr] grammar]
   (let [{:keys [modifiers]} curr
         arg (last modifiers)]
-    (if (contains? (get-option grammer [:allow] :assign)
+    (if (contains? (get-option grammar [:allow] :assign)
                    (first (h/seqify (form-key-base arg))))
       [all (-> curr
                (assoc :symbol arg
@@ -165,7 +165,7 @@
 (defn emit-typed-args
   "create types args from declarationns"
   {:added "3.0"}
-  ([args grammer]
+  ([args grammar]
    (loop [all  []
           curr {:modifiers []}
           [sym & more :as args] args]
@@ -177,7 +177,7 @@
            (= := sym)
            (if (:symbol curr)
              (recur all (assoc curr :assign true :force true) more)
-             (let [[all curr] (emit-typed-allowed-args [all curr] grammer)]
+             (let [[all curr] (emit-typed-allowed-args [all curr] grammar)]
                (recur all (assoc curr :force true) more)))
            
            (= :% sym)
@@ -200,19 +200,19 @@
 
            (or (symbol? sym)
                (and (set? sym)
-                    (-> grammer
+                    (-> grammar
                         :allow
                         :assign
                         :set)
                     (not (:assign curr)))
                (and (vector? sym)
-                    (-> grammer
+                    (-> grammar
                         :allow
                         :assign
                         :vector))
                (and (h/form? sym)
                     (= 'quote (first sym))
-                    (-> grammer
+                    (-> grammar
                         :allow
                         :assign
                         :quote)))
@@ -236,10 +236,10 @@
 (defn emit-symbol-full
   "emits a full symbol"
   {:added "4.0"}
-  [sym ns grammer]
-  (let [dopts (get-in grammer [:default :common])
-        sopts (get-in grammer [:default :symbol :full])
-        topts (get-in grammer [:token :symbol])
+  [sym ns grammar]
+  (let [dopts (get-in grammar [:default :common])
+        sopts (get-in grammar [:default :symbol :full])
+        topts (get-in grammar [:token :symbol])
         sym-str  (if ns
                    (str ns
                         (:namespace-full dopts)

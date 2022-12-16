@@ -3,35 +3,35 @@
   (:require [std.lang.base.emit-common :as common]
             [std.lang.base.emit-helper :as helper]
             [std.lang.base.emit-block :as block]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lib :as h]))
 
 (def +reserved+
-  (-> (grammer/build)
-      (grammer/to-reserved)))
+  (-> (grammar/build)
+      (grammar/to-reserved)))
 
-(def +grammer+
-  (grammer/grammer :test +reserved+ helper/+default+))
+(def +grammar+
+  (grammar/grammar :test +reserved+ helper/+default+))
 
 ^{:refer std.lang.base.emit-block/test-block-loop.do :adopt true :added "4.0"}
 (fact "emit do"
 
   (block/test-block-loop '(do (+ 1 2 3)
                                     (+ 4 5 6))
-                               +grammer+
+                               +grammar+
                                {})
   => "(+ 1 2 3);\n(+ 4 5 6);"
 
   (block/test-block-emit '(do (+ 1 2 3)
                                 (+ 4 5 6))
-                           +grammer+
+                           +grammar+
                            {})
   => "1 + 2 + 3;\n4 + 5 + 6;"
 
   (block/test-block-emit '(do (\\ 1 2 3)
                                 (\\ hello)
                                 (+ 4 5 6))
-                           +grammer+
+                           +grammar+
                            {})
   => "1 2 3\nhello\n4 + 5 + 6;")
 
@@ -40,13 +40,13 @@
 
   (block/test-block-loop '(do* (+ 1 2 3)
                                      (+ 4 5 6))
-                               +grammer+
+                               +grammar+
                                {})
   => "(+ 1 2 3);\n(+ 4 5 6)"
   
   (block/test-block-emit '(do* (+ 1 2 3)
                                 (+ 4 5 6))
-                           +grammer+
+                           +grammar+
                            {})
   => "1 + 2 + 3;\n4 + 5 + 6")
 
@@ -57,7 +57,7 @@
                                   (<= i 10)
                                   (:++ i)]
                               (print (:float i)))
-                               +grammer+
+                               +grammar+
                                {})
 
   =>  (std.string/|
@@ -68,7 +68,7 @@
                                   (<= i 10)
                                   (:++ i)]
                               (print (:float i)))
-                           +grammer+
+                           +grammar+
                            {})
   => (std.string/|
       "for(i = 0, i <= 10, ++i){"
@@ -81,7 +81,7 @@
 (fact "emit forange"
 
   (block/test-block-loop '(forange [i 10] (print i))
-                               +grammer+
+                               +grammar+
                                {})
   => "(for [(var i 0) (< i 10) [(:= i (+ i 1))]] (print i))")
 
@@ -91,7 +91,7 @@
   (block/test-block-loop '(if (< i 1)
                                   (return y)
                                   (:= x 1))
-                               +grammer+
+                               +grammar+
                                {})
   => "(br* (if (< i 1) (return y)) (else (:= x 1)))"
 
@@ -99,7 +99,7 @@
   (block/test-block-emit '(if (< i 1)
                               (return y)
                               (:= x 1))
-                           +grammer+
+                           +grammar+
                            {})
   =>  (std.string/|
        "if(i < 1){"
@@ -115,14 +115,14 @@
   (block/test-block-loop '(when (< i 1)
                                   (:= x 1)
                                   (return y))
-                               +grammer+
+                               +grammar+
                                {})
   => "(br* (if (< i 1) (:= x 1) (return y)))"
   
   (block/test-block-emit '(when (< i 1)
                               (:= x 1)
                               (return y))
-                           +grammer+
+                           +grammar+
                            {})
   => (std.string/|
       "if(i < 1){"
@@ -137,7 +137,7 @@
                                   "A" 1
                                   "B" 2
                                   3)
-                               +grammer+
+                               +grammar+
                                {})
   => "(switch [hello] (case [\"A\"] 1) (case [\"B\"] 2) (default 3))"
   
@@ -145,7 +145,7 @@
                               "A" 1
                               "B" 2
                               3)
-                           +grammer+
+                           +grammar+
                            {})
   (std.string/|
    "switch(hello){"
@@ -164,14 +164,14 @@
 
   (block/test-block-loop '(block
                                  (block (+ 1 2 3)))
-                               +grammer+
+                               +grammar+
                                {})
   => "{\n  (block (+ 1 2 3))\n}"
 
   
   (block/test-block-emit '(block
                                  (block (+ 1 2 3)))
-                           +grammer+
+                           +grammar+
                            {})
   
   => (std.string/|
@@ -187,7 +187,7 @@
   (block/test-block-loop '(try
                                   (block (+ 1 2 3))
                                   (catch e (return e)))
-                               +grammer+
+                               +grammar+
                                {})
   => (std.string/|
       "try{"
@@ -200,7 +200,7 @@
   (block/test-block-emit '(try
                               (block (+ 1 2 3))
                               (catch e (return e)))
-                           +grammer+
+                           +grammar+
                            {})
   
   => (std.string/|

@@ -1,17 +1,17 @@
-(ns std.lang.base.emit-common-grammer-test
+(ns std.lang.base.emit-common-grammar-test
   (:use code.test)
   (:require [std.lang.base.emit-common :as common :refer :all]
             [std.lang.base.emit-data :as data :refer :all]
             [std.lang.base.emit-helper :as helper]
-            [std.lang.base.grammer :as grammer]
+            [std.lang.base.grammar :as grammar]
             [std.lib :as h]))
 
 (def +reserved+
-  (-> (grammer/build)
-      (grammer/to-reserved)))
+  (-> (grammar/build)
+      (grammar/to-reserved)))
 
-(def +grammer+
-  (grammer/grammer :test +reserved+ helper/+default+))
+(def +grammar+
+  (grammar/grammar :test +reserved+ helper/+default+))
 
 (fact:global
  {:setup    [(alter-var-root #'common/*emit-fn*
@@ -29,7 +29,7 @@
 (fact "emits a comment"
   ^:hidden
   
-  (emit-comment nil '(:# "This is a comment" A B 1) +grammer+ {})
+  (emit-comment nil '(:# "This is a comment" A B 1) +grammar+ {})
   => "// This is a comment A B 1")
 
 ^{:refer std.lang.base.emit-common/emit-macro :adopt true :added "4.0"}
@@ -75,50 +75,50 @@
 (fact "emits a potentially wrapped form"
 
   (emit-wrapping '(not= 1 x)
-                 +grammer+
+                 +grammar+
                  {})
   => "(1 != x)")
 
 ^{:refer std.lang.base.emit-common/wrapped-str :adopt true :added "3.0"}
-(fact "wrapped string using `:start` and `:end` keys of grammer"
+(fact "wrapped string using `:start` and `:end` keys of grammar"
   ^:hidden
 
-  (wrapped-str "hello" [:data :map] +grammer+)
+  (wrapped-str "hello" [:data :map] +grammar+)
   => "{hello}")
 
 ^{:refer std.lang.base.emit-common/emit-pre :adopt true :added "3.0"}
 (fact "emits string before the arg"
   ^:hidden
 
-  (emit-pre "!" '[x] +grammer+ {})
+  (emit-pre "!" '[x] +grammar+ {})
   => "!x")
 
 ^{:refer std.lang.base.emit-common/emit-post :adopt true :added "3.0"}
 (fact "emits string after the arg"
   ^:hidden
 
-  (emit-post "--" '[x] +grammer+ {})
+  (emit-post "--" '[x] +grammar+ {})
   => "x--")
 
 ^{:refer std.lang.base.emit-common/emit-infix :adopt true :added "3.0"}
 (fact "emits infix ops"
   ^:hidden
 
-  (emit-infix "|" '[x y z] +grammer+ {})
+  (emit-infix "|" '[x y z] +grammar+ {})
   => "x | y | z")
 
 ^{:refer std.lang.base.emit-common/emit-infix-default :adopt true :added "3.0"}
 (fact "emits infix with a default value"
   ^:hidden
 
-  (emit-infix-default "/" '[x] 1 +grammer+ {})
+  (emit-infix-default "/" '[x] 1 +grammar+ {})
   => "1 / x")
 
 ^{:refer std.lang.base.emit-common/emit-infix-pre :adopt true :added "3.0"}
 (fact "emits infix with a default value"
   ^:hidden
 
-  (emit-infix-pre "-" '[x] +grammer+ {})
+  (emit-infix-pre "-" '[x] +grammar+ {})
   => "-x")
 
 ^{:refer std.lang.base.emit-common/emit-infix-if-single :adopt true :added "4.0"}
@@ -127,7 +127,7 @@
   (emit-infix-if '(:? true
                       x
                       y)
-                 +grammer+
+                 +grammar+
                  {})
   => "true ? x : y")
 
@@ -136,18 +136,18 @@
   ^:hidden
 
   (emit-infix-if '(:? true x y)
-                 +grammer+
+                 +grammar+
                  {})
   => "true ? x : y"
 
   (emit-infix-if '(:? true x y)
-                 +grammer+
+                 +grammar+
                  {})
   => "true ? x : y"
 
   (emit-infix-if '(:? true x
                       :else y)
-                 +grammer+
+                 +grammar+
                  {})
   => "true ? x : y"
 
@@ -155,7 +155,7 @@
                       true y
                       true z
                       :else t)
-                 +grammer+
+                 +grammar+
                  {:reserved  {:?  {:emit :infix-if}}})
   => "true ? x : (true ? y : (true ? z : t))")
 
@@ -163,31 +163,31 @@
 (fact "emits the raw symbol between two elems"
   ^:hidden
 
-  (emit-between ":" [1 2] +grammer+ {})
+  (emit-between ":" [1 2] +grammar+ {})
   => "1:2")
 
 ^{:refer std.lang.base.emit-common/emit-bi :adopt true :added "3.0"}
 (fact "emits infix with two args"
   ^:hidden
 
-  (emit-bi "==" '[x y] +grammer+ {})
+  (emit-bi "==" '[x y] +grammar+ {})
   => "x == y"
 
-  (emit-bi "==" '[x y z] +grammer+ {})
+  (emit-bi "==" '[x y z] +grammar+ {})
   => (throws))
 
 ^{:refer std.lang.base.emit-common/emit-assign :adopt true :added "3.0"}
 (fact "emits a setter expression"
   ^:hidden
   
-  (emit-assign ":eq" '[x 1] +grammer+ {})
+  (emit-assign ":eq" '[x 1] +grammar+ {})
   => "x :eq 1")
 
 ^{:refer std.lang.base.emit-common/emit-return :adopt true :added "3.0"}
 (fact "creates a return type statement"
   ^:hidden
 
-  (emit-return "break" [1] +grammer+ {})
+  (emit-return "break" [1] +grammar+ {})
   => "break 1")
 
 ^{:refer std.lang.base.emit-common/emit-map-key :adopt true :added "4.0"}
@@ -195,17 +195,17 @@
   ^:hidden
   
   (emit-map-key 'hello
-                +grammer+
+                +grammar+
                 {})
   => "hello"
 
   (emit-map-key "hello"
-                +grammer+
+                +grammar+
                 {})
   => "\"hello\""
 
   (emit-map-key :hello
-                (merge +grammer+
+                (merge +grammar+
                        {:data {:map-entry  {:start ""  :end ""  :assign ":" :space "" :keyword :keyword}}})
                 {})
   => (throws))
@@ -214,11 +214,11 @@
 (fact "emits the map entry"
   ^:hidden
 
-  (emit-map-entry [:hello "world"] +grammer+ {})
+  (emit-map-entry [:hello "world"] +grammar+ {})
   => "\"hello\":\"world\""
 
   (emit-map-entry [:hello "world"]
-                  (assoc-in +grammer+
+                  (assoc-in +grammar+
                             [:data :map-entry :assign] " = ") {})
   => "\"hello\" = \"world\"")
 
@@ -226,23 +226,23 @@
 (fact "constructs the collection"
   ^:hidden
   
-  (emit-coll-layout :vector 2 ["1" "2" "3"] +grammer+ {})
+  (emit-coll-layout :vector 2 ["1" "2" "3"] +grammar+ {})
   => "[1,2,3]"
   
-  (emit-coll-layout :vector 2 ["1" "\n2" "3"] +grammer+ {})
+  (emit-coll-layout :vector 2 ["1" "\n2" "3"] +grammar+ {})
   => "[\n    1,\n    \n  2,\n    3\n  ]")
 
 ^{:refer std.lang.base.emit-common/emit-coll :adopt true :added "3.0"}
 (fact "emits a collection"
   ^:hidden
 
-  (emit-coll :vector [1 2 3] +grammer+ {})
+  (emit-coll :vector [1 2 3] +grammar+ {})
   => "[1,2,3]"
 
-  (emit-coll :set [1 2 3] +grammer+ {})
+  (emit-coll :set [1 2 3] +grammar+ {})
   => "(1,2,3)"
   
-  (emit-coll :custom [1 2 3] (assoc-in +grammer+
+  (emit-coll :custom [1 2 3] (assoc-in +grammar+
                                        [:data :custom]
                                        {:start "<" :end ">" :space ""}) {})
   => "<1,2,3>")
@@ -254,10 +254,10 @@
 (fact "main function for data forms"
   ^:hidden
 
-  (emit-data :map {:a 1 :b 2} +grammer+ {})
+  (emit-data :map {:a 1 :b 2} +grammar+ {})
   => "{\"a\":1,\"b\":2}"
   
-  (emit-data :vector {:a 1 :b 2} +grammer+ {})
+  (emit-data :vector {:a 1 :b 2} +grammar+ {})
   => "[\"a\":1,\"b\":2]")
 
 ^{:refer std.lang.base.emit-common/emit-symbol-classify :adopt true :added "3.0"}
@@ -272,7 +272,7 @@
 ^{:refer std.lang.base.emit-common/emit-symbol-standard :adopt true :added "3.0"}
 (fact "emits a standard symbol"
 
-  (emit-symbol-standard 'print! +grammer+ {:layout :full})
+  (emit-symbol-standard 'print! +grammar+ {:layout :full})
   => "printf")
 
 ^{:refer std.lang.base.emit-common/emit-symbol :adopt true :added "4.0"}
@@ -289,7 +289,7 @@
 (fact "customisable emit function for tokens"
   ^:hidden
 
-  (emit-token :number 1 +grammer+ {})
+  (emit-token :number 1 +grammar+ {})
   => "1"
 
   (emit-token :string "1" {:token {:string {:quote :single}}} {})
@@ -310,7 +310,7 @@
 (fact  "emits a kw argument pair"
   ^:hidden
 
-  (emit-invoke-kw-pair [:name "hello"] +grammer+
+  (emit-invoke-kw-pair [:name "hello"] +grammar+
                        {})
   => "name=\"hello\"")
 
@@ -319,7 +319,7 @@
   ^:hidden
 
   (emit-invoke-args [1 2 3 4 :name "hello" :foo "bar"]
-                    +grammer+
+                    +grammar+
                     {})
   => '("1" "2" "3" "4" "name=\"hello\"" "foo=\"bar\""))
 
@@ -328,14 +328,14 @@
 
   (emit-invoke-layout ["ab\nc"
                        "de\nf"]
-                      +grammer+ {})
+                      +grammar+ {})
   => "(ab\nc,de\nf)")
 
 ^{:refer std.lang.base.emit-common/emit-invoke-raw :adopt true :added "3.0"}
 (fact "invoke call for reserved ops"
   ^:hidden
 
-  (emit-invoke-raw "-" '[abc] +grammer+ {})
+  (emit-invoke-raw "-" '[abc] +grammar+ {})
   => "-(abc)")
 
 ^{:refer std.lang.base.emit-common/emit-invoke-static :adopt true :added "3.0"}
@@ -343,7 +343,7 @@
   ^:hidden
 
   (emit-invoke-static '(:table/new "hello")
-                      +grammer+
+                      +grammar+
                       {})
   => "table.new(\"hello\")")
 
@@ -352,12 +352,12 @@
   ^:hidden
 
   (emit-invoke-typecast '(:int (:char 2))
-                        +grammer+
+                        +grammar+
                         {})
   => "((int)((char)2))"
 
   (emit-invoke-typecast '(:char :int 2)
-                        +grammer+
+                        +grammar+
                         {})
   => "((char int)2)")
 
@@ -367,7 +367,7 @@
 
   (emit-invoke :invoke
                '(call "hello" (+ 1 2))
-               +grammer+
+               +grammar+
                {})
   => "call(\"hello\",1 + 2)")
 
@@ -377,7 +377,7 @@
 
   (emit-new "new"
              '(String 1 2 3 4)
-             +grammer+
+             +grammar+
             {})
   => "new String(1,2,3,4)")
 
@@ -387,7 +387,7 @@
 
   (emit-free " "
              '(:- 1 2 3 4)
-             +grammer+
+             +grammar+
              {})
   => "1 2 3 4")
 
@@ -395,33 +395,33 @@
 (fact "classifies the index entry"
   ^:hidden
 
-  (emit-index-entry 'hello +grammer+ {})
+  (emit-index-entry 'hello +grammar+ {})
   => ".hello"
 
-  (emit-index-entry [9] +grammer+ {})
+  (emit-index-entry [9] +grammar+ {})
   => "[9]"
   
-  (emit-index-entry '(call 1 2 3) +grammer+ {})
+  (emit-index-entry '(call 1 2 3) +grammar+ {})
   => ".call(1,2,3)")
 
 ^{:refer std.lang.base.emit-common/emit-index :adopt true :added "3.0"}
 (fact "creates an indexed expression"
   ^:hidden
 
-  (emit-index nil '[x [hello] (world foo bar) baz] +grammer+ {})
+  (emit-index nil '[x [hello] (world foo bar) baz] +grammar+ {})
   => "x[hello].world(foo,bar).baz")
 
 ^{:refer std.lang.base.emit-common/emit-quote :adopt true :added "4.0"}
 (fact "emits quoted"
   ^:hidden
   
-  (emit-quote nil nil ''[1 2 3 4] +grammer+ {})
+  (emit-quote nil nil ''[1 2 3 4] +grammar+ {})
   => "1,2,3,4"
 
-  (emit-quote nil nil ''(1 2 3 4) +grammer+ {})
+  (emit-quote nil nil ''(1 2 3 4) +grammar+ {})
   => "(1,2,3,4)"
   
-  (emit-quote nil nil ''(1) +grammer+ {})
+  (emit-quote nil nil ''(1) +grammar+ {})
   => "(1)")
 
 ^{:refer std.lang.base.emit-common/emit-table-group :adopt true :added "4.0"}
@@ -434,7 +434,7 @@
 (fact "emits the table"
   
   (emit-table nil nil '(tab :a 1 :b 3 (:.. x) (:.. y))
-              +grammer+
+              +grammar+
               {})
   => "{\"a\":1,\"b\":3,...x,...y}")
 
@@ -442,7 +442,7 @@
 (fact "helper for the emit op"
   ^:hidden
 
-  (emit-op :- '(:- "~~") (merge +grammer+
+  (emit-op :- '(:- "~~") (merge +grammar+
                                 {:reserved {:-  {:emit :free}}})
            {})
   => "~~")
@@ -451,115 +451,115 @@
 (fact "returns the key associated with the form"
   ^:hidden
 
-  (form-key [] +grammer+) => [:vector :data nil]
+  (form-key [] +grammar+) => [:vector :data nil]
   
-  (form-key ''() +grammer+) => [:quote :statement nil]
+  (form-key ''() +grammar+) => [:quote :statement nil]
 
-  (form-key '(try) +grammer+) => [:try :block nil]
+  (form-key '(try) +grammar+) => [:try :block nil]
 
-  (form-key \0 +grammer+) => [:char :token true])
+  (form-key \0 +grammar+) => [:char :token true])
 
 ^{:refer std.lang.base.emit-data/test-data-loop :adopt true :added "4.0"}
 (fact "emits the raw string"
   ^:hidden
   
   (test-data-loop '(add [1 (:int 1)])
-                        +grammer+
+                        +grammar+
                         {})
   => "add([1,((int)1)])"
   
   (test-data-loop '(add [1 (:int 1)])
-                        +grammer+
+                        +grammar+
                         {})
   => "add([1,((int)1)])"
 
   
   (test-data-loop '['(1 \0)]
-                        +grammer+
+                        +grammar+
                         {})
   => "[(1,)]"
 
   (test-data-loop '['[1 \0]]
-                        +grammer+
+                        +grammar+
                         {})
   => "[1,]"
 
   (test-data-loop '(:- 1 2 3)
-                        +grammer+
+                        +grammar+
                         {})
   => "1 2 3"
 
   (test-data-loop '(:% 1 2 3)
-                        +grammer+
+                        +grammar+
                         {})
   => "123"
 
   
   (test-data-loop '(:% \0 1 . 2 \, \( \) \;)
-                        +grammer+
+                        +grammar+
                         {})
   => "1 2,();"
 
   (test-data-loop '(\\ 1 2 3 4)
-                        +grammer+
+                        +grammar+
                         {})
   => "1 2 3 4"
 
   (test-data-loop '(\\ 1 2 \\ 3 4\\ 5 6)
-                        +grammer+
+                        +grammar+
                         {})
   => "1 2\n3 4\n5 6"
 
   (test-data-loop '(:# 1 2 3)
-                        +grammer+
+                        +grammar+
                         {})
   => "// 1 2 3"
 
   (test-data-loop '(:# (\\ 1 2
                               \\ 3 4))
-                        +grammer+
+                        +grammar+
                         {})
   
   (test-data-loop '(:# (\\ 1 2
                               \\ 3 4
                               \\ 5 6))
-                        +grammer+
+                        +grammar+
                         {})
   => "// 1 2\n// 3 4\n// 5 6"
 
   (test-data-loop '(:# (:# (\\ 1 2
                                   \\ 3 4
                                   \\ 5 6)))
-                        +grammer+
+                        +grammar+
                         {})
   => "// // 1 2\n// // 3 4\n// // 5 6"
   
   (test-data-loop '(:- \\ \^ \, \: \; \( \) \[ \] \{ \} \" \' \@ \~ \`)
-                        +grammer+
+                        +grammar+
                         {})
   => "\n^,:;()[]{}\"'@~`"
   
 
   (test-data-loop '(\* hello world \;
                           \* hello world \;)
-                        +grammer+
+                        +grammar+
                         {})
   => "hello world;\nhello world;")
 
 ^{:refer std.lang.base.emit-data/test-data-emit :adopt true :added "4.0"}
-(fact "emits a string based on grammer"
+(fact "emits a string based on grammar"
   ^:hidden
   
   (test-data-emit '(add [1 (:int 1)]
                           (add [(hello 1 \0)
                                 {:a 1 :b [1 2 3]}]))
-                    +grammer+
+                    +grammar+
                     {})
   => "add([1,((int)1)],add([hello(1,),{\"a\":1,\"b\":[1,2,3]}]))")
 
 (comment
   (./import)
-  (emit-token :symbol 'try +grammer+
+  (emit-token :symbol 'try +grammar+
               {})
   => (throws))
   

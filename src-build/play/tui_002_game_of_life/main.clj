@@ -19,11 +19,12 @@
 
 (defn.js gridNew
   ([rows cols]
-   (let [grid (new Array rows)]
-     (forange [y rows]
-       (:= (. grid [y])
-           (new Array cols)))
-     (return grid))))
+   (var grid (new Array rows))
+   (var y nil)
+   (forange [y rows]
+      (:= (. grid [y])
+          (new Array cols)))
+   (return grid)))
 
 (defn.js gridSeed
   ([grid rows cols]
@@ -34,40 +35,40 @@
 
 (defn.js gridCreate
   ([rows cols]
-   (let [grid (-/gridNew rows cols)]
-     (-/gridSeed grid rows cols)
-     (return grid))))
+   (var grid (-/gridNew rows cols))
+   (-/gridSeed grid rows cols)
+   (return grid)))
 
 (defn.js gridCount
   ([grid y x rows cols]
-   (let [sum 0]
-     (forange [v [-1 2]]
-       (forange [h [-1 2]]
-         (let [yi (mod (+ y v rows) rows)
-               xi (mod (+ x h cols) cols)]
-           (:+= sum (. grid [yi] [xi])))))
-     (:-= sum (. grid [y] [x]))
-     (return sum))))
+   (var sum 0)
+   (forange [v [-1 2]]
+     (forange [h [-1 2]]
+       (var yi (mod (+ y v rows) rows))
+       (var xi (mod (+ x h cols) cols))
+       (:+= sum (. grid [yi] [xi]))))
+   (:-= sum (. grid [y] [x]))
+   (return sum)))
 
 (defn.js gridNext
   ([grid rows cols]
-   (let [next (-/gridNew rows cols)]
-     (forange [y rows]
-       (forange [x cols]
-         (let [curr  (. grid [y] [x])
-               near  (-/gridCount grid y x rows cols)]
-           (cond (and (=== curr 0)
-                      (=== near 3))
-                 (:= (. next [y] [x]) 1)
-                 
-                 (and (=== curr 1)
-                      (or (< near 2)
-                          (> near 3)))
-                 (:= (. next [y] [x]) 0)
-                 
-                 :else
-                 (:= (. next [y] [x]) curr)))))
-     (return next))))
+   (var next (-/gridNew rows cols))
+   (forange [y rows]
+     (forange [x cols]
+       (var curr  (. grid [y] [x]))
+       (var near  (-/gridCount grid y x rows cols))
+       (cond (and (=== curr 0)
+                  (=== near 3))
+             (:= (. next [y] [x]) 1)
+             
+             (and (=== curr 1)
+                  (or (< near 2)
+                      (> near 3)))
+             (:= (. next [y] [x]) 0)
+             
+             :else
+             (:= (. next [y] [x]) curr))))
+   (return next)))
   
 (defn.js Button
   [#{left top text disabled color action}]
@@ -127,39 +128,36 @@
 
 (defn.js GridView
   ([props]
-   (let [#{grid rows cols} props.state]
-     (return
-      [:box {:label " Grid "
-             :width (+ 2 (* 2 rows))
-             :height (+ 2 cols)
-             :border "line"}
-       (j/map grid
-               (fn [row i]
-                 (return
-                  (j/map row
-                         (fn [col j]
-                            (return
-                             [:box {:top i
-                                    :width 2
-                                    :left (* 2 j)
-                                    :key (+ i "_" j)
-                                    :content ""
-                                    :style {:bg (:? (== 1 col) ["yellow" "black"])}
-                                    :shrink true}]))))))]))))
+   (var #{grid rows cols} props.state)
+   (return
+    [:box {:label " Grid "
+           :width (+ 2 (* 2 rows))
+           :height (+ 2 cols)
+           :border "line"}
+     (j/map grid
+            (fn [row i]
+              (return
+               (j/map row
+                      (fn [col j]
+                        (return
+                         [:box {:top i
+                                :width 2
+                                :left (* 2 j)
+                                :key (+ i "_" j)
+                                :content ""
+                                :style {:bg (:? (== 1 col) ["yellow" "black"])}
+                                :shrink true}]))))))])))
 
 (defn.js App
   ([]
-   (let [[state setState]  (r/local (-/initialState -/ROWS -/COLS))
-         next-fn      (fn []
-                        (let [#{grid rows cols counter} state]
-                          (setState #{...state
-                                      {:counter (+ counter 1)
-                                       :grid (gridNext grid rows cols)}})))
-         _   (r/useInterval (fn []
-                              (if (not state.paused)
-                                (next-fn)))
-                            -/INTERVAL)         
-         actions {:reset (fn []
+   (var [state setState]  (r/local (-/initialState -/ROWS -/COLS)))
+   (var next-fn
+        (fn []
+          (let [#{grid rows cols counter} state]
+            (setState #{...state
+                        {:counter (+ counter 1)
+                         :grid (-/gridNext grid rows cols)}}))))
+   (var actions {:reset (fn []
                            (let [#{grid rows cols} state]
                              (setState #{...state
                                          {:grid (-/gridCreate rows cols)}})))
@@ -169,7 +167,12 @@
                              (setState #{...state, {:paused (not paused)}})))
                   :stop  (fn []
                            (let [#{paused} state]
-                             (setState #{...state, {:paused (not paused)}})))}])
+                             (setState #{...state, {:paused (not paused)}})))})
+   (r/useInterval
+    (fn []
+      (if (not state.paused)
+        (next-fn)))
+    -/INTERVAL)
    (return
     [:box {:left 2
            :top 1
@@ -184,14 +187,13 @@
 
 (defn.js Screen
   ([]
-   (const screen (b/screen
-                  {:autoPadding true
-                   :smartCSR true
-                   :title "Tui 002 - Game of Life"}))
+   (var screen (b/screen
+                {:autoPadding true
+                 :smartCSR true
+                 :title "Tui 002 - Game of Life"}))
    (screen.key ["q" "C-c" "Esc"]
                (fn [] (. this (destroy))))
    (return screen)))
 
 (defrun.js __main__
-  (do (:# (!:uuid))
-      (b/renderBlessed [:% -/App] (-/Screen))))
+  (b/renderBlessed [:% -/App] (-/Screen)))

@@ -8,7 +8,13 @@
    "incomplete"  ["exec" "-ep" "(use 'code.manage)  (incomplete :all) (System/exit 0)"]
    "install"     ["exec" "-ep" "(use 'code.maven)  (install :all {:tag :all}) (System/exit 0)"]
    "deploy"      ["exec" "-ep" "(use 'code.maven)  (deploy :all {:tag :all}) (System/exit 0)"]
-   "push-native-code"  ["run" "-m" "component.task-native-index"]}
+   "push-native-code"  ["run" "-m" "component.task-native-index"]
+   "push-c-000-pthreads"        ["run" "-m" "play.c-000-pthreads-hello.build"]
+   "push-ngx-000-hello"         ["run" "-m" "play.ngx-000-hello.build"]
+   "push-ngx-001-eval"          ["run" "-m" "play.ngx-001-eval.build"]
+   "push-tui-000-counter"       ["run" "-m" "play.tui-000-counter.build"]
+   "push-tui-001-fetch"         ["run" "-m" "play.tui-001-fetch.build"]
+   "push-tui-002-game-of-life"  ["run" "-m" "play.tui-002-game-of-life.build"]}
   :dependencies
   [;; dev
    [org.clojure/clojure "1.11.1"]

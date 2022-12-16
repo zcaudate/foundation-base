@@ -92,7 +92,8 @@
                                               :else form))
                                       body)])
                           
-                          (str/starts-with? (str ftag) "for:")
+                          (or (str/starts-with? (str ftag) "for:")
+                              (= (str ftag) "forange"))
                           (let [[_ bindings & body] form]
                             (do (vswap! vars h/union (collect-vars (first bindings)))
                                 [(second bindings) body]))

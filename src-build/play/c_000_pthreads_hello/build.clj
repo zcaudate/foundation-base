@@ -37,7 +37,7 @@
 (defn -main
   []
   (make/build-all PROJECT)
-  ())
+  (make/gh:dwim-init PROJECT))
 
 ^{:eval false
   ;;

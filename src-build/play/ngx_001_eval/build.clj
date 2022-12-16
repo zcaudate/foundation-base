@@ -1,5 +1,5 @@
 (ns play.ngx-001-eval.build
-  (:use code.test)
+  (:use [code.test :exclude [-main]])
   (:require [std.lang :as l]
             [std.lib :as h]
             [std.make :as make :refer [def.make]]
@@ -30,6 +30,11 @@
 
 (def +init+
   (do (make/triggers-set PROJECT '#{play.ngx-001-eval.main})))
+
+(defn -main
+  []
+  (make/build-all PROJECT)
+  (make/gh:dwim-init PROJECT))
 
 ^{:eval false
   ;;

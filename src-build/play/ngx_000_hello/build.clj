@@ -1,9 +1,9 @@
 (ns play.ngx-000-hello.build
-  (:use code.test)
+  (:use [code.test :exclude [-main]])
   (:require [std.lang :as l]
             [std.lib :as h]
             [std.make :as make :refer [def.make]]
-            [play.ngx-000-hello.main]))
+            [play.ngx-000-hello.main :as main]))
 
 (def.make PROJECT
   {:github   {:repo "zcaudate/play.ngx-000-hello"
@@ -19,6 +19,11 @@
 
 (def +init+
   (do (make/triggers-set PROJECT '#{play.ngx-000-hello.main})))
+
+(defn -main
+  []
+  (make/build-all PROJECT)
+  (make/gh:dwim-init PROJECT))
 
 ^{:eval false
   ;;
@@ -36,7 +41,9 @@
   }
 (fact "Code FOR PROJECT SETUP" 
 
-  (make/run:dev PROJECT))
+  (make/run:dev PROJECT)
+
+  (make/run-internal PROJECT :run))
 
 ^{:eval false
   ;;

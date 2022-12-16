@@ -67,7 +67,13 @@ Guided walkthroughs are provided for
 
 ### std.lang - examples
 
-- [react native components](https://github.com/zcaudate/foundation.react-native), generated from [build namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/component/build_native_index.clj), [index page](https://github.com/zcaudate/foundation-base/blob/main/src-build/component/web_native_index.clj).
+- [react native components](https://github.com/zcaudate/foundation.react-native), generated from [build namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/component/build_native_index.clj) and [index namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/component/web_native_index.clj).
+- [c pthreads](https://github.com/zcaudate/play.c-000-pthreads-hello), generated from [build namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/c_000_pthreads_hello/build.clj) and [main namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/c_000_pthreads_hello/main.clj)
+- [ngx hello](https://github.com/zcaudate/play.ngx-000-hello), generated from [build namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/ngx_000_hello/build.clj) and [main namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/ngx_000_hello/main.clj)
+- [ngx server](https://github.com/zcaudate/play.ngx-000-hello), generated from [build namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/ngx_001_eval/build.clj) and [main namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/ngx_001_eval/main.clj)
+- [tui counter](https://github.com/zcaudate/play.tui-000-counter), generated from [build namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/tui_000_counter/build.clj) and [main namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/tui_000_counter/main.clj)
+- [tui fetch](https://github.com/zcaudate/play.tui-001-fetch), generated from [build namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/tui_001_fetch/build.clj) and [main namespace](https://github.com/zcaudate/foundation-base/blob/main/src-build/play/tui_001_fetch/main.clj)
+- [tui game of life](https://github.com/zcaudate/play.tui-002-fetch), generated from [build namespace](https://github.com/zcaudate/foundation-base/tree/main/src-build/play/tui_002_game_of_life/build.clj) and [main namespace](https://github.com/zcaudate/foundation-base/tree/main/src-build/play/tui_002_game_of_life/main.clj)
 
 ## License
 

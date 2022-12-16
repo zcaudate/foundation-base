@@ -1,13 +1,6 @@
 (ns play.tui-001-fetch.main
-  (:use code.test)
   (:require [std.lang :as l]
             [std.lib :as h]))
-
-(fact:global
- {:prelim  [(require 'play.tui-001-fetch.build)
-            (eval (std.make/run:init play.tui-001-fetch.build/PROJECT))]
-  :setup   [(eval (std.make/run:dev play.tui-001-fetch.build/PROJECT))]})
-
 
 (l/script :js
   {:require [[js.react :as r]

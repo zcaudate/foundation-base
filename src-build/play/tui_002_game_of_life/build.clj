@@ -1,5 +1,5 @@
 (ns play.tui-002-game-of-life.build
-  (:use code.test)
+  (:use [code.test :exclude [-main]])
   (:require [std.lang :as  l]
             [std.lib :as h]
             [std.make :as make :refer [def.make]]
@@ -21,6 +21,11 @@
 
 (def +init+
   (do (make/triggers-set PROJECT '#{play.tui-002-game-of-life.main})))
+
+(defn -main
+  []
+  (make/build-all PROJECT)
+  (make/gh:dwim-init PROJECT))
 
 ^{:eval false
   ;;

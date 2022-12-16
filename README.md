@@ -8,13 +8,17 @@ Please see setup for [the testing environment](https://github.com/zcaudate/infra
 
 To run all test:
 
+```
 > git clone git@github.com:zcaudate/foundation-base.git
 > cd foundation-base
 > lein test
+```
 
 Currently clojars deploy is broken. To install jars to `.m2` for use in other projects run:
 
+```
 > lein install
+```
 
 ### std.lang - overview
 

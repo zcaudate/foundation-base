@@ -4,6 +4,18 @@
 
 Please see setup for [the testing environment](https://github.com/zcaudate/infra-testing/blob/main/infra/Dockerfile_foundation) which builds the docker container that is running the [base tests](https://github.com/zcaudate/foundation-ci/actions/workflows/test-base.yml). VNC is not needed for desktop testing.
 
+### installation
+
+To run all test:
+
+> git clone git@github.com:zcaudate/foundation-base.git
+> cd foundation-base
+> lein test
+
+Currently clojars deploy is broken. To install jars to `.m2` for use in other projects run:
+
+> lein install
+
 ### std.lang - overview
 
 [std.lang](https://github.com/zcaudate/foundation-base/blob/main/src/std/lang.clj) started off as an experimental snippet generator to run bits of lua code on openresty. I was looking around for a lightweight alternative to clojure servers and made the decision because of [this epic rant](https://github.com/zcaudate/foundation-base/discussions/4) on Quora. 
@@ -38,11 +50,12 @@ As features crept into the library, it slowly evolved into what it is now. More 
 ### std.lang - walkthroughs
 
 Guided walkthroughs are provided for 
-- basics and navigation 
-- runtimes and live eval
-- under the hood
-- creating a language
-- creating a runtime
+- [00 basics](https://github.com/zcaudate/foundation-base/blob/main/src-build/walkthrough/std_lang_00_basic.clj)
+- [01 multi-lang](https://github.com/zcaudate/foundation-base/blob/main/src-build/walkthrough/std_lang_01_multi.clj)
+- [02 live eval](https://github.com/zcaudate/foundation-base/blob/main/src-build/walkthrough/std_lang_02_live.clj)
+- 03 under the hood
+- 04 creating a language
+- 05 creating a runtime
 
 ## License
 

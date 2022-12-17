@@ -82,38 +82,6 @@
 (comment
   (./create-tests)
   (./create-tests)
-  (defn script-tmpl
-  "creates a script template"
-  {:added "4.0"}
-  ([[sym redis-sym]]
-   (let [{:rt/keys [redis]
-          :keys [form] :as entry}  @@(resolve redis-sym)
-         {enc-in :in enc-out :out} (:encode redis)
-         enc-in (set enc-in)
-         args   (nth form 2)
-         rargs  (map-indexed (fn [i arg]
-                               (if (enc-in i)
-                                 (list 'xt.lang.base-lib/js-encode arg)
-                                 arg))
-                             args)
-         ret   (h/$ (xt.sys.conn-redis/eval-script
-                     conn
-                     (tab :sha sha :body body)
-                     [~@rargs]
-                     {:success (fn:> [ret]
-                                     ~(cond->> 'ret
-                                        enc-out (list 'xt.lang.base-lib/js-decode)))}))
-         body  ((resolve 'rt.redis/generate-script) entry)
-         sha   (h/sha1 body)
-         lines (vec (str/split-lines ((resolve 'rt.redis/generate-script) entry)))
-         {:keys [tag] :or {tag "xt"}} (h/template-meta)]
-     (with-meta
-       (h/$ (~(symbol (str "defn." tag)) ~(symbol (name sym))
-              ~(vec (concat ['conn] args))
-              (var sha ~sha)
-              (var body (fn [] (return (xt.lang.base-lib/join "\n" ~lines))))
-              (return ~ret)))
-       (h/template-meta)))))
   )
 
 

@@ -30,14 +30,14 @@ lein install
 
 As features crept into the library, it slowly evolved into what it is now. More features were added to the project and it has evolved into a tool for exploration into multi-language/multi-runtime environment, allowing unprecedented control in code manipulation and testing:
 
-- A standard set of [symbols](https://github.com/zcaudate/foundation-base/blob/main/src/std/lang/base/grammer_spec.clj) for transpile
-- grammer spec for transpile to the following target languages:
+- A standard set of [symbols](https://github.com/zcaudate/foundation-base/blob/main/src/std/lang/base/grammar_spec.clj) for transpile
+- grammar spec for transpile to the following target languages:
   - [lua](https://github.com/zcaudate/foundation-base/blob/main/src/std/lang/model/spec_lua.clj)       (production ready)
   - [js](https://github.com/zcaudate/foundation-base/blob/main/src/std/lang/model/spec_js.clj)        (production ready)
   - [python](https://github.com/zcaudate/foundation-base/blob/main/src/std/lang/model/spec_python.clj)    (somewhat production ready)
   - [r](https://github.com/zcaudate/foundation-base/blob/main/src/std/lang/model/spec_r.clj)         (experimetal)
   - [c](https://github.com/zcaudate/foundation-base/blob/main/src/std/lang/model/spec_c.clj)         (gpu kernel code)
-  - [solidity](https://github.com/zcaudate/foundation-base/blob/main/src/rt/solidity/grammer.clj)  (production ready)
+  - [solidity](https://github.com/zcaudate/foundation-base/blob/main/src/rt/solidity/grammar.clj)  (production ready)
   - [bash](https://github.com/zcaudate/foundation-base/blob/main/src/std/lang/model/spec_bash.clj)      (experimental)
   - go        (yet todo)
   - ocaml     (yet todo)
@@ -51,7 +51,7 @@ As features crept into the library, it slowly evolved into what it is now. More 
   - websockets  (js, lua, python)
   - browser     (js, through chrome driver)
   - blender     (python, yet todo)
-- [xtalk](https://github.com/zcaudate/foundation-base/blob/main/src/std/lang/base/grammer_xtalk.clj) (crosstalk), a template language transpiling across dynamic language targets (lua, js, python)
+- [xtalk](https://github.com/zcaudate/foundation-base/blob/main/src/std/lang/base/grammar_xtalk.clj) (crosstalk), a template language transpiling across dynamic language targets (lua, js, python)
 - various helpers across different environments
 - [js](https://github.com/zcaudate/foundation-base/tree/main/src/js), [lua](https://github.com/zcaudate/foundation-base/tree/main/src/lua) and [xtalk](https://github.com/zcaudate/foundation-base/tree/main/src/xt) utility libaries.
 

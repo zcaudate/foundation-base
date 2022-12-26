@@ -324,6 +324,18 @@
                                        (return {"__esMODULE" true
                                                 :default (. esm default [key])}))))))})))
 
+(defmacro.js module:demos
+  [ns]
+  (apply vector :<> 
+         (->> (ns-interns ns)
+              (clojure.core/filter
+               (fn [[k v]] (str/ends-with? (str k) "Demo")))
+              (clojure.core/sort-by
+               (fn [[_ v]] (:line (meta v))))
+              (clojure.core/map (fn [[k _]]
+                                  [:% (symbol (str ns)
+                                              (str k))])))))
+
 (comment
 
   

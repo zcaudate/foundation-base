@@ -10,23 +10,24 @@
    :export [MODULE]})
 
 (defn.js create-client
-  [host port]
+  [host port path]
   (return
    (client/client-ws (or host window.location.hostname)
                      (or port window.location.port)
                      {:secured (== window.location.protocol
                                    "https:")
-                      :path "dev/ws"})))
+                      :path (or path "dev/ws")})))
 
 (defn.js DebugClient
   [props]
   (var #{globalField
          host
-         port} props)
+         port
+         path} props)
   (var [client setClient] (r/local))
   (var connFn
        (fn []
-         (var conn (-/create-client host port))
+         (var conn (-/create-client host port path))
          (. conn
             (addEventListener
              "close"

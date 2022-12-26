@@ -101,7 +101,9 @@
   (when (not= 1 err)
     (return false err))
   (:= ret (:? (k/arr? ret) (k/first ret) ret))
-  (local val (k/obj-first-val (or ret {})))
+  (local val (:? (k/obj? ret)
+                 (k/obj-first-val ret)
+                 ret))
   (return val))
 
 (defn.lua connect-constructor

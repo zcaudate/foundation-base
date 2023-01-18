@@ -1,4 +1,3 @@
-^{:no-test true}
 (ns lua.nginx.driver-postgres
   (:require [std.lang :as l]
             [std.lib :as h]

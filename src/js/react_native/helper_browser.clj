@@ -51,9 +51,10 @@
 
 (defn.js setHashParam
   [key value path]
-  (k/LOG! (-/getHashRoute))
+  #_(k/LOG! (-/getHashRoute))
   (var route (event-route/make-route (-/getHashRoute)))
   (event-route/set-param route key value path)
   (:= window.location.hash (+ "/" (event-route/get-url route))))
+
 
 (def.js MODULE (!:module))

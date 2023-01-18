@@ -231,6 +231,7 @@
                              import
                              document
                              window
+                             screen
                              localStorage
                              sessionStorage
                              Array

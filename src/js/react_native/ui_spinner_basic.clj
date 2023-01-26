@@ -1,4 +1,4 @@
-(ns js.react-native.ui-spinner
+(ns js.react-native.ui-spinner-basic
   (:require [std.lang :as l]
             [std.lib :as h]))
 
@@ -10,25 +10,21 @@
              [js.react-native.animate :as a]
              [js.react-native.physical-base :as physical-base]
              [js.react-native.physical-edit :as physical-edit]
-             [js.react-native.helper-roller :as helper-roller]
              [js.react-native.helper-theme :as helper-theme]
              [js.react-native.helper-theme-default :as helper-theme-default]]
    :export [MODULE]})
-  
-(def.js ITEMS
-  ["0" "1" "2" "3" "4" "5" "6" "7" "8" "9"])
 
 (def.js styleDigit
   {:height 25
-   :width 10
    :overflow "hidden"
-   :backgroundColor "blue"})
+   :marginLeft 5
+   #_#_:backgroundColor "blue"})
 
 (def.js styleDigitText
   {:height 25
-   :position "absolute"
-   :width 10
+   #_#_:position "absolute"
    :fontSize 16
+   :marginLeft 5
    :fontWeight "400"
    :backgroundColor "red"
    :color "#333"})
@@ -49,6 +45,27 @@
            :themePipeline __themePipeline
            (:.. rprops)]}))
   (return [styleStatic transformFn]))
+
+
+(defn.js useSpinnerPosition
+  "helper function to connect spinner position"
+  {:added "4.0"}
+  [value setValue valueRef min max stride]
+  (var position     (a/val 0))
+  (var prevRef      (r/ref value))
+  (r/init []
+    (a/addListener position
+                   (fn []
+                     (var #{_value _offset} position)
+                     (var nValue (k/clamp
+                                  min max
+                                  (- (r/curr valueRef)
+                                     (j/round (/ _value (or stride 8))))))
+                     
+                     (when (not= nValue (r/curr prevRef))
+                       (setValue nValue)
+                       (r/curr:set prevRef nValue)))))
+  (return position))
 
 (defn.js SpinnerStatic
   "creates the spinner padding"
@@ -71,52 +88,7 @@
               (:.. (j/arrayify styleText))]}
      text]]))
 
-(defn.js SpinnerDigit
-  "creates the spinner digit"
-  {:added "4.0"}
-  [#{[index
-      style
-      styleText
-      (:= brand {})
-      (:= items -/ITEMS)
-      (:= divisions 5)
-      editable]}]
-  (var #{labels
-         labelsLu
-         offset
-         modelFn} (helper-roller/useRoller #{index items divisions}))
-  (return
-   [:% n/View
-    {:style [-/styleDigit
-             (:.. (j/arrayify style))]}
-    (j/map (k/arr-range divisions)
-           (fn:> [index i]
-             [:% physical-base/Text
-              {:key i
-               :indicators {:offset offset
-                            :value (. labels [index])}
-               :style [-/styleDigitText
-                       (n/PlatformSelect
-                        {:web {:userSelect "none"
-                               :cursor (:? editable
-                                           "ns-resize"
-                                           "default")}})
-                       (:.. (j/arrayify styleText))]
-               :transformations
-               (fn [#{offset value}]
-                 (var v (- offset index))
-                 (var #{translate
-                        scale
-                        visible} (modelFn v))
-                 (return
-                  {:text  (. items [value])
-                   :style {:opacity (:? visible
-                                        (k/mix -2 1 scale)
-                                        0)
-                           :zIndex (* 10 scale)
-                           :transform [{:translateY (* -2 translate)}]}}))}]))]))
-
-(defn.js SpinnerValues
+(defn.js SpinnerBasicValues
   "creates the spinner values"
   {:added "4.0"}
   [#{[max
@@ -130,68 +102,13 @@
       styleDecimal
       styleDecimalText
       (:= decimal 0)]}]
-  (var arrDigits [])
-  (var arrTotal  (j/ceil (j/log10 (+ max 0.0001))))
-  (k/for:index [i [0 (j/max arrTotal
-                            (+ 1 decimal)) 1]]
-    (when (and (== i decimal)
-               (< 0 i))
-      (x:arr-push-first arrDigits {:type "decimal"}))
-    (x:arr-push-first arrDigits {:type "digit"
-                                 :order i}))
-  
-  (var digitFn
-       (fn [#{type order} i]
-         (var limit (j/pow 10 order))
-         (var hideDigit
-              (:? (== 0 decimal)
-                  (< value limit)
-                  false))
-         (cond (== type "digit")
-               (return
-                [:% n/View
-                 {:key (+ "digit" i)
-                  :style (:? hideDigit {:opacity 0})}
-                 [:% -/SpinnerDigit
-                  {:index (j/floor (/ value (j/round (k/pow 10 order))))
-                   :style styleDigit
-                   :styleText styleDigitText
-                   :editable editable}]])
-
-               (== type "decimal")
-               (return
-                [:% -/SpinnerStatic
-                 {:key (+ "decimal" i)
-                  :text "."
-                  :style [{:width 5}
-                          styleDecimal]
-                  :styleText styleDecimalText
-                  :editable editable}]))))
   (return
-   [:<>
-    (j/map arrDigits digitFn)]))
+   [:% -/SpinnerStatic
+    {:text (+ "" value)
+     :styleText styleDigitText
+     :editable editable}]))
 
-(defn.js useSpinnerPosition
-  "helper function to connect spinner position"
-  {:added "4.0"}
-  [value setValue valueRef min max stride]
-  (var position     (a/val 0))
-  (var prevRef      (r/ref value))
-  (r/init []
-    (a/addListener position
-                   (fn []
-                     (var #{_value _offset} position)
-                     (var nValue (k/clamp
-                                  min max
-                                  (- (r/curr valueRef)
-                                     (j/round (/ _value (or stride 8))))))
-                     
-                     (when (not= nValue (r/curr prevRef))
-                       (setValue nValue)
-                       (r/curr:set prevRef nValue)))))
-  (return position))
-
-(defn.js Spinner
+(defn.js SpinnerBasic
   "creates the spinner value"
   {:added "0.1"}
   [#{[theme
@@ -240,6 +157,8 @@
   (r/watch [value]
     (when (not= value __value)
       (__setValue value)))
+
+  
   (var iconElem
        [:% n/View
         {:style {:zIndex -10
@@ -252,6 +171,7 @@
           :style {:color (k/get-in styleStatic [0 "color"]) 
                   :paddingLeft 5}
           :size 15}]])
+  
   (return
    [:% physical-base/Box
     #{[:indicators touchable.indicators
@@ -268,13 +188,13 @@
                 :padding 5}
                styleStatic
                (n/PlatformSelect
-                {:web {:userSelect "none"
-                       :cursor "default"}})
+               {:web {:userSelect "none"
+                      :cursor "default"}})
                (:.. (j/arrayify style))]
        :transformations transformFn
        (:.. (j/assign touchable
                       panHandlers))
-       :children [[:% -/SpinnerValues
+       :children [[:% -/SpinnerBasicValues
                    #{[:key "values"
                       :editable true
                       :value __value
@@ -282,16 +202,9 @@
                       min
                       max
                       (:.. rprops)]}]
-                  iconElem
                   [:% n/View
-                   {:key "background"
-                    :style {:position "absolute"
-                            :height "100%"
-                            :width "100%"}}]]]}]))
+                   {:style {:flex 1}}]
+                  iconElem
+                  ]]}]))
 
 (def.js MODULE (!:module))
-
-(comment
-
-  panDirection
-                  panStride)

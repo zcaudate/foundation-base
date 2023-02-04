@@ -242,7 +242,8 @@
       (__setValue value)))
   (var iconElem
        [:% n/View
-        {:style {:zIndex -10
+        {:key "icon"
+         :style {:zIndex -10
                  :transform
                  [{:rotateZ (:? (== panDirection "horizontal")
                                 "45deg"

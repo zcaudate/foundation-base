@@ -10,7 +10,8 @@
    :config  {:program :resty}
    :require [[xt.sys.conn-redis :as redis]
              [xt.lang.base-lib :as k]
-             [lua.nginx.driver-redis :as lua-driver]]})
+             [lua.nginx.driver-redis :as lua-driver]
+             [xt.lang.base-repl :as repl]]})
 
 (l/script- :js
   {:runtime :basic
@@ -99,11 +100,61 @@
           (then (repl/>notify))))])
   => ["PONG" "hello"])
 
-^{:refer xt.sys.conn-redis/create-subscription :added "4.0"}
-(fact "creates a subscription given channel")
+^{:refer xt.sys.conn-redis/create-subscription :added "4.0"
+  :setup [(bench/stop-redis-array [17000])
+          (bench/start-redis-array [17000])
+          (l/rt:restart)]}
+(fact "creates a subscription given channel"
+  ^:hidden
+  
+  (do (def ^:dynamic *res*
+        (future
+          (notify/wait-on [:lua 5000]
+           (var conn (redis/connect {:constructor lua-driver/connect-constructor
+                                     :port 17000}
+                                    {}))
+           (redis/create-subscription
+            conn
+            ["__TEST__"])
+           (var '[res err] (lua-driver/read-reply conn))
+           (repl/notify res))))
+      (notify/wait-on :js
+        (redis/connect {:constructor js-driver/connect-constructor
+                        :port 17000}
+                       {:success (fn [conn]
+                                   (redis/exec conn "publish" ["__TEST__" "123"]
+                                               (repl/<!)))}))
+      @*res*
+      (deref *res* 1000 :timeout))
+  => ["message" "__TEST__" "123"])
 
-^{:refer xt.sys.conn-redis/create-psubscription :added "4.0"}
-(fact "creates a pattern subscription given channel")
+^{:refer xt.sys.conn-redis/create-psubscription :added "4.0"
+  :setup [(bench/stop-redis-array [17000])
+          (bench/start-redis-array [17000])
+          (l/rt:restart)]}
+(fact "creates a pattern subscription given channel"
+  ^:hidden
+
+  (do (def ^:dynamic *res*
+        (future
+          (notify/wait-on [:lua 5000]
+           (var conn (redis/connect {:constructor lua-driver/connect-constructor
+                                     :port 17000}
+                                    {}))
+           (redis/create-psubscription
+            conn
+            ["*"])
+           (var '[res err] (lua-driver/read-reply conn))
+           (repl/notify res))))
+      (notify/wait-on :js
+        (redis/connect {:constructor js-driver/connect-constructor
+                        :port 17000}
+                       {:success (fn [conn]
+                                   (redis/exec conn "publish" ["__TEST__" "123"]
+                                               (repl/<!)))}))
+      @*res*
+      (deref *res* 1000 :timeout))
+  => ["pmessage" "*" "__TEST__" "123"])
 
 ^{:refer xt.sys.conn-redis/eval-body :added "4.0"}
 (fact "evaluates a the body"

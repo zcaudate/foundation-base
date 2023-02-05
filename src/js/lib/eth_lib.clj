@@ -80,6 +80,15 @@
    [getDeployTransaction [] {:vargs args}]
    [deploy []  {:vargs args}]])
 
+(defn.js to-number
+  [value]
+  (when (and value
+             (== (. value type)
+                 "BigNumber"))
+    (:= value (. value hex)))
+  (return
+   (. ethers BigNumber (from value) (toNumber))))
+
 (defn.js new-rpc-provider
   "creates a new rpc provider"
   {:added "4.0"}

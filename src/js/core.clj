@@ -85,6 +85,11 @@
                             (catch e (reject e))))
                         ~ms))))))
 
+(defmacro.js timeout
+  [ms]
+  (h/$ (new Promise (fn [resolve]
+                      (setTimeout resolve ~ms)))))
+
 (defmacro.js ^{:standalone true}
   isWeb
   "checks that platform is web"

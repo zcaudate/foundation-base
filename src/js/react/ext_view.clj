@@ -169,6 +169,8 @@
   [view dest-key #{setResult
                    getResult
                    resultRef
+                   resultTag
+                   resultFn
                    meta
                    pred}]
   (r/init []
@@ -178,7 +180,9 @@
      listener-id
      (fn [event]
        (var nresult (getResult))
-       (when (and (or (not= "view.output"
+       (when (and (or (k/nil? resultTag)
+                      (== resultTag (. event data tag)))
+                  (or (not= "view.output"
                             (. event type))
                       (== (. event data type)
                           (or dest-key "output")))
@@ -186,7 +190,9 @@
                                     nresult)))
          (when (== "pending" (. event type))
            (k/LOG! event))
-         (setResult nresult)))
+         (setResult nresult))
+       (when resultFn
+         (resultFn event)))
      meta
      pred)
     (return
@@ -195,7 +201,7 @@
 (defn.js listenView
   "creates the most basic views"
   {:added "4.0"}
-  [view type meta dest-key]
+  [view type meta dest-key tag-key]
   (var [tfn tkey tevent] (k/get-key -/TYPES type))
   (:= tevent (or tevent type))
   (var getResult (fn []
@@ -209,8 +215,11 @@
                   #{setResult
                     getResult
                     resultRef
+                    
                     meta
-                    {:pred (fn [event]
+                    {:resultTag tag-key
+                     :resultFn  (k/get-in meta "resultFn")
+                     :pred (fn [event]
                              (return (== (. event ["type"])
                                          (+ "view." tevent))))}})
   (return result))
@@ -218,7 +227,7 @@
 (defn.js listenViewOutput
   "creates listeners on the output"
   {:added "4.0"}
-  [view types meta dest-key]
+  [view types meta dest-key tag-key]
   (var getOutput (fn:> (k/obj-clone (event-view/get-output view dest-key))))
   (var [output setOutput] (r/local getOutput))
   (var wrap (r/useIsMountedWrap))
@@ -236,7 +245,9 @@
                   #{meta pred  
                     {:setResult (wrap setOutput)
                      :getResult getOutput
-                     :resultRef outputRef}})
+                     :resultRef outputRef
+                     :resultTag tag-key
+                     :resultFn  (k/get-in meta "resultFn")}})
   (return output))
 
 (defn.js listenViewThrottled
@@ -283,44 +294,49 @@
                    (event-view/set-pending view false)
                    (return res)))))))))
 
+(defn.js refreshArgsFn
+  [view args opts]
+  (cond (k/arr-every args k/not-nil?)
+        (return
+         (. (-/refresh-args view args opts)
+            (then
+             (fn [acc]
+               (var [ok data] (k/get-in acc ["main"]))
+               (when (not ok) (throw data))
+               (cond (== (. opts remote) "always")
+                     (do (return
+                          ((-/wrap-pending -/refresh-args-remote
+                                           (. opts with-pending))
+                           view args true opts)))
+                     
+                     (== (. opts remote) "none")
+                     (return nil)
+                     
+                     :else
+                     (when (or (k/nil? (. opts remote-check))
+                               (. opts (remote-check args)))
+                       (if (k/not-empty? data)
+                         (return (-/refresh-args-sync view args false opts))
+                         (return (-/refresh-args-remote view args true opts)))))))))
+
+        :else
+        (return (fn:> (event-view/set-output view nil)))))
+
 (defn.js useRefreshArgs
   "refreshes args on the view"
   {:added "4.0"}
   [view args opts]
   (:= opts (or opts {}))
   (r/watch [(k/js-encode args)]
-    (cond (k/arr-every args k/not-nil?)
-          (return
-           (. (-/refresh-args view args opts)
-              (then
-               (fn [acc]
-                 (var [ok data] (k/get-in acc ["main"]))
-                 (when (not ok) (throw data))
-                 (cond (== (. opts remote) "always")
-                       (do (return
-                            ((-/wrap-pending -/refresh-args-remote
-                                             (. opts with-pending))
-                             view args true opts)))
-                       
-                       (== (. opts remote) "none")
-                       (return nil)
-                       
-                       :else
-                       (when (or (k/nil? (. opts remote-check))
-                                 (. opts (remote-check args)))
-                         (if (k/not-empty? data)
-                           (return (-/refresh-args-sync view args false opts))
-                           (return (-/refresh-args-remote view args true opts)))))))))
-
-          :else
-          (return (fn:> (event-view/set-output view nil))))))
+    (return
+     (-/refreshArgsFn view args opts))))
 
 (defn.js listenSuccess
   "listens to the successful output"
   {:added "4.0"}
-  [view args opts meta]
+  [view args opts meta tag-key]
   (:= opts (or opts {}))
-  (var output (-/listenView view "success" meta))
+  (var output (-/listenView view "success" meta nil tag-key))
   (-/useRefreshArgs view args opts)
   (return ((or (. opts then)
                k/identity)

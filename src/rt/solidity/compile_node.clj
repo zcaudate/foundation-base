@@ -56,6 +56,7 @@
          (compile-common/get-url rt)
          (rt-get-caller-private-key rt))))
 
+
 (defn rt:node-get-balance
   "gets the current balance"
   {:added "4.0"}
@@ -76,6 +77,16 @@
   (h/p:rt-invoke-ptr (rt-get-node rt)
                      {:form "pong"}
                      []))
+
+(defn rt:send-wei
+  [to-address amount & [rt]]
+  (compile-solc/compile-rt-eval
+   (rt-get-node rt)
+   (list `eth-bench/send-wei
+         (:url rt)
+         (rt-get-caller-private-key rt)
+         to-address
+         amount)))
 
 (defn rt:node-eval
   "evaluates a form in the node runtime"

@@ -33,6 +33,7 @@
              compile-common/with:stringify
              
              compile-node/with:measure
+             compile-node/rt:send-wei
              compile-node/rt:node-ping
              compile-node/rt:node-past-events
              compile-node/rt:node-get-balance

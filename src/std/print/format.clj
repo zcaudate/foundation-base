@@ -12,6 +12,9 @@
              chart/table:parse
 
              common/pad
+             common/pad:left
+             common/pad:right
+             common/pad:center
              common/justify
              common/border
              common/indent

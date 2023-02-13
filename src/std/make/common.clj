@@ -72,7 +72,6 @@
   `(binding [*internal-shell* true]
      ~@body))
 
-
 (defn- make-config-string
   "returns the annex string"
   {:added "4.0"}
@@ -108,7 +107,7 @@
    (let [_ (or default (h/error "Requires a default entry." {:input m}))
          {:keys [ns] :as m}  (merge (make-config-defaults)
                                     m)
-         root    (env/sys:ns-dir ns)]
+         root    (or root (str (fs/file ".")))]
      (assoc m :root root))))
 
 (defn make-config

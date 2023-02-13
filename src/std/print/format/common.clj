@@ -18,8 +18,8 @@
    (pad 1) => \"\"
    (pad 5) => \"\""
   {:added "3.0"}
-  ([len]
-   (apply str (repeat len +pad+))))
+  ([len & [pad-char]]
+   (apply str (repeat len (or pad-char +pad+)))))
 
 (defn pad:right
   "puts the content to the left, padding missing spaces
@@ -27,8 +27,8 @@
    (pad:right \"hello\" 10)
    => \"hello     \""
   {:added "3.0"}
-  ([content length]
-   (str content (pad (- length (count content))))))
+  ([content length & [pad-char]]
+   (str content (pad (- length (count content)) pad-char))))
 
 (defn pad:center
   "puts the content at the center, padding missing spacing
@@ -36,7 +36,7 @@
    (pad:center \"hello\" 10)
    => \"hello   \""
   {:added "3.0"}
-  ([content length]
+  ([content length & [pad-char]]
    (let [total (- length (count content))
          half  (long (/ total 2))
          [left right] (cond (even? total)
@@ -44,7 +44,7 @@
 
                             :else
                             [half (inc half)])]
-     (str (pad left) content (pad right)))))
+     (str (pad left pad-char) content (pad right pad-char)))))
 
 (defn pad:left
   "puts the content to the right, padding missing spaces
@@ -52,8 +52,10 @@
    (pad:left \"hello\" 10)
    => \"hello\""
   {:added "3.0"}
-  ([content length]
-   (str (pad (- length (count content))) content)))
+  ([content length & [pad-char]]
+   (str (pad (- length (count content))
+             pad-char)
+        content)))
 
 (defn justify
   "justifies the content to a given alignment

@@ -170,9 +170,9 @@
                    getResult
                    resultRef
                    resultTag
-                   resultFn
                    meta
                    pred}]
+  (var #{resultFn} (or meta {}))
   (r/init []
     (var listener-id (j/randomId 4))
     (event-view/add-listener

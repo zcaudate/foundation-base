@@ -131,7 +131,8 @@
                           {}
                           {:gasLimit common/*gas-limit*
                            :value    common/*caller-payment*}))]
-    (solc/compile-rt-eval (:node rt) form-call
+    (solc/compile-rt-eval (:node rt)
+                          form-call
                           (if to-string?
                             js.core/toString))))
 

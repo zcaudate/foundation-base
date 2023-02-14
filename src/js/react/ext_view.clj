@@ -172,7 +172,8 @@
                    resultTag
                    meta
                    pred}]
-  (var #{resultFn} (or meta {}))
+  (var #{resultFn
+         resultPrint} (or meta {}))
   (r/init []
     (var listener-id (j/randomId 4))
     (event-view/add-listener
@@ -192,7 +193,9 @@
            (k/LOG! event))
          (setResult nresult))
        (when resultFn
-         (resultFn event)))
+         (resultFn event))
+       (when resultPrint
+         (k/LOG! resultTag nresult event)))
      meta
      pred)
     (return

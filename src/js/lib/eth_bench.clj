@@ -37,11 +37,25 @@
   [url private-key address abi fn-name args overrides]
   (var signer (eth-lib/get-signer url private-key))
   (return (. (eth-lib/contract-run signer address abi fn-name args overrides)
-             (then (fn:> [res]
-                     (:? (and (k/obj? res)
-                              (. res wait))
-                         (. res (wait))
-                         res))))))
+             (then (fn [res]
+                     (return
+                      (:? (and (k/obj? res)
+                               (. res wait))
+                          (. res (wait))
+                          res))))
+             (then (fn [res]
+                     (return
+                      (k/walk res
+                              (fn [o]
+                                (cond  (== "BigNumber"
+                                           (k/type-native o))
+                                       (return
+                                        (j/toString
+                                         (eth-lib/to-number o)))
+                                       
+                                       :else
+                                       (return o)))
+                              k/identity)))))))
 
 (defn.js get-past-events
   "gets the past events on a contract"

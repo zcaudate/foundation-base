@@ -4,6 +4,25 @@
 
 Hi all. I'm hoping to get some eyes for `std.lang` before going ahead for the open source release . Please play with it and leave feedback via issues.
 
+### What in the world is this?
+
+The best way to think about `std.lang` is that it is a convertor from lisp to algol. Algol languages syntactically is about 95% as another algol language. C is not that different from Js, is not that different from Python, is not that different from Solidity. There are differences in terms of types and keywords and whitespace/braces, but in general, the conventions are always present. `std.lang` provides a lisp dsl for these conventions as well as a method to write one's own grammer to target any language.
+
+Furthermore, robust programs require more than just writing the function. Testing is paramount and there is so much pain when jumping from one language to another due to the fact that one has to relearn all the tooling of a language's eco system to be effective. The advantage of `std.lang` is to provide a common testing/maintainance strategy across all code → from C to bash to solidity. If a new language needs to be targeted, a grammar and a runtime specific to that language would be suffice to integrate that language into the existing clojure toolchain. 
+
+The generated code can be run independently of `std.lang`, using a language's native toolchain. `std.lang` only takes care of transpiling lisp to a target language, it doesn't try to do anything more than that. If a client asked you to do a C project. In the past you would probably say ‘no thanks’. But with `std.lang`, you write in lisp, test the functions in lisp and generate the c files. The client is happy because they get what they want, the lisper is happy because they get to write in lisp, test in lisp and have the same dynamic eval that a lisper expects.
+
+### I got roped in here because zcaudate promised me a nice way to program in solidity and all I'm seeing a huge repo full of code with no explaination and now I feel cheated.
+
+Please ask questions via issues. I'm really bad at hand holding so if the wizards here don't ask, my assumption is that people don't see any value in the transpiler project - which is fine because it just means that it's a good representation of how the project will be received in the open source world and it's probably just easier to keep in private.
+
+There are examples. The tests are more important than the source files and it's best to go through them form by form. You will also need to install node as well and the `ganache`, `solc`, `ethers` packages. Please see setup for [the testing environment](https://github.com/zcaudate/infra-testing/blob/main/infra/Dockerfile_foundation).
+
+- [bookstore](https://github.com/zcaudate/foundation-base/blob/main/src/web3/lib/example_bookstore.clj) and [test](https://github.com/zcaudate/foundation-base/blob/main/test/web3/lib/example_bookstore_test.clj)
+- [erc20 token](https://github.com/zcaudate/foundation-base/blob/main/src/web3/lib/example_erc20.clj) and [tests](https://github.com/zcaudate/foundation-base/blob/main/test/web3/lib/example_erc20_test.clj)
+- [basic counter](https://github.com/zcaudate/foundation-base/blob/main/test/web3/lib/example_counter_test.clj) and [tests](https://github.com/zcaudate/foundation-base/blob/main/test/web3/lib/example_counter_test.clj)
+
+
 ### prerequisites
 
 Please see setup for [the testing environment](https://github.com/zcaudate/infra-testing/blob/main/infra/Dockerfile_foundation) which builds the docker container that is running the [base tests](https://github.com/zcaudate/foundation-ci/actions/workflows/test-base.yml). VNC is not needed for desktop testing.

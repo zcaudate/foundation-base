@@ -19,8 +19,8 @@
 
 (def.js Validatiors
   {:first    [["is-not-empty" {:message "Must not be empty"
-                                    :check (fn:> [v rec] (and (k/not-nil? v)
-                                                              (< 0 (k/len v))))}]]
+                               :check (fn:> [v rec] (and (k/not-nil? v)
+                                                         (< 0 (k/len v))))}]]
    :last     [["is-not-empty" {:message "Must not be empty"
                                :check (fn:> [v rec]
                                         (j/future-delayed [100]
@@ -29,7 +29,7 @@
    :email    [["is-not-empty" {:message "Must not be empty"
                                :check (fn:> [v rec]
                                         (j/future-delayed [100]
-                                          (return (and (k/not-nil? v)
+                                                          (return (and (k/not-nil? v)
                                                        (< 0 (k/len v))))))}]]})
 
 ^{:refer js.react.ext-form/makeFree :added "4.0"}

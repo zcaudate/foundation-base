@@ -519,7 +519,8 @@
   {:added "4.0"}
   ([arr start finish]
    (var out := [])
-   (k/for:index [i [(x:offset start) finish]]
+   (k/for:index [i [(x:offset start) (or finish
+                                         (-/len arr))]]
      (x:arr-push out (x:get-idx arr i)))
    (return out)))
 

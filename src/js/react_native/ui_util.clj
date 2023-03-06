@@ -100,6 +100,16 @@
                        children)
        (:.. rprops)]}]))
 
+(defn.js FadeIn
+  "creates a Fade"
+  {:added "4.0"}
+  [props]
+  (var [visible setVisible] (r/local false))
+  (r/init []
+    (setVisible true))
+  (return
+   (r/% -/Fade (j/assignNew props #{visible}))))
+
 ;;
 ;; Fold
 ;;

@@ -189,13 +189,13 @@
                           (or dest-key "output")))
                   (not (k/eq-nested (r/curr resultRef)
                                     nresult)))
-         (when (== "pending" (. event type))
+         #_(when (== "pending" (. event type))
            (k/LOG! event))
          (setResult nresult))
        (when resultFn
          (resultFn event))
-       (when resultPrint
-         (k/LOG! resultTag nresult event)))
+       (when (k/fn? resultPrint)
+         (resultPrint #{resultTag nresult event})))
      meta
      pred)
     (return

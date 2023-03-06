@@ -50,8 +50,7 @@
                                 (cond  (== "BigNumber"
                                            (k/type-native o))
                                        (return
-                                        (j/toString
-                                         (eth-lib/to-number o)))
+                                        (j/toString o))
                                        
                                        :else
                                        (return o)))

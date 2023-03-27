@@ -20,6 +20,7 @@
             [std.lib.invoke :as invoke]
             [std.lib.memoize :as memoize]
             [std.lib.network :as network]
+            [std.lib.origin :as origin]
             [std.lib.os :as os]
             [std.lib.protocol :as protocol]
             [std.lib.resource :as resource]
@@ -170,6 +171,12 @@
              memoize/memoize:remove
              memoize/memoize:status
 
+             origin/defn.origin
+             origin/get-origin
+             origin/set-origin
+             origin/unset-origin
+             origin/clear-origin
+             
              resource/res
              resource/res:active
              resource/res:exists?

@@ -89,6 +89,15 @@
   (return
    (. ethers BigNumber (from value) (toNumber))))
 
+(defn.js to-number-string
+  [value]
+  (when (and value
+             (== (. value type)
+                 "BigNumber"))
+    (:= value (. value hex)))
+  (return
+   (. ethers BigNumber (from value) (toString))))
+
 (defn.js new-rpc-provider
   "creates a new rpc provider"
   {:added "4.0"}

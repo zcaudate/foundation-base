@@ -37,6 +37,7 @@
              compile-node/rt:node-ping
              compile-node/rt:node-past-events
              compile-node/rt:node-get-balance
+             compile-node/rt:node-get-block-number
              compile-node/rt:node-eval
 
              compile-node/rt-get-contract
@@ -45,6 +46,7 @@
              compile-node/rt-get-caller-address
              compile-node/rt-get-id
              compile-node/rt-get-node
+             compile-node/rt-set-contract
              
              compile-solc/create-module-entry
              compile-solc/create-pointer-entry

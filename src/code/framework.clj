@@ -18,6 +18,7 @@
 
 (def ^:dynamic *toplevel-forms*
   '#{defn
+     defn.origin
      defn.c
      defn.js
      defn.gl

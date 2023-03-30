@@ -30,6 +30,15 @@
                      (= type :module) (conj (boolean compile-common/*open-methods*))))
            :address address)))
 
+(defn rt-set-contract
+  [address m & [rt]]
+  (let [rt (:node (or rt (l/rt (.getName *ns*) :solidity)))
+        _  (compile-solc/create-module-entry rt m)]
+    (swap! rt.solidity.env-ganache/+contracts+
+           assoc address
+           (if (:ns m)
+             [:module (:ns m)]))))
+
 (defn rt-get-caller-address
   "gets the caller address"
   {:added "4.0"}
@@ -56,16 +65,23 @@
          (compile-common/get-url rt)
          (rt-get-caller-private-key rt))))
 
+(defn rt:node-get-block-number
+  [& [rt]]
+  (compile-solc/compile-rt-eval
+   (rt-get-node rt)
+   (list `eth-lib/getBlockNumber
+         (list `eth-lib/new-rpc-provider))
+   'js.core/toString))
 
 (defn rt:node-get-balance
   "gets the current balance"
   {:added "4.0"}
-  [& [rt]]
+  [& [address rt]]
   (compile-solc/compile-rt-eval
    (rt-get-node rt)
    (list `eth-lib/getBalance
          (list `eth-lib/new-rpc-provider )
-         (rt-get-address rt)
+         (or address (rt-get-address rt))
          #_(compile-common/get-caller-address
           (rt-get-id rt)))
    'js.core/toString))

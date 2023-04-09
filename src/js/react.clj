@@ -287,6 +287,18 @@
         (setDelayed value))))
   (return [delayed setDelayed]))
 
+(defn.js useStablized
+  [input isStabilized]
+  (var [output setOutput] (-/local input))
+  (-/watch [input]
+    (when (and isStabilized
+               (k/not-nil? input)
+               (k/eq-nested input output))
+      (setOutput input)))
+  (return (:? isStabilized
+              output
+              input)))
+
 ;;
 ;; useInterval
 ;;

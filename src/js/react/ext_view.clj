@@ -64,6 +64,7 @@
   (when (k/get-in view ["pipeline" "remote" "handler"])
     (var [context disabled] (event-view/pipeline-prep view opts))
     (var #{acc} context)
+    
     (return (. (event-view/pipeline-run-remote
                 context
                 save-output
@@ -339,7 +340,8 @@
   {:added "4.0"}
   [view args opts meta tag-key]
   (:= opts (or opts {}))
-  (var output (-/listenView view "success" meta nil tag-key))
+  (var output (r/useStablized (-/listenView view "success" meta (. opts dest) tag-key)
+                              (. opts stablized)))
   (-/useRefreshArgs view args opts)
   (return ((or (. opts then)
                k/identity)

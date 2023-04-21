@@ -80,21 +80,39 @@
    [getDeployTransaction [] {:vargs args}]
    [deploy []  {:vargs args}]])
 
-(defn.js to-number
+(defn.js to-bignum
   [value]
-  (when (and value
+  (cond (and value
              (== (. value type)
                  "BigNumber"))
-    (:= value (. value hex)))
+        (return value)
+
+        (k/is-number? value)
+        (:= value (BigInt value)))
+  (return
+   (. ethers BigNumber (from value))))
+
+(defn.js to-number
+  [value]
+  (cond (and value
+             (== (. value type)
+                 "BigNumber"))
+        (:= value (. value hex))
+
+        (k/is-number? value)
+        (:= value (BigInt value)))
   (return
    (. ethers BigNumber (from value) (toNumber))))
 
 (defn.js to-number-string
   [value]
-  (when (and value
+  (cond (and value
              (== (. value type)
                  "BigNumber"))
-    (:= value (. value hex)))
+        (:= value (. value hex))
+        
+        (k/is-number? value)
+        (:= value (BigInt value)))
   (return
    (. ethers BigNumber (from value) (toString))))
 

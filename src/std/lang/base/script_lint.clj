@@ -227,6 +227,7 @@
                              FileReader
                              globalThis
                              JSON
+                             BigInt
                              console
                              import
                              document

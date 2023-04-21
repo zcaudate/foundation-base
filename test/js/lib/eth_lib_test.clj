@@ -22,11 +22,21 @@
              (Thread/sleep 1000)
              (s/rt:start-ganache-server)
              (Thread/sleep 500)
-             (l/rt:restart)
-             (l/rt:scaffold :js)
+             (do (l/rt:restart)
+                 (l/rt:scaffold :js))
              (!.js
               (:= solc (require "solc")))]
   :teardown [(l/rt:stop)]})
+
+(comment
+  (!.js
+   (e/to-bignum "10000000000000000000000"))
+  (!.js
+   (j/toFixed (BigInt (:- "1000000000000000000000000000"))
+              1))
+  (!.js
+   (. '((:- "10000000000000000000"))
+      (toFixed 0))))
 
 ^{:refer js.lib.eth-lib/new-rpc-provider :added "4.0"}
 (fact "creates a new rpc provider"

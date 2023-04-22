@@ -135,11 +135,7 @@
   (cond (and value
              (== (. value type)
                  "BigNumber"))
-        (:= value (. value hex))
-
-        #_#_
-        (k/is-number? value)
-        (:= value (BigInt value)))
+        (:= value (. value hex)))
   (return
    (. ethers BigNumber (from value) (toNumber))))
 
@@ -148,11 +144,7 @@
   (cond (and value
              (== (. value type)
                  "BigNumber"))
-        (:= value (. value hex))
-
-        #_#_
-        (k/is-number? value)
-        (:= value (BigInt value)))
+        (:= value (. value hex)))
   (return
    (. ethers BigNumber (from value) (toString))))
 

@@ -105,7 +105,7 @@
    [:% -/SpinnerStatic
     {:text (j/toFixed (/ value
                          (j/pow 10 decimal))
-                      decimal)
+                      (j/max 0 decimal))
      :styleText styleDigitText
      :editable editable}]))
 

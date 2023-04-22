@@ -734,7 +734,9 @@
          (do (assert (symbol? (first v)))
              (let [{:keys [apply]}   (helper/get-options grammar [:default :invoke])
                    braces (meta (first v))]
-               (emit-invoke-raw (str apply (*emit-fn* (first v) grammar mopts)
+               (emit-invoke-raw (str apply
+                                     (emit-symbol (first v) grammar mopts)
+                                     #_(*emit-fn* (first v) grammar mopts)
                                      (if (not-empty braces)
                                        (*emit-fn* braces grammar mopts)
                                        ""))

@@ -12,6 +12,10 @@
 (fact:global
  {:setup    [(l/rt:restart)]
   :teardown [(l/rt:stop)]})
+
+(comment
+  (!.js
+   (j/parseFloat "xoeko")))
  
 ^{:refer js.core/assignNew :added "4.0"}
 (fact "assigns new object"

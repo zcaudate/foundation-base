@@ -30,10 +30,17 @@
 
 (comment
   (!.js
-   (e/to-bignum "10000000000000000000000"))
+   (k/sort (k/obj-keys (. ethers utils))))
+
+  (e/parseUnits "1.234"
+                8)
   (!.js
-   (j/toFixed (BigInt (:- "1000000000000000000000000000"))
-              1))
+   (. ethers utils
+      (parseUnits "1.234"
+                  "8")))
+  (!.js
+   (* (e/to-bignum "100000")
+      1.2))
   (!.js
    (. '((:- "10000000000000000000"))
       (toFixed 0))))

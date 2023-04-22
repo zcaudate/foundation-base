@@ -16,6 +16,30 @@
   verifyMessage
   ethers.utils.verifyMessage)
 
+(def$.js ^{:arglists '([s, units])}
+  parseUnits
+  ethers.utils.parseUnits)
+
+(def$.js ^{:arglists '([s, units])}
+  formatUnits
+  ethers.utils.formatUnits)
+
+(def$.js ^{:arglists '([s, units])}
+  keccak256
+  ethers.utils.keccak256)
+
+(def$.js ^{:arglists '([s, units])}
+  ripemd160
+  ethers.utils.ripemd160)
+
+(def$.js ^{:arglists '([s, units])}
+  mnemonicToSeed
+  ethers.utils.mnemonicToSeed)
+
+(def$.js ^{:arglists '([value])}
+  to-bignum
+  ethers.BigNumber.from)
+
 (h/template-entries [l/tmpl-macro {:base "Provider"
                                    :inst "p"
                                    :tag "js"}]
@@ -80,17 +104,31 @@
    [getDeployTransaction [] {:vargs args}]
    [deploy []  {:vargs args}]])
 
-(defn.js to-bignum
-  [value]
-  (cond (and value
-             (== (. value type)
-                 "BigNumber"))
-        (return value)
-
-        (k/is-number? value)
-        (:= value (BigInt value)))
+(defn.js to-bignum-pow10
+  [unit]
   (return
-   (. ethers BigNumber (from value))))
+   (. ethers
+      BigNumber
+      (from "10")
+      (pow unit))))
+
+(defn.js bn-mul
+  [bn x precision]
+  (var b1 (-/parseUnits "1" (or precision 24)))
+  (var bx (-/parseUnits (j/toString x) (or precision 24)))
+  (return
+   (. (-/to-bignum bn)
+      (mul bx)
+      (div b1))))
+
+(defn.js bn-div
+  [bn x precision]
+  (var b1 (-/parseUnits "1" (or precision 24)))
+  (var bx (-/parseUnits (j/toString x) (or precision 24)))
+  (return
+   (. (-/to-bignum bn)
+      (mul b1)
+      (div bx))))
 
 (defn.js to-number
   [value]
@@ -99,6 +137,7 @@
                  "BigNumber"))
         (:= value (. value hex))
 
+        #_#_
         (k/is-number? value)
         (:= value (BigInt value)))
   (return
@@ -110,7 +149,8 @@
              (== (. value type)
                  "BigNumber"))
         (:= value (. value hex))
-        
+
+        #_#_
         (k/is-number? value)
         (:= value (BigInt value)))
   (return

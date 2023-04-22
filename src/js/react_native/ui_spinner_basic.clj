@@ -15,13 +15,13 @@
    :export [MODULE]})
 
 (def.js styleDigit
-  {:height 25
+  {;;:height 25
    :overflow "hidden"
    :marginLeft 5
    #_#_:backgroundColor "blue"})
 
 (def.js styleDigitText
-  {:height 25
+  {;;:height 25
    #_#_:position "absolute"
    :fontSize 16
    :marginLeft 5
@@ -45,7 +45,6 @@
            :themePipeline __themePipeline
            (:.. rprops)]}))
   (return [styleStatic transformFn]))
-
 
 (defn.js useSpinnerPosition
   "helper function to connect spinner position"
@@ -104,7 +103,9 @@
       (:= decimal 0)]}]
   (return
    [:% -/SpinnerStatic
-    {:text (+ "" value)
+    {:text (j/toFixed (/ value
+                         (j/pow 10 decimal))
+                      decimal)
      :styleText styleDigitText
      :editable editable}]))
 
@@ -116,8 +117,9 @@
       disabled
       min
       max
-      panDirection
-      panStride
+      decimal
+      (:= panDirection "vertical")
+      (:= panStride 15)
       value
       setValue
       style
@@ -157,9 +159,7 @@
   (r/watch [value]
     (when (not= value __value)
       (__setValue value)))
-
-  
-  (var iconElem
+  #_(var iconElem
        [:% n/View
         {:key "icon"
          :style {:zIndex -10
@@ -185,8 +185,8 @@
                          (setPressing false))
        :style [{:overflow "hidden"
                 :flexDirection "row"
-                :alignItems "center"
-                :padding 5}
+                #_#_:alignItems "center"
+                #_#_:padding 5}
                styleStatic
                (n/PlatformSelect
                {:web {:userSelect "none"
@@ -202,8 +202,9 @@
                       :setValue __setValue
                       min
                       max
+                      decimal
                       (:.. rprops)]}]
-                  [:% n/View
+                  #_#_[:% n/View
                    {:style {:flex 1}}]
                   iconElem
                   ]]}]))

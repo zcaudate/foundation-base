@@ -445,6 +445,7 @@
       (:= setResult (fn:>))
       (:= onSubmit  (fn:>))
       (:= onError   (fn [res]
+                      (k/LOG! "ERRORED" res)
                       (return (. res ["body"]))))
       (:= onSuccess k/identity)
       (:= isMounted (fn:> true))]}]

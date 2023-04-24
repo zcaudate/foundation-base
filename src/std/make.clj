@@ -65,6 +65,7 @@
  project/build-triggered
  project/is-changed?
 
+ [deploy-build deploy/make-deploy-build]
  [deploy deploy/make-deploy]
  [deploy-gh-init deploy/make-deploy-gh-init]
  [deploy-gh-push deploy/make-deploy-gh-push])

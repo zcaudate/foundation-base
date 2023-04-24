@@ -28,18 +28,13 @@
     [(filter deploy-keys deploy-order)
      deploy-order]))
 
-(defn make-deploy
-  "make deploy"
-  {:added "4.0"}
-  [{:keys [name
-           build
-           refresh
-           scaffold
-           config]}]
-  (let [_      (do (h/p)
-                   (h/p "--------------------------------------------------------------------")
-                   (h/p "DEPLOYMENT STARTED --" (str/upper-case name))
-                   (h/p "--------------------------------------------------------------------"))
+(defn make-deploy-build
+  [m]
+  (let [{:keys [name
+                build
+                refresh
+                scaffold
+                config]} m
         built    (h/map-entries
                   (fn [[key plan]]
                     (let [_       (h/local :print
@@ -67,7 +62,23 @@
                               (h/map-juxt [identity h/T] refresh))
                        
                        :else
-                       changed)
+                       changed)]
+    [built changed]))
+
+(defn make-deploy
+  "make deploy"
+  {:added "4.0"}
+  [m]
+  (let [{:keys [name
+                build
+                refresh
+                scaffold
+                config]} m
+        _      (do (h/p)
+                   (h/p "--------------------------------------------------------------------")
+                   (h/p "DEPLOYMENT STARTED --" (str/upper-case name))
+                   (h/p "--------------------------------------------------------------------"))
+        [built changed]    (make-deploy-build m)
         [deploying
          deploy-order] (make-deploy-get-keys changed config)
         _        (do (h/p)

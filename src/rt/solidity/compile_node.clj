@@ -98,11 +98,13 @@
   [to-address amount & [rt]]
   (compile-solc/compile-rt-eval
    (rt-get-node rt)
-   (list `eth-bench/send-wei
-         (:url rt)
-         (rt-get-caller-private-key rt)
-         to-address
-         amount)))
+   (list '. (list `eth-bench/send-wei
+                  (:url rt)
+                  (rt-get-caller-private-key rt)
+                  to-address
+                  amount)
+         '(then (fn [tx]
+                  (return (. tx (wait))))))))
 
 (defn rt:node-eval
   "evaluates a form in the node runtime"

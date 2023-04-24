@@ -15,7 +15,9 @@
 
 (comment
   (!.js
-   (j/parseFloat "xoeko")))
+   (j/parseFloat "xoeko"))
+  (!.js
+   (k/last "hello.")))
  
 ^{:refer js.core/assignNew :added "4.0"}
 (fact "assigns new object"

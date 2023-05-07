@@ -26,7 +26,7 @@
                     abi
                     bytecode
                     initial-args
-                    {:gasLimit 100000000})
+                    {})
         result (try (solc/compile-rt-eval rt form)
                     (catch clojure.lang.ExceptionInfo ex
                       

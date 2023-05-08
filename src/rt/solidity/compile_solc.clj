@@ -190,7 +190,7 @@
                            (if common/*stringify*
                              'JSON.stringify
                              nil)))]
-                5000)]
+                20000)]
     (try 
       (std.json/read output)
       (catch Throwable t output))))

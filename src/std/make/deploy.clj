@@ -85,17 +85,18 @@
                      (if (empty? deploying)
                        (h/p "ALL UPDATED")
                        (h/p "DEPLOYING" (str/join ", " (map h/strn deploying)))))
-        [ms-total deployed] (h/meter-out
-                       (h/map-juxt
-                        [identity
-                         (fn [key]
-                           (Thread/sleep 50)
-                           (first
-                            (common/make-run-internal
-                             (or (get scaffold key)
-                                 (h/error "SCAFFOLD NOT FOUND"
-                                          {:key key
-                                           :options (keys scaffold)}))
+        [ms-total deployed]
+        (h/meter-out
+         (h/map-juxt
+          [identity
+           (fn [key]
+             (Thread/sleep 50)
+             (first
+              (common/make-run-internal
+               (or (get scaffold key)
+                   (h/error "SCAFFOLD NOT FOUND"
+                            {:key key
+                             :options (keys scaffold)}))
                              (or (get-in config [key :action])
                                  (h/error "CONFIG NOT FOUND"
                                           {:key key

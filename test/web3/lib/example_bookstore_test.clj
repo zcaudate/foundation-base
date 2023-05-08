@@ -1,7 +1,8 @@
 (ns web3.lib.example-bookstore-test
   (:use code.test)
   (:require [std.lang :as l]
-            [std.lib :as h]))
+            [std.lib :as h]
+            [rt.solidity]))
 
 (l/script- :solidity
   {:runtime :web3

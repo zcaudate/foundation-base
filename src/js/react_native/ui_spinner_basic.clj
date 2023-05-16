@@ -49,7 +49,7 @@
 (defn.js useSpinnerPosition
   "helper function to connect spinner position"
   {:added "4.0"}
-  [value setValue valueRef min max stride]
+  [value setValue valueRef min max stride step]
   (var position     (a/val 0))
   (var prevRef      (r/ref value))
   (r/init []
@@ -59,7 +59,8 @@
                      (var nValue (k/clamp
                                   min max
                                   (- (r/curr valueRef)
-                                     (j/round (/ _value (or stride 8))))))
+                                     (* (j/round (/ _value (or stride 8)))
+                                        (or step 1)))))
                      
                      (when (not= nValue (r/curr prevRef))
                        (setValue nValue)
@@ -117,6 +118,7 @@
       disabled
       min
       max
+      step
       decimal
       (:= panDirection "vertical")
       (:= panStride 15)
@@ -137,7 +139,8 @@
   (var position     (-/useSpinnerPosition __value __setValue __valueRef
                                           min
                                           max
-                                          panStride))
+                                          panStride
+                                          step))
   (var #{touchable
          panHandlers} (physical-edit/usePanTouchable
                        #{[disabled

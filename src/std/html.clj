@@ -7,7 +7,6 @@
            (org.jsoup.select Selector
                              Elements)))
 
-
 (defmulti node->tree
   "converts a Jsoup node to tree
  
@@ -64,7 +63,9 @@
                                       (let [k (if (keyword? k)
                                                 (name k)
                                                 (str k))
-                                            v (str v)]
+                                            v (if (vector? v)
+                                                (str/join " " (map h/strn v))
+                                                (str v))]
                                         (.put ^Attributes out (name k) v)))
                                     (Attributes.)
                                     attrs)

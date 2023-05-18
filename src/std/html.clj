@@ -34,6 +34,10 @@
                        (remove #{" "}))
          attrs (->> (.attributes node)
                     (h/map-keys keyword))
+         attrs (if (:class attrs)
+                 (assoc attrs :class
+                        (vec (sort (filter not-empty (str/split (:class attrs) #" ")))))
+                 attrs)
          children (if (empty? attrs)
                     children
                     (cons attrs children))]

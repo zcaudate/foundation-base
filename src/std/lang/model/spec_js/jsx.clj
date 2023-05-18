@@ -46,7 +46,11 @@
    (let [[tag & children] arr
          params? (first children)
          [tag params children] (cond (map? params?)
-                                     [tag (h/map-keys jsx-key-fn params?) (rest children)]
+                                     (let [{:keys [className] :as params} (h/map-keys jsx-key-fn params?)
+                                           params (if (vector? className)
+                                                    (assoc params :className (str/join " " (map h/strn className)))
+                                                    params)]
+                                       [tag params (rest children)])
                                      
                                      (set? params?)
                                      [tag params? (rest children)]

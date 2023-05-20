@@ -19,12 +19,14 @@
 
 ^{:refer std.lib.trace/apply-trace :added "4.0"}
 (fact "applies a trace with arguments"
-
+  
   (apply-trace identity
                (make-trace #'get-trace :basic)
                identity
                [1])
   => 1)
+
+
 
 ^{:refer std.lib.trace/wrap-basic :added "4.0"}
 (fact "wraps an identity transform")

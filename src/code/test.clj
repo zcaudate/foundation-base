@@ -30,6 +30,7 @@
 
               manage/fact:global
               manage/fact:ns
+              manage/fact:ns-load
 
               task/run
               task/run:interrupt

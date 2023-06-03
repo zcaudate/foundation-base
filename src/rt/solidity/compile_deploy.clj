@@ -42,10 +42,12 @@
                   contractAddress]} result
         _ (cond (not status)
                 (do (not common/*suppress-errors*)
+                    (h/pl url)
                     (h/pl code)
+                    (h/pl result)
                     (h/error "Compilation Error"
                              {:data result}))
-
+                
                 :else
                 (do
                   (swap! env/+contracts+ assoc contractAddress [type id sha])

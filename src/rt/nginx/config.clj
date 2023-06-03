@@ -36,6 +36,8 @@
   {:added "4.0"}
   ([& [{:keys [blocks]}]]
    (script/write [[:client-body-buffer-size "1m"]
+                  [:variables-hash-max-size 2048]
+                  [:variables-hash-bucket-size 128]
                   [:lua-shared-dict [:GLOBAL    "20k"]]
                   [:lua-shared-dict [:WS_DEBUG  "20k"]]
                   [:lua-shared-dict [:ES_DEBUG  "20k"]]])))

@@ -38,3 +38,4 @@ pom.xml.asc
 /src-infra/*/live
 /temp
 *_temp
+*.~undo-tree~

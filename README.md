@@ -22,9 +22,7 @@ to any language, programming then becomes about the code itself and not everythi
 
 An example working with Javascript in emacs:
 
-![captured](https://github.com/zcaudate/foundation-base/assets/1455572/c786377e-89c6-44a0-a982-517eccd99621)
-
-
+![captured](https://github.com/zcaudate/foundation-base/assets/1455572/a57f2ad2-23f9-4d39-917b-490bae8bd70b)
 
 ### Template Base Transpile
 The best way to think about `std.lang` is that it is a convertor from lisp to algol. Algol languages syntactically is about 95% as another algol language. C is not that different from Js, is not that different from Python, is not that different from Solidity. There are differences in terms of types and keywords and whitespace/braces, but in general, the conventions are always present. `std.lang` provides a lisp dsl for these conventions as well as a method to write one's own grammer to target any language.

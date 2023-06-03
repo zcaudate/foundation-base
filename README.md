@@ -1,7 +1,32 @@
 # foundation
 
-### std.lang - A template-based algol transpiler
 
+### Installation
+
+Currently clojars deploy is broken. To install jars to `.m2` for use in other projects run:
+
+```
+git clone git@github.com:zcaudate/foundation-base.git
+cd foundation-base
+lein install
+```
+
+### std.lang - A Playground for Languages
+
+There are so many languages currently out there is the world. Every single one of them has their own quirks but each are inspired by one another. 
+
+`std.lang` creates an environment where multiple languages and multiple runtimes can be mixed, matched and integrated to get the basic minimum piece of code working. 
+
+When the benefits of repl driven development can be made available
+to any language, programming then becomes about the code itself and not everything around making the code work.
+
+An example working with Javascript in emacs:
+
+![captured](https://github.com/zcaudate/foundation-base/assets/1455572/c786377e-89c6-44a0-a982-517eccd99621)
+
+
+
+### Template Base Transpile
 The best way to think about `std.lang` is that it is a convertor from lisp to algol. Algol languages syntactically is about 95% as another algol language. C is not that different from Js, is not that different from Python, is not that different from Solidity. There are differences in terms of types and keywords and whitespace/braces, but in general, the conventions are always present. `std.lang` provides a lisp dsl for these conventions as well as a method to write one's own grammer to target any language.
 
 Furthermore, robust programs require more than just writing the function. Testing is paramount and there is so much pain when jumping from one language to another due to the fact that one has to relearn all the tooling of a language's eco system to be effective. The advantage of `std.lang` is to provide a common testing/maintainance strategy across all code → from C to bash to solidity. If a new language needs to be targeted, a grammar and a runtime specific to that language would be suffice to integrate that language into the existing clojure toolchain. 
@@ -17,27 +42,11 @@ A runtime/workflow has been developed for live evaluation of solidity code. The 
 - [basic counter](https://github.com/zcaudate/foundation-base/blob/main/test/web3/lib/example_counter_test.clj) and [tests](https://github.com/zcaudate/foundation-base/blob/main/test/web3/lib/example_counter_test.clj)
 
 
-### dev prerequisites
+### Dev prerequisites
 
 There are a number of programs needing to be preinstalled for the java environment to shell out to. Not all of them will be needed on your own projects but they will be necessary for running tests in dev.
 
 Please see setup for [the testing environment](https://github.com/zcaudate/infra-testing/blob/main/infra/Dockerfile_foundation) which builds the docker container that is running the [base tests](https://github.com/zcaudate/foundation-ci/actions/workflows/test-base.yml). VNC is not needed for desktop testing.
-
-### installation
-
-To run all test:
-
-```
-git clone git@github.com:zcaudate/foundation-base.git
-cd foundation-base
-lein test
-```
-
-Currently clojars deploy is broken. To install jars to `.m2` for use in other projects run:
-
-```
-lein install
-```
 
 ### std.lang - overview
 

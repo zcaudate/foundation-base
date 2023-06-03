@@ -1,6 +1,7 @@
 (ns rt.solidity.compile-common
   (:require [std.lib :as h :refer [defimpl]]
             [std.lang :as l]
+            [std.lib.network :as network]
             [rt.solidity.env-ganache :as env-ganache]))
 
 ;;
@@ -37,7 +38,7 @@
 ;; DEFAULTS
 ;;
 
-(def ^:dynamic *default-url* (str "http://127.0.0.1:" env-ganache/+default-port+))
+(def ^:dynamic *default-url* (str "http://" (network/local-ip) ":" env-ganache/+default-port+))
 
 (def ^:dynamic *default-caller-private-key* (first env-ganache/+default-private-keys+))
 

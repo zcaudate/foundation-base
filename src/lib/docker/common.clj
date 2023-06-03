@@ -71,7 +71,7 @@
   "starts a container"
   {:added "4.0"}
   ([{:keys [group id image cmd flags labels volumes
-            environment ports remove detached no-host] :as m
+            environment ports expose remove detached no-host] :as m
      :or {remove true detached true
           group "testing"}}
     & [repeat]]
@@ -87,6 +87,13 @@
                         (conj args "-e" (str k "=" v)))
                       args
                       environment)
+         args (reduce (fn [args ports]
+                        (conj args "-p"
+                              (if (vector? ports)
+                                (str/join ":" ports)
+                                ports)))
+                      args
+                      expose)
          args (if (not no-host)
                 (conj args "--add-host=host.docker.internal:host-gateway")
                 args)
@@ -107,9 +114,11 @@
                                        ["-aqf" (str "name=^" name "$")])})
                  cid)
          ip   (get-ip cid)]
-     (if (or repeat ip)
-       (assoc m :container-id cid :container-ip ip :container-name name)
-       (start-container m true)))))
+     (assoc
+      (if (or repeat ip)
+        (assoc m :container-id cid :container-ip ip :container-name name)
+        (start-container m true))
+      :args args))))
 
 (defn stop-container
   "stops a container"

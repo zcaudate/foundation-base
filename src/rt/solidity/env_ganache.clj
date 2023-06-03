@@ -1,5 +1,6 @@
 (ns rt.solidity.env-ganache
   (:require [std.lib :as h :refer [defimpl]]
+            [std.lib.network :as network]
             [std.json :as json]
             [std.string :as str]
             [std.lang :as l]
@@ -93,7 +94,7 @@
                                                        (h/prn out)))
                                                    (catch Throwable t))
                                               (reset! *server* nil))))]
-                           (h/wait-for-port "127.0.0.1" +default-port+
+                           (h/wait-for-port (network/local-ip) +default-port+
                                             {:timeout 10000})
                            {:type "ganache"
                             :port +default-port+

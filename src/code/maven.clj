@@ -125,6 +125,4 @@
           :main {:fn #'command/deploy}}])
 
 
-(comment
-  ()
-  )
+(comment)

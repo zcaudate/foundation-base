@@ -1,0 +1,33 @@
+name: Run Base Tests
+
+on:
+  repository_dispatch:
+    types: [base-changed, all]
+
+jobs:
+  
+  run-base-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Running Tests
+        run: > 
+          docker run --network host 
+          -v /var/run/docker.sock:/var/run/docker.sock 
+          -v $(pwd):$(pwd) 
+          -w $(pwd) 
+          ghcr.io/zcaudate/testing-foundation:main lein test
+        
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: test
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432

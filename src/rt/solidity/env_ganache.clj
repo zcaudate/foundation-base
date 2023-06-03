@@ -75,7 +75,9 @@
   {:added "4.0"}
   []
   (or @*server*
-      (when (h/port:check-available +default-port+)
+      (when (not (h/suppress
+                  (h/wait-for-port "127.0.0.1" +default-port+
+                                   {:timeout 1000})))
         (let [_    (fs/create-directory +default-dir+)
               _    (clear-contracts)]
           (-> (if (not @*server*)

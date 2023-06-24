@@ -92,19 +92,42 @@
  foundation/js.lib.lw-charts
  {:description "js util libraries" 
   :include [[js.lib.lw-charts :complete]]}
+
+ foundation/js.lib.osc
+ {:description "open sound control" 
+  :include [[js.lib.osc :complete]]}
+
+ foundation/js.lib.p5
+ {:description "processing library" 
+  :include [[js.lib.p5 :complete]]}
  
  foundation/js.lib.rn
  {:description "js util libraries" 
   :include [[js.lib.rn-expo :base]
             [js.lib.rn-gesture :base]
             [js.lib.rn-paper :base]]}
+  
+ foundation/js.lib.three
+ {:description "js core libraries" 
+  :include [[js.lib.three :complete]
+            [js.lib.three-extra :complete]
+            [js.lib.r3-base :complete]
+            [js.lib.r3-cannon :complete]
+            [js.lib.r3-drei :complete]
+            [js.lib.r3-flex :complete]
+            [js.lib.r3-postprocessing :complete]
+            [js.lib.react-spring :complete]]}
+
+ foundation/js.lib.ua-parser
+ {:description "user agent parser" 
+  :include [[js.lib.ua-parser :complete]]}
 
  foundation/js.lib.valtio
- {:description "js util libraries" 
+ {:description "js valtio libraries" 
   :include [[js.lib.valtio :complete]]}
  
  foundation/js.react
- {:description "js core libraries" 
+ {:description "js react libraries" 
   :include [[js.react :base]
             [js.react.helper-portal :base]]}
  
@@ -118,7 +141,7 @@
             [js.react.ext-view :base]]}
   
  foundation/js.react-native
- {:description "js core libraries" 
+ {:description "js react native ui libraries" 
   :include [[js.react-native :complete]]}
  
  foundation/lib.aether

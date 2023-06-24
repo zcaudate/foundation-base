@@ -154,7 +154,9 @@
                           (clojure.core/last as)
                           as)]
                 (if sym
-                  (h/$ (js.core/defineProperty 'globalThis ~(name sym)
+                  (h/$ (js.core/defineProperty 'globalThis ~(.replaceAll (name sym)
+                                                                         "-"
+                                                                         "_")
                          {:value ~sym
                           :writeable true}))))))
        (clojure.core/apply list 'do)))

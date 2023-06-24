@@ -37,15 +37,6 @@
    out)
   => [1 2 3]
 
-  (!.lua
-   (var out := [])
-   (k/for:array [e [1 2 3 4]]
-     (if (> e 3)
-       (break))
-     (x:arr-push out e))
-   out)
-  => [1 2 3]
-
   (!.py
    (var out := [])
    (k/for:array [e [1 2 3 4]]
@@ -62,7 +53,17 @@
        (break))
      (x:arr-push out e))
    out)
-  => [1 2 3])
+  => [1 2 3]
+
+  (!.lua
+   (var out := [])
+   (k/for:array [e [1 2 3 4]]
+     (if (> e 3)
+       (break))
+     (x:arr-push out e))
+   out)
+  => [1 2 3]
+  )
 
 ^{:refer xt.lang.base-macro/for:object :added "4.0"}
 (fact "helper function to `for:object`"

@@ -25,7 +25,7 @@
     lazy memo
     useCallback useContext useDebugValue useEffect
     useImperativeHandle useLayoutEffect useMemo
-    useReducer useRef useState
+    useReducer useRef useState useTransition
     version])
 
 (h/template-entries [l/tmpl-entry {:type :fragment

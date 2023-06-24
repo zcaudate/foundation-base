@@ -25,9 +25,9 @@
     []
     (return
      (n/EnclosedCode 
-{:label "js.react-native.ui-util/Page"
+      {:label "js.react-native.ui-util/Page"
        :style {:height 200}} 
-[:% ui-util/Page
+      [:% ui-util/Page
        {:headerComponent (fn:> [:% n/View {:style {:height 30
                                                    :backgroundColor "red"}}])
         :footerComponent (fn:> [:% n/View {:style {:height 30
@@ -66,6 +66,9 @@
         {:style {:height size
                  :width 100
                  :backgroundColor "red"}}]]))))
+
+^{:refer js.react-native.ui-util/FadeIn :added "4.0"}
+(fact "creates a fade in helper")
 
 ^{:refer js.react-native.ui-util/useFoldContent :added "4.0"}
 (fact "creates the fold inner helper")

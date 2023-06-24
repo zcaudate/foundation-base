@@ -4,11 +4,6 @@
 
 (l/script :js
   {:runtime :websocket
-   :config {:id :play/web-main
-            :bench false
-            :emit {:native {:suppress true}
-                   :lang/jsx false}
-            :notify {:host "test.statstrade.io"}}
    :require [[js.core :as j]
              [xt.lang.util-color :as c]
              [xt.lang.base-lib :as k]]

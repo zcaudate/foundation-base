@@ -3,6 +3,13 @@
   (:require [std.lib.origin :as ori]
             [std.lib.foundation :as h]))
 
+^{:refer std.lib.origin/clear-origin :added "3.0"}
+(fact "clears the `*origin*` atom"
+  ^:hidden
+
+  (ori/clear-origin)
+  => {})
+
 ^{:refer std.lib.origin/set-origin :added "3.0"}
 (fact "sets the origin of a namespace"
   ^:hidden
@@ -20,13 +27,6 @@
 
   (ori/unset-origin)
   => nil)
-
-^{:refer std.lib.origin/clear-origin :added "3.0"}
-(fact "clears the `*origin*` atom"
-  ^:hidden
-
-  (ori/clear-origin)
-  => {})
 
 ^{:refer std.lib.origin/get-origin :added "3.0"
   :setup [(ori/set-origin 'std.lib.origin)]}
@@ -51,6 +51,3 @@
   (do (ori/unset-origin)
       (hello))
   => 'std.lib.origin-test)
-
-
-

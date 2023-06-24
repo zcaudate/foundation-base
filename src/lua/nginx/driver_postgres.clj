@@ -65,7 +65,7 @@
 (def$.lua KEEPALIVE 120000)
 
 (defn.lua db-error
-  "parses the error into table"
+  "gets the db error"
   {:added "4.0"}
   ([s is-dev query]
    (local '[fields pattern] '[{} "([^%z]+)"])
@@ -91,7 +91,7 @@
    (return output)))
 
 (defn.lua raw-query
-  "Performs a raw query"
+  "creates a raw-query"
   {:added "4.0"}
   [conn query]
   (local '[ret err] (. conn (query query)))
@@ -106,7 +106,7 @@
   (return val))
 
 (defn.lua connect-constructor
-  "create db connection"
+  "connects to postgres"
   {:added "4.0"}
   [m]
   (local env (k/obj-assign (k/obj-clone (-/default-env))

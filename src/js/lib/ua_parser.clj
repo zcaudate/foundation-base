@@ -7,8 +7,7 @@
    :bundle {:default [["ua-parser-js" :as UAParser]]}
    :import [["ua-parser-js" :as UAParser]]})
 
-
 (defmacro.js parseString
-  []
-  '(. (new UAParser)
-      (getResult)))
+  [& [s]]
+  (list '. (list 'new 'UAParser s)
+        (list 'getResult)))

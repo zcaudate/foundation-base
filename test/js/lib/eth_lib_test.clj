@@ -28,23 +28,54 @@
               (:= solc (require "solc")))]
   :teardown [(l/rt:stop)]})
 
-(comment
-  (!.js
-   (k/sort (k/obj-keys (. ethers utils))))
+^{:refer js.lib.eth-lib/to-bignum-pow10 :added "4.0"}
+(fact "number with base 10 exponent"
+  ^:hidden
 
-  (e/parseUnits "1.234"
-                8)
   (!.js
-   (. ethers utils
-      (parseUnits "1.234"
-                  "8")))
+   (. (e/to-bignum-pow10 10)
+      (toString)))
+  => "10000000000")
+
+^{:refer js.lib.eth-lib/bn-mul :added "4.0"}
+(fact "multiplies two bignums together"
+  ^:hidden
+  
   (!.js
-   (* (e/to-bignum
-       (e/to-bignum "100000"))
-      1.2))
+   (. (e/bn-mul "100000000000000001"
+                "10000" 10)
+      (toString)))
+  => "1000000000000000010000")
+
+^{:refer js.lib.eth-lib/bn-div :added "4.0"}
+(fact "divides two bignums together"
+  ^:hidden
+  
   (!.js
-   (. '((:- "10000000000000000000"))
-      (toFixed 0))))
+   (. (e/bn-div "100000000000000001"
+                "10000" 10)
+      (toString)))
+  => "10000000000000")
+
+^{:refer js.lib.eth-lib/to-number :added "4.0"}
+(fact "converts the bignum to a number"
+  ^:hidden
+
+  (!.js
+   (e/to-number "1000000001"))
+  => 1000000001
+  
+  (!.js
+   (e/to-number "100000000000000001"))
+  => (throws))
+
+^{:refer js.lib.eth-lib/to-number-string :added "4.0"}
+(fact "converts the bignum to a number string"
+  ^:hidden
+
+  (!.js
+   (e/to-number-string "100000000000000001"))
+  => "100000000000000001")
 
 ^{:refer js.lib.eth-lib/new-rpc-provider :added "4.0"}
 (fact "creates a new rpc provider"
@@ -246,7 +277,6 @@
         k/to-number)
   => integer?)
 
-
 ^{:refer js.lib.eth-lib/subscribe-event :added "4.0"
   :setup [(def +contract+
             (compile-solc/create-module-entry
@@ -290,8 +320,6 @@
                                nil)))))
   => (contains-in [number? number?]))
 
-
-
 ^{:refer js.lib.eth-lib/subscribe-once :added "4.0"
   :setup [(def +contract+
             (compile-solc/create-module-entry
@@ -322,6 +350,23 @@
                     nil))
   => map?)
 
+(comment
+  (!.js
+   (k/sort (k/obj-keys (. ethers utils))))
+
+  (e/parseUnits "1.234"
+                8)
+  (!.js
+   (. ethers utils
+      (parseUnits "1.234"
+                  "8")))
+  (!.js
+   (* (e/to-bignum
+       (e/to-bignum "100000"))
+      1.2))
+  (!.js
+   (. '((:- "10000000000000000000"))
+      (toFixed 0))))
 
 (comment
   (new ethers)

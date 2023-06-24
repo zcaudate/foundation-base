@@ -19,7 +19,7 @@
   (compile-common/get-contract-address (rt-get-id rt)))
 
 (defn rt-get-contract
-  "gets the current contract address"
+  "gets the current contract"
   {:added "4.0"}
   [& [address rt]]
   (let [address   (or address
@@ -31,6 +31,8 @@
            :address address)))
 
 (defn rt-set-contract
+  "TODO"
+  {:added "4.0"}
   [address m & [rt]]
   (let [rt (:node (or rt (l/rt (.getName *ns*) :solidity)))
         _  (compile-solc/create-module-entry rt m)]
@@ -58,6 +60,8 @@
   (:node (or rt (l/rt (.getName *ns*) :solidity))))
 
 (defn rt-get-address
+  "gets the address of the signer"
+  {:added "4.0"}
   [& [rt]]
   (compile-solc/compile-rt-eval
    (rt-get-node rt)
@@ -66,6 +70,8 @@
          (rt-get-caller-private-key rt))))
 
 (defn rt:node-get-block-number
+  "TODO"
+  {:added "4.0"}
   [& [rt]]
   (compile-solc/compile-rt-eval
    (rt-get-node rt)
@@ -95,6 +101,8 @@
                      []))
 
 (defn rt:send-wei
+  "TODO"
+  {:added "4.0"}
   [to-address amount & [rt]]
   (compile-solc/compile-rt-eval
    (rt-get-node rt)
@@ -115,6 +123,11 @@
    form))
 
 (defn rt:node-past-events
+  "gets past events
+ 
+   #_#_#_(compile-node/rt:node-past-events)
+   => vector?"
+  {:added "4.0"}
   [name & [opts address rt]]
   (let [address (or address
                     (rt-get-contract-address rt))

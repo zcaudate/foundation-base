@@ -4,12 +4,12 @@
 
 (l/script :js
   {:macro-only true
-   :spring  {:native [["@react-spring/native" :as [* ReactSpring]]]
+   :bundle  {:native [["@react-spring/native" :as [* ReactSpring]]]
              :web    [["@react-spring/web" :as [* ReactSpring]]]}})
 
 (h/template-entries [l/tmpl-entry {:type :fragment
-                                     :base "ReactSpring"
-                                     :tag "js"}]
+                                   :base "ReactSpring"
+                                   :tag "js"}]
     [useChain
      useSpring
      useSprings

@@ -62,7 +62,8 @@
   (j/<! (http/start-server (@! +port+) k/identity))
   => map?
 
-  (std.json/read (:body (net.http/post (str "http://127.0.0.1:" +port+ "/euoeu/oue?a=2"))))
+  (std.json/read (:body (net.http/post (str "http://127.0.0.1:" +port+ "/euoeu/oue?a=2")
+                                       {:timeout 1000})))
   => (contains-in
       {"url" "/euoeu/oue?a=2",
        "method" "POST",

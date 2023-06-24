@@ -132,8 +132,16 @@
 
 ^{:refer code.manage/locate-code :added "3.0"}
 (fact "locates code base upon query"
-
+  ^:hidden
+  
   (locate-code '[code.manage]
+               {:query '[ns | {:first :import}]}))
+
+^{:refer code.manage/locate-test :added "4.0"}
+(fact "locates test based upon query"
+  ^:hidden
+  
+  (locate-test '[code.manage]
                {:query '[ns | {:first :import}]}))
 
 ^{:refer code.manage/grep :added "3.0"}

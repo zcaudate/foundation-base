@@ -47,6 +47,9 @@
   (set (keys (compile-node/rt-get-contract)))
   => #{:abi :address :args :bytecode :code :id :sha :type} )
 
+^{:refer rt.solidity.compile-node/rt-set-contract :added "4.0"}
+(fact "sets the compiled contract")
+
 ^{:refer rt.solidity.compile-node/rt-get-caller-address :added "4.0"}
 (fact "gets the caller address"
   ^:hidden
@@ -75,6 +78,12 @@
   (compile-node/rt-get-address)
   => "0x94e3361495bD110114ac0b6e35Ed75E77E6a6cFA")
 
+^{:refer rt.solidity.compile-node/rt:node-get-block-number :added "4.0"}
+(fact "gets the current block number"
+
+  (compile-node/rt:node-get-block-number)
+  => number?)
+
 ^{:refer rt.solidity.compile-node/rt:node-get-balance :added "4.0"}
 (fact "gets the current balance"
   ^:hidden
@@ -92,6 +101,15 @@
 
   (compile-node/rt:node-ping)
   => "pong")
+
+^{:refer rt.solidity.compile-node/rt:send-wei :added "4.0"}
+(fact "sends wei to another address"
+  ^:hidden
+  
+  (compile-node/rt:send-wei
+   (last env/+default-addresses+)
+   10)
+  => map?)
 
 ^{:refer rt.solidity.compile-node/rt:node-eval :added "4.0"}
 (fact "evaluates a form in the node runtime"

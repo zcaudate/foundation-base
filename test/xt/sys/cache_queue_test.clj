@@ -11,9 +11,22 @@
              [xt.sys.cache-queue :as queue]
              [xt.sys.cache-common :as cache]]})
 
+(defn create-resty-params
+  "creates default resty params"
+  {:added "4.0"}
+  ([& [{:keys [blocks]}]]
+   (rt.nginx.script/write [[:client-body-buffer-size "1m"]
+                           [:variables-hash-max-size 2048]
+                           [:variables-hash-bucket-size 128]
+                           
+                           #_[:lua-shared-dict [:GLOBAL    "20k"]]
+                           #_#_
+                           [:lua-shared-dict [:WS_DEBUG  "20k"]]
+                           [:lua-shared-dict [:ES_DEBUG  "20k"]]])))
+
 (l/script- :lua
   {:runtime :basic
-   :config  {:exec ["resty" "--http-conf" (config/create-resty-params) "-e"]}
+   :config  {:exec ["resty" "--http-conf" (create-resty-params) "-e"]}
    :require [[xt.lang.base-lib :as k]
              [xt.sys.cache-queue :as queue]
              [xt.sys.cache-common :as cache]]})

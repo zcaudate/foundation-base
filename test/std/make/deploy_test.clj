@@ -5,6 +5,9 @@
 ^{:refer std.make.deploy/make-deploy-get-keys :added "4.0"}
 (fact "deploy get keys")
 
+^{:refer std.make.deploy/make-deploy-build :added "4.0"}
+(fact "build make deploy datastructure")
+
 ^{:refer std.make.deploy/make-deploy :added "4.0"}
 (fact "make deploy")
 

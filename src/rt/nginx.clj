@@ -113,16 +113,21 @@
            
            (h/port:check-available port)
            (let [[tmp-dir tmp-file] (make-temp rt)
+                 sh-args  ["nginx" "-p" tmp-dir "-c" tmp-file]
                  sh-err   (h/with-thrown
-                            (h/sh "nginx" "-p" tmp-dir "-c" tmp-file)
+                            (h/sh {:args sh-args})
                             nil)
                  wait-err (h/with-thrown
                             (h/wait-for-port "localhost" port {:timeout 2000})
                             nil)]
-             (when wait-err
-               (throw (or sh-err
-                          wait-err)))
-             [:started tmp-dir tmp-file])
+             (cond wait-err
+                   (do (h/p (str/join " " sh-args))
+                       #_(throw (or sh-err
+                                    wait-err))
+                       [:errored tmp-dir])
+                   
+                   :else
+                   [:started tmp-dir tmp-file]))
            
            :else
            (h/error "Port not available" {:port port})))))

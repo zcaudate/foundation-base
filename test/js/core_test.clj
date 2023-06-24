@@ -13,12 +13,6 @@
  {:setup    [(l/rt:restart)]
   :teardown [(l/rt:stop)]})
 
-(comment
-  (!.js
-   (j/parseFloat "xoeko"))
-  (!.js
-   (k/last "hello.")))
- 
 ^{:refer js.core/assignNew :added "4.0"}
 (fact "assigns new object"
   ^:hidden
@@ -42,6 +36,9 @@
     (j/future-delayed [100]
       (repl/notify true)))
   => true)
+
+^{:refer js.core/timeout :added "4.0"}
+(fact "creates a timeout call")
 
 ^{:refer js.core/isWeb :added "4.0"}
 (fact "checks that platform is web")
@@ -189,3 +186,12 @@
            :default {:hello "HELLO"}})))
       ["hello"]))
   => {"__esMODULE" true, "default" "HELLO"})
+
+^{:refer js.core/module:demos :added "4.0"}
+(fact "adds a demos module")
+
+(comment
+  (!.js
+   (j/parseFloat "xoeko"))
+  (!.js
+   (k/last "hello.")))

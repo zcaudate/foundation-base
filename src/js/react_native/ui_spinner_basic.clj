@@ -30,7 +30,7 @@
    :color "#333"})
 
 (defn.js spinnerTheme
-  "creates the spinner theme"
+  "creates a spinner theme"
   {:added "4.0"}
   [#{[theme
       themePipeline
@@ -47,7 +47,7 @@
   (return [styleStatic transformFn]))
 
 (defn.js useSpinnerPosition
-  "helper function to connect spinner position"
+  "gets the spinner position"
   {:added "4.0"}
   [value setValue valueRef min max stride step]
   (var position     (a/val 0))
@@ -68,8 +68,8 @@
   (return position))
 
 (defn.js SpinnerStatic
-  "creates the spinner padding"
-  {:added "0.1"}
+  "creates a static spinner"
+  {:added "4.0"}
   [#{[text
       styleText
       style
@@ -89,7 +89,7 @@
      text]]))
 
 (defn.js SpinnerBasicValues
-  "creates the spinner values"
+  "creates basic values for spinner"
   {:added "4.0"}
   [#{[max
       min
@@ -111,8 +111,8 @@
      :editable editable}]))
 
 (defn.js SpinnerBasic
-  "creates the spinner value"
-  {:added "0.1"}
+  "creates a basic spinner"
+  {:added "4.0"}
   [#{[theme
       themePipeline
       disabled

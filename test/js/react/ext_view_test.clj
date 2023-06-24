@@ -137,6 +137,9 @@
 ^{:refer js.react.ext-view/wrap-pending :added "4.0"}
 (fact "wraps function, setting pending flag")
 
+^{:refer js.react.ext-view/refreshArgsFn :added "4.0"}
+(fact "creates the refresh args function")
+
 ^{:refer js.react.ext-view/useRefreshArgs :added "4.0"}
 (fact "refreshes args on the view")
 

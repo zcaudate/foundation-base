@@ -185,9 +185,9 @@
   ^:hidden
   
   (emit-internal-str
-   '(%%% ["hello"
-          "hello"
-          "hello"])
+   '(-%%- ["hello"
+           "hello"
+           "hello"])
    helper/+default+
    {})
   => "\"hello\"\n\"hello\"\n\"hello\""

@@ -24,8 +24,11 @@
   {:added "3.0"}
   ([& {:keys [dumper-options unsafe mark]}]
    (let [^BaseConstructor constructor
-         (if unsafe (Constructor.)
-             (if mark (MarkedConstructor.) (SafeConstructor.)))
+         (if unsafe
+           (Constructor.)
+           (if mark
+             (MarkedConstructor.)
+             (SafeConstructor.)))
         ;; TODO: unsafe marked constructor
          dumper (if dumper-options
                   (make-dumper-options :flow-style (:flow-style dumper-options))

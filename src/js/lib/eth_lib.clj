@@ -105,6 +105,8 @@
    [deploy []  {:vargs args}]])
 
 (defn.js to-bignum-pow10
+  "number with base 10 exponent"
+  {:added "4.0"}
   [unit]
   (return
    (. ethers
@@ -113,6 +115,8 @@
       (pow unit))))
 
 (defn.js bn-mul
+  "multiplies two bignums together"
+  {:added "4.0"}
   [bn x precision]
   (var b1 (-/parseUnits "1" (or precision 24)))
   (var bx (-/parseUnits (j/toString x) (or precision 24)))
@@ -122,6 +126,8 @@
       (div b1))))
 
 (defn.js bn-div
+  "divides two bignums together"
+  {:added "4.0"}
   [bn x precision]
   (var b1 (-/parseUnits "1" (or precision 24)))
   (var bx (-/parseUnits (j/toString x) (or precision 24)))
@@ -131,6 +137,8 @@
       (div bx))))
 
 (defn.js to-number
+  "converts the bignum to a number"
+  {:added "4.0"}
   [value]
   (cond (and value
              (== (. value type)
@@ -140,6 +148,8 @@
    (. ethers BigNumber (from value) (toNumber))))
 
 (defn.js to-number-string
+  "converts the bignum to a number string"
+  {:added "4.0"}
   [value]
   (cond (and value
              (== (. value type)
@@ -156,7 +166,7 @@
                url)))
 
 (defn.js new-web3-provider
-  "creates a new rpc provider"
+  "creates a new web3 compatible provider"
   {:added "4.0"}
   [proxy]
   (return (new (. ethers providers Web3Provider)
@@ -195,7 +205,7 @@
   (return wallet))
 
 (defn.js get-signer-address
-  "gets a signer given url and private key"
+  "gets signer address given url and private key"
   {:added "4.0"}
   [url private-key]
   (var signer (-/get-signer url private-key))
@@ -231,12 +241,16 @@
            overrides)))
 
 (defn.js subscribe-event
+  "subscribes to events"
+  {:added "4.0"}
   [url event-type listener]
   (var provider (-/new-rpc-provider url))
   (. provider (on event-type listener))
   (return (fn [] (. provider (off event-type listener)))))
 
 (defn.js subscribe-once
+  "subscribes to single event"
+  {:added "4.0"}
   [url event-type listener]
   (var provider (-/new-rpc-provider url))
   (. provider (once event-type listener))

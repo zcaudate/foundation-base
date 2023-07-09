@@ -41,8 +41,9 @@
    [org.apache.maven/maven-aether-provider "3.3.9"]
    
    ;; lib.javaosc
+   #_
    [com.illposed.osc/javaosc-core "0.8"]
-   #_#_
+   #_#_#_#_#_
    [org.clojars.technomancy/jmdns "3.2.1"]
    [commons-net "3.0.1"]
    [org.jmdns/jmdns "3.5.1"]

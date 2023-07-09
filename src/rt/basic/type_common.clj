@@ -107,7 +107,9 @@
   (let [_   (assert (#{:oneshot
                        :interactive
                        :basic
-                       :websocket}
+                       :websocket
+                       :remote-port
+                       :remote-ws}
                      context)
                     (str "Invalid context: " context))
         all (get-program-options lang)
@@ -128,7 +130,9 @@
   (let [_   (assert (#{:oneshot
                        :interactive
                        :basic
-                       :websocket}
+                       :websocket
+                       :remote-port
+                       :remote-ws}
                      context)
                     (str "Invalid key: " context))
         copts    (get-in @*context-options* [lang context])

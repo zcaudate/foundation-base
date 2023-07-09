@@ -52,19 +52,22 @@
 
 ^{:refer rt.nginx/all-nginx-active :added "4.0"}
 (fact "gets all active nginx processes for a port"
-
+  ^:hidden
+  
   (all-nginx-active 1000)
   => (any vector? nil?))
 
 ^{:refer rt.nginx/make-conf :added "4.0"}
 (fact "creates a config"
-
+  ^:hidden
+  
   (make-conf nil)
   => string?)
 
 ^{:refer rt.nginx/make-temp :added "4.0"}
 (fact "makes a temp directory and conf"
-
+  ^:hidden
+  
   (make-temp {})
   => vector?)
 

@@ -300,7 +300,10 @@
           :else
           (let [input (in-fn body)
                 _    (when (:raw-input *print*)
-                       (h/pl input))
+                       (h/local :println
+                                "\n"
+                                (h/pl-add-lines input)
+                                "\n"))
                 raw-eval (if *rt-wrap*
                            (*rt-wrap* raw-eval)
                            raw-eval)
@@ -319,6 +322,4 @@
                               (h/pl raw))))
                 output (ptr-output raw json)]
             output))))
-
-
 

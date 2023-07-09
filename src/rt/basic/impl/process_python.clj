@@ -3,6 +3,7 @@
             [rt.basic.type-oneshot :as oneshot]
             [rt.basic.type-basic :as basic]
             [rt.basic.type-websocket :as websocket]
+            [rt.basic.type-remote-port :as remote-port]
             [xt.lang.base-repl :as k]
             [std.lang.model.spec-python :as spec]
             [std.lang.base.impl :as impl]
@@ -36,6 +37,25 @@
 ;; EVAL
 ;;
 
+
+(defn default-body-wrap
+  [forms]
+  (list 'do
+        (list 'defn (with-meta 'OUT-FN
+                      {:inner true})
+              []
+              '(:- :import traceback)
+              '(var err)
+              (concat
+               '[try]
+               (butlast forms)
+               [(list 'return (last forms))
+                '(catch Exception
+                     (:= err (. traceback (format-exc))))])
+              '(throw (Exception err)))
+        '(:= (. (globals) ["OUT"])
+             (OUT-FN))))
+
 (defn default-body-transform
   "standard python transforms"
   {:added "4.0"}
@@ -43,22 +63,7 @@
   (rt/return-transform
    input mopts
    {:format-fn identity
-    :wrap-fn (fn [forms]
-               (list 'do
-                     (list 'defn (with-meta 'OUT-FN
-                                   {:inner true})
-                           []
-                           '(:- :import traceback)
-                           '(var err)
-                           (concat
-                            '[try]
-                            (butlast forms)
-                            [(list 'return (last forms))
-                             '(catch Exception
-                                  (:= err (. traceback (format-exc))))])
-                           '(throw (Exception err)))
-                     '(:= (. (globals) ["OUT"])
-                          (OUT-FN))))}))
+    :wrap-fn default-body-wrap}))
 
 (def ^{:arglists '([body])}
   default-oneshot-wrap
@@ -177,7 +182,7 @@
 (def ^{:arglists '([port & [{:keys [host]}]])}
   default-websocket-client
   (let [bootstrap  (->> [(impl/emit-entry-deps
-                         k/return-eval
+                          k/return-eval
                          {:lang :python
                           :layout :flat})
                         (impl/emit-as
@@ -209,6 +214,28 @@
      :instance {:create #'websocket/rt-websocket:create}
      :config {:layout :full}})])
 
+;;
+;; REMOTE SOCKET
+;;
+
+(def +python-remote-port-config+
+  (common/set-context-options
+   [:python :remote-port :default]
+   {:main  {}
+    :emit  {:body  {:transform #'default-body-transform}}
+    :json :full
+    :encode :json
+    :timeout 2000}))
+
+(def +python-remote-port+
+  [(rt/install-type!
+    :python :remote-port
+    {:type :hara/rt.remote-port
+     :instance {:create remote-port/rt-remote-port:create}
+     :config {:layout :full}})])
+
+
+
 (comment
   (h/clip:nil (default-basic-client 62691))
   (def +sh+ (h/sh {:args ["python3" "-c"
@@ -219,5 +246,16 @@
                           (default-basic-client 62535)]
                    :wait false}))
   
+
+  (spit
+   "hello.py"
+   (->> [(impl/emit-entry-deps
+          k/return-eval
+          {:lang :python
+           :layout :flat})
+         (impl/emit-as
+          :python +client-basic+)]
+        (str/join "\n\n")))
   
   (h/sh-output +sh+))
+

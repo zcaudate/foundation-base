@@ -124,7 +124,7 @@
     (if (not (:suppress emit))
       (let [{:keys [trim transform]} emit
             form (cond-> form transform (transform mopts))
-            _    (if *print-form* (h/prn :FORM form))
+            _    (if *print-form* (h/p :FORM form))
             body (emit/emit form
                             grammar
                             (the-ns namespace)

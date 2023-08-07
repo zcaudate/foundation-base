@@ -3,7 +3,7 @@
             [std.lang :as l]
             [std.string :as str]
             [xt.lang.base-repl :as repl])
-  (:refer-clojure :exclude [print flush time re-find]))
+  (:refer-clojure :exclude [print flush time re-find read send sync]))
 
 (l/script :lua
   {:macro-only true

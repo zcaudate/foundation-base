@@ -5,7 +5,12 @@
             [net.http :as http]))
 
 (l/script :js
-  {:require [[js.core :as j]
+  {:runtime :websocket
+   :config {:bench true
+            :id :dev/web-main
+            :emit {:native {:suppress true}
+                   :lang/jsx false}}
+   :require [[js.core :as j]
              [js.react.ext-box :as ext-box]
              [js.react :as r]
              [js.react-native :as n :include [:fn]]
@@ -55,7 +60,10 @@
 
 (defrun.js ^{:rt/init true}
   __main__
-  (base-box/set-data -/Global ["Main"] -/AppMain))
+  (base-box/set-data -/Global ["Main"] -/AppMain)
+  (client/client-ws "localhost"
+                    29001
+                    {}))
 
 (defn.js clearScratch
   []
@@ -68,4 +76,19 @@
 (def.js MODULE
   (x/registerRootComponent -/App))
 
+(comment
+  (l/rt:restart)
+  
+  (std.make/build-triggered)
+  (!.js
+   (+ 1 2 3))
+  
+  (!.js
+   (alert "hello"))
+  
+  (!.js
+   (console.log "blah"))
+
+  (!.js
+   (+ 1 2 3)))
 

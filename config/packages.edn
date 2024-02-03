@@ -248,7 +248,11 @@
   :include [[net.resp :complete]]
   :bundle
   [{:path "target/classes" :include ["hara/net/resp"]}]}
-  
+
+ foundation/python
+ {:description "python libs and helpers"
+  :include [[python :complete]]} 
+ 
  foundation/rt.basic
  {:description "wrapper for nginx" 
   :include [[rt.basic :complete]]

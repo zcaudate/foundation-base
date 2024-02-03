@@ -1,7 +1,8 @@
 (ns rt.basic.type-container-test
   (:use code.test)
   (:require [rt.basic.type-container :refer :all]
-            [std.lib :as h]))
+            [std.lib :as h]
+            [std.lang :as l]))
 
 ^{:refer rt.basic.type-container/start-container-process :added "4.0"}
 (fact "starts the container"

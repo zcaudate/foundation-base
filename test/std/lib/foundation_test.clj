@@ -1,4 +1,4 @@
-(ns std.lib.foundation-test
+(ns std.lib.foundation2-test
   (:use code.test)
   (:require [std.lib.foundation :refer :all])
   (:refer-clojure :exclude [keyword -> ->> reset! aget set!

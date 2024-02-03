@@ -128,7 +128,7 @@
                                 "@types/react" "16.9.35",
                                 "@types/react-native" "0.63.2",
                                 "expo" "45.0.3",
-                                "expo-cli" "6.0.8",
+                                "expo-cli" "6.3.7",
                                 "typescript" "4.3.5"},
                                "metro" {"watchFolders" ["assets"]}}}]}
    :default [{:type   :module.graph

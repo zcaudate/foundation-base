@@ -9,6 +9,10 @@
   (hash-map? {})    => true
   (hash-map? [])    => false)
 
+(comment
+  (./purge {:write true})
+  (./import))
+
 ^{:refer std.lib.collection/lazy-seq? :added "3.0"}
 (fact "Returns `true` if `x` implements `clojure.lang.LazySeq`."
 

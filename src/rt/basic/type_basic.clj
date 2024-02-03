@@ -11,6 +11,10 @@
             [rt.basic.type-bench :as bench]
             [rt.basic.type-container :as container]))
 
+(comment
+  (h/os-arch)
+  "aarch64")
+
 (defn start-basic
   "starts the basic rt"
   {:added "4.0"}
@@ -30,21 +34,21 @@
                                                   :make
                                                   :exec]))))
          [attach key] (cond container
-                             [(container/start-container
-                               lang
-                               (merge {:suffix id}
-                                      (merge-rt container))
-                               (:port server)
-                               rt)
-                              :container]
+                            [(container/start-container
+                              lang
+                              (merge {:suffix id}
+                                     (merge-rt container))
+                              (:port server)
+                              rt)
+                             :container]
                              
-                             (not (false? bench))
-                             [(bench/start-bench
+                            (not (false? bench))
+                            [(bench/start-bench
                               lang
                               (merge-rt bench)
                               (:port server)
                               rt)
-                              :bench])
+                             :bench])
          rt   (cond-> rt
                 key (assoc key attach)
                 key (doto (server/wait-ready)))]

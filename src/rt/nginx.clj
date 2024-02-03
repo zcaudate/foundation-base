@@ -102,35 +102,81 @@
         tmp-log  (str (fs/create-directory (str tmp-dir "/logs")))]
     [tmp-dir tmp-file conf]))
 
+(defn start-test-server-shell
+  [{:keys [port]
+    :as rt}]
+  (let [[tmp-dir tmp-file] (make-temp rt)
+        sh-args  ["nginx" "-p" tmp-dir "-c" tmp-file]
+        sh-err   (h/with-thrown
+                   (h/sh {:args sh-args})
+                   nil)
+        wait-err (h/with-thrown
+                   (h/wait-for-port "localhost" port {:timeout 2000})
+                   nil)]
+    (cond wait-err
+          (do (h/p (str/join " " sh-args))
+              #_(throw (or sh-err
+                           wait-err))
+              [:errored tmp-dir])
+          
+          :else
+          [:started tmp-dir tmp-file])))
+
+(defn start-test-server-container
+  "starts the test server for a given port"
+  {:added "4.0"}
+  ([{:keys [port container]
+     :as rt}]
+   (let [{:keys [exec image]} container
+         [tmp-dir tmp-file] (make-temp rt)
+         
+         sh-args  ["docker" "run" "--rm" #_#_"--network" "host"
+                   "-d"
+                   "-p" (str port ":" port) 
+                   "-v" (str tmp-dir ":" tmp-dir)
+                   "-v" (str tmp-file ":" tmp-file)
+                   (or image (h/error "No image found" {:image image}))
+                   (or exec  (h/error "No exec found"  {:exec exec}))
+                   "-g" "daemon off;"
+                   "-p" tmp-dir "-c" tmp-file]
+         sh-err   (h/with-thrown
+                    (h/sh {:args sh-args})
+                    nil)
+         wait-err (h/with-thrown
+                    (h/wait-for-port "localhost" port {:timeout 2000})
+                    (Thread/sleep 1000)
+                    nil)]
+     (cond wait-err
+           (do (h/p (str/join " " sh-args))
+               #_(throw (or sh-err
+                            wait-err))
+               [:errored tmp-dir])
+           
+           :else
+           [:started tmp-dir tmp-file]))))
+
 (defn start-test-server
   "starts the test server for a given port"
   {:added "4.0"}
-  ([{:keys [port]
+  ([{:keys [port container]
      :as rt}]
-   (let [ports (all-nginx-ports)]
-     (cond (get ports port)
+   (let [port  (h/port:check-available port)
+         ports (all-nginx-ports)
+         arch  (keyword (h/os-arch))]
+     (h/prn {:container container
+             :port port})
+     (cond (not port)
+           (h/error "Port not available" {:port port})
+
+           (get ports port)
            [:running]
-           
-           (h/port:check-available port)
-           (let [[tmp-dir tmp-file] (make-temp rt)
-                 sh-args  ["nginx" "-p" tmp-dir "-c" tmp-file]
-                 sh-err   (h/with-thrown
-                            (h/sh {:args sh-args})
-                            nil)
-                 wait-err (h/with-thrown
-                            (h/wait-for-port "localhost" port {:timeout 2000})
-                            nil)]
-             (cond wait-err
-                   (do (h/p (str/join " " sh-args))
-                       #_(throw (or sh-err
-                                    wait-err))
-                       [:errored tmp-dir])
-                   
-                   :else
-                   [:started tmp-dir tmp-file]))
-           
+
+           (and container
+                (contains? (:only container) arch))
+           (start-test-server-container (assoc rt :port port))
+
            :else
-           (h/error "Port not available" {:port port})))))
+           (start-test-server-shell (assoc rt :port port))))))
 
 (defn kill-single-nginx
   "kills nginx processes for a single port"
@@ -151,8 +197,14 @@
   {:added "4.0"}
   []
   (let [ports (all-nginx-ports)
-        exec  (h/sh "bash" "-c" "ps aux | grep '[n]ginx: .* process' | awk '{print $2}' | xargs kill"
-                    {:wait false})]
+        exec  (h/sh {:args ["bash" "-c"
+                            (str/join
+                             " | "
+                             ["ps aux"
+                              "grep '[n]ginx: .* process'"
+                              "awk '{print $2}'"
+                              "xargs kill"])]
+                     :wait false})]
     [ports exec]))
 
 (defn stop-test-server
@@ -176,20 +228,7 @@
 
 (defn- start-nginx
   ([{:keys [id state host port container no-server] :as rt}]
-   (cond container
-         (let [[tmp-dir tmp-file] (make-temp rt)
-               rt (docker/start-runtime
-                   rt
-                   (-> (merge {:suffix id} container)
-                       (update :volumes merge {tmp-dir  "/tmp/nginx"
-                                               tmp-file "/tmp/nginx/nginx.conf"})
-                       (assoc :cmd ["nginx"
-                                    "-p" "/tmp/nginx"
-                                    "-c" "/tmp/nginx/nginx.conf"
-                                    "-g" "daemon off;"])))]
-           (h/wait-for-port (:host rt) port {:timeout 2000})
-           (reset! state [:started tmp-dir tmp-file])
-           rt)
+   (cond 
          
          (or no-server
              (not= host "localhost"))

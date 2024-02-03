@@ -6,7 +6,8 @@
   "Returns `true` if `x` implements `clojure.lang.APersistentMap`.
  
    (hash-map? {})    => true
-   (hash-map? [])    => false"
+   (hash-map? [])    => false
+   1 => 2"
   {:added "3.0"}
   ([x] (instance? clojure.lang.APersistentMap x)))
 

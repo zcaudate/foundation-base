@@ -120,8 +120,8 @@
     []
     (return
      (n/EnclosedCode 
-{:label "js.react-native/Enclosed"} 
-[:% n/Row
+      {:label "js.react-native/Enclosed"} 
+      [:% n/Row
        [:% n/Text "HELLO"]]))))
 
 ^{:refer js.react-native/EnclosedCodeContainer :added "4.0"}
@@ -158,12 +158,12 @@
     []
     (return
      (n/EnclosedCode 
-{:label "js.react-native/Row"} 
-[:% n/Row
+      {:label "js.react-native/Row"} 
+      [:% n/Row
        {:style {:backgroundColor "orange"}}
        [:% n/Text "HELLO"]
        [:% n/Text "WORLD"]] 
-[:% n/Row
+      [:% n/Row
        {:style {:backgroundColor "blue"}}
        [:% n/Text "HELLO"]
        [:% n/Text "WORLD"]]))))

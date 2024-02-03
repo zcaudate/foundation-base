@@ -26,7 +26,13 @@
 
 (l/script- :lua
   {:runtime :basic
-   :config  {:exec ["resty" "--http-conf" (create-resty-params) "-e"]}
+   :config  {#_#_:exec ["resty" "--http-conf" (create-resty-params) "-e"]
+             :container {:group "test"
+                         :image "python"
+                         :runtime :basic
+                         :exec ["python" "-c"]
+                         #_#_:bootstrap (fn [port opts]
+                                          "1+1")}}
    :require [[xt.lang.base-lib :as k]
              [xt.sys.cache-queue :as queue]
              [xt.sys.cache-common :as cache]]})
@@ -110,11 +116,11 @@
                             "main"
                             "g0")
          (queue/group-setup cache
-                      "main"
-                      "g1")
+                            "main"
+                            "g1")
          
-         [(queue/queue-meta cache)
-          (queue/queue-groupcount cache "main")])
+           [(queue/queue-meta cache)
+            (queue/queue-groupcount cache "main")])
   => [{"main" {"size" 5}} 2])
 
 ^{:refer xt.sys.cache-queue/queue-meta :added "4.0"}

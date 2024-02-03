@@ -19,7 +19,7 @@
    port
    {:keys [host] :as rt}]
   (let [script (bootstrap port {:host (or host "host.docker.internal")})
-        container {:id id
+        container {:id (or id (h/sid))
                    :suffix suffix
                    :group (or group "testing")
                    :image image
@@ -55,6 +55,7 @@
 
 
 (comment
-  (lib.docker.common/start-container (assoc *container* :cmd ["luajit" "-e" "print(1+1)"])
-                                    )
+  (lib.docker.common/start-container
+   (assoc *container* :cmd ["luajit" "-e" "print(1+1)"])
+   )
   )

@@ -6,7 +6,8 @@
 
 (l/script :js
   {:runtime :websocket
-   :config {:id :play/web-main
+   :config {:id :dev/web-main
+            #_#_:id :play/web-main
             :bench false
             :emit {:native {:suppress true}
                    :lang/jsx false}

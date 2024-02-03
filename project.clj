@@ -1,6 +1,6 @@
-(defproject zcaudate/foundation-base "4.0.1"
+(defproject xzy.zcaudate/foundation-base "4.0.1"
   :description "base libraries for foundation"
-  :url "https://www.gitlab.com/zcaudate/foundation-base"
+  :url "https://www.github.com/zcaudate-xyz/foundation-base"
   :aliases
   {"test"  ["exec" "-ep" "(use 'code.test) (def res (run :all)) (System/exit (+ (:failed res) (:thrown res)))"]
    "test-unit"   ["run" "-m" "code.test" "exit"]

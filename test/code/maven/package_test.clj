@@ -68,6 +68,18 @@
          [:version "3.0.1"]]]]
       :gaps-ok))
 
+^{:refer code.maven.package/project-clj-content :added "4.0"}
+(fact "generates the project-clj text"
+  ^:hidden
+  
+  (project-clj-content '{:description "task execution of and standardization",
+                         :name foundation/std.task,
+                         :artifact "std.task",
+                         :group "foundation",
+                         :version "3.0.1",
+                         :dependencies [[foundation/std.lib "3.0.1"]]})
+  => "(defproject foundation/std.task \"3.0.1\"\n  :description \"3.0.1\"\n  :url nil\n  :dependencies \n  [[foundation/std.lib \"3.0.1\"]])")
+
 ^{:refer code.maven.package/generate-manifest :added "3.0"}
 (fact "creates a manifest.mf file for the project"
 
@@ -92,6 +104,9 @@
        "META-INF/maven/foundation/std.task/pom.xml"
        "META-INF/maven/foundation/std.task/pom.properties"]))
 
+^{:refer code.maven.package/generate-project-clj :added "4.0"}
+(fact "generates the project.clj")
+
 ^{:refer code.maven.package/linkage :added "3.0"}
 (fact "returns the linkage for a given name"
 
@@ -102,7 +117,7 @@
 (fact "returns the packaged items for a given name"
 
   (package 'foundation/std.image {} -collected- {:root "." :version "3.0.1"})
-
+  
   => (contains {:package 'foundation/std.image,
                 :jar "foundation-std.image-3.0.1.jar",
                 :pom "foundation-std.image-3.0.1.pom.xml",

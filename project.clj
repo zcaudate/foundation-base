@@ -81,10 +81,10 @@
    [black.ninia/jep "4.2.0"]
    
    ;; rt.graal
-   [org.graalvm.sdk/graal-sdk "23.1.2"]
-   [org.graalvm.truffle/truffle-api "23.1.2"]
-   [org.graalvm.js/js-scriptengine "23.1.2"]
-   [org.graalvm.js/js "23.0.3"]
+   [org.graalvm.sdk/graal-sdk "21.2.0"]
+   [org.graalvm.truffle/truffle-api "21.2.0"]
+   [org.graalvm.js/js "21.2.0"]
+   [org.graalvm.js/js-scriptengine "21.2.0"]
    [commons-io/commons-io "2.15.1"]
    
    ;; std.pretty

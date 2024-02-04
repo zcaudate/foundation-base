@@ -91,6 +91,7 @@
           code.maven/package
           code.maven/install
           code.maven/deploy
+          code.maven/deploy-lein
           code.manage/vars
           code.manage/locate-code
           code.manage/grep

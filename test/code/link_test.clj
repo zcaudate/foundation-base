@@ -99,9 +99,9 @@
       (collect-entries -lookups-)
       (collect-linkages -lookups-)
       (collect-internal-deps)
-      (get-in ['foundation/code.test :internal])
+      (get-in ['xyz.zcaudate/code.test :internal])
       sort)
-  => '(foundation/code.project
+  => '(xyz.zcaudate/code.project
        xyz.zcaudate/std.fs
        xyz.zcaudate/std.lib
        xyz.zcaudate/std.math

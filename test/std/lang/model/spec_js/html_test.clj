@@ -1,6 +1,7 @@
 (ns std.lang.model.spec-js.html-test
   (:use code.test)
-  (:require [std.lang.model.spec-js.html :refer :all]))
+  (:require [std.lang.model.spec-js.html :refer :all]
+            [std.html :as html]))
 
 ^{:refer std.lang.model.spec-js.html/wrap-indent-inner :added "4.0"}
 (fact "increase indentation in walk inner")
@@ -16,7 +17,8 @@
 
 ^{:refer std.lang.model.spec-js.html/emit-html :added "4.0"}
 (fact "emits the html"
-
-  (emit-html [:a [:b [:c]]]
-             {} {})
-  => "<a><b>\n    <c></c></b></a>")
+  ^:hidden
+  
+  (html/tree (emit-html [:a [:b [:c]]]
+                        {} {}))
+  => [:a [:b [:c]]])

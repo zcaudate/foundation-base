@@ -1,4 +1,4 @@
-(defproject xzy.zcaudate/foundation-base "4.0.1"
+(defproject xyz.zcaudate/foundation-base "4.0.1"
   :description "base libraries for foundation"
   :url "https://www.github.com/zcaudate-xyz/foundation-base"
   :license  {:name "MIT License"
@@ -43,7 +43,7 @@
    [org.apache.maven/maven-aether-provider "3.3.9"]
    
    ;; lib.javaosc
-   #_
+   #_<64;64;10M
    [com.illposed.osc/javaosc-core "0.8"]
    #_#_#_#_#_
    [org.clojars.technomancy/jmdns "3.2.1"]

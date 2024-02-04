@@ -341,13 +341,13 @@
          [{:file (std.fs/path "/home/chris/Development/tahto/foundation/target/interim/xyz.zcaudate/std.object/foundation-std.object-4.0.1.jar"),
            :extension "jar",
            :artifact "std.object",
-           :group "foundation",
+           :group "xyz.zcaudate",
            :version "4.0.1"}
           {:file
            (std.fs/path "/home/chris/Development/tahto/foundation/target/interim/xyz.zcaudate/std.object/foundation-std.object-4.0.1.pom.xml"),
            :extension "pom",
            :artifact "std.object",
-           :group "foundation",
+           :group "xyz.zcaudate",
            :version "4.0.1"}],
          :repository
          {:id "statstrade",

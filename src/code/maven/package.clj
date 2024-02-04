@@ -109,7 +109,7 @@
 (defn pom-xml
   "creates a pom.properties file"
   {:added "3.0"}
-  ([{:keys [dependencies repositories url group artifact version name description licenses]}]
+  ([{:keys [dependencies repositories url group artifact version name description license]}]
    (str "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
         "\n"
         (html/html
@@ -122,8 +122,8 @@
           [:name (str name)]
           [:description description]
           [:url url]
-          (->> (map license->tree licenses)
-               (into [:licenses]))
+          [:licenses
+           (license->tree license)]
           (->> (merge repositories +default-repositories+)
                (map repository->tree)
                (into [:repositories]))
@@ -134,10 +134,11 @@
 (defn project-clj-content
   "creates a pom.properties file"
   {:added "3.0"}
-  ([{:keys [dependencies repositories url group artifact version name description licenses]}]
+  ([{:keys [dependencies repositories url group artifact version name description license]}]
    (str "(defproject " (str name) " " (pr-str version) "\n"
         "  :description "  (pr-str version) "\n"
         "  :url " (pr-str url) "\n"
+        "  :license " (prn-str license) "\n"
         "  :dependencies \n"
         "  [" (->> dependencies
                    (map (fn [coord]
@@ -231,11 +232,11 @@
                                    \"META-INF/maven/xyz.zcaudate/std.image/pom.xml\"
                                    \"META-INF/maven/xyz.zcaudate/std.image/pom.properties\"])})"
   {:added "3.0"}
-  ([name {:keys [simulate interim] :as opts} linkages {:keys [root version url] :as project}]
+  ([name {:keys [simulate interim] :as opts} linkages {:keys [root version url license] :as project}]
    (let [interim (or interim +interim+)
          interim (fs/path root interim (str name))
          {:keys [internal] :as entry}  (get linkages name)
-         entry  (-> (assoc entry :version version)
+         entry  (-> (assoc entry :version version :license license)
                     (update-in [:dependencies] concat (map #(vector % version) internal)))
          {:keys [artifact group] :as entry}  (merge entry (dissoc (artifact/rep name) :version)
                                                     {:url url})

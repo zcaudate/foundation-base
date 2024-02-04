@@ -4,6 +4,7 @@
 	    [net.http.websocket :as ws]
             [std.object :as obj]
             [std.lib :as h])
+  (:import java.net.URLEncoder)
   (:refer-clojure :exclude [get]))
 
 (h/intern-in client/request
@@ -25,6 +26,16 @@
              ws/close!
              ws/abort!)
 
+(defn url-encode [s]
+  (.replace (URLEncoder/encode s "UTF-8") "+" "%20"))
+
+(defn encode-form-params
+  [params]
+  (->> params
+       (map (fn [[k v]] (str (url-encode (h/strn k)) "=" (url-encode (h/strn v)))))
+       (interpose "&")
+       (apply str)))
+
 (defn event-stream
   "creates a data-stream for checking errors"
   {:added "4.0"}
@@ -34,16 +45,16 @@
                                 (h/merge-nested
                                  opts
                                  {:headers {"Accept" "text/event-stream"}
-                                :as :lines}))
+                                  :as :lines}))
                     :body)
          foreach-fn (obj/query-instance lines ["forEach" :#])
          thread (future
                   (foreach-fn
                    lines
                    (h/fn:consumer [e]
-                     (let [out (re-find #"data: (.*)" e)]
-                       (if out
-                         (swap! events conj (nth out 1)))))))]
+                                  (let [out (re-find #"data: (.*)" e)]
+                                    (if out
+                                      (swap! events conj (nth out 1)))))))]
      {:events events
       :lines lines
       :thread thread})))

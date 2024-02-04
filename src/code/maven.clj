@@ -2,6 +2,7 @@
   (:require [code.maven.command :as command]
             [code.maven.package :as package]
             [code.maven.task :as deploy.task]
+            [code.maven.lein :as lein]
             [std.lib :refer [definvoke]]
             [std.task :as task]
             [lib.aether :as aether]))
@@ -80,7 +81,7 @@
 (definvoke package
   "packages files in the interim directory
  
-   (package '[foundation]
+   (package '[xyz.zcaudate]
             {:tag :all
             :print {:item true :result false :summary false}})"
   {:added "3.0"}
@@ -88,6 +89,18 @@
           :params {:title "PACKAGE INTERIM FILES"
                    :parallel true}
           :main {:fn #'package/package}}])
+
+(definvoke infer
+  "infers all variables
+   
+   (infer '[xyz.zcaudate]
+            {:tag :all
+             :print {:item true :result false :summary false}})"
+  {:added "4.0"}
+  [:task {:template :deploy.linkage
+          :params {:title "INFER INTERIM FILES"
+                   :parallel true}
+          :main {:fn #'package/infer}}])
 
 (definvoke clean
   "cleans the interim directory of packages
@@ -103,7 +116,7 @@
 (definvoke install
   "installs packages to the local `.m2` repository
  
-   (install '[foundation] {:tag :all :print {:item true}})
+   (install '[xyz.zcaudate] {:tag :all :print {:item true}})
    
    (install 'xyz.zcaudate/std.lib
             {:tag :all
@@ -117,12 +130,24 @@
 (definvoke deploy
   "deploys packages to a maven repository
  
-   (deploy '[foundation] {:tag :all})"
+   (deploy '[xyz.zcaudate] {:tag :all})"
   {:added "3.0"}
   [:task {:template :deploy.maven
           :params {:title "DEPLOY PACKAGES"
                    :parallel true}
           :main {:fn #'command/deploy}}])
+
+(definvoke deploy-lein
+  "deploys all variables
+   
+   (deploy-lein '[xyz.zcaudate]
+            {:tag :all
+             :print {:item true :result false :summary false}})"
+  {:added "4.0"}
+  [:task {:template :deploy.linkage
+          :params {:title "DEPLOY USING LEIN"
+                   :parallel true}
+          :main {:fn #'lein/deploy-lein}}])
 
 
 (comment)

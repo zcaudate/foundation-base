@@ -18,7 +18,7 @@
 ^{:refer code.maven.package/coordinate->tree :added "3.0"}
 (fact "creates a coordinate tree entry"
 
-  (coordinate->tree '[foundation/std.lib "0.1.1"])
+  (coordinate->tree '[xyz.zcaudate/std.lib "0.1.1"])
   => [:dependency
       [:groupId "foundation"]
       [:artifactId "std.lib"]
@@ -47,11 +47,11 @@
   ^:hidden
 
   (->> (pom-xml '{:description "task execution of and standardization",
-                  :name foundation/std.task,
+                  :name xyz.zcaudate/std.task,
                   :artifact "std.task",
                   :group "foundation",
                   :version "3.0.1",
-                  :dependencies [[foundation/std.lib "3.0.1"]]})
+                  :dependencies [[xyz.zcaudate/std.lib "3.0.1"]]})
        (html/tree))
   => (contains
       [[:modelversion "4.0.0"]
@@ -59,7 +59,7 @@
        [:groupid "foundation"]
        [:artifactid "std.task"]
        [:version "3.0.1"]
-       [:name "foundation/std.task"]
+       [:name "xyz.zcaudate/std.task"]
        [:description "task execution of and standardization"]
        [:dependencies
         [:dependency 
@@ -73,12 +73,12 @@
   ^:hidden
   
   (project-clj-content '{:description "task execution of and standardization",
-                         :name foundation/std.task,
+                         :name xyz.zcaudate/std.task,
                          :artifact "std.task",
                          :group "foundation",
                          :version "3.0.1",
-                         :dependencies [[foundation/std.lib "3.0.1"]]})
-  => "(defproject foundation/std.task \"3.0.1\"\n  :description \"3.0.1\"\n  :url nil\n  :dependencies \n  [[foundation/std.lib \"3.0.1\"]])")
+                         :dependencies [[xyz.zcaudate/std.lib "3.0.1"]]})
+  => "(defproject xyz.zcaudate/std.task \"3.0.1\"\n  :description \"3.0.1\"\n  :url nil\n  :dependencies \n  [[xyz.zcaudate/std.lib \"3.0.1\"]])")
 
 ^{:refer code.maven.package/generate-manifest :added "3.0"}
 (fact "creates a manifest.mf file for the project"
@@ -101,8 +101,8 @@
                   [:artifactid "std.task"]
                   [:version "3.0.1"]]
                  :gaps-ok)
-       "META-INF/maven/foundation/std.task/pom.xml"
-       "META-INF/maven/foundation/std.task/pom.properties"]))
+       "META-INF/maven/xyz.zcaudate/std.task/pom.xml"
+       "META-INF/maven/xyz.zcaudate/std.task/pom.properties"]))
 
 ^{:refer code.maven.package/generate-project-clj :added "4.0"}
 (fact "generates the project.clj")
@@ -110,30 +110,30 @@
 ^{:refer code.maven.package/linkage :added "3.0"}
 (fact "returns the linkage for a given name"
 
-  (linkage 'foundation/std.lib nil -collected- nil)
-  => (contains {:name 'foundation/std.lib}))
+  (linkage 'xyz.zcaudate/std.lib nil -collected- nil)
+  => (contains {:name 'xyz.zcaudate/std.lib}))
 
 ^{:refer code.maven.package/package :added "3.0"}
 (fact "returns the packaged items for a given name"
 
-  (package 'foundation/std.image {} -collected- {:root "." :version "3.0.1"})
+  (package 'xyz.zcaudate/std.image {} -collected- {:root "." :version "3.0.1"})
   
-  => (contains {:package 'foundation/std.image,
+  => (contains {:package 'xyz.zcaudate/std.image,
                 :jar "foundation-std.image-3.0.1.jar",
                 :pom "foundation-std.image-3.0.1.pom.xml",
-                :interim (str (fs/file "./target/interim/foundation/std.image")),
+                :interim (str (fs/file "./target/interim/xyz.zcaudate/std.image")),
                 :files (contains ["MANIFEST.MF"
-                                  "META-INF/maven/foundation/std.image/pom.xml"
-                                  "META-INF/maven/foundation/std.image/pom.properties"])}))
+                                  "META-INF/maven/xyz.zcaudate/std.image/pom.xml"
+                                  "META-INF/maven/xyz.zcaudate/std.image/pom.properties"])}))
 
 ^{:refer code.maven.package/infer :added "3.0"}
 (fact "returns the infered items for a given name"
 
-  (infer 'foundation/std.image nil -collected-  {:root "." :version "3.0.1"})
-  => (contains {:package 'foundation/std.image,
+  (infer 'xyz.zcaudate/std.image nil -collected-  {:root "." :version "3.0.1"})
+  => (contains {:package 'xyz.zcaudate/std.image,
                 :jar "foundation-std.image-3.0.1.jar",
                 :pom "foundation-std.image-3.0.1.pom.xml",
-                :interim (str (fs/file "./target/interim/foundation/std.image"))}))
+                :interim (str (fs/file "./target/interim/xyz.zcaudate/std.image"))}))
 
 (comment
   (./code:import)

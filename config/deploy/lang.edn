@@ -1,13 +1,13 @@
 {:type       :maven
  :repository "clojars"
  :manifest   [;; library
-              foundation/std.lang
-              foundation/std.lib
-              foundation/std.json
-              foundation/std.html
-              foundation/std.make
-              foundation/xt.lang
-              foundation/js.core
-              foundation/js.blessed
-              foundation/js.react
-              foundation/js.react-native]}
+              xyz.zcaudate/std.lang
+              xyz.zcaudate/std.lib
+              xyz.zcaudate/std.json
+              xyz.zcaudate/std.html
+              xyz.zcaudate/std.make
+              xyz.zcaudate/xt.lang
+              xyz.zcaudate/js.core
+              xyz.zcaudate/js.blessed
+              xyz.zcaudate/js.react
+              xyz.zcaudate/js.react-native]}

@@ -48,9 +48,9 @@
 (defn read-packages
   "reads in a list of packages to 
    (-> (read-packages {:file \"config/packages.edn\"})
-       (get 'foundation/std.lib))
+       (get 'xyz.zcaudate/std.lib))
    => (contains {:description string?
-                 :name 'foundation/std.lib})"
+                 :name 'xyz.zcaudate/std.lib})"
   {:added "3.0"}
   ([]
    (read-packages {:root "."
@@ -81,7 +81,7 @@
 (defn collect-entries-single
   "collects all namespaces for given lookup and package
  
-   (collect-entries-single (get -packages- 'foundation/std.lib)
+   (collect-entries-single (get -packages- 'xyz.zcaudate/std.lib)
                            (:clj -lookups-))
    => coll?"
   {:added "3.0"}
@@ -113,7 +113,7 @@
   "collects all entries given packages and lookups
  
    (-> (collect-entries -packages- -lookups-)
-       (get-in '[foundation/std.lib :entries]))
+       (get-in '[xyz.zcaudate/std.lib :entries]))
    => coll?"
   {:added "3.0"}
   ([packages lookups]

@@ -1,113 +1,113 @@
-{foundation/code.dev
+{xyz.zcaudate/code.dev
  {:description "generate documentation from code"
   :include [[code.dev :complete]]}
  
- foundation/code.doc
+ xyz.zcaudate/code.doc
  {:description "generate documentation from code"
   :include [[code.doc :complete]]
   :bundle [{:path "resources" :include ["assets/code.doc"]}]
   :dependencies [markdown-clj/markdown-clj]}
  
- foundation/code.framework
+ xyz.zcaudate/code.framework
  {:description "source and test management"
   :include [[code.framework :complete]]}
  
- foundation/code.java
+ xyz.zcaudate/code.java
  {:description "source and test management"
   :include [[code.java :complete]]}
  
- foundation/code.link
+ xyz.zcaudate/code.link
  {:description "code packaging and distribution"
   :include [[code.link :complete]]}
  
- foundation/code.manage
+ xyz.zcaudate/code.manage
  {:description "source code utils and workflow"
   :include [[code.manage :complete]]
   :bundle [{:path "resources" :include ["assets/code.manage"]}]}
 
- foundation/code.maven
+ xyz.zcaudate/code.maven
  {:description "code packaging and distribution"
   :include [[code.maven :complete]]}
  
- foundation/code.project
+ xyz.zcaudate/code.project
  {:description "working with projects"
   :include [[code.project :complete]]}
   
- foundation/code.query
+ xyz.zcaudate/code.query
  {:description "query for code" 
   :include [[code.query :complete]]}
  
- foundation/code.test
+ xyz.zcaudate/code.test
  {:description "easy test framework"
   :include [[code.test :complete]]} 
- foundation/jvm
+ xyz.zcaudate/jvm
  {:description "jvm library"
   :include [[jvm :complete]]}
   
- foundation/js.blessed
+ xyz.zcaudate/js.blessed
  {:description "js blessed" 
   :include [[js.blessed :complete]]}
   
- foundation/js.cell
+ xyz.zcaudate/js.cell
  {:description "js blessed" 
   :include [[js.cell :complete]]}
   
- foundation/js.core
+ xyz.zcaudate/js.core
  {:description "js core libraries" 
   :include [[js.core :complete]
             [js.webpack :complete]]}
 
- foundation/js.lib.bitcoin
+ xyz.zcaudate/js.lib.bitcoin
  {:description "js bitcoin libraries" 
   :include [[js.lib.bitcoin :complete]]}
  
- foundation/js.lib.chalk
+ xyz.zcaudate/js.lib.chalk
  {:description "js util libraries" 
   :include [[js.lib.chalk :complete]]}
 
- foundation/js.lib.d3
+ xyz.zcaudate/js.lib.d3
  {:description "js util libraries" 
   :include [[js.lib.d3 :complete]]}
 
- foundation/js.lib.datetime
+ xyz.zcaudate/js.lib.datetime
  {:description "js util libraries" 
   :include [[js.lib.datetime :complete]]}
  
- foundation/js.lib.driver
+ xyz.zcaudate/js.lib.driver
  {:description "js util libraries" 
   :include [[js.lib.driver-postgres :complete]
             [js.lib.driver-redis :complete]
             [js.lib.driver-sqlite :complete]]}
 
- foundation/js.lib.ethereum
+ xyz.zcaudate/js.lib.ethereum
  {:description "js ethereum and solc" 
   :include [[js.lib.eth-bench :complete]
             [js.lib.eth-lib :complete]
             [js.lib.eth-solc :complete]]}
 
- foundation/js.lib.fastify
+ xyz.zcaudate/js.lib.fastify
  {:description "js ethereum and solc" 
   :include [[js.lib.fastify :complete]]}
 
- foundation/js.lib.lw-charts
+ xyz.zcaudate/js.lib.lw-charts
  {:description "js util libraries" 
   :include [[js.lib.lw-charts :complete]]}
 
- foundation/js.lib.osc
+ xyz.zcaudate/js.lib.osc
  {:description "open sound control" 
   :include [[js.lib.osc :complete]]}
 
- foundation/js.lib.p5
+ xyz.zcaudate/js.lib.p5
  {:description "processing library" 
   :include [[js.lib.p5 :complete]]}
  
- foundation/js.lib.rn
+ xyz.zcaudate/js.lib.rn
  {:description "js util libraries" 
   :include [[js.lib.rn-expo :base]
             [js.lib.rn-gesture :base]
             [js.lib.rn-paper :base]]}
   
- foundation/js.lib.three
+ xyz.zcaudate/js.lib.three
  {:description "js core libraries" 
   :include [[js.lib.three :complete]
             [js.lib.three-extra :complete]
@@ -118,20 +118,20 @@
             [js.lib.r3-postprocessing :complete]
             [js.lib.react-spring :complete]]}
 
- foundation/js.lib.ua-parser
+ xyz.zcaudate/js.lib.ua-parser
  {:description "user agent parser" 
   :include [[js.lib.ua-parser :complete]]}
 
- foundation/js.lib.valtio
+ xyz.zcaudate/js.lib.valtio
  {:description "js valtio libraries" 
   :include [[js.lib.valtio :complete]]}
  
- foundation/js.react
+ xyz.zcaudate/js.react
  {:description "js react libraries" 
   :include [[js.react :base]
             [js.react.helper-portal :base]]}
  
- foundation/js.react-ext
+ xyz.zcaudate/js.react-ext
  {:description "js core libraries" 
   :include [[js.react.ext-box :base]
             [js.react.ext-cell :base]
@@ -140,11 +140,11 @@
             [js.react.ext-route :base]
             [js.react.ext-view :base]]}
   
- foundation/js.react-native
+ xyz.zcaudate/js.react-native
  {:description "js react native ui libraries" 
   :include [[js.react-native :complete]]}
  
- foundation/lib.aether
+ xyz.zcaudate/lib.aether
  {:description "wrapper for org.eclipse.aether"
   :include [[lib.aether :complete]]
   :dependencies
@@ -159,15 +159,15 @@
    org.eclipse.aether/aether-transport-classpath
    org.apache.maven/maven-aether-provider]}
  
- foundation/lib.docker
+ xyz.zcaudate/lib.docker
  {:description "wrapper for docker" 
   :include [[lib.docker :complete]]}
   
- foundation/lib.jdbc
+ xyz.zcaudate/lib.jdbc
  {:description "jdbc interop"
   :include [[lib.jdbc :complete]]}
    
- foundation/lib.lucene
+ xyz.zcaudate/lib.lucene
  {:description "wrapper for lucene"
   :dependencies
   [org.apache.lucene/lucene-core
@@ -175,90 +175,90 @@
    org.apache.lucene/lucene-analyzers-common
    org.apache.lucene/lucene-suggest]}
 
- foundation/lib.minio
+ xyz.zcaudate/lib.minio
  {:description "wrapper for minio" 
   :include [[lib.minio :complete]]}
   
- foundation/lib.openpgp
+ xyz.zcaudate/lib.openpgp
  {:description "openpgp that makes sense"
   :include [[lib.openpgp :complete]]
   :dependencies
   [org.bouncycastle/bcprov-jdk15on org.bouncycastle/bcpg-jdk15on]}
   
- foundation/lib.oshi
+ xyz.zcaudate/lib.oshi
  {:description "wrapper for com.github.oshi"
   :include [[lib.oshi :complete]]
   :dependencies [com.github.oshi/oshi-core]}
 
- foundation/lib.postgres
+ xyz.zcaudate/lib.postgres
  {:description "wrapper for postgres" 
   :include [[lib.postgres :complete]]
   :dependencies
   [com.impossibl.pgjdbc-ng/pgjdbc-ng]}
 
- foundation/lib.redis
+ xyz.zcaudate/lib.redis
  {:description "wrapper for redis" 
   :include [[lib.redis :complete]]
   :bundle [{:path "resources" :include ["assets/lib.redis"]}]}
 
- foundation/lua.aws
+ xyz.zcaudate/lua.aws
  {:description "aws library" 
   :include [[lua.aws   :complete]]}
  
- foundation/lua.core
+ xyz.zcaudate/lua.core
  {:description "core lua library" 
   :include [[lua.core   :complete]]}
  
- foundation/lua.nginx
+ xyz.zcaudate/lua.nginx
  {:description "nginx library" 
   :include [[lua.nginx   :complete]]}
 
- foundation/lua.ext.plisio
+ xyz.zcaudate/lua.ext.plisio
  {:description "plisio library" 
   :include [[lua.ext.plisio   :complete]]}
 
- foundation/lua.ext.sochain
+ xyz.zcaudate/lua.ext.sochain
  {:description "sochain library" 
   :include [[lua.ext.sochain   :complete]]}
  
- foundation/lua.torch
+ xyz.zcaudate/lua.torch
  {:description "torch library" 
   :include [[lua.torch   :complete]]}
   
- foundation/math.infix
+ xyz.zcaudate/math.infix
  {:description "lisp infix notation"
   :include [[math.infix :complete]]}
   
- foundation/math.parse
+ xyz.zcaudate/math.parse
  {:description "math and statistics"
   :include [[math.parse :complete]]
   :dependencies [org.scijava/parsington]}
   
- foundation/math.stats
+ xyz.zcaudate/math.stats
  {:description "math and statistics"
   :include [[math.stats :complete]]
   :dependencies [net.sourceforge.jdistlib/jdistlib]}
  
- foundation/net.http
+ xyz.zcaudate/net.http
  {:description "network and http programming"
   :include [[net.http :complete]]}
   
- foundation/net.resp
+ xyz.zcaudate/net.resp
  {:description "rpc based on the redis protocol"
   :include [[net.resp :complete]]
   :bundle
   [{:path "target/classes" :include ["hara/net/resp"]}]}
 
- foundation/python
+ xyz.zcaudate/python
  {:description "python libs and helpers"
   :include [[python :complete]]} 
  
- foundation/rt.basic
+ xyz.zcaudate/rt.basic
  {:description "wrapper for nginx" 
   :include [[rt.basic :complete]]
   :dependencies [http-kit]}
  
- foundation/rt.graal
+ xyz.zcaudate/rt.graal
  {:description "wrapper for graal contexts"
   :include [[rt.graal :complete]]
   :dependencies [org.graalvm.sdk/graal-sdk
@@ -266,54 +266,54 @@
 		 org.graalvm.js/js-scriptengine
 		 commons-io/commons-io]}
  
- foundation/rt.nginx
+ xyz.zcaudate/rt.nginx
  {:description "wrapper for nginx" 
   :include [[rt.nginx :complete]]}
   
- foundation/rt.shell
+ xyz.zcaudate/rt.shell
  {:description "shell runtime"
   :include [[rt.shell :complete]]}
  
- foundation/rt.solidity
+ xyz.zcaudate/rt.solidity
  {:description "shell runtime"
   :include [[rt.solidity :complete]]}
  
- foundation/script.css
+ xyz.zcaudate/script.css
  {:description "read and write css using clojure"
   :include [[lib.css :complete]]
   :dependencies [garden/garden 
                  net.sourceforge.cssparser/cssparser]}
   
- foundation/script.graphql
+ xyz.zcaudate/script.graphql
  {:description "scripts for graphql"
   :include [[script.graphql :complete]]
   :dependencies [district0x/graphql-query]}
   
- foundation/script.regex
+ xyz.zcaudate/script.regex
  {:description "scripts for regex"
   :include [[script.regex :complete]]}
   
- foundation/script.sql
+ xyz.zcaudate/script.sql
  {:description "scripts for sql"
   :include [[script.sql :complete]]}
   
- foundation/script.toml
+ xyz.zcaudate/script.toml
  {:description "wrapper for toml4j"
   :include [[script.toml :complete]]
   :dependencies [org.yaml/snakeyaml]}
   
- foundation/script.yaml
+ xyz.zcaudate/script.yaml
  {:description "wrapper for scribe"
   :include [[script.yaml :complete]]
   :dependencies [org.yaml/snakeyaml]
   :bundle [{:path "target/classes" :include ["hara/lib/snakeyaml"]}]}
   
- foundation/std.block
+ xyz.zcaudate/std.block
  {:description "blocks for code unit representation"
   :include [[std.block :complete]]
   :dependencies [org.clojure/tools.reader]}
   
- foundation/std.config
+ xyz.zcaudate/std.config
  {:description "secure configuration"
   :include [[std.config :complete]]
   :optional
@@ -323,36 +323,36 @@
    std.config.ext.yaml]
   :dependencies [borkdude/edamame]}
  
- foundation/std.contract
+ xyz.zcaudate/std.contract
  {:description "contracts for functions"
   :dependencies [metosin/malli]
   :include [[std.contract :complete]]}
   
- foundation/std.dispatch
+ xyz.zcaudate/std.dispatch
  {:description "collection of dispatchers"
   :include [[std.dispatch :exclude [std.dispatch.types]]]}
  
- foundation/std.dom
+ xyz.zcaudate/std.dom
  {:description "foundation math library"
   :include [[std.dom :complete]]}
   
- foundation/std.html
+ xyz.zcaudate/std.html
  {:description "wrapper for org.jsoup"
   :include [[std.html :complete]]
   :dependencies [org.jsoup/jsoup]}
   
- foundation/std.image
+ xyz.zcaudate/std.image
  {:description "tools for image manipulation"
   :include [[std.image :complete]]
   :bundle
   [{:path "resources" :include ["assets/std.image"]}
    {:path "target/classes" :include ["hara/lib/image"]}]}
 
- foundation/std.fs
+ xyz.zcaudate/std.fs
  {:description "file library"
   :include [[std.fs :complete]]}
  
- foundation/std.json
+ xyz.zcaudate/std.json
  {:description "wrapper for com.fasterxml.jackson"
   :include [[std.json :complete]]
   
@@ -361,11 +361,11 @@
    com.fasterxml.jackson.datatype/jackson-datatype-jsr310]
   :bundle [{:path "target/classes" :include ["hara/lib/json"]}]}
  
- foundation/std.lang
+ xyz.zcaudate/std.lang
  {:description "working with other languages"
   :include [[std.lang :complete]]}
   
- foundation/std.lib
+ xyz.zcaudate/std.lib
  {:description "simple string methods for searching"
   :bundle [{:path "target/classes" 
             :include ["hara/lib/bin"
@@ -383,50 +383,50 @@
 
  
  
- foundation/std.log
+ xyz.zcaudate/std.log
  {:description "foundation logging library"
   :include [[std.log :complete]]}
 
- foundation/std.make
+ xyz.zcaudate/std.make
  {:description "make + tmux"
   :include [[std.make :complete]]}
  
- foundation/std.math
+ xyz.zcaudate/std.math
  {:description "foundation math library"
   :include [[std.math :complete]]
   :dependencies [org.apache.commons/commons-math3]}
  
- foundation/std.object
+ xyz.zcaudate/std.object
  {:description "foundation reflection library"
   :include [[std.object :complete]]}
  
- foundation/std.pretty
+ xyz.zcaudate/std.pretty
  {:description "pretty print library"
   :include [[std.pretty :complete]]
   :dependencies [org.clojure/core.rrb-vector]}
   
- foundation/std.scheduler
+ xyz.zcaudate/std.scheduler
  {:description "scheduled runner for timebound execution"
   :include [[std.scheduler :complete]]}
  
- foundation/std.text
+ xyz.zcaudate/std.text
  {:description "text diffing and search"
   :include [[std.text :complete]]
   :dependencies [com.googlecode.java-diff-utils/diffutils]}
  
- foundation/std.time
+ xyz.zcaudate/std.time
  {:description "time library"
   :include [[std.time :complete]]}
   
- foundation/std.timeseries
+ xyz.zcaudate/std.timeseries
  {:description "timeseries manipulation"
   :include [[std.timeseries :complete]]}
   
- foundation/xtalk.lang
+ xyz.zcaudate/xtalk.lang
  {:description "xtalk language"
   :include [[xt.lang     :complete]
             [xt.module   :complete]]}
  
- foundation/xtalk.system
+ xyz.zcaudate/xtalk.system
  {:description "xtalk language"
   :include [[xt.sys     :complete]]}}

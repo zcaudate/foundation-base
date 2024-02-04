@@ -105,7 +105,7 @@
  
    (install '[foundation] {:tag :all :print {:item true}})
    
-   (install 'foundation/std.lib
+   (install 'xyz.zcaudate/std.lib
             {:tag :all
              :print {:item true}})"
   {:added "3.0"}

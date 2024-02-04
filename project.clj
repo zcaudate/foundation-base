@@ -19,14 +19,14 @@
   [;; dev
    [org.clojure/clojure "1.11.1"]
    [javax.xml.bind/jaxb-api "2.4.0-b180830.0359"]
-   [com.sun.xml.bind/jaxb-core "4.0.2"]
-   [com.sun.xml.bind/jaxb-impl "4.0.2"]
+   [com.sun.xml.bind/jaxb-core "4.0.4"]
+   [com.sun.xml.bind/jaxb-impl "4.0.4"]
    
    ;; code.doc
-   [markdown-clj/markdown-clj "1.11.3"] ;; not mustache
+   [markdown-clj/markdown-clj "1.11.8"] ;; not mustache
 
    ;; code.manage
-   [org.clojure/tools.reader "1.3.6"]
+   [org.clojure/tools.reader "1.3.7"]
 
    ;; lib.aether
    [org.eclipse.aether/aether-api "1.1.0"]
@@ -51,10 +51,10 @@
    [overtone/at-at "1.2.0"]
    
    ;; lib.lucene
-   [org.apache.lucene/lucene-core "9.6.0"]
-   [org.apache.lucene/lucene-queryparser "9.6.0"]
+   [org.apache.lucene/lucene-core "9.9.2"]
+   [org.apache.lucene/lucene-queryparser "9.9.2"]
    [org.apache.lucene/lucene-analyzers-common "8.11.2"]
-   [org.apache.lucene/lucene-suggest "9.6.0"]
+   [org.apache.lucene/lucene-suggest "9.9.2"]
    
    ;; lib.openpgp
    [org.bouncycastle/bcprov-jdk15on "1.65"]
@@ -64,11 +64,11 @@
    [com.impossibl.pgjdbc-ng/pgjdbc-ng "0.8.9"]
    
    ;; lib.oshi
-   [com.github.oshi/oshi-core "6.4.3"]
-
+   [com.github.oshi/oshi-core "6.4.11"]
+   
    ;; math.stat
    [net.sourceforge.jdistlib/jdistlib "0.4.5"]
-
+   
    ;; math.infix
    [org.scijava/parsington "3.1.0"]
    
@@ -76,14 +76,14 @@
    [http-kit "2.6.0"]
 
    ;; rt.jep
-   [black.ninia/jep "4.1.1"]
+   [black.ninia/jep "4.2.0"]
    
    ;; rt.graal
-   [org.graalvm.sdk/graal-sdk "21.2.0"]
-   [org.graalvm.truffle/truffle-api "21.2.0"]
-   [org.graalvm.js/js "21.2.0"]
-   [org.graalvm.js/js-scriptengine "21.2.0"]
-   [commons-io/commons-io "2.13.0"]
+   [org.graalvm.sdk/graal-sdk "23.1.2"]
+   [org.graalvm.truffle/truffle-api "23.1.2"]
+   [org.graalvm.js/js-scriptengine "23.1.2"]
+   [org.graalvm.js/js "23.0.3"]
+   [commons-io/commons-io "2.15.1"]
    
    ;; std.pretty
    [org.clojure/core.rrb-vector "0.1.2"]
@@ -103,27 +103,27 @@
     ]
 
    ;; std.fs.archive
-   [org.apache.commons/commons-compress "1.23.0"]
+   [org.apache.commons/commons-compress "1.25.0"]
 
    ;; std.config
-   [borkdude/edamame "1.3.22"]
+   [borkdude/edamame "1.4.24"]
 
    ;; std.contract
    [metosin/malli "0.2.1"]
 
    ;; std.html
-   [org.jsoup/jsoup "1.16.1"]
+   [org.jsoup/jsoup "1.17.2"]
 
    ;; std.image
-   [com.twelvemonkeys.imageio/imageio-bmp  "3.9.4"]
-   [com.twelvemonkeys.imageio/imageio-tiff "3.9.4"]
-   [com.twelvemonkeys.imageio/imageio-icns "3.9.4"]
-   [com.twelvemonkeys.imageio/imageio-jpeg "3.9.4"]
+   [com.twelvemonkeys.imageio/imageio-bmp  "3.10.1"]
+   [com.twelvemonkeys.imageio/imageio-tiff "3.10.1"]
+   [com.twelvemonkeys.imageio/imageio-icns "3.10.1"]
+   [com.twelvemonkeys.imageio/imageio-jpeg "3.10.1"]
 
    ;; std.json
-   [com.fasterxml.jackson.core/jackson-core "2.15.2"]
-   [com.fasterxml.jackson.core/jackson-databind "2.15.2"]
-   [com.fasterxml.jackson.datatype/jackson-datatype-jsr310 "2.15.2"]
+   [com.fasterxml.jackson.core/jackson-core "2.16.1"]
+   [com.fasterxml.jackson.core/jackson-databind "2.16.1"]
+   [com.fasterxml.jackson.datatype/jackson-datatype-jsr310 "2.16.1"]
 
    ;; std.math
    [org.apache.commons/commons-math3 "3.6.1"]

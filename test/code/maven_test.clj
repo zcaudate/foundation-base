@@ -29,14 +29,14 @@
 
   (install '[foundation] {:tag :all :print {:item true}})
   
-  (install 'foundation/std.lib
+  (install 'xyz.zcaudate/std.lib
            {:tag :all
             :print {:item true}}))
 
 ^{:refer code.maven/install.secure :added "3.0" :adopt true}
 (fact "installs signed packages to the local `.m2` repository"
 
-  (install '[foundation/std.lib]
+  (install '[xyz.zcaudate/std.lib]
            {:tag :all
             :secure true :digest true}))
 

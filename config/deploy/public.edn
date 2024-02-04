@@ -1,7 +1,7 @@
 {:type       :maven
  :repository "clojars"
  :manifest   [;; library
-              foundation/std.lib
-              foundation/net.http
-              foundation/net.resp
+              xyz.zcaudate/std.lib
+              xyz.zcaudate/net.http
+              xyz.zcaudate/net.resp
               ]}

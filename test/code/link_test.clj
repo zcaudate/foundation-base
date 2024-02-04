@@ -21,9 +21,9 @@
 ^{:refer code.link/read-packages :added "3.0"}
 (fact "reads in a list of packages to "
   (-> (read-packages {:file "config/packages.edn"})
-      (get 'foundation/std.lib))
+      (get 'xyz.zcaudate/std.lib))
   => (contains {:description string?
-                :name 'foundation/std.lib}))
+                :name 'xyz.zcaudate/std.lib}))
 
 ^{:refer code.link/create-file-lookups :added "3.0"}
 (fact "creates file-lookups for clj, cljs and cljc files"
@@ -35,7 +35,7 @@
 ^{:refer code.link/collect-entries-single :added "3.0"}
 (fact "collects all namespaces for given lookup and package"
 
-  (collect-entries-single (get -packages- 'foundation/std.lib)
+  (collect-entries-single (get -packages- 'xyz.zcaudate/std.lib)
                           (:clj -lookups-))
   => coll?)
 
@@ -43,7 +43,7 @@
 (fact "collects all entries given packages and lookups"
 
   (-> (collect-entries -packages- -lookups-)
-      (get-in '[foundation/std.lib :entries]))
+      (get-in '[xyz.zcaudate/std.lib :entries]))
   => coll?)
 
 ^{:refer code.link/overlapped-entries-single :added "3.0"}
@@ -87,7 +87,7 @@
   (-> -packages-
       (collect-entries -lookups-)
       (collect-linkages -lookups-)
-      (get 'foundation/std.lib)
+      (get 'xyz.zcaudate/std.lib)
       (select-keys [:imports :exports]))
   => map?)
 
@@ -102,10 +102,10 @@
       (get-in ['foundation/code.test :internal])
       sort)
   => '(foundation/code.project
-       foundation/std.fs
-       foundation/std.lib
-       foundation/std.math
-       foundation/std.pretty)
+       xyz.zcaudate/std.fs
+       xyz.zcaudate/std.lib
+       xyz.zcaudate/std.math
+       xyz.zcaudate/std.pretty)
 
   (-> -packages-
       (collect-entries -lookups-)
@@ -122,7 +122,7 @@
       (collect-linkages -lookups-)
       (collect-internal-deps)
       (collect-transfers -lookups- (project/project))
-      (get-in '[foundation/std.lib :files])
+      (get-in '[xyz.zcaudate/std.lib :files])
       sort)
   => coll?)
 
@@ -130,7 +130,7 @@
 (fact "cellects all information given lookups and project"
   ^:hidden
   (-> (collect -packages- -lookups- (project/project))
-      (get 'foundation/std.lib)
+      (get 'xyz.zcaudate/std.lib)
       ((comp sort keys)))
   => [:bundle :dependencies :description :entries :exports :files :imports :include :internal :name])
 

@@ -32,7 +32,20 @@
 (defn encode-form-params
   [params]
   (->> params
-       (map (fn [[k v]] (str (url-encode (h/strn k)) "=" (url-encode (h/strn v)))))
+       (keep (fn [[k v]]
+               (cond (nil? v)
+                     nil
+
+                     (vector? v)
+                     (->> (map-indexed
+                           (fn [i x]
+                             (str (url-encode (h/strn k)) "[" (+ i 1) "]" "=" (url-encode (h/strn x))))
+                           v)
+                          (interpose "&")
+                          (apply str))
+                     
+                     :else
+                     (str (url-encode (h/strn k)) "=" (url-encode (h/strn v))))))
        (interpose "&")
        (apply str)))
 

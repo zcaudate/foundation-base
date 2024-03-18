@@ -189,14 +189,30 @@
   "transforms a interface call"
   {:added "4.0"}
   [[_ sym body] grammar mopts]
-  (let [fns (->> (partition 2 body)
+  (let [fn-stct (fn [sym args]
+                  (str "struct " sym " {\n"
+                       (str/indent (str/join "\n"
+                                             (map (fn [arr]
+                                                    (str (str/join " " (map h/strn arr))
+                                                         ";"))
+                                                  args))
+                                   2)
+                       "\n}"))
+        fn-enum (fn [sym args]
+                  (str "enum " sym " { " (str/join ", " (map h/strn args)) " }"))
+        fn-func (fn [sym args]
+                  (let [{:static/keys [returns]} (meta sym)
+                        [typestr preamble _] (sol-fn-elements sym args body grammar mopts)]
+                    (str/join " " (filter not-empty ["function" preamble typestr
+                                                     (str (if returns
+                                                            (sol-emit-returns [nil returns] grammar mopts))
+                                                          ";")]))))
+        fns (->> (partition 2 body)
                  (map (fn [[sym args]]
-                        (let [{:static/keys [returns]} (meta sym)
-                              [typestr preamble _] (sol-fn-elements sym args body grammar mopts)]
-                          (str/join " " (filter not-empty ["function" preamble typestr
-                                                           (str (if returns
-                                                                  (sol-emit-returns [nil returns] grammar mopts))
-                                                                ";")])))))
+                        (case (:type (meta sym))
+                          :struct (fn-stct sym args)
+                          :enum   (fn-enum sym args)
+                          (fn-func sym args))))
                  (str/join "\n"))]
     (str "interface " sym " {\n"
          (str/indent fns 2)

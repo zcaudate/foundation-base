@@ -193,7 +193,7 @@
   [ns lang code]
   (h/p:rt-invoke-ptr
    (ut/lang-rt ns lang)
-   (ptr :postgres {:module ns})
+   (ptr lang {:module ns})
    code))
 
 (defn force-reload

@@ -1,4 +1,4 @@
-(defproject xyz.zcaudate/foundation-base "4.0.1"
+(defproject xyz.zcaudate/foundation-base "4.0.2"
   :description "base libraries for foundation"
   :url "https://www.github.com/zcaudate-xyz/foundation-base"
   :license  {:name "MIT License"
@@ -111,7 +111,7 @@
    [borkdude/edamame "1.4.24"]
 
    ;; std.contract
-   [metosin/malli "0.2.1"]
+   [metosin/malli "0.14.0"]
 
    ;; std.html
    [org.jsoup/jsoup "1.17.2"]
@@ -145,7 +145,7 @@
   :profiles {:dev {:plugins [[lein-ancient "0.6.15"]
                              [lein-exec "0.3.7"]
                              [lein-cljfmt "0.7.0"]
-                             [cider/cider-nrepl "0.25.11"]]}
+                             [cider/cider-nrepl "0.45.0"]]}
              :repl {:injections [(try (require 'jvm.tool)
                                       (require '[std.lib :as h])
                                       (catch Throwable t (.printStackTrace t)))]}}

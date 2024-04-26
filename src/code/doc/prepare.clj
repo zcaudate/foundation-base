@@ -11,7 +11,8 @@
             [code.doc.link.stencil :as link.stencil]
             [code.doc.link.tag :as link.tag]
             [code.doc.link.test :as link.test]
-            [code.doc.parse :as parse]))
+            [code.doc.parse :as parse]
+            [std.lib :as h]))
 
 (defn prepare
   "processes a single meta to generate an interim structure
@@ -44,3 +45,18 @@
          (link.anchor/link-anchors-lu name)
          (link.anchor/link-anchors name)
          (link.stencil/link-stencil name)))))
+
+(comment
+  (def +output+
+    (prepare 
+     'core/std-lib-foundation
+     {:print {:item true, :result true, :summary true},
+      :return :summary,
+      :title "PUBLISHING HTML FILES",
+      :parallel true,
+      :write true}
+     +lookup+
+     +project+))
+  
+  (keys +output+)
+  (:references +output+))

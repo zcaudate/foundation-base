@@ -34,7 +34,6 @@
     (sequential? param) (str/join "," param)
     :else (str param)))
 
-
 (declare normalize-param)
 
 (defn normalize-array-param

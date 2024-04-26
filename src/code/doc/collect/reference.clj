@@ -1,5 +1,6 @@
 (ns code.doc.collect.reference
-  (:require [code.framework :as code.base]
+  (:require [code.framework :as code.framework]
+            [code.framework.common :as common]
             [std.fs :as fs]
             [std.lib :as h]))
 
@@ -39,13 +40,14 @@
          sources   (concat missing imported)
          tests     (map #(symbol (str % "-test")) sources)]
      (reduce (fn [references [tag ns]]
-               (if-let [file (lookup ns)]
-                 (->> (code.base/analyse-file [tag file])
-                      (h/merge-nested references))
-                 references))
+               (binding [common/*test-full* true]
+                 (if-let [file (lookup ns)]
+                   (->> (code.framework/analyse-file [tag file])
+                        (h/merge-nested references))
+                   references)))
              references
              (concat  (map vector (repeat :source) sources)
-                      (map vector (repeat :test) sources))))))
+                      (map vector (repeat :test)   tests))))))
 
 (defn collect-references
   "collects all `:reference` tags of within an article

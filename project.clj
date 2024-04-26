@@ -149,7 +149,7 @@
              :repl {:injections [(try (require 'jvm.tool)
                                       (require '[std.lib :as h])
                                       (catch Throwable t (.printStackTrace t)))]}}
-  :resource-paths    ["resources" "src-build" "test-data" "test-code"]
+  :resource-paths    ["resources" "src-build" "src-doc" "test-data" "test-code"]
   :java-source-paths ["src-java" "test-java"]
   :java-output-path  "target/classes"
   :repl-options {:host "0.0.0.0" :port 51311}

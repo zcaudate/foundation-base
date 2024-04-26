@@ -1,0 +1,272 @@
+{:theme    "bolton"
+ :output   "public"
+ :pages    {index      
+            {:base  "home.html"
+             :input "test/documentation/hara/home.clj"
+             :title "hara"
+             :subtitle "patterns and blocks"}
+
+             hara-benchmark
+             {:input "test/documentation/hara/hara_benchmark.clj"
+              :title "benchmark"
+              :subtitle "measurement and profile"}
+
+             hara-code
+             {:input "test/documentation/hara/hara_code.clj"
+              :title "code"
+              :subtitle "code manipulation"}
+
+            hara-code-block
+            {:input "test/documentation/hara/hara_code_block.clj"
+             :title "code.block"
+             :subtitle "code representation"}
+
+            hara-code-navigate
+            {:input "test/documentation/hara/hara_code_navigate.clj"
+             :title "code.navigate"
+             :subtitle "code navigate"}
+
+            hara-code-query
+            {:input "test/documentation/hara/hara_code_query.clj"
+             :title "code.query"
+             :subtitle "code query and traversal"}
+
+            hara-config
+            {:input "test/documentation/hara/hara_config.clj"
+             :title "config"
+             :subtitle "secured configuration"}
+
+            hara-core
+            {:input "test/documentation/hara/hara_core.clj"
+             :title "core"
+             :subtitle "general functions"}
+
+            hara-core-component
+            {:input "test/documentation/hara/hara_core_component.clj"
+             :title "core.component"
+             :subtitle "dependency injection"}
+
+            hara-core-version
+            {:input "test/documentation/hara/hara_core_version.clj"
+             :title "core.version"
+             :subtitle "semantic versioning"}
+
+            hara-core-zip
+            {:input "test/documentation/hara/hara_core_zip.clj"
+             :title "core.zip"
+             :subtitle "functional zipper"}
+
+            hara-data
+            {:input "test/documentation/hara/hara_data.clj"
+             :title "data"
+             :subtitle "generic data methods"}
+
+            hara-deploy
+            {:input "test/documentation/hara/hara_deploy.clj"
+             :title "deploy"
+             :subtitle "code deployment"}
+
+            hara-event
+            {:input "test/documentation/hara/hara_event.clj"
+             :title "event"
+             :subtitle "conditional restarts"}
+
+            hara-function
+            {:input "test/documentation/hara/hara_function.clj"
+             :title "function"
+             :subtitle "methods for execution"}
+
+            hara-function-procedure
+            {:input "test/documentation/hara/hara_function_procedure.clj"
+             :title "function.procedure"
+             :subtitle "self aware executives"}
+
+            hara-function-task
+            {:input "test/documentation/hara/hara_function_task.clj"
+             :title "function.task"
+             :subtitle "executing bulk tasks"}
+
+            hara-image
+            {:input "test/documentation/hara/hara_image.clj"
+             :title "image"
+             :subtitle "image manipulation"}
+
+            hara-io-archive
+            {:input "test/documentation/hara/hara_io_archive.clj"
+             :title "io.archive"
+             :subtitle "zipped file access"}
+
+            hara-io-binary
+            {:input "test/documentation/hara/hara_io_binary.clj"
+             :title "io.binary"
+             :subtitle "binary format coercion"}
+
+            hara-io-file
+            {:input "test/documentation/hara/hara_io_file.clj"
+             :title "io.file"
+             :subtitle "file and directory access"}
+
+            hara-io-project
+            {:input "test/documentation/hara/hara_io_project.clj"
+             :title "io.project"
+             :subtitle "project configuration support"}
+            
+            hara-io-scheduler
+            {:input "test/documentation/hara/hara_io_scheduler.clj"
+             :title "io.scheduler"
+             :subtitle "task scheduling and simulation"}
+            
+            hara-lib-aether
+            {:input "test/documentation/hara/hara_lib_aether.clj"
+             :title "lib.aether"
+             :subtitle "interface for org.eclipse.aether"}
+            
+            hara-lib-datomic
+            {:input "test/documentation/hara/hara_lib_datomic.clj"
+             :title "lib.datomic"
+             :subtitle "interface for com.datomic"}
+            
+            hara-lib-graphstream
+            {:input "test/documentation/hara/hara_lib_graphstream.clj"
+             :title "lib.graphstream"
+             :subtitle "interface for org.graphstream"}
+            
+            hara-lib-jackson
+            {:input "test/documentation/hara/hara_lib_jackson.clj"
+             :title "lib.jackson"
+             :subtitle "interface for com.fasterxml.jackson"}
+            
+            hara-lib-jgit
+            {:input "test/documentation/hara/hara_lib_jgit.clj"
+             :title "lib.jgit"
+             :subtitle "interface for org.eclipse.jgit"}
+            
+            hara-lib-jsoup
+            {:input "test/documentation/hara/hara_lib_jsoup.clj"
+             :title "lib.jsoup"
+             :subtitle "interface for org.jsoup"}
+            
+            hara-lib-opencl
+            {:input "test/documentation/hara/hara_lib_opencl.clj"
+             :title "lib.opencl"
+             :subtitle "interface for org.jocl"}
+            
+            hara-lib-oshi
+            {:input "test/documentation/hara/hara_lib_oshi.clj"
+             :title "lib.oshi"
+             :subtitle "interface for com.github.oshi"}
+            
+            hara-lib-worldwind
+            {:input "test/documentation/hara/hara_lib_worldwind.clj"
+             :title "lib.worldwind"
+             :subtitle "interface for org.nasa.worldwind"}
+            
+            hara-lib-rabbitmq
+            {:input "test/documentation/hara/hara_lib_rabbitmq.clj"
+             :title "lib.rabbitmq"
+             :subtitle "interface for rabbitmq"}
+
+            hara-math
+            {:input "test/documentation/hara/hara_math.clj"
+             :title "math"
+             :subtitle "basic maths and statistics"}
+
+            hara-math-variant
+            {:input "test/documentation/hara/hara_math_variant.clj"
+             :title "math.variant"
+             :subtitle "variant logic package"}
+            
+            hara-module
+            {:input "test/documentation/hara/hara_module.clj"
+             :title "module"
+             :subtitle "code functionality management"}
+            
+            hara-module-deps
+            {:input "test/documentation/hara/hara_module_deps.clj"
+             :title "module.deps"
+             :subtitle "dependency management"}
+            
+            hara-module-namespace
+            {:input "test/documentation/hara/hara_module_namespace.clj"
+             :title "module.namespace"
+             :subtitle "namespace management"}
+
+            hara-object
+            {:input "test/documentation/hara/hara_object.clj"
+             :title "object"
+             :subtitle "object to data"}
+            
+            hara-platform
+            {:input "test/documentation/hara/hara_platform.clj"
+             :title "platform"
+             :subtitle "platform building blocks"}
+
+            hara-print
+            {:input "test/documentation/hara/hara_print.clj"
+             :title "print"
+             :subtitle "print primitives"}
+
+            hara-print-graphic
+            {:input "test/documentation/hara/hara_print_graphic.clj"
+             :title "print.graphic"
+             :subtitle "print visual primitives"}
+
+            hara-publish
+            {:input "test/documentation/hara/hara_publish.clj"
+             :title "publish"
+             :subtitle "documentation generation"}
+
+            hara-security
+            {:input "test/documentation/hara/hara_security.clj"
+             :title "security"
+             :subtitle "encryption and JCA"}
+
+            hara-security-openpgp
+            {:input "test/documentation/hara/hara_security_openpgp.clj"
+             :title "security.openpgp"
+             :subtitle "interface to bouncycastle openpgp"}
+
+            hara-state
+            {:input "test/documentation/hara/hara_state.clj"
+             :title "state"
+             :subtitle "unified state"}
+
+            hara-state-ova
+            {:input "test/documentation/hara/hara_state_ova.clj"
+             :title "state.ova"
+             :subtitle "mutable, observable array"}
+
+            hara-state-concurrent
+            {:input "test/documentation/hara/hara_state_concurrent.clj"
+             :title "state.concurrent"
+             :subtitle "concurrent datastructures"}
+
+            hara-string
+            {:input "test/documentation/hara/hara_string.clj"
+             :title "string"
+             :subtitle "string manipulation"}
+
+            hara-string-text
+            {:input "test/documentation/hara/hara_string_text.clj"
+             :title "string.text"
+             :subtitle "text manipulation"}
+
+            hara-test
+            {:input "test/documentation/hara/hara_test.clj"
+             :title "test"
+             :subtitle "forms and runner"}
+
+            hara-time
+            {:input "test/documentation/hara/hara_time.clj"
+             :title "time"
+             :subtitle "unified time"}
+
+            hara-tool-monitor
+            {:input "test/documentation/hara/hara_tool_monitor.clj"
+             :title "tool.monitor"
+             :subtitle "live object monitor"}
+
+            hara-watch
+            {:input "test/documentation/hara/hara_watch.clj"
+             :title "watch"
+             :subtitle "generalised observer on state"}}}

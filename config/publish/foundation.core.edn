@@ -1,0 +1,15 @@
+{:theme    "bolton"
+ :output   "public"
+ :pages    {index      
+            {:base  "home.html"
+             :input "src-doc/documentation/main_index.clj"
+             :title "foundation"
+             :subtitle "core libs"}
+            std-lib-foundation      
+            {:input "src-doc/documentation/std_lib_foundation.clj"
+             :title "std.lib.foundation"
+             :subtitle "basic functionality for foundation"}
+            code-doc      
+            {:input "src-doc/documentation/code_doc.clj"
+             :title "code.doc"
+             :subtitle "tools for documentation"}}}

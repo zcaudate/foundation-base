@@ -75,6 +75,7 @@
                     (.getLong)
                     (Long/toString Character/MAX_RADIX))))
 
+
 (def ^{:arglists '[[tag]]}
   sid-tag
   (memoize (fn [tag]
@@ -210,6 +211,8 @@
          (str obj))))
 
 (defn concatv
+  "concats two seqs as vector"
+  {:added "4.0"}
   [& args]
   (vec (apply concat args)))
 
@@ -473,6 +476,8 @@
   `(ex-data (try ~@body (catch Throwable ~'t ~'t))))
 
 (defn with-retry-fn
+  "with a retry function"
+  {:added "4.0"}
   [limit sleep f]
   (loop [limit limit
          cause nil]
@@ -487,6 +492,8 @@
                 (recur (- limit 1) ex))))))
 
 (defmacro with-retry
+  "with retry macro"
+  {:added "4.0"}
   [[limit sleep] & body]
   (list `with-retry-fn limit sleep (apply list 'fn [] body)))
 

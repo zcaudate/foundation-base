@@ -3,7 +3,7 @@
   (:require [std.lang.base.emit-special :refer :all]
             [std.lang.base.emit-common :as common]
             [std.lang.base.emit-helper :as helper]
-            [std.lang.base.emit-prep-test :as prep]
+            [std.lang.base.emit-prep-lua-test :as prep]
             [std.lang.model.spec-lua :as lua]
             [std.lang.base.library :as lib]
             [std.lang.base.library-snapshot :as snap]

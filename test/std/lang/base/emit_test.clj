@@ -4,7 +4,7 @@
             [std.lang.base.emit-common :as common]
             [std.lang.base.emit-helper :as helper]
             [std.lang.base.grammar :as grammar]
-            [std.lang.base.emit-prep-test :as prep]
+            [std.lang.base.emit-prep-lua-test :as prep]
             [std.lang.base.book-entry :as entry]
             [std.lib :as h]))
 

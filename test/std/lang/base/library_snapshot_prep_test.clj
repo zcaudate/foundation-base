@@ -1,7 +1,7 @@
 (ns std.lang.base.library-snapshot-prep-test
   (:use code.test)
   (:require [std.lang.base.library-snapshot :as snap]
-            [std.lang.base.emit-prep-test :as prep]
+            [std.lang.base.emit-prep-lua-test :as prep]
             [std.lang.base.book :as b]
             [std.lang.base.grammar :as grammar]
             [std.lang.base.emit-common :as common]

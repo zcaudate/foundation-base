@@ -1,4 +1,4 @@
-(ns std.lang.base.emit-prep-test
+(ns std.lang.base.emit-prep-lua-test
   (:use code.test)
   (:require [std.lang.base.book :as b]
             [std.lang.base.grammar :as grammar]

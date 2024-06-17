@@ -4,7 +4,7 @@
 
 (l/script :solidity
   {:require [[rt.solidity :as s]]
-   :static {:contract ["ExampleSample"]}})
+   :static  {:contract ["ExampleSample"]}})
 
 (definterface.sol IERC20
   [^{:- [:external]

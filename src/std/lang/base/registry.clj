@@ -21,8 +21,8 @@
          [:lua    :nginx]              'rt.nginx
          [:lua    :nginx.instance]     'rt.nginx
          [:lua    :redis]              'rt.redis
-         [:lua    :remote-port]      'rt.basic.impl.remote-lua
-         [:lua    :remote-ws]          'rt.basic.impl.remote-lua
+         [:lua    :remote-port]        'rt.basic.impl.process-lua
+         [:lua    :remote-ws]          'rt.basic.impl.process-lua
          
          [:js     :oneshot]            'rt.basic.impl.process-js
          [:js     :basic]              'rt.basic.impl.process-js
@@ -31,8 +31,8 @@
          [:js     :javafx]             'rt.javafx
          [:js     :graal]              'rt.graal
          [:js     :browser]            'rt.browser
-         [:js     :remote-port]      'rt.basic.impl.remote-js
-         [:js     :remote-ws]          'rt.basic.impl.remote-js
+         [:js     :remote-port]        'rt.basic.impl.process-js
+         [:js     :remote-ws]          'rt.basic.impl.process-js
          
          [:python :oneshot]            'rt.basic.impl.process-python
          [:python :basic]              'rt.basic.impl.process-python
@@ -40,11 +40,13 @@
          [:python :websocket]          'rt.basic.impl.process-python
          [:python :graal]              'rt.graal
          [:python :jep]                'rt.jep
-         [:python :remote-port]      'rt.basic.impl.process-python
+         [:python :remote-port]        'rt.basic.impl.process-python
          [:python :remote-ws]          'rt.basic.impl.process-python
-
+         
          [:r      :oneshot]            'rt.basic.impl.process-r
          [:r      :basic]              'rt.basic.impl.process-r
+
+         [:rust   :twostep]            'rt.basic.impl.process-rust
          
          [:c      :jocl]               'rt.jocl
          [:c      :oneshot]            'rt.basic.impl.process-c

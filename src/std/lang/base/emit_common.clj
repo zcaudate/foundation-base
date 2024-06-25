@@ -718,6 +718,13 @@
                sym)]
      (str raw " " (emit-invoke raw (cons sym more) grammar mopts)))))
 
+(defn emit-class-static-invoke
+  "invokes a constructor"
+  {:added "3.0"}
+  ([raw [sym new & args] grammar mopts]
+   (let [{:keys [static]} (helper/get-options grammar [:default :invoke])]
+     (emit-invoke-raw (str sym (or raw static) new) args grammar mopts))))
+
 ;;
 ;; INDEX
 ;;
@@ -799,6 +806,7 @@
        :assign        (emit-assign raw args grammar mopts)
        :invoke        (emit-invoke-raw raw args grammar mopts)
        :new           (emit-new raw args grammar mopts)
+       :static-invoke (emit-class-static-invoke raw args grammar mopts)
        :index         (emit-index raw args grammar mopts)
        :return        (emit-return raw args grammar mopts)
        :macro         (emit-macro key form grammar mopts)

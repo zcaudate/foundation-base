@@ -97,8 +97,9 @@
                                              template [:template (h/prewalk-replace {template symbol} value)]
                                              inline   [:inline   (emit-def-assign-inline symbol
                                                                                          value
-                                                                                         grammar mopts)])]
-                            (if custom
+                                                                                         grammar
+                                                                                         mopts)])]
+                           (if custom
                               (common/*emit-fn* (second custom) grammar mopts)
                               (fn/emit-input-default arg assign grammar mopts))))
                        args)
@@ -111,39 +112,7 @@
 ;;
 
 (defn test-assign-loop
-  "emit do
- 
-   (assign/test-assign-loop '(var a 1)
-                            +grammar+
-                            {})
-   => \"a = 1\"
- 
-   (assign/test-assign-loop '(var :int [] a)
-                            +grammar+
-                            {})
-   => \"int a[]\"
- 
-   (assign/test-assign-loop '(var :int :* a)
-                            +grammar+
-                            {})
-   => \"int * a\"
-   
-   
-   (assign/test-assign-loop '(var :const a (+ b1 2))
-                            +grammar+
-                            {})
-   => \"const a = (+ b1 2)\"
-   
-   
-   (assign/test-assign-emit '(var a (+ 1 2))
-                            +grammar+
-                            {})
-   => \"a = 1 + 2\"
-   
-   (assign/test-assign-emit '(var :const a (+ b1 2))
-                            +grammar+
-                            {})
-   => \"const a = b1 + 2\""
+  "emit do"
   {:added "4.0" :adopt true}
   [form grammar mopts]
   (common/emit-common-loop form

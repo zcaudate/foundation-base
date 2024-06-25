@@ -21,7 +21,22 @@
                               +grammar+)
       first
       (emit-input-default "=" {} {}))
-  => "int i = 9")
+  => "int i = 9"
+
+  (emit-input-default
+   '{:modifiers [:int], :symbol i, :assign true, :force true, :value 9}
+   "=" {} {})
+  => "int i = 9"
+  
+  (emit-input-default
+   '{:modifiers [:const :int], :symbol j, :assign true, :force true, :value 10}
+   "=" {} {})
+  => "const int j = 10"
+  
+  (emit-input-default
+   '{:modifiers [:const :int]}
+   "=" {} {})
+  => "const int")
 
 ^{:refer std.lang.base.emit-fn/emit-hint-type :added "4.0"}
 (fact "emits the return type")

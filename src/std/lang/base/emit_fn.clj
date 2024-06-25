@@ -9,35 +9,51 @@
 (defn emit-input-default
   "create input arg strings"
   {:added "3.0"}
-  ([{:keys [force modifiers symbol value] :as arg} assign grammar mopts]
+  ([{:keys [force modifiers type symbol value] :as arg} assign grammar mopts]
    (let [{:keys [start end]} (helper/get-options grammar [:default :index])
-         {:keys [reversed hint type]}  (helper/get-options grammar [:default :invoke])
+         {:keys [reversed hint]
+          :as invoke}  (helper/get-options grammar [:default :invoke])
          {vmod true kmod false} (if (:vector-last (helper/get-options grammar [:default :modifier]))
                                   (group-by vector? modifiers)
                                   {false modifiers})
-         modarr (mapv (fn [mod]
-                        (if (keyword? mod)
-                          (cond-> (name mod)
-                            (:uppercase type) (str/upper-case))
-                          (common/*emit-fn* mod grammar mopts)))
-                      kmod)
-         symstr (if symbol (common/*emit-fn* symbol grammar mopts))
-         symstr (if (and (not-empty modarr)
+         {:keys [uppercase]} (:type invoke)
+         arr-fn (fn [mod]
+                  (if (keyword? mod)
+                    (cond-> (name mod)
+                      uppercase (str/upper-case))
+                    (common/*emit-fn* mod grammar mopts)))
+         tmod   (if type
+                  (vec type)
+                  [])
+         
+         tmodarr (mapv arr-fn tmod)
+         kmodarr (mapv arr-fn kmod)
+         mod-rev?   (and (or (empty tmodarr)
+                             (not-empty kmodarr))
                          reversed)
-                  (str symstr hint)
-                  symstr)
-         prearr (if reversed
-                  (cons symstr modarr)
-                  (conj modarr symstr))
-         prestr (str/join " " (filter identity prearr))]
-     (str prestr
+         mixarr    (concat (if (or (not mod-rev?)
+                                   (not-empty tmodarr))
+                             kmodarr)
+                           [(str (if symbol
+                                   (common/*emit-fn* symbol grammar mopts))
+                                 (if mod-rev? hint))]
+                           (if mod-rev?
+                             (or (not-empty tmodarr)
+                                 kmodarr)))
+         mixstr (str/join " "
+                          (filter (fn [x]
+                                    (if (seq x)
+                                      (not-empty x)
+                                      x)) mixarr))]
+     (str mixstr
           (if (not-empty vmod)
-            (str/join (map (fn [arr]
-                             (str start
-                                  (if-let [n (first arr)]
-                                    (common/*emit-fn* n grammar mopts))
-                                  end))
-                           vmod)))
+            (str/join
+             (map (fn [arr]
+                    (str start
+                         (if-let [n (first arr)]
+                           (common/*emit-fn* n grammar mopts))
+                         end))
+                  vmod)))
           (if (or force value)
             (str " " assign " " (common/*emit-fn* value grammar mopts)))))))
 

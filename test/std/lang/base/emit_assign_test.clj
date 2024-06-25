@@ -38,7 +38,11 @@
   (snap/add-book prep/+snap+ +book-x+))
 
 ^{:refer std.lang.base.emit-assign/emit-def-assign-inline :added "4.0"}
-(fact "assigns an inline form")
+(fact "assigns an inline form"
+  ^:hidden
+  
+  (emit-def-assign-inline
+   'j '<TODO> +grammar+ {}))
 
 ^{:refer std.lang.base.emit-assign/emit-def-assign :added "3.0"}
 (fact "emits a declare expression"
@@ -49,11 +53,19 @@
                    '(var :int i := 9, :const :int j := 10)
                    +grammar+
                 {})
-  => "var int i = 9, const int j = 10")
+  => "var int i = 9, const int j = 10"
+
+  (emit-def-assign :def-assign
+                   {:raw "var"}
+                   '(var (:int i) 9)
+                   +grammar+
+                   {})
+  => "var int i = 9")
 
 ^{:refer std.lang.base.emit-assign/test-assign-loop :adopt true :added "4.0"}
 (fact "emit do"
-
+  ^:hidden
+  
   (assign/test-assign-loop '(var a 1)
                            +grammar+
                            {})
@@ -68,6 +80,11 @@
                            +grammar+
                            {})
   => "int * a"
+
+  (assign/test-assign-loop '(var (:int a) 9)
+                           +grammar+
+                           {})
+  => "int a = 9"
   
   
   (assign/test-assign-loop '(var :const a (+ b1 2))

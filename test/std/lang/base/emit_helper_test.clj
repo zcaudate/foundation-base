@@ -91,7 +91,15 @@
         :symbol j,
         :assign true,
         :force true,
-        :value 10}])
+        :value 10}]
+
+  (emit-typed-args '((:int a) 9)
+                   +grammar+)
+  => '[{:modifiers [], :symbol a, :type (:int), :value 9}]
+
+  (emit-typed-args '(:mutable (:int a) 9)
+                   +grammar+)
+  => '[{:modifiers [:mutable], :symbol a, :type (:int), :value 9}])
 
 ^{:refer std.lang.base.emit-helper/emit-symbol-full :added "4.0"}
 (fact "emits a full symbol"
@@ -99,7 +107,6 @@
 
   (emit-symbol-full 'hello 'ns +grammar+)
   => "ns____hello")
-
 
 ^{:refer std.lang.base.emit-helper/emit-type-record :added "4.0"}
 (fact "formats to standard"

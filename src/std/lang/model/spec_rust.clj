@@ -7,10 +7,71 @@
             [std.string :as str]
             [std.lib :as h]))
 
+(defn rst-defenum
+  "transforms a defenum call"
+  {:added "4.0"}
+  [[_ sym values]]
+  (list :% (list :- "enum" sym
+                 (list :- "{")
+                 (list 'quote (vec values))
+                 (list :- "}"))))
+
+(defn rst-deftrait
+  "transforms a defenum call"
+  {:added "4.0"}
+  [[_ sym values]]
+  (list :% (list :- "trait" sym
+                 (list :- "{")
+                 (list 'quote (vec values))
+                 (list :- "}"))))
+
+(defn rst-defstruct
+  "transforms a defstruct call"
+  {:added "4.0"}
+  [[_ sym & args]]
+  (let [vars (map #(apply list 'var %) args)]
+    (cond (empty? args)
+          (list :% (list :- "struct" sym ";"))
+
+          (and (vector? args)
+               (vector? (first args)))
+          (list :% (list :- "struct" sym) (list :- "{\n")
+                (list \|
+                      (map (fn [[type name]]
+                             (list :- (str name ":" type ",\n")))
+                           args))
+                (list :- "}"))
+          
+          :else
+          (list :% (list :- "struct" sym) (list :- "[")
+                (list \| (apply list 'do vars))
+                (list :- "\n}")))))
+
+(defn rst-defimpl
+  "emits a defclass template for python"
+  {:added "4.0"}
+  ([[_ sym inherit & body]]
+   (let [{:keys [module] :as mopts}  (preprocess/macro-opts)
+         body   (top/transform-defclass-inner body)
+         name   (symbol (:id module) (name sym))
+         supers (list 'quote (remove keyword? inherit))]
+     `(:- :class (:% ~name ~supers) \:
+          (\\
+           \\ (\| (do ~@body))
+           \\)))))
+
 (def +features+
-  (-> (grammar/build :exclude [:data-shortcuts])
+  (-> (grammar/build)
+      (grammar/build:override
+       {:var        {:symbol '#{var} :raw "let" }
+        :range      {:raw ".."}})
       (grammar/build:extend
-       {})))
+       {})
+      (grammar/build:extend
+       {:defstruct  {:op :defstruct :symbol '#{defstruct}
+                     :type :def :section :code :emit :macro
+                     :macro  #'rst-defstruct
+                     :static/type :struct}})))
 
 (def +sym-replace+
   {\- "_"
@@ -23,15 +84,23 @@
       (h/merge-nested
        {:banned #{:set :map :regex}
         :highlight '#{return break}
-        :default {:function  {:raw ""}}
+        :default {:function  {:raw ""
+                              :args {:sep ", "}}
+                  :invoke    {:reversed true
+                              :hint ":"
+                              :space ""
+                              :static "::"}}
         :data    {:vector    {:start "{" :end "}" :space ""}
                   :tuple     {:start "(" :end ")" :space ""}}
         :block   {:for       {:parameter {:sep ","}}}
         :function {:defn        {:raw "fn"
                                  :args  {:start "(" :end ") " :space ""}}
-                   :fn        {:raw "fn"
-                               :args  {:start "(" :end ") " :space ""}}}
-        :define {:def       {:raw ""}}})
+                   :function  {:raw ""
+                               :args   {:start "|" :end "| -> " :space ""}
+                               :body   {:start "" :end "" :append true}}}
+        :define   {:defglobal {:raw "let"}
+                   :def       {:raw "let"}
+                   :declare   {:raw "let"}}})
       (assoc-in [:token :symbol :replace] +sym-replace+)))
 
 (def +grammar+
@@ -53,6 +122,8 @@
 
 (def +init+
   (script/install +book+))
+
+
 
 
 (comment
@@ -89,6 +160,8 @@
                      :fn.inner    {:raw "def"
                                    :symbol {:layout :flat}
                                    :args   {:start "(" :end "):" :space ""}}}
+          
+
           :define   {:defglobal  {:raw ""}
                      :def        {:raw ""}}}
          (h/merge-nested (emit/default-grammar)))))

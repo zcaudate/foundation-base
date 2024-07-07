@@ -57,6 +57,7 @@
              :block     {:statement ""
                          :parameter {:start "(" :end ")"}
                          :body      {:start "{" :end "}"}}
+             :typehint  {:enabled false :assign "->" :space " " :after false}
              :function  {:raw "function"
                          :args      {:start "(" :end ")" :space ""}
                          :body      {:start "{" :end "}"}}

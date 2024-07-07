@@ -194,7 +194,8 @@
              (emit-block-controls key block control ctl-args grammar mopts)))
           (common/newline-indent)
           end
-          (if (and wrap (not (:append wrap))) (common/newline-indent))
+          (if (and wrap (not (:append wrap)))
+            (common/newline-indent))
           
           (:end wrap)))))
 
@@ -204,6 +205,7 @@
   ([key {:keys [main control] :as block} form grammar mopts]
    (let [[raw params args ctl-args wrap] (emit-block-setup key block form grammar mopts)
          {:keys [start end append]} wrap]
+     (h/prn  (emit-block-setup key block form grammar mopts))
      (str start
           raw
           (if (:parameter main)

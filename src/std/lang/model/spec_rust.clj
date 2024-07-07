@@ -1,5 +1,8 @@
 (ns std.lang.model.spec-rust
   (:require [std.lang.base.emit :as emit]
+            [std.lang.base.emit-fn :as fn]
+            [std.lang.base.emit-data :as data]
+            [std.lang.base.emit-helper :as helper]
             [std.lang.base.grammar :as grammar]
             [std.lang.base.util :as ut]
             [std.lang.base.book :as book]
@@ -7,75 +10,170 @@
             [std.string :as str]
             [std.lib :as h]))
 
+(defn rst-typesystem
+  [arr grammar mopts]
+  (let [{:keys [sep] :as opts} (helper/get-options grammar [:data :vector])
+        [sym & more] (rest arr)]
+    (str sym "<" (str/join ","
+                           (map (fn [input]
+                                  (cond (string? input)
+                                        input
+
+                                        :else
+                                        (emit/emit-main input grammar mopts)))
+                                more))">")))
+
+(defn rst-vector
+  "emits a js vector"
+  {:added "4.0"}
+  ([arr grammar mopts]
+   (let [sym (first arr)]
+     (cond (= :> sym)
+           (rst-typesystem arr grammar mopts)
+           
+           :else
+           (data/emit-coll :vector arr grammar mopts)))))
+
+(defn rst-attributes
+  [sym]
+  (let [lines (:% (meta sym))]
+    (str/join ""
+              (map (fn [l] (str l "\n"))
+                   lines))))
+
 (defn rst-defenum
   "transforms a defenum call"
   {:added "4.0"}
   [[_ sym values]]
-  (list :% (list :- "enum" sym
-                 (list :- "{")
-                 (list 'quote (vec values))
-                 (list :- "}"))))
+  (list :%
+        (list :- (rst-attributes sym))
+        (list :- "enum" sym
+              (list :- "{")
+              (list 'quote (vec values))
+              (list :- "}"))))
 
 (defn rst-deftrait
   "transforms a defenum call"
   {:added "4.0"}
-  [[_ sym values]]
-  (list :% (list :- "trait" sym
-                 (list :- "{")
-                 (list 'quote (vec values))
-                 (list :- "}"))))
-
-(defn rst-defstruct
-  "transforms a defstruct call"
-  {:added "4.0"}
-  [[_ sym & args]]
-  (let [vars (map #(apply list 'var %) args)]
-    (cond (empty? args)
-          (list :% (list :- "struct" sym ";"))
-
-          (and (vector? args)
-               (vector? (first args)))
-          (list :% (list :- "struct" sym) (list :- "{\n")
-                (list \|
-                      (map (fn [[type name]]
-                             (list :- (str name ":" type ",\n")))
-                           args))
-                (list :- "}"))
-          
-          :else
-          (list :% (list :- "struct" sym) (list :- "[")
-                (list \| (apply list 'do vars))
+  [[_ sym & body]]
+  (let [body (h/postwalk (fn [x]
+                           (if (and (list? x)
+                                    (= 'fn (first x))
+                                    (= 3 (count x)))
+                             (apply list 'fn (with-meta (second x)
+                                               (merge (meta (second x))
+                                                      {:header true}))
+                                    (drop 2 x))
+                             x))
+                         body)]
+    (list :%
+          (list :- (rst-attributes sym))
+          (list :- "trait" sym
+                (list :- "{"
+                      (list \\
+                            \\ (list \| (apply list 'do body))))
                 (list :- "\n}")))))
 
 (defn rst-defimpl
   "emits a defclass template for python"
   {:added "4.0"}
   ([[_ sym inherit & body]]
-   (let [{:keys [module] :as mopts}  (preprocess/macro-opts)
-         body   (top/transform-defclass-inner body)
-         name   (symbol (:id module) (name sym))
-         supers (list 'quote (remove keyword? inherit))]
-     `(:- :class (:% ~name ~supers) \:
-          (\\
-           \\ (\| (do ~@body))
-           \\)))))
+   (list :%
+         (list :- (rst-attributes sym))
+         (list :- "impl" (first inherit) "for" (last inherit)
+               (list :- "{")
+               (list \\
+                     \\ (list \|
+                              (apply list 'do body)))
+               (list :- "\n}")))))
+
+(defn rst-new
+  "transforms a defstruct call"
+  {:added "4.0"}
+  [[_ sym & args] grammar mopts]
+  (let [items (map (fn [[k v]]
+                     (str (h/strn k) ": " (emit/emit-main v grammar mopts)))
+                   (partition 2 args))]
+    (str (emit/emit-main sym grammar mopts)
+         "{" (str/join ", " items) "}")))
+
+(defn rst-exec
+  "transforms a defstruct call"
+  {:added "4.0"}
+  [[_ & body] grammar mopts]
+  (str "{"
+       (emit/emit-main
+        (list \\
+              \\(list \| (apply list 'do body))) grammar mopts)
+       "\n}"))
+
+(defn rst-defstruct
+  "transforms a defstruct call"
+  {:added "4.0"}
+  [[_ sym items] grammar mopts]
+  (str (rst-attributes sym)
+       (cond (empty? items)
+             (str "struct " sym ";")
+
+             
+             (and (vector? items)
+                  (symbol? (first items)))
+             (str "struct " sym "[\n"
+                  (str/join "\n  " items)
+                  "\n]")
+             
+             :else
+             (let [strs (mapcat (fn [args]
+                                  (fn/emit-fn-preamble-args
+                                   :fn args
+                                   grammar mopts))
+                                items)]
+               (str "struct " sym "{" (str/join ", " strs) "}")))))
 
 (def +features+
   (-> (grammar/build)
       (grammar/build:override
        {:var        {:symbol '#{var} :raw "let" }
-        :range      {:raw ".."}})
+        :range      {:raw ".."}
+        :new        {:symbol #{'new}
+                     :emit  #'rst-new
+                     :value true :raw "new"}})
       (grammar/build:extend
-       {})
+       {:ptr-quote     {:op :ptr-quote  :symbol '#{:'}   :raw "'" :emit :pre}
+        :ptr-qderef    {:op :ptr-qderef :symbol '#{:&'}  :raw "&'" :emit :pre}
+        :range-pattern {:op :range-pattern :symbol '#{:to=}  :raw "..=" :emit :between}
+        :cast          {:op :cast :symbol '#{cast}  :raw "_" :emit :between}
+        :as            {:op :as :symbol '#{:as}  :raw "as" :emit :infix}
+        :unsafe {:op :unsafe
+                 :symbol '#{unsafe} :type :block
+                 :block {:raw "unsafe"
+                         :main    #{:body}
+                         :control []}}
+        :exec      {:op :exec
+                    :symbol '#{exec}  :raw ""
+                    :emit  #'rst-exec}})
       (grammar/build:extend
        {:defstruct  {:op :defstruct :symbol '#{defstruct}
+                     :type :def :section :code 
+                     :emit  #'rst-defstruct
+                     :static/type :struct}
+        :deftrait   {:op :deftrait :symbol '#{deftrait}
                      :type :def :section :code :emit :macro
-                     :macro  #'rst-defstruct
-                     :static/type :struct}})))
+                     :macro  #'rst-deftrait
+                     :static/type :trait}
+        :defenum    {:op :defenum :symbol '#{defenum}
+                     :type :def :section :code :emit :macro
+                     :macro  #'rst-defenum
+                     :static/type :enum}
+        :defimpl    {:op :defimpl :symbol '#{defimpl}
+                     :type :def :section :code :emit :macro
+                     :macro  #'rst-defimpl
+                     :static/type :impl}})))
 
 (def +sym-replace+
   {\- "_"
    \= "_eq"
+   #_#_#_#_
    \< "_lt"
    \> "_gt"})
 
@@ -84,20 +182,24 @@
       (h/merge-nested
        {:banned #{:set :map :regex}
         :highlight '#{return break}
-        :default {:function  {:raw ""
+        :default {:modifier  {:vector-last false}
+                  :function  {:prefix "fn"
+                              :raw ""
                               :args {:sep ", "}}
+                  :typehint  {:enabled true :assign "->" :space " " :after true}
                   :invoke    {:reversed true
                               :hint ":"
                               :space ""
                               :static "::"}}
-        :data    {:vector    {:start "{" :end "}" :space ""}
-                  :tuple     {:start "(" :end ")" :space ""}}
-        :block   {:for       {:parameter {:sep ","}}}
-        :function {:defn        {:raw "fn"
-                                 :args  {:start "(" :end ") " :space ""}}
+        :token    {:keyword   {:custom #'name}}
+        :data     {:vector    {:custom #'rst-vector}
+                  :tuple      {:start "" :end "" :space ""}}
+        :block    {:for       {:parameter {:sep ","}}}
+        :function {:defn      {:raw ""
+                               :args  {:start "(" :end ")" :space ""}}
                    :function  {:raw ""
-                               :args   {:start "|" :end "| -> " :space ""}
-                               :body   {:start "" :end "" :append true}}}
+                               :args      {:start "|" :end "|" :space ""}
+                               :body      {:start "" :end "" :append true}}}
         :define   {:defglobal {:raw "let"}
                    :def       {:raw "let"}
                    :declare   {:raw "let"}}})
@@ -126,43 +228,5 @@
 
 
 
-(comment
-  (def +template+
-    (->> {:banned #{:keyword}
-          :allow   {:assign  #{:symbol :quote}}
-          :highlight '#{return break tup with await yield pass raise}
-          :default {:comment   {:prefix "#"}
-                    :common    {:statement ""}
-                    :block     {:parameter {:start " " :end ""}
-                                :body      {:start ":" :end "" :append true}}
-                    :invoke    {:reversed true
-                                :hint ":"}
-                    :function  {:raw "lambda"
-                                :args      {:start " " :end ":" :space ""}
-                                :body      {:start "" :end "" :append true}}
-                    :infix     {:if  {:check "and" :then "or"}}
-                    :global    {:reference '(globals)}}
-          :token   {:nil       {:as "None"}
-                    :boolean   {:as #'python-token-boolean}
-                    :string    {}
-                    :symbol    {:global #'python-symbol-global
-                                :namespace {:alias true :link false}}}
-          :block    {:try      {:control {:catch  {:raw  "except"
-                                                   :args {:start "" :end ":" :space ""}}}}
-                     :branch   {:control {:elseif {:raw "elif"}}}}
-          :data     {:map-entry {:key-fn data/default-map-key}
-                     :set       {:start "{" :end "}" :space ""}
-                     :vector    {:start "[" :end "]" :space ""}
-                     :tuple     {:start "(" :end ")" :space ""}
-                     :free      {:start ""  :end "" :space ""}}
-          :function {:defn        {:raw "def"
-                                   :args  {:start "(" :end "):" :space ""}}
-                     :fn.inner    {:raw "def"
-                                   :symbol {:layout :flat}
-                                   :args   {:start "(" :end "):" :space ""}}}
-          
 
-          :define   {:defglobal  {:raw ""}
-                     :def        {:raw ""}}}
-         (h/merge-nested (emit/default-grammar)))))
   

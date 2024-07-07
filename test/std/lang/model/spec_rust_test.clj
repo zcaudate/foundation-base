@@ -14,31 +14,296 @@
    })
 
 (comment
-  ^{:# [[lang := "owned_box"]
-        [lang := "owned_box"]]}
-  hello)
+  (!.rs
+    (var [:> Cell :i32] i
+         ($ Cell "new" 0))
+    (match [maybe_digit]
+           (| 0 1) => "not many"
+           (:to 1 2)
+           (:to 2 9)
+           _ => "lots")
+    
+    (assert_eq! message "a few"))
+
+  (!.rs
+    (var integer := (:as decimal :u8))))
+
+"
+enum List<T> {
+    Nil,
+    Cons(T, Box<List<T>>)
+}
+
+let a: List<i32> = List::Cons(7, Box::new(List::Cons(13, Box::new(List::Nil))));"
+
+
+(defenum.rs [:> List T]
+  [Nil
+   (Cons T [:> Box [:> List T]])])
+
+(deftrait.rs ^{:% ["#[allow(dead_code)]"]}
+  Animal
+  
+  (fn ^{:- [:Self]}
+    new  [:&'static :str name])
+
+  (fn ^{:- [:&'static :str]}
+    name [])
+
+  (fn ^{:- [:&'static :str]}
+    noise [])
+  
+  (fn talk []
+    (println! "{} says {}",
+              (. self (name)),
+              (. self (noise)))))
+
+(!.rs
+  (deftrait ;;^{:% ["#[allow(dead_code)]"]}
+    Animal
+    
+    (fn ^{:- [:Self]}
+      new  [:&'static :str name])
+
+    (fn ^{:- [:&'static :str]}
+      name [&self])
+    
+    (fn ^{:- [:&'static :str]}
+      noise  [^:&mut self])
+    
+    (fn talk [^:& self]
+      (println! "{} says {}",
+                (. self (name)),
+                (. self (noise))))))
+
+
+(!.rs
+  (unsafe
+   (print! " 300.0 as u8 is : {}", (. (cast 300.0 :f32)
+                                      ("to_int_unchecked::<u8>")))))
+
+(!.rs
+  (var :i32 five (exec (fn-call)
+                       5)))
+
+(defstruct.rs Sheep)
+
+(defstruct.rs Sheep
+  [[:bool naked]
+   [:&'static :str name]])
+
+(defimpl.rs Sheep<>Base
+  [-/Sheep]
+  (fn ^{:- [:bool]}
+    is-naked []
+    (. self naked))
+
+  (fn ^{:- [:bool]
+        :mut true}
+    is-naked []
+    (if (. self (is-naked))
+      (println! "{} is already naked...", (. self (name)))
+      (do (println! "{} gets a haircut", (. self name))
+          (:= (. self naked) true)))))
+
+(defimpl.rs Animal<>Sheep
+  [-/Animal :for -/Sheep]
+  
+  (fn ^{:- [-/Sheep]} new [:&'static :str name]
+    (new Sheep :name name :naked false))
+  
+  (fn ^{:- [:&'static :str]}
+    name [&self]
+    (. self name))
+
+  (fn ^{:- [:&'static :str]}
+    noise [&self]
+    (if (. self (is-naked))
+      "baaaaah?"
+      "baaaaah!")))
+
+(comment
+
+  
+  (defn.rs ^{:- [[:> Hello :i32]]}
+    combine-vecs
+    [[:> Vec :i32] u
+     [:> Vec :i32] v])
+  
+  
+  (defn.rs ^{:- [[:> "iter::Cycle"
+                  [:> "iter::Chain"
+                   [:> IntoIter :i32]
+                   [:> IntoIter :i32]]]]}
+    combine-vecs
+    [[:> Vec :i32] v
+     [:> Vec :i32] u]
+    ($ iter "Cycle"))
+  
+  (defn.rs ^{:- [:impl [:> "Iterator" "Item=i32"]]}
+    combine-vecs
+    [[:> Vec :i32] u
+     [:> Vec :i32] v]
+    (. v
+       (into-iter)
+       (chain (. u (into-iter)))
+       (cycle)))
+
+  (defn.rs ^{:- ["impl Fn(i32) -> i32"]}
+    combine-vecs
+    [[:> Vec :i32] u
+     [:> Vec :i32] v]
+    (. v
+       (into-iter)
+       (chain (. u (into-iter)))
+       (cycle)))
+  
+  (defn.rs ^{:- [:impl [:> Iterator :Item=i32]]}
+    combine-vecs
+    [[:> Vec :i32] u
+     [:> Vec :i32] v]
+    (. v
+       (into-iter)
+       (chain (. u (into-iter)))
+       (cycle)))
+  
+  )
+
+(comment
+
+  (into {} List)
+  
+  (!.rs
+    (defimpl Animal<>Sheep
+      [-/Animal :for -/Sheep]
+      
+      (fn ^{:- [-/Sheep]} new [:&'static :str name]
+        (new Sheep :name name :naked false))
+      
+      (fn ^{:- [:&'static :str]}
+        name [&self]
+        (. self name))
+
+      (fn ^{:- [:&'static :str]}
+        noise [&self]
+        (if (. self (is-naked))
+          "baaaaah?"
+          "baaaaah!"))))
+  
+  
+  (!.rs
+    (defenum [:> List T]
+      [Nil
+       (Cons T [:> Box [:> List T]])]))
+  
+  (!.rs
+    (deftrait [:> List T]
+      [Nil
+       (Cons T [:> Box [:> List T]])]))
+  
+  
+  (!.rs
+    (defenum [:> List T]
+      Nil
+      (Cons T [:> Box [:> List T]])))
+  
+  (!.rs
+    (var [:> List :i32] a
+         ($ List "Cons" 7 ($ Box "new"
+                             ($ List "Cons" 13
+                                ($ Box "new"
+                                   ($ List "Nil")))))))
+  
+  (!.rs
+    (var [:> List :i32] a
+         ($ List "Cons" 7 ($ Box "new"
+                             ($ List "Cons" 13
+                                ($ Box "new"
+                                   ($ List "Nil")))))))
+  
+  (!.rs
+    (var [:> List A B] a "hello")
+    )
+  
+  (!.rs
+    [:> Box [:i32]])
+  
+  (!.rs :i32)
+  
+  (!.rs
+    (var [:> List :i32] a
+         ($ List "Cons" 7 ($ Box "new"
+                             ($ List "Cons" 13
+                                ($ Box "new"
+                                   ($ List :Nil)))))))
+  
+  (!.rs
+    ($ Box "new" ($ List :Nil)))
+
+  (!.rs
+    (:& hello))
+
+  (!.rs
+    (:&' hello))
+  
+  (!.rs
+    (:& hello))
+  
+  (!.rs
+    (fn ^{:- [T]} newe [:&'static name]))
+  
+  (!.rs
+    (fn ^{:- [:String]} get [&self]))
+  
+  (!.rs
+    (fn ^{:- [:String]}
+      get [&self]))
+  
+  (!.rs
+    (defn ^{:- [:String]}
+      get [&self]))
+  
+  (!.rs
+    &'hello)
+  
+  (!.rs
+    (defenum [:> List T]
+      [Nil
+       (Cons T [:> Box [:> List T]])]))
+  )
+
+(comment
+  
+
+  (!.rs ^{:# [[lang := "owned_box"]
+              [fundamental]
+              [(stable :feature "rust1" :since "1.0.0")]]}
+        (+ 1 2 3))
+  => "1 + 2 + 3;")
 
 (fact "various test cases for rust code"
   ^:hidden
-
+  
   (!.rs
     (defstruct ^{:- [[T Sized]]}
       Box))
+  => "struct Box;"
   
   (!.rs
-    (defimpl  ^{:- [[T Sized]]}
-      Box
+    (defimpl Box<>Base
+      [Box]
       
+      
+      (fn ^{:- [:String]} get [])))
 
-      (fn ^{:- [:String]} get [&self])))
+  (!.rs
+    (fn [:> double-positive :'a]))
   
 
   (!.rs
     (deftrait UsernameWidget
-
-      (fn ^{:- [:String]} get [&self])))
-  
-  )
+      
+      (fn ^{:- [:String]} get [&self]))))
 
 (fact "various test cases for rust code"
   ^:hidden
@@ -62,18 +327,20 @@
   (!.rs
     (var (:f64 n) 1.0))
   => "let n: f64 = 1.0;"
-
-
+  
   (!.rs
     (:to 0 3))
+  => "0..3;"
   
   (!.rs
-    (Class$$new))
+    ($ Class "new"))
   => "Class::new();"
   
   (!.rs
-    Class$$new)
-  => "Class::new();"
+    ($ Class :new))
+  => "Class::new;"
+
+
   
   
   (!.rs

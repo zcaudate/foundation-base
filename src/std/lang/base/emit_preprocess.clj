@@ -94,12 +94,11 @@
                                         (h/error "Var not found" {:input (second input)}))))
           (list '!:eval input))
 
+        #_#_
         (and (symbol? tag)
              (str/includes? (str tag) "$$"))
         (let [[cls func] (str/split (str tag) #"\$\$")]
-          (concat '(static-invoke)
-                  [(symbol cls) func]
-                  (rest x)))))
+          (concat '($) [(symbol cls) func] (rest x)))))
 
 (defn to-input
   "converts a form to input (extracting deref forms)"

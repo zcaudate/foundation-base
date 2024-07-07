@@ -91,17 +91,18 @@
   ([_ {:keys [raw] :as props} [_ & args] grammar mopts]
    (let [{:keys [sep space assign]} (helper/get-options grammar [:default :define])
          args     (helper/emit-typed-args args grammar)
+         
          argstrs  (map (fn [{:keys [value symbol] :as arg}]
                          (let [{:assign/keys [inline template] :as aopts} (meta value)
                                custom (cond (:assign/fn aopts) [:raw  ((:assign/fn aopts) symbol)]
-                                             template [:template (h/prewalk-replace {template symbol} value)]
-                                             inline   [:inline   (emit-def-assign-inline symbol
-                                                                                         value
-                                                                                         grammar
-                                                                                         mopts)])]
+                                            template [:template (h/prewalk-replace {template symbol} value)]
+                                            inline   [:inline   (emit-def-assign-inline symbol
+                                                                                        value
+                                                                                        grammar
+                                                                                        mopts)])]
                            (if custom
-                              (common/*emit-fn* (second custom) grammar mopts)
-                              (fn/emit-input-default arg assign grammar mopts))))
+                             (common/*emit-fn* (second custom) grammar mopts)
+                             (fn/emit-input-default arg assign grammar mopts))))
                        args)
          vstr    (str/join (str sep space) argstrs)
          rawstr  (if (not-empty raw) (str raw space))]

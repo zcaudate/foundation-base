@@ -80,7 +80,6 @@
   (let [block    (emit-fn/emit-fn-block :defn grammar)
         typestr  (emit-fn/emit-fn-type sym nil grammar mopts) 
         preamble (emit-fn/emit-fn-preamble [:defn sym args]
-                                           block
                                            grammar
                                            mopts)
         codebody (emit-block/emit-block-body nil block body grammar mopts)]
@@ -125,9 +124,7 @@
   "creates an event"
   {:added "4.0"}
   [[_ sym & args] grammar mopts]
-  (let [block    (emit-fn/emit-fn-block :defn grammar)
-        preamble (emit-fn/emit-fn-preamble [:defn sym (vec (mapcat identity args))]
-                                           block
+  (let [preamble (emit-fn/emit-fn-preamble [:defn sym (vec (mapcat identity args))]
                                            grammar
                                            mopts)]
     (str "event " preamble ";")))

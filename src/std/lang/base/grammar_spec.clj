@@ -234,10 +234,10 @@
 ;;
 
 (def +op-class+
-  [{:op :new         :symbol #{'new}        :emit :new       :raw "new"}
+  [{:op :new         :symbol #{'new}        :emit :new  :value true :raw "new"}
    {:op :defclass    :symbol #{'defclass}   :spec :defclass  
     :type :def       :section :code         :abstract true}
-   {:op :static-invoke      :symbol #{'static-invoke}   :emit :static-invoke}
+   {:op :static-invoke      :symbol #{'$}   :emit :static-invoke}
    {:op :this        :symbol #{'this}       :emit :throw     :raw "this"  :value true}
    {:op :super       :symbol #{'super}      :emit :invoke    :raw "super" :value true}
    {:op :fn.inner    :symbol #{'fn.inner}   :type :fn :block  {:raw "" :main #{:body}}}

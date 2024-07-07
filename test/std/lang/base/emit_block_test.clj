@@ -217,7 +217,7 @@
 ^{:refer std.lang.base.emit-block/emit-block :added "3.0"}
 (fact "emits a minimal block expression"
   ^:hidden
-
+  
   (emit-block :while
               '(while (< 1 2)
                  (add 1 2 3)

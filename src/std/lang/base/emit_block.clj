@@ -205,7 +205,6 @@
   ([key {:keys [main control] :as block} form grammar mopts]
    (let [[raw params args ctl-args wrap] (emit-block-setup key block form grammar mopts)
          {:keys [start end append]} wrap]
-     (h/prn  (emit-block-setup key block form grammar mopts))
      (str start
           raw
           (if (:parameter main)

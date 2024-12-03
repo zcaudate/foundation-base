@@ -8,8 +8,9 @@
    "test-unit"   ["run" "-m" "code.test" "exit"]
    "publish"     ["exec" "-ep" "(use 'code.doc)     (deploy-template :all) (publish :all)"]
    "incomplete"  ["exec" "-ep" "(use 'code.manage)  (incomplete :all) (System/exit 0)"]
-   "install"     ["exec" "-ep" "(use 'code.maven)  (install :all {:tag :all}) (System/exit 0)"]
-   "deploy"      ["exec" "-ep" "(use 'code.maven)  (deploy :all {:tag :all}) (System/exit 0)"]
+   "install"     ["exec" "-ep" "(use 'code.maven)   (install :all {:tag :all}) (System/exit 0)"]
+   "deploy"      ["exec" "-ep" "(use 'code.maven)   (deploy :all {:tag :all}) (System/exit 0)"]
+   "deploy-lein" ["exec" "-ep" "(use 'code.maven)   (deploy-lein :all {:tag :all}) (System/exit 0)"]
    "push-native-code"  ["run" "-m" "component.task-native-index"]
    "push-c-000-pthreads"        ["run" "-m" "play.c-000-pthreads-hello.build"]
    "push-ngx-000-hello"         ["run" "-m" "play.ngx-000-hello.build"]
@@ -21,8 +22,8 @@
   [;; dev
    [org.clojure/clojure "1.11.1"]
    [javax.xml.bind/jaxb-api "2.4.0-b180830.0359"]
-   [com.sun.xml.bind/jaxb-core "4.0.4"]
-   [com.sun.xml.bind/jaxb-impl "4.0.4"]
+   [com.sun.xml.bind/jaxb-core "4.0.3"]
+   [com.sun.xml.bind/jaxb-impl "4.0.3"]
    
    ;; code.doc
    [markdown-clj/markdown-clj "1.11.8"] ;; not mustache

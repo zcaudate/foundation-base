@@ -279,7 +279,7 @@
   (h/swap-return! (:instance +lib+)
     (fn [snapshot]
       [nil (snap/add-book snapshot
-                          std.lang.base.emit-prep-test/+book-min+)]))
+                          std.lang.base.emit-prep-lua-test/+book-min+)]))
   
   ((:dispatch +lib+) (entry/create-fragment
                       '(def$ G G)

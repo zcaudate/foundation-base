@@ -194,7 +194,8 @@
              (emit-block-controls key block control ctl-args grammar mopts)))
           (common/newline-indent)
           end
-          (if (and wrap (not (:append wrap))) (common/newline-indent))
+          (if (and wrap (not (:append wrap)))
+            (common/newline-indent))
           
           (:end wrap)))))
 

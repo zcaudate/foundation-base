@@ -718,6 +718,17 @@
                sym)]
      (str raw " " (emit-invoke raw (cons sym more) grammar mopts)))))
 
+(defn emit-class-static-invoke
+  "invokes a constructor"
+  {:added "3.0"}
+  ([raw [sym field & args] grammar mopts]
+   (let [{:keys [static]} (helper/get-options grammar [:default :invoke])]
+     (cond (keyword? field)
+           (str sym (or raw static) (name field))
+           
+           :else
+           (emit-invoke-raw (str sym (or raw static) field) args grammar mopts)))))
+
 ;;
 ;; INDEX
 ;;
@@ -731,16 +742,19 @@
              (str "." (emit-symbol v grammar mopts)))
 
          (h/form? v)
-         (do (assert (symbol? (first v)))
-             (let [{:keys [apply]}   (helper/get-options grammar [:default :invoke])
-                   braces (meta (first v))]
-               (emit-invoke-raw (str apply
-                                     (emit-symbol (first v) grammar mopts)
-                                     #_(*emit-fn* (first v) grammar mopts)
-                                     (if (not-empty braces)
-                                       (*emit-fn* braces grammar mopts)
-                                       ""))
-                                (rest v) grammar mopts)))
+         (let [sym  (first v)
+               sym  (if (string? sym)
+                      (symbol sym)
+                      sym)
+               _     (assert (symbol? sym))
+               {:keys [apply]}   (helper/get-options grammar [:default :invoke])
+               braces (meta sym)]
+           (emit-invoke-raw (str apply
+                                 (emit-symbol sym grammar mopts)
+                                 (if (not-empty braces)
+                                   (*emit-fn* braces grammar mopts)
+                                   ""))
+                            (rest v) grammar mopts))
 
          (vector? v)
          (do (assert (= 1 (count v)) "Only one index")
@@ -799,6 +813,7 @@
        :assign        (emit-assign raw args grammar mopts)
        :invoke        (emit-invoke-raw raw args grammar mopts)
        :new           (emit-new raw args grammar mopts)
+       :static-invoke (emit-class-static-invoke raw args grammar mopts)
        :index         (emit-index raw args grammar mopts)
        :return        (emit-return raw args grammar mopts)
        :macro         (emit-macro key form grammar mopts)

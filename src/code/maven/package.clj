@@ -1,6 +1,7 @@
 (ns code.maven.package
   (:require [std.fs :as fs]
             [std.html :as html]
+            [std.string :as str]
             [jvm.artifact :as artifact]
             [code.link :as linkage]
             [std.fs.archive :as archive]
@@ -38,7 +39,7 @@
 (defn coordinate->tree
   "creates a coordinate tree entry
  
-   (coordinate->tree '[foundation/std.lib \"0.1.1\"])
+   (coordinate->tree '[xyz.zcaudate/std.lib \"0.1.1\"])
    => [:dependency
        [:groupId \"foundation\"]
        [:artifactId \"std.lib\"]
@@ -108,7 +109,7 @@
 (defn pom-xml
   "creates a pom.properties file"
   {:added "3.0"}
-  ([{:keys [dependencies repositories url group artifact version name description licenses]}]
+  ([{:keys [dependencies repositories url group artifact version name description license]}]
    (str "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
         "\n"
         (html/html
@@ -121,14 +122,33 @@
           [:name (str name)]
           [:description description]
           [:url url]
-          (->> (map license->tree licenses)
-               (into [:licenses]))
+          [:licenses
+           (license->tree license)]
           (->> (merge repositories +default-repositories+)
                (map repository->tree)
                (into [:repositories]))
           (->> (sort dependencies)
                (map coordinate->tree)
                (into [:dependencies]))]))))
+
+(defn project-clj-content
+  "creates a pom.properties file"
+  {:added "3.0"}
+  ([{:keys [dependencies repositories url group artifact version name description license]}]
+   (str "(defproject " (str name) " " (pr-str version) "\n"
+        "  :description "  (pr-str version) "\n"
+        "  :url " (pr-str url) "\n"
+        "  :license " (prn-str license) "\n"
+        "  :dependencies \n"
+        "  [" (->> dependencies
+                   (map (fn [coord]
+                          (let [{:keys [group artifact version exclusions scope]}
+                                (artifact/artifact :rep coord)]
+                            (str "[" group "/" artifact " " (pr-str version) "]"))))
+                   (str/join "\n   ")) "]\n"
+        "  :deploy-repositories [[\"clojars\"\n"
+        "                         {:url  \"https://clojars.org/repo\"\n"
+        "                          :sign-releases false}]])")))
 
 (defn generate-manifest
   "creates a manifest.mf file for the project
@@ -173,11 +193,28 @@
       (str output "/pom.xml")
       (str output "/pom.properties")])))
 
+(defn generate-project-clj
+  "generates a pom file given an entry
+ 
+   (-> (generate-pom {:artifact \"std.task\"
+                      :group \"foundation\"
+                      :version \"3.0.1\"}
+                    \"test-scratch\")
+       (update-in [0] html/tree))"
+  {:added "3.0"}
+  ([entry root]
+   (generate-project-clj entry root {:simulate false}))
+  ([entry root {:keys [simulate]}]
+   (let [content    (project-clj-content entry)]
+     (when-not simulate
+       (spit (str (fs/path root "project.clj")) content))
+     content)))
+
 (defn linkage
   "returns the linkage for a given name
  
-   (linkage 'foundation/std.lib nil -collected- nil)
-   => (contains {:name 'foundation/std.lib})"
+   (linkage 'xyz.zcaudate/std.lib nil -collected- nil)
+   => (contains {:name 'xyz.zcaudate/std.lib})"
   {:added "3.0"}
   ([name _ linkages _]
    (get linkages name)))
@@ -185,27 +222,29 @@
 (defn package
   "returns the packaged items for a given name
  
-   (package 'foundation/std.image {} -collected- {:root \".\" :version \"3.0.1\"})
+   (package 'xyz.zcaudate/std.image {} -collected- {:root \".\" :version \"3.0.1\"})
  
-   => (contains {:package 'foundation/std.image,
+   => (contains {:package 'xyz.zcaudate/std.image,
                  :jar \"foundation-std.image-3.0.1.jar\",
                  :pom \"foundation-std.image-3.0.1.pom.xml\",
-                 :interim (str (fs/file \"./target/interim/foundation/std.image\")),
+                 :interim (str (fs/file \"./target/interim/xyz.zcaudate/std.image\")),
                  :files (contains [\"MANIFEST.MF\"
-                                   \"META-INF/maven/foundation/std.image/pom.xml\"
-                                   \"META-INF/maven/foundation/std.image/pom.properties\"])})"
+                                   \"META-INF/maven/xyz.zcaudate/std.image/pom.xml\"
+                                   \"META-INF/maven/xyz.zcaudate/std.image/pom.properties\"])})"
   {:added "3.0"}
-  ([name {:keys [simulate interim] :as opts} linkages {:keys [root version] :as project}]
+  ([name {:keys [simulate interim] :as opts} linkages {:keys [root version url license] :as project}]
    (let [interim (or interim +interim+)
          interim (fs/path root interim (str name))
          {:keys [internal] :as entry}  (get linkages name)
-         entry  (-> (assoc entry :version version)
+         entry  (-> (assoc entry :version version :license license)
                     (update-in [:dependencies] concat (map #(vector % version) internal)))
-         {:keys [artifact group] :as entry}  (merge entry (dissoc (artifact/rep name) :version))
+         {:keys [artifact group] :as entry}  (merge entry (dissoc (artifact/rep name) :version)
+                                                    {:url url})
          output  (fs/path interim "package")
          _       (if-not simulate (fs/create-directory output))
          manifest     (generate-manifest output opts)
          [xml & pom]  (generate-pom entry output opts)
+         project-clj  (generate-project-clj entry interim opts)
          pom-name (str group "-" artifact "-" version ".pom.xml")
          jar-name (str group "-" artifact "-" version ".jar")
          results   (if simulate
@@ -217,7 +256,6 @@
                                            out)
                                          (:files entry))
                            _        (spit (fs/path interim pom-name) xml)
-
                            jar-path (fs/path interim jar-name)
                            _        (fs/delete jar-path)
                            jar      (archive/open jar-path)
@@ -229,19 +267,20 @@
       :group group
       :version version
       :package name
-      :jar jar-name
-      :pom pom-name
+      :jar  jar-name
+      :pom  pom-name
+      :project project-clj
       :interim (str interim)
-      :files (cons manifest (concat pom results))})))
+      :files   (cons manifest (concat pom results))})))
 
 (defn infer
   "returns the infered items for a given name
  
-   (infer 'foundation/std.image nil -collected-  {:root \".\" :version \"3.0.1\"})
-   => (contains {:package 'foundation/std.image,
+   (infer 'xyz.zcaudate/std.image nil -collected-  {:root \".\" :version \"3.0.1\"})
+   => (contains {:package 'xyz.zcaudate/std.image,
                  :jar \"foundation-std.image-3.0.1.jar\",
                  :pom \"foundation-std.image-3.0.1.pom.xml\",
-                 :interim (str (fs/file \"./target/interim/foundation/std.image\"))})"
+                 :interim (str (fs/file \"./target/interim/xyz.zcaudate/std.image\"))})"
   {:added "3.0"}
   ([name {:keys [interim] :as params} _ {:keys [root version]}]
    (let [interim (or interim +interim+)

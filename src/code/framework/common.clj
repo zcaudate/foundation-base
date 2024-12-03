@@ -6,6 +6,8 @@
 
 (def ^:dynamic *path* nil)
 
+(def ^:dynamic *test-full* false)
+
 (def +test-vars+ #{:class :form :intro :line :ns :refer :test :unit :var
                    :let :use :replace :setup :teardown :id :check :sexp})
 

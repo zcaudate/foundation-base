@@ -21,7 +21,22 @@
                               +grammar+)
       first
       (emit-input-default "=" {} {}))
-  => "int i = 9")
+  => "int i = 9"
+
+  (emit-input-default
+   '{:modifiers [:int], :symbol i, :assign true, :force true, :value 9}
+   "=" {} {})
+  => "int i = 9"
+  
+  (emit-input-default
+   '{:modifiers [:const :int], :symbol j, :assign true, :force true, :value 10}
+   "=" {} {})
+  => "const int j = 10"
+  
+  (emit-input-default
+   '{:modifiers [:const :int]}
+   "=" {} {})
+  => "const int")
 
 ^{:refer std.lang.base.emit-fn/emit-hint-type :added "4.0"}
 (fact "emits the return type")
@@ -52,12 +67,22 @@
       :args {:start "(", :end ")", :space ""},
       :body {:start "{", :end "}"}})
 
+^{:refer std.lang.base.emit-fn/emit-fn-preamble-args :added "4.0"}
+(fact "constructs the function preamble args"
+  ^:hidden
+  
+  (emit-fn-preamble-args :defn '[:int i 9, :const :int j 10]
+                         #_(emit-fn-block :default +grammar+)
+                         +grammar+
+                         {})
+  => '("int i = 9" "const int j = 10"))
+
 ^{:refer std.lang.base.emit-fn/emit-fn-preamble :added "4.0"}
 (fact "constructs the function preamble"
   ^:hidden
   
   (emit-fn-preamble [:defn 'sym '[:int i 9, :const :int j 10]]
-                    (emit-fn-block :default +grammar+)
+                    #_(emit-fn-block :default +grammar+)
                     +grammar+
                     {})
   => "sym(int i = 9,const int j = 10)")
@@ -85,5 +110,3 @@
 
 ^{:refer std.lang.base.emit-fn/test-fn-emit :added "4.0"}
 (fact  "add blocks, fn, var and const to emit")
-
-

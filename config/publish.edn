@@ -1,0 +1,7 @@
+{:template {:author "Chris Zheng"
+            :email  "zcaudate@outlook.com"
+            :site   "foundation"
+            :tracking-enabled "true"
+            :tracking "UA-31320512-2"}
+ :snippets "config/snippets"
+ :sites      {:core         [:include "config/publish/foundation.core.edn" {:type :edn}]}}

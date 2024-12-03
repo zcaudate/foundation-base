@@ -77,6 +77,17 @@
    (try (project/project)
         (catch clojure.lang.ExceptionInfo e))))
 
+(defn global-env-file-raw
+  "returns the global object for thecurrent project
+ 
+   (:group (global-project-raw))
+   => \"tahto\""
+  {:added "3.0"}
+  ([]
+   (let [path (fs/path "./env.edn")]
+     (if (fs/exists? path)
+       (read-string (slurp path))))))
+
 (defn global-home-raw
   "returns the global object for all global types
  
@@ -108,6 +119,7 @@
                    (global-properties-raw)
                    (global-home-raw)
                    (global-project-raw)
+                   (global-env-file-raw)
                    (global-session-raw))))
 
 (def +global+
@@ -115,6 +127,7 @@
    :properties global-properties-raw
    :home       global-home-raw
    :project    global-project-raw
+   :env-file   global-env-file-raw
    :session    global-session-raw
    :all        global-all-raw})
 

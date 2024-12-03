@@ -113,7 +113,7 @@
   
   
   (keys (build-service {:deps '[foundation/net.resp]}))
-  (foundation/std.json foundation/net.resp foundation/std.lib)
+  (xyz.zcaudate/std.json foundation/net.resp xyz.zcaudate/std.lib)
   
   (def -out- '{:main  demo.resp-repl
                :extra [["src-play/demo/resp_repl.clj" "demo/resp_repl.clj"]]

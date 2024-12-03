@@ -57,11 +57,7 @@
     tree)))
 
 (defn emit-html
-  "emits the html
- 
-   (emit-html [:a [:b [:c]]]
-              {} {})
-   => \"<a><b>\\n    <c></c></b></a>\""
+  "emits the html"
   {:added "4.0"}
   ([arr _ nsp]
    (let [tree (prepare-html arr nsp)]

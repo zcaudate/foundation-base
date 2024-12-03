@@ -66,8 +66,8 @@
               (let [tok (second tag)]
                 (cond (= tok '!)
                       (list '!:template input)
-                      
-                      (and (symbol? tok)
+
+                      (and (symbol? tok) 
                            (str/starts-with? (str tok) "."))
                       (apply list '!:lang {:lang (keyword (subs (str tok) 1))}
                              input more)
@@ -83,16 +83,22 @@
                       :else
                       (apply list '!:decorate (apply vec (rest tag))
                              input more)))
-
+              
               (= 'clojure.core/unquote (first tag))
               (h/error "Not supported" {:input x}))
-        
+
         (= 'clojure.core/deref tag)
         (if (and (h/form? input)
                  (= 'var (first input)))
           (list '!:deref (list 'var (or (h/var-sym (resolve (second input)))
                                         (h/error "Var not found" {:input (second input)}))))
-          (list '!:eval input))))
+          (list '!:eval input))
+
+        #_#_
+        (and (symbol? tag)
+             (str/includes? (str tag) "$$"))
+        (let [[cls func] (str/split (str tag) #"\$\$")]
+          (concat '($) [(symbol cls) func] (rest x)))))
 
 (defn to-input
   "converts a form to input (extracting deref forms)"

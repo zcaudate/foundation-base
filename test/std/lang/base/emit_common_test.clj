@@ -480,7 +480,12 @@
                '(call "hello" (+ 1 2))
                helper/+default+
                {})
-  => "call(\"hello\",(+ 1 2))")
+  => "call(\"hello\",(+ 1 2))"
+
+  (emit-invoke :invoke
+               '(:help/call "hello" (+ 1 2))
+               helper/+default+
+               {}))
 
 ^{:refer std.lang.base.emit-common/emit-new :added "3.0"}
 (fact "invokes a constructor"
@@ -491,6 +496,17 @@
             helper/+default+
             {})
   => "new String(1,2,3,4)")
+
+^{:refer std.lang.base.emit-common/emit-class-static-invoke :added "4.0"}
+(fact "creates "
+  ^:hidden
+  
+  (emit-class-static-invoke
+   nil
+   '(String "new" 1 2 3 4)
+   helper/+default+
+   {})
+  => "String.new(1,2,3,4)")
 
 ^{:refer std.lang.base.emit-common/emit-index-entry :added "3.0"}
 (fact "classifies the index entry"

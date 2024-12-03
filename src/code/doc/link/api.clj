@@ -1,5 +1,6 @@
 (ns code.doc.link.api
   (:require [code.framework.docstring :as docstring]
+            [code.framework.common :as common]
             [std.lib :as h]
             [std.fs :as fs]))
 
@@ -39,18 +40,19 @@
                                (-> ns references keys)
                                vals)]
                     (reduce (fn [out v]
-                              (let [[src dst] (if (symbol? v)
-                                                [v v]
-                                                [(last v) (first v)])
-                                    entry (-> (get-in references [ns src])
-                                              (update-in [:test :code] docstring/->refstring)
-                                              (update-in [:test :path] relative-to-root)
-                                              (update-in [:source :path] relative-to-root)
-                                              (assoc :origin (symbol (str ns "/" src))
-                                                     :arglists (-> (get live-vars dst)
-                                                                   meta
-                                                                   :arglists)))]
-                                (assoc out dst entry)))
+                              (binding [common/*test-full* true]
+                                (let [[src dst] (if (symbol? v)
+                                                  [v v]
+                                                  [(last v) (first v)])
+                                      entry (-> (get-in references [ns src])
+                                                (update-in [:test :code] docstring/->refstring)
+                                                (update-in [:test :path] relative-to-root)
+                                                (update-in [:source :path] relative-to-root)
+                                                (assoc :origin (symbol (str ns "/" src))
+                                                       :arglists (-> (get live-vars dst)
+                                                                     meta
+                                                                     :arglists)))]
+                                  (assoc out dst entry))))
                             table
                             vals)))
                 {}

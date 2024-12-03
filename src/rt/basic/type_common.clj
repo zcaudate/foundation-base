@@ -105,6 +105,7 @@
   {:added "4.0"}
   [lang context program]
   (let [_   (assert (#{:oneshot
+                       :twostep
                        :interactive
                        :basic
                        :websocket
@@ -128,6 +129,7 @@
   {:added "4.0"}
   [lang context program]
   (let [_   (assert (#{:oneshot
+                       :twostep
                        :interactive
                        :basic
                        :websocket

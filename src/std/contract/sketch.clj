@@ -121,7 +121,7 @@
                        {}
                        children)
                properties)
-       :multi  (mu/from-map-syntax m)
+       :multi  (mc/from-ast m)
        :fn     (first children)
        :=      (first children)
        :enum   (set children)
@@ -143,7 +143,7 @@
 
         (vector? schema) (from-schema (mc/schema schema))
 
-        (mc/schema? schema) (from-schema-map (mu/to-map-syntax schema))
+        (mc/schema? schema) (from-schema-map (mc/ast schema))
 
         :else
         (from-schema (mc/schema schema))))

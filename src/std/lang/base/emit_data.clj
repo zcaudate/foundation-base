@@ -123,7 +123,6 @@
        (custom form grammar mopts)
        (emit-coll key form grammar mopts)))))
 
-
 (defn emit-data
   "main function for data forms"
   {:added "3.0"}

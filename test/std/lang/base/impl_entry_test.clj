@@ -4,7 +4,7 @@
             [std.lang.base.book-entry :as e]
             [std.lang.base.book :as b]
             [std.lang.base.emit :as emit]
-            [std.lang.base.emit-prep-test :as prep]
+            [std.lang.base.emit-prep-lua-test :as prep]
             [std.lib :as h]))
 
 ^{:refer std.lang.base.impl-entry/create-common :added "4.0"}

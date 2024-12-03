@@ -3,6 +3,9 @@
             [rt.basic.server-basic :as server-basic]
             [rt.basic.type-basic :as basic]
             [rt.basic.type-oneshot :as oneshot]
+            [rt.basic.type-container :as container]
+            [rt.basic.type-twostep :as twostep]
+            [rt.basic.type-remote-port :as remote-port]
             [rt.basic.type-websocket :as websocket]
             [std.lib :as h]
             [std.concurrent :as cc]))
@@ -14,6 +17,10 @@
  
  oneshot/rt-oneshot
  oneshot/rt-oneshot:create
+ twostep/rt-twostep
+ twostep/rt-twostep:create
+ remote-port/rt-remote-port
+ remote-port/rt-remote-port:create
  websocket/rt-websocket
  websocket/rt-websocket:create)
 

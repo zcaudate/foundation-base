@@ -9,35 +9,55 @@
 (defn emit-input-default
   "create input arg strings"
   {:added "3.0"}
-  ([{:keys [force modifiers symbol value] :as arg} assign grammar mopts]
+  ([{:keys [force modifiers type symbol value] :as arg} assign grammar mopts]
    (let [{:keys [start end]} (helper/get-options grammar [:default :index])
-         {:keys [reversed hint type]}  (helper/get-options grammar [:default :invoke])
+         {:keys [reversed hint]
+          :as invoke}  (helper/get-options grammar [:default :invoke])
          {vmod true kmod false} (if (:vector-last (helper/get-options grammar [:default :modifier]))
                                   (group-by vector? modifiers)
                                   {false modifiers})
-         modarr (mapv (fn [mod]
-                        (if (keyword? mod)
-                          (cond-> (name mod)
-                            (:uppercase type) (str/upper-case))
-                          (common/*emit-fn* mod grammar mopts)))
-                      kmod)
-         symstr (if symbol (common/*emit-fn* symbol grammar mopts))
-         symstr (if (and (not-empty modarr)
-                         reversed)
-                  (str symstr hint)
-                  symstr)
-         prearr (if reversed
-                  (cons symstr modarr)
-                  (conj modarr symstr))
-         prestr (str/join " " (filter identity prearr))]
-     (str prestr
+         {:keys [uppercase]} (:type invoke)
+         arr-fn (fn [mod]
+                  (if (keyword? mod)
+                    (cond-> (name mod)
+                      uppercase (str/upper-case))
+                    (common/*emit-fn* mod grammar mopts)))
+         tmod   (if type
+                  (vec type)
+                  [])
+         
+         tmodarr (mapv arr-fn tmod)
+         kmodarr (mapv arr-fn kmod)
+         mod-rev?    (and (or (empty tmodarr)
+                             (not-empty kmodarr))
+                          reversed)
+         mod-has?    (or (not-empty tmodarr)
+                         (not-empty kmodarr))
+         mod-sym     (str (if symbol
+                            (common/*emit-fn* symbol grammar mopts))
+                          (if (and mod-rev?
+                                   mod-has?)
+                            hint))
+         mixarr    (concat (if (or (not mod-rev?)
+                                   (not-empty tmodarr))
+                             kmodarr)
+                           (filter not-empty [mod-sym])
+                           (if mod-rev? mod-has?))
+         mixstr (str/join " "
+                          (filter (fn [x]
+                                    (if (seq x)
+                                      (not-empty x)
+                                      x))
+                                  mixarr))]
+     (str mixstr
           (if (not-empty vmod)
-            (str/join (map (fn [arr]
-                             (str start
-                                  (if-let [n (first arr)]
-                                    (common/*emit-fn* n grammar mopts))
-                                  end))
-                           vmod)))
+            (str/join
+             (map (fn [arr]
+                    (str start
+                         (if-let [n (first arr)]
+                           (common/*emit-fn* n grammar mopts))
+                         end))
+                  vmod)))
           (if (or force value)
             (str " " assign " " (common/*emit-fn* value grammar mopts)))))))
 
@@ -48,10 +68,12 @@
    (let [arr  (cond-> (:- (meta name))
                 :then vec
                 (not-empty suffix) (conj suffix))]
+     
      (str/join " " (map (fn [v]
                           (cond (or (keyword? v)
-                                    (vector? v)
-                                    (string? v))
+                                    (string? v)
+                                    (and (vector? v)
+                                         (empty? v)))
                                 (cond-> (h/strn v)
                                   (:uppercase type) (str/upper-case))
 
@@ -79,20 +101,31 @@
   (h/merge-nested (get-in grammar [:default :function])
                   (get-in grammar [:function key])))
 
-(defn emit-fn-preamble
+(defn emit-fn-preamble-args
   "constructs the function preamble"
   {:added "4.0"}
-  ([[key name args] block grammar mopts]
+  ([key args grammar mopts]
    (let [args  (helper/emit-typed-args args grammar)
          {:keys [sep space assign start end multiline]}
          (h/merge-nested (helper/get-options grammar [:default :function :args])
-                         (get-in grammar [:function key :args]))
-         iargs (map #(emit-input-default % assign grammar mopts)
-                    args)]
-     (str (if name (common/*emit-fn* name grammar mopts))
+                         (get-in grammar [:function key :args]))]
+     (map #(emit-input-default % assign grammar mopts)
+          args))))
+
+(defn emit-fn-preamble
+  "constructs the function preamble"
+  {:added "4.0"}
+  ([[key name args] grammar mopts]
+   (let [iargs (emit-fn-preamble-args key args grammar mopts)
+         {:keys [prefix]} (helper/get-options grammar [:default :function])
+         {:keys [sep space assign start end multiline]}
+         (h/merge-nested (helper/get-options grammar [:default :function :args])
+                         (get-in grammar [:function key :args]))]
+     (str (if prefix (str prefix " "))
+          (if name (common/*emit-fn* name grammar mopts))
           space
           (cond (empty? iargs) (str start end)
-
+                
                 multiline
                 (str start
                      (common/with-indent [2]
@@ -115,16 +148,32 @@
          [args & body] body
          header-only?  (:header (meta name))
          {:keys [compressed] :as block} (emit-fn-block key grammar)
-         typestr (emit-fn-type name (or (:raw block) (h/strn tag)) grammar mopts)
-         prestr  (emit-fn-preamble [key name args] block grammar mopts)]
-
-     (str (if (not-empty typestr)
-            (str typestr " "))
-          prestr
-          (if header-only?
-            (get-in grammar [:default :common :statement])
-            (binding [common/*compressed* compressed]
-              (block/emit-block-body key block body grammar mopts)))))))
+         {:keys [enabled assign space after]}   (helper/get-options grammar [:default :typehint])
+         typestr   (emit-fn-type name (or (:raw block) (h/strn tag)) grammar mopts)
+         prestr    (emit-fn-preamble [key name args] grammar mopts)
+         hintstr   (cond (or (not enabled)
+                             (empty? typestr)) ""
+                         
+                         after (str assign space typestr)
+                         
+                         :else (str typestr space assign))
+         blockstr  (if header-only?
+                     (get-in grammar [:default :common :statement])
+                     (binding [common/*compressed* compressed]
+                       (block/emit-block-body key block body grammar mopts)))]
+     (cond enabled
+           (cond after
+                 (str/join space (filter not-empty [prestr hintstr blockstr]))
+                 
+                 
+                 :else
+                 (str/join space (filter not-empty [hintstr prestr blockstr])))
+           
+           (not-empty typestr)
+           (str typestr " " prestr blockstr)
+           
+           :else
+           (str prestr " " blockstr)))))
 
 ;;
 ;;

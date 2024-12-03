@@ -18,9 +18,9 @@
 ^{:refer code.maven.package/coordinate->tree :added "3.0"}
 (fact "creates a coordinate tree entry"
 
-  (coordinate->tree '[foundation/std.lib "0.1.1"])
+  (coordinate->tree '[xyz.zcaudate/std.lib "0.1.1"])
   => [:dependency
-      [:groupId "foundation"]
+      [:groupId "xyz.zcaudate"]
       [:artifactId "std.lib"]
       [:version "0.1.1"]])
 
@@ -47,26 +47,38 @@
   ^:hidden
 
   (->> (pom-xml '{:description "task execution of and standardization",
-                  :name foundation/std.task,
+                  :name xyz.zcaudate/std.task,
                   :artifact "std.task",
-                  :group "foundation",
+                  :group "xyz.zcaudate",
                   :version "3.0.1",
-                  :dependencies [[foundation/std.lib "3.0.1"]]})
+                  :dependencies [[xyz.zcaudate/std.lib "3.0.1"]]})
        (html/tree))
   => (contains
       [[:modelversion "4.0.0"]
        [:packaging "jar"]
-       [:groupid "foundation"]
+       [:groupid "xyz.zcaudate"]
        [:artifactid "std.task"]
        [:version "3.0.1"]
-       [:name "foundation/std.task"]
+       [:name "xyz.zcaudate/std.task"]
        [:description "task execution of and standardization"]
        [:dependencies
         [:dependency 
-         [:groupid "foundation"] 
+         [:groupid "xyz.zcaudate"] 
          [:artifactid "std.lib"] 
          [:version "3.0.1"]]]]
       :gaps-ok))
+
+^{:refer code.maven.package/project-clj-content :added "4.0"}
+(fact "generates the project-clj text"
+  ^:hidden
+  
+  (project-clj-content '{:description "task execution of and standardization",
+                         :name xyz.zcaudate/std.task,
+                         :artifact "std.task",
+                         :group "xyz.zcaudate",
+                         :version "3.0.1",
+                         :dependencies [[xyz.zcaudate/std.lib "3.0.1"]]})
+  => string?)
 
 ^{:refer code.maven.package/generate-manifest :added "3.0"}
 (fact "creates a manifest.mf file for the project"
@@ -76,49 +88,55 @@
 
 ^{:refer code.maven.package/generate-pom :added "3.0"}
 (fact "generates a pom file given an entry"
-
+  ^:hidden
+  
   (-> (generate-pom {:artifact "std.task"
-                     :group "foundation"
+                     :group "xyz.zcaudate"
                      :version "3.0.1"}
                     "test-scratch")
       (update-in [0] html/tree)) ^:hidden
   => (contains
       [(contains [:project
                   [:packaging "jar"]
-                  [:groupid "foundation"]
+                  [:groupid "xyz.zcaudate"]
                   [:artifactid "std.task"]
                   [:version "3.0.1"]]
                  :gaps-ok)
-       "META-INF/maven/foundation/std.task/pom.xml"
-       "META-INF/maven/foundation/std.task/pom.properties"]))
+       "META-INF/maven/xyz.zcaudate/std.task/pom.xml"
+       "META-INF/maven/xyz.zcaudate/std.task/pom.properties"]))
+
+^{:refer code.maven.package/generate-project-clj :added "4.0"}
+(fact "generates the project.clj")
 
 ^{:refer code.maven.package/linkage :added "3.0"}
 (fact "returns the linkage for a given name"
-
-  (linkage 'foundation/std.lib nil -collected- nil)
-  => (contains {:name 'foundation/std.lib}))
+  
+  (linkage 'xyz.zcaudate/std.lib nil -collected- nil)
+  => (contains {:name 'xyz.zcaudate/std.lib}))
 
 ^{:refer code.maven.package/package :added "3.0"}
 (fact "returns the packaged items for a given name"
 
-  (package 'foundation/std.image {} -collected- {:root "." :version "3.0.1"})
-
-  => (contains {:package 'foundation/std.image,
-                :jar "foundation-std.image-3.0.1.jar",
-                :pom "foundation-std.image-3.0.1.pom.xml",
-                :interim (str (fs/file "./target/interim/foundation/std.image")),
+  (package 'xyz.zcaudate/std.image {} -collected-
+           {:root "." :version "3.0.1"
+            :license {:name "MIT License", :url "http://opensource.org/licenses/MIT"}})
+  
+  => (contains {:package 'xyz.zcaudate/std.image,
+                :jar "xyz.zcaudate-std.image-3.0.1.jar",
+                :pom "xyz.zcaudate-std.image-3.0.1.pom.xml",
+                :interim (str (fs/file "./target/interim/xyz.zcaudate/std.image")),
                 :files (contains ["MANIFEST.MF"
-                                  "META-INF/maven/foundation/std.image/pom.xml"
-                                  "META-INF/maven/foundation/std.image/pom.properties"])}))
+                                  "META-INF/maven/xyz.zcaudate/std.image/pom.xml"
+                                  "META-INF/maven/xyz.zcaudate/std.image/pom.properties"])}))
 
 ^{:refer code.maven.package/infer :added "3.0"}
 (fact "returns the infered items for a given name"
 
-  (infer 'foundation/std.image nil -collected-  {:root "." :version "3.0.1"})
-  => (contains {:package 'foundation/std.image,
-                :jar "foundation-std.image-3.0.1.jar",
-                :pom "foundation-std.image-3.0.1.pom.xml",
-                :interim (str (fs/file "./target/interim/foundation/std.image"))}))
+  (infer 'xyz.zcaudate/std.image nil -collected-  {:root "." :version "3.0.1"})
+  => (contains {:package 'xyz.zcaudate/std.image,
+                :jar "xyz.zcaudate-std.image-3.0.1.jar",
+                :pom "xyz.zcaudate-std.image-3.0.1.pom.xml",
+                :interim (str (fs/file "./target/interim/xyz.zcaudate/std.image"))}))
 
 (comment
   (./code:import)

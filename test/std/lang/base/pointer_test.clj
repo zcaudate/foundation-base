@@ -6,7 +6,7 @@
             [std.lang.base.book :as book]
             [std.lang.base.library :as lib]
             [std.lang.base.library-snapshot :as snap]
-            [std.lang.base.emit-prep-test :as prep]
+            [std.lang.base.emit-prep-lua-test :as prep]
             [std.json :as json]
             [std.lib :as h]))
 

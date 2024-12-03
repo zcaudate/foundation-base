@@ -53,7 +53,10 @@
          form-input (preprocess/to-input form)
          entry (book/book-entry (merge {:op op
                                         :op-key (:op reserved)
-                                        :id sym
+                                        :id (cond (vector? sym)
+                                                  (first (filter symbol? sym))
+                                                  
+                                                  :else sym)
                                         :form-input form-input
                                         :section (or section :code)
                                         :priority priority}

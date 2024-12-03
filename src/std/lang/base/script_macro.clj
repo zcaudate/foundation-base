@@ -190,6 +190,7 @@
    (let [{:keys [format section priority]} reserved
          [module fmeta] (intern-prep lang form-raw)
          form          (apply list op sym body)
+         
          [tmeta entry] (binding [preprocess/*macro-splice* (:static/template smeta)]
                          (entry/create-code-raw form
                                                 reserved
@@ -198,6 +199,10 @@
                                                        {:lang lang
                                                         :module module})))
          lib    (impl/runtime-library)
+         sym    (cond (vector? sym)
+                      (first (filter symbol? sym))
+                      
+                      :else sym)
          var    (ptr/ptr-intern (:namespace entry)
                                 (with-meta sym (merge tmeta
                                                       (if (:fn reserved)
@@ -216,7 +221,7 @@
          module (lib/get-module lib
                                 (:lang entry)
                                 (:module entry))
-
+         
          ;;
          ;;     LINT HACK FOR JS
          ;;
@@ -262,7 +267,7 @@
         `(intern-top-level-fn ~lang
                               (quote [~op ~reserved])
                               (quote ~&form)
-                              (merge ~(meta sym)
+                              (merge (quote ~(meta sym))
                                      {:time (h/time-ns)})))))))
 
 (defn intern-macros

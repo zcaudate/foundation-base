@@ -34,8 +34,9 @@
           "IEMobile/11.0"
           "NOKIA"
           "Lumia 635) like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537"]))))
-  => {"device" {"vendor" "Nokia", "model" "Lumia 635", "type" "mobile"},
-      "os" {"name" "Windows Phone", "version" "8.1"},
-      "cpu" {"architecture" "arm"},
-      "browser" {"major" "11", "name" "IEMobile", "version" "11.0"},
-      "engine" {"name" "Trident", "version" "7.0"}})
+  => map?
+  #_{"device" {"vendor" "Nokia", "model" "Lumia 635", "type" "mobile"},
+   "os" {"name" "Windows Phone", "version" "8.1"},
+   "cpu" {"architecture" "arm"},
+   "browser" {"major" "11", "name" "IEMobile", "version" "11.0"},
+   "engine" {"name" "Trident", "version" "7.0"}})

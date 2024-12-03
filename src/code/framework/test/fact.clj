@@ -20,8 +20,13 @@
 
          (and (= :meta (nav/tag nav))
               (-> nav nav/down nav/position-right nav/value (= :hidden)))
-         output
-
+         (cond common/*test-full*
+               (recur (nav/right* nav) (conj output
+                                             (nav/block
+                                              (nav/right (nav/down nav)))))
+               
+               :else output)
+         
          (query/match nav string?)
          (recur (nav/right* nav)
                 (conj output (common/gather-string nav)))

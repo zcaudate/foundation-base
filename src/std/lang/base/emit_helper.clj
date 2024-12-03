@@ -57,6 +57,7 @@
              :block     {:statement ""
                          :parameter {:start "(" :end ")"}
                          :body      {:start "{" :end "}"}}
+             :typehint  {:enabled false :assign "->" :space " " :after false}
              :function  {:raw "function"
                          :args      {:start "(" :end ")" :space ""}
                          :body      {:start "{" :end "}"}}
@@ -219,6 +220,18 @@
            (if (:symbol curr)
              (recur (conj all curr) {:modifiers [] :symbol sym} more)
              (recur all (assoc curr :symbol sym) more))
+
+           (and (h/form? sym)
+                (keyword? (first sym)))
+           (if (:symbol curr)
+             (recur (conj all curr) {:type   (butlast sym)
+                                     :symbol (last sym)}
+                    more)
+             (recur all (assoc curr
+                               :symbol sym
+                               :type   (butlast sym)
+                               :symbol (last sym))
+                    more))
            
            (or (keyword? sym) (vector? sym))
            (if (:symbol curr)

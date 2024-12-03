@@ -100,7 +100,8 @@
   ([^String s]
    (let [s (str/trim s)
          html? (or (.startsWith s "<html")
-                   (.startsWith s "<!DOCTYPE"))
+                   (.startsWith s "<!DOCTYPE")
+                   (.startsWith s "<!doctype"))
          body? (.startsWith s "<body")]
      (cond html?
            (-> (Jsoup/parse s)

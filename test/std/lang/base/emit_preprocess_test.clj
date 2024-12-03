@@ -4,7 +4,7 @@
             [std.lang.base.emit-common :as common]
             [std.lang.base.emit-helper :as helper]
             [std.lang.base.grammar :as grammar]
-            [std.lang.base.emit-prep-test :as prep]
+            [std.lang.base.emit-prep-lua-test :as prep]
             [std.lang.base.book-entry :as entry]
             [std.lib :as h]))
 
@@ -34,6 +34,12 @@
   
   (to-input-form '(@! (+ 1 2 3)))
   => '(!:template (+ 1 2 3))
+  
+  (to-input-form '(-/Class$$new))
+  => '(static-invoke -/Class "new")
+  
+  (to-input-form '(Class$$new 1 2 3))
+  => '(static-invoke Class "new" 1 2 3)
   
   (to-input-form '@#'hello)
   => '(!:deref (var std.lang.base.emit-preprocess-test/hello))

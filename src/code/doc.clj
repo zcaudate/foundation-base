@@ -5,7 +5,7 @@
             [std.task :as task]
             [std.lib :refer [definvoke]]))
 
-(def +config+ "config/code.doc.edn")
+(def +config+ "config/publish.edn")
 
 (defn make-project
   "makes a env for the publish task
@@ -103,16 +103,16 @@
 
 (comment
   ;; Currently have to change `config/code.doc.edn` manually
-  (publish '[hara] {:write true})
-  (publish '[hara])
-
+  (publish '[core] {:write true})
+  (publish '[core])
+  
   (require '[hara.deploy])
   (./code:incomplete '[hara])
   (hara.deploy/deploy '[hara] {:tag :all})
-  (deploy-template [:hara] {})
+  (deploy-template [:core] {})
   (publish :all {:write true})
-
-  (init-template "hara" {:write true})
+  
+  (init-template "bolton" {:write true})
   (def lookup (-> env :publish :sites))
 
   (lookup :hara)

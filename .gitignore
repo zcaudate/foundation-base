@@ -23,6 +23,7 @@ form-init*
 /target
 /classes
 /checkouts
+public
 profiles.clj
 pom.xml
 pom.xml.asc

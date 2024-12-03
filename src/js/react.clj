@@ -8,7 +8,7 @@
   {:macro-only true
    :bundle {:default  [["react" :as React]]
             :nil      [["react-nil" :as ReactNIL]]
-            :dom      [["react-dom" :as ReactDOM]]}
+            :dom      [["react-dom/client" :as ReactDOM]]}
    :import [["react" :as React]]
    :require [[js.core :as j]
              [xt.lang.base-lib :as k]]

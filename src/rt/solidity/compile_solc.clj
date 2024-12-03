@@ -81,7 +81,6 @@
                sym)]
     (assoc entry :form (apply list op sym rest))))
 
-
 (defn compile-ptr-prep
   "exports a ptr"
   {:added "4.0"}
@@ -157,7 +156,6 @@
 
 (def +install-contract-all-sol+
   (compile/types-add :contract.sol #'compile-all-sol))
-
 
 ;;
 ;; Compiles the bytecode
@@ -305,3 +303,8 @@
                      (or (:name m)
                          "Test")
                      true))
+
+
+(comment
+  "@openzeppelin/contracts/access/Ownable.sol"
+  )

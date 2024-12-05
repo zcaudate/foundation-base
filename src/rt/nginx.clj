@@ -163,8 +163,8 @@
    (let [port  (h/port:check-available port)
          ports (all-nginx-ports)
          arch  (keyword (h/os-arch))]
-     (h/prn {:container container
-             :port port})
+     #_(h/prn {:container container
+               :port port})
      (cond (not port)
            (h/error "Port not available" {:port port})
 

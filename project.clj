@@ -154,8 +154,7 @@
   :java-output-path  "target/classes"
   :repl-options {:host "0.0.0.0" :port 51311}
   :jvm-opts
-  [#_#_#_#_
-   "-Xms2048m"
+  ["-Xms2048m"
    "-Xmx2048m"
    "-XX:MaxMetaspaceSize=1048m"
    "-XX:-OmitStackTraceInFastThrow"
@@ -163,7 +162,6 @@
    ;;
    ;; GC FLAGS
    ;;
-   #_#_#_#_#_#_
    "-XX:+UseAdaptiveSizePolicy"
    "-XX:+AggressiveHeap"
    "-XX:+ExplicitGCInvokesConcurrent"
@@ -174,7 +172,6 @@
    ;;
    ;; GC TUNING
    ;;   
-   #_#_#_#_#_
    "-XX:MaxNewSize=256m"
    "-XX:NewSize=256m"
    "-XX:CMSInitiatingOccupancyFraction=60"

@@ -68,7 +68,7 @@
   (std.json/read (str (h/sh {:args ["curl" (str "http://localhost:" +port+ "/euoeu/oue?a=2")]})))
   => (contains-in
       {"url" "/euoeu/oue?a=2", "method" "GET", "query" {"a" "2"},
-       "path" "/euoeu/oue", "headers" {"User-Agent" "curl/8.5.0", "Accept" "*/*",
+       "path" "/euoeu/oue", "headers" {"Accept" "*/*",
                                        "Host" string?}}))
 
 ^{:refer js.lib.fastify/stop-server :added "4.0"}

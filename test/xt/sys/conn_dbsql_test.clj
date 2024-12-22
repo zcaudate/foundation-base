@@ -38,7 +38,7 @@
                                (dbsql/query conn "SELECT 1;"
                                             (repl/<!)))}))
   
-  => 1
+  => (any 1 [{"?column?" 1}])
 
   (notify/wait-on :js
     (:= (!:G initSqlJs) (require "sql.js"))

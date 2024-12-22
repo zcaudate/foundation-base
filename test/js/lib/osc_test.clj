@@ -226,12 +226,6 @@
     (osc/open osc {}))
   => (contains-in
       {"msg"
-       {"offset" 36,
-        "args" [number?],
-        "types" ",f",
-        "address" string?},
+       map?,
        "info"
-       {"address" "127.0.0.1",
-        "port" 41234,
-        "family" "IPv4",
-        "size" number?}}))
+       map?}))

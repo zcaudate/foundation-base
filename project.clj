@@ -143,8 +143,8 @@
                      template-vars [[:inner 0]]
                      fact [[:inner 0]]
                      comment [[:inner 0]]}}
-  :profiles {:dev {:plugins [#_[lein-ancient "0.6.15"]
-                             #_[lein-exec "0.3.7"]
+  :profiles {:dev {:plugins [[lein-ancient "0.6.15"]
+                             [lein-exec "0.3.7"]
                              #_[cider/cider-nrepl "0.45.0"]]}
              :repl {:injections [(try (require 'jvm.tool)
                                       (require '[std.lib :as h])

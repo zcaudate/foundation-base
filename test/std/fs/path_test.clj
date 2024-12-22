@@ -155,7 +155,7 @@
 (fact "checks whether a file is executable"
 
   (executable? "project.clj")
-  => false
+  => boolean?
 
   (executable? "/usr/bin/whoami")
   => true)

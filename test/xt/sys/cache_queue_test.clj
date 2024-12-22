@@ -18,15 +18,15 @@
    (rt.nginx.script/write [[:client-body-buffer-size "1m"]
                            [:variables-hash-max-size 2048]
                            [:variables-hash-bucket-size 128]
-                           
-                           #_[:lua-shared-dict [:GLOBAL    "20k"]]
+                           [:lua-shared-dict [:GLOBAL    "20k"]]
                            #_#_
                            [:lua-shared-dict [:WS_DEBUG  "20k"]]
                            [:lua-shared-dict [:ES_DEBUG  "20k"]]])))
 
 (l/script- :lua
   {:runtime :basic
-   :config  {#_#_:exec ["resty" "--http-conf" (create-resty-params) "-e"]
+   :config  {:exec ["resty" "--http-conf" (create-resty-params) "-e"]
+             #_#_
              :container {:group "test"
                          :image "python"
                          :runtime :basic
@@ -108,6 +108,9 @@
           (queue/queue-groupcount cache "main")])
   => [{"main" {"size" 5}} 2]
   
+  (!.lua (cache/cache :GLOBAL))
+  => (comp not nil?)
+  
   (!.lua (var cache (cache/cache :GLOBAL))
          (cache/flush cache)
          (queue/create-queue cache
@@ -119,8 +122,8 @@
                             "main"
                             "g1")
          
-           [(queue/queue-meta cache)
-            (queue/queue-groupcount cache "main")])
+         [(queue/queue-meta cache)
+          (queue/queue-groupcount cache "main")])
   => [{"main" {"size" 5}} 2])
 
 ^{:refer xt.sys.cache-queue/queue-meta :added "4.0"}

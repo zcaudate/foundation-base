@@ -28,17 +28,17 @@
   ^:hidden
   
   (!.js
-   ((http/wrap-handler k/identity)
-    {"raw"{"rawHeaders" ["Connection" "Upgrade, HTTP2-Settings",
-                         "Content-Length" "0",
-                         "HTTP2-Settings" "AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA",
-                         "Host" "127.0.0.1:3000",
-                         "Upgrade" "h2c",
-                         "User-Agent" "Java-http-client/11.0.15"]
-           "method" "POST",
-           "url" "/euoeu/oue?a=2"}
-     "params" {"*" "/euoeu/oue"}
-     "query" {"a" "2"}}))
+    ((http/wrap-handler k/identity)
+     {"raw"{"rawHeaders" ["Connection" "Upgrade, HTTP2-Settings",
+                          "Content-Length" "0",
+                          "HTTP2-Settings" "AAEAAEAAAAIAAAABAAMAAABkAAQBAAAAAAUAAEAA",
+                          "Host" "127.0.0.1:3000",
+                          "Upgrade" "h2c",
+                          "User-Agent" "Java-http-client/11.0.15"]
+            "method" "POST",
+            "url" "/euoeu/oue?a=2"}
+      "params" {"*" "/euoeu/oue"}
+      "query" {"a" "2"}}))
   => {"url" "/euoeu/oue?a=2",
       "method" "POST",
       "query" {"a" "2"},
@@ -59,18 +59,17 @@
 (fact "starts a fastify server"
   ^:hidden
   
-  (j/<! (http/start-server (@! +port+) k/identity))
+  (def -server-
+    (j/<! (http/start-server (@! +port+) k/identity)))
+  
+  -server-
   => map?
 
-  (std.json/read (:body (net.http/post (str "http://127.0.0.1:" +port+ "/euoeu/oue?a=2")
-                                       {:timeout 1000})))
+  (std.json/read (str (h/sh {:args ["curl" "http://localhost:40281/euoeu/oue?a=2"]})))
   => (contains-in
-      {"url" "/euoeu/oue?a=2",
-       "method" "POST",
-       "query" {"a" "2"},
-       "path" "/euoeu/oue",
-       "headers"
-       {"Content-Length" "0"}}))
+      {"url" "/euoeu/oue?a=2", "method" "GET", "query" {"a" "2"},
+       "path" "/euoeu/oue", "headers" {"User-Agent" "curl/8.5.0", "Accept" "*/*",
+                                       "Host" string?}}))
 
 ^{:refer js.lib.fastify/stop-server :added "4.0"}
 (fact "stops a fastify server")

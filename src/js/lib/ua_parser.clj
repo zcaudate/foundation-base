@@ -9,5 +9,7 @@
 
 (defmacro.js parseString
   [& [s]]
-  (list '. (list 'new 'UAParser s)
-        (list 'getResult)))
+  (list 'JSON.parse
+        (list 'JSON.stringify
+              (list '. (list 'new 'UAParser s)
+                    (list 'getResult)))))

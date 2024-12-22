@@ -1,7 +1,7 @@
-^{:no-test true}
 (ns lib.redis.event
   (:require [lib.redis.impl.common :as common]
             [net.resp.wire :as wire]
+            [net.resp.pool :as pool]
             [std.concurrent :as cc]
             [std.lib :as h :refer [defimpl]]))
 
@@ -267,10 +267,8 @@
   ([redis]
    (config:get redis nil))
   ([redis opts]
-   (let [opts (cc/req:opts
-               opts
-               {:post [(comp events-parse second)]})]
-     (cc/req redis ["CONFIG" "GET" "notify-keyspace-events"] opts))))
+   ((comp events-parse h/strn second)
+    (pool/pool:request-single redis ["CONFIG" "GET" "notify-keyspace-events"] opts))))
 
 (defn config:set
   "sets the config for notifications"
@@ -278,10 +276,10 @@
   ([redis events]
    (config:set redis events nil))
   ([redis events opts]
-   (let [s (events-string events)
+   (let [s    (events-string events)
          opts (cc/req:opts opts)]
-     (cc/req redis ["CONFIG" "SET" "notify-keyspace-events" (str "K" s)]
-            opts))))
+     (pool/pool:request-single redis ["CONFIG" "SET" "notify-keyspace-events" (str "K" s)]
+                               opts))))
 
 (defn config:add
   "adds config notifications"
@@ -289,10 +287,8 @@
   ([redis events]
    (config:add redis events nil))
   ([redis events opts]
-   (let [chain-fn (fn [current]
-                    (config:set redis (into current events) {:return true}))
-         opts (cc/req:opts opts {:chain [chain-fn]})]
-     (config:get redis opts))))
+   (do (config:set redis (apply conj (config:get redis opts) events) opts)
+       (config:get redis opts))))
 
 (defn config:remove
   "removes config notifications"
@@ -301,7 +297,8 @@
    (config:remove redis events nil))
   ([redis events opts]
    (let [current (config:get redis)]
-     (config:set redis (h/difference current (set events))))))
+     (config:set redis (h/difference current (set events)))
+     (config:get redis opts))))
 
 (defn notify:args
   "produces the notify args"

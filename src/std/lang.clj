@@ -29,6 +29,7 @@
             [std.lang.model.spec-lua]
             [std.lang.model.spec-python]
             [std.lang.model.spec-r]
+            [std.lang.model.spec-rust]
             [std.lang.model.spec-xtalk]
             [std.lang.interface.type-shared :as shared]
             [std.lib :as h])

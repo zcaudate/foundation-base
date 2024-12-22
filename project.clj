@@ -136,7 +136,7 @@
    
 
    ;; TESTS - std.object
-   [org.eclipse.jgit/org.eclipse.jgit "7.1.0.202411261347-r"]]
+   [org.eclipse.jgit/org.eclipse.jgit "5.13.0.202109080827-r"]]
   :global-vars {*warn-on-reflection* true}
   :cljfmt {:file-pattern #"^[^\.].*\.clj$"
            :indents {script [[:inner 0]]

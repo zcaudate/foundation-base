@@ -664,9 +664,9 @@
   [x]
   (var arr    := (:? (x:is-array? x) x [x]))
   (var arrlen := (x:len arr))
-  (var start  (:? (< 1 arrlen) (k/first arr) 0))
-  (var finish (:? (< 1 arrlen) (k/second arr) (k/first arr)))
-  (var step   (:? (< 2 arrlen) (k/nth arr 2) 1))
+  (var start  := (:? (< 1 arrlen) (k/first arr) 0))
+  (var finish := (:? (< 1 arrlen) (k/second arr) (k/first arr)))
+  (var step   := (:? (< 2 arrlen) (k/nth arr 2) 1))
   (var out := [start])
   (var i := (+ step start))
   (cond (and (< 0 step)

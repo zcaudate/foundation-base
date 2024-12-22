@@ -41,7 +41,9 @@
   => 0.05578254003710745
 
   (probability (binomial 10 0.3) [1 2 3])
-  => [0.1210608209999997 0.2334744405000001 0.26682793199999993])
+  => (contains [(approx 0.1210608)
+                (approx 0.2334744)
+                (approx 0.2668279)]))
 
 ^{:refer math.stats.distribution/cumulative :added "3.0"}
 (fact "returns the cumulative density for the distribution"

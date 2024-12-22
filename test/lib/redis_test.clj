@@ -11,12 +11,12 @@
   (:refer-clojure :exclude [read]))
 
 (fact:global
- {:setup [(bench/start-redis-array [17000])]
+ {:setup [(bench/start-redis-array [17001])]
   :component
-  {|client|   {:create   (r/client-create {:port 17000})
+  {|client|   {:create   (r/client-create {:port 17001})
                :setup    h/start
                :teardown h/stop}}
-  :teardown [(bench/stop-redis-array [17000])]})
+  :teardown [(bench/stop-redis-array [17001])]})
 
 ^{:refer lib.redis/client-steps :added "3.0"}
 (fact "clients steps for start up and shutdown")
@@ -32,8 +32,12 @@
   ^:hidden
   
   (r/client-create {:id "localhost"
-                    :port 17000})
-  => map?)
+                    :port 17001})
+  => map?
+  
+  (cc/req (h/start (r/client-create {:id "localhost"
+                                     :port 17001}))
+          ["PING"]))
 
 (comment
 

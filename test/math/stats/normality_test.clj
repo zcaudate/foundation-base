@@ -33,7 +33,7 @@
   (-> [0. 0. 0. 0. 0. 0. 0. 100. 100. 100. 100. 100. 100.]
       (kolmogorov-smirnov)
       seq)
-  => [0.5 7.868992957994292E-4])
+  => (contains [0.5 (approx 7.86899E-4)]))
 
 ^{:refer math.stats.normality/shapiro-francia :added "3.0"}
 (fact "Performs the Shapiro-Francia test for normality"

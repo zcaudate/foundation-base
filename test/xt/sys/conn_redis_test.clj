@@ -25,10 +25,10 @@
              [xt.lang.base-lib :as k]]})
 
 (fact:global
- {:setup    [(bench/start-redis-array [17000])
+ {:setup    [(bench/start-redis-array [17001])
              (l/rt:restart)]
   :teardown [(l/rt:stop)
-             (bench/stop-redis-array [17000])]})
+             (bench/stop-redis-array [17001])]})
 
 ^{:refer xt.sys.conn-redis/connect :added "4.0"}
 (fact "connects to a datasource"
@@ -40,14 +40,14 @@
   
   (!.lua
    (var conn (redis/connect {:constructor lua-driver/connect-constructor
-                             :port 17000}
+                             :port 17001}
                             {}))
    (redis/exec conn "ping" [] {}))
   => "PONG"
 
   (!.lua
    (var conn (redis/connect {:constructor lua-driver/connect-constructor
-                             :port 17000}
+                             :port 17001}
                             {}))
    (redis/exec conn "echo" ["hello"] {}))
   => "hello"
@@ -58,7 +58,7 @@
   
   (notify/wait-on :js
     (redis/connect {:constructor js-driver/connect-constructor
-                    :port 17000}
+                    :port 17001}
                    {:success (fn [conn]
                                (redis/exec conn "ping" []
                                            (repl/<!)))}))
@@ -66,7 +66,7 @@
   
   (notify/wait-on :js
     (redis/connect {:constructor js-driver/connect-constructor
-                    :port 17000}
+                    :port 17001}
                    {:success (fn [conn]
                                (redis/exec conn "echo" ["hello"]
                                            (repl/<!)))}))
@@ -81,7 +81,7 @@
   
   (!.lua
    (var conn (redis/connect {:constructor lua-driver/connect-constructor
-                             :port 17000}
+                             :port 17001}
                             {}))
    [(redis/exec conn "ping" [])
     (redis/exec conn "echo" ["hello"])])
@@ -90,7 +90,7 @@
   (do
     (notify/wait-on :js
       (:= (!:G conn) (redis/connect {:constructor js-driver/connect-constructor
-                                     :port 17000}
+                                     :port 17001}
                                     (repl/<!))))
     
     [(notify/wait-on :js
@@ -101,8 +101,8 @@
   => ["PONG" "hello"])
 
 ^{:refer xt.sys.conn-redis/create-subscription :added "4.0"
-  :setup [(bench/stop-redis-array [17000])
-          (bench/start-redis-array [17000])
+  :setup [(bench/stop-redis-array [17001])
+          (bench/start-redis-array [17001])
           (l/rt:restart)]}
 (fact "creates a subscription given channel"
   ^:hidden
@@ -111,7 +111,7 @@
         (future
           (notify/wait-on [:lua 5000]
            (var conn (redis/connect {:constructor lua-driver/connect-constructor
-                                     :port 17000}
+                                     :port 17001}
                                     {}))
            (redis/create-subscription
             conn
@@ -120,7 +120,7 @@
            (repl/notify res))))
       (notify/wait-on :js
         (redis/connect {:constructor js-driver/connect-constructor
-                        :port 17000}
+                        :port 17001}
                        {:success (fn [conn]
                                    (redis/exec conn "publish" ["__TEST__" "123"]
                                                (repl/<!)))}))
@@ -129,8 +129,8 @@
   => ["message" "__TEST__" "123"])
 
 ^{:refer xt.sys.conn-redis/create-psubscription :added "4.0"
-  :setup [(bench/stop-redis-array [17000])
-          (bench/start-redis-array [17000])
+  :setup [(bench/stop-redis-array [17001])
+          (bench/start-redis-array [17001])
           (l/rt:restart)]}
 (fact "creates a pattern subscription given channel"
   ^:hidden
@@ -139,7 +139,7 @@
         (future
           (notify/wait-on [:lua 5000]
            (var conn (redis/connect {:constructor lua-driver/connect-constructor
-                                     :port 17000}
+                                     :port 17001}
                                     {}))
            (redis/create-psubscription
             conn
@@ -148,7 +148,7 @@
            (repl/notify res))))
       (notify/wait-on :js
         (redis/connect {:constructor js-driver/connect-constructor
-                        :port 17000}
+                        :port 17001}
                        {:success (fn [conn]
                                    (redis/exec conn "publish" ["__TEST__" "123"]
                                                (repl/<!)))}))
@@ -162,7 +162,7 @@
   
   (!.lua
    (var conn (redis/connect {:constructor lua-driver/connect-constructor
-                             :port 17000}
+                             :port 17001}
                             {}))
    [(redis/eval-body conn {:body "return 1" }
                      []
@@ -188,7 +188,7 @@
   (do
     (notify/wait-on :js
       (:= (!:G  conn) (redis/connect {:constructor js-driver/connect-constructor
-                                      :port 17000}
+                                      :port 17001}
                                        (repl/<!))))
     [(notify/wait-on :js
        (redis/eval-body conn {:body "return 1"}
@@ -222,7 +222,7 @@
   
   (!.lua
    (var conn (redis/connect {:constructor lua-driver/connect-constructor
-                             :port 17000}
+                             :port 17001}
                             {}))
    [(redis/exec conn "flushdb" [])
     (redis/eval-script conn {:sha (@! (h/sha1 "return 1"))
@@ -233,7 +233,7 @@
   (do
     (notify/wait-on :js
       (:= (!:G  conn) (redis/connect {:constructor js-driver/connect-constructor
-                                      :port 17000}
+                                      :port 17001}
                                      (repl/<!))))
     [(notify/wait-on :js
        (redis/exec conn "flushdb" [] (repl/<!)))

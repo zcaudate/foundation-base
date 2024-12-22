@@ -158,12 +158,15 @@
   {:added "3.0"}
   (^String
    [obj]
-   (cond (keyword? obj)
+   (cond (bytes? obj)
+         (String. ^bytes obj)
+
+         (keyword? obj)
          (subs (str obj) 1)
 
          (string? obj)
          obj
-         
+
          :else
          (pr-str obj)))
   (^String

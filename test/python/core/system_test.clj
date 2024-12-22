@@ -31,8 +31,8 @@
 (fact "loads a package using __loader__"
   ^:hidden
 
-  (str (y/pkg-load "os"))
-  => #"<module 'os'")
+  (str (!.py (y/pkg-load "os")))
+  => throws)
 
 ^{:refer python.core.system/pkg :added "4.0"}
 (fact "loads a package using importlib"

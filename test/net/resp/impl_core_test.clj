@@ -10,17 +10,17 @@
 
 (defn setup
   ([m]
-   (let [conn (conn/connection {:port 17000})]
+   (let [conn (conn/connection {:port 17001})]
      (doto conn (cc/req ["FLUSHDB"])))))
 
 (fact:global
- {:setup [(bench/start-redis-array [17000])]
+ {:setup [(bench/start-redis-array [17001])]
   
   :component
   {|conn|    {:create   nil
               :setup    setup
               :teardown conn/connection:close}}
-  :teardown [(bench/stop-redis-array [17000])]})
+  :teardown [(bench/stop-redis-array [17001])]})
 
 ^{:refer net.resp.wire/call :added "3.0"
   :use [|conn|] :adopt true}

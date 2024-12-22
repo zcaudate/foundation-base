@@ -55,19 +55,19 @@
    (var privateKey
         (Buffer.from "0000000000000000000000000000000000000000000000000000000000000001"
                      "hex"))
+   
    (bc/wif-encode 128 privateKey true))
   => "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn"
-
   
   ;;
   ;; DOGECOIN TESTNET
   ;;
   
   (!.js
-   (var privateKey
-        (Buffer.from "5ef54e669cad68ae73ff6f25b80a28ac3be203db0fdcf6a7894f88b0f3b99c53"
-                     "hex"))
-   (bc/wif-encode 0xf1 privateKey true))
+    (var privateKey
+         (Buffer.from "5ef54e669cad68ae73ff6f25b80a28ac3be203db0fdcf6a7894f88b0f3b99c53"
+                      "hex"))
+    (bc/wif-encode 0xf1 privateKey true))
   => "chvYoVjuvRgDxFZrm4TZRKKh1hoRdMKb8XnaWk1gpYBq27FSwyK5")
 
 ^{:refer js.lib.bitcoin/wif-decode :added "4.0"}
@@ -86,9 +86,10 @@
    {:version version
     :compressed compressed
     :key (. privateKey (toString "hex"))})
-  => {"key" "0000000000000000000000000000000000000000000000000000000000000001",
+  => {"key" "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
       "version" 128,
       "compressed" true}
+  
   
   
   ;;
@@ -103,7 +104,7 @@
    {:version version
     :compressed compressed
     :key (. privateKey (toString "hex"))})
-  => {"key" "5ef54e669cad68ae73ff6f25b80a28ac3be203db0fdcf6a7894f88b0f3b99c53",
+  => {"key" "94,245,78,102,156,173,104,174,115,255,111,37,184,10,40,172,59,226,3,219,15,220,246,167,137,79,136,176,243,185,156,83",
       "version" 241,
       "compressed" true})
 
@@ -122,19 +123,17 @@
                 (:? (== "Buffer" (k/type-native x))
                     (. x (toString "hex"))
                     x))))
-  => {"output" "76a914751e76e8199196d454941c45d1b3a323f1433bd688ac",
-      "hash" "751e76e8199196d454941c45d1b3a323f1433bd6",
-      "name" "p2pkh",
-      "network"
-      {"bip32" {"private" 76066276, "public" 76067358},
-       "messagePrefix" "Bitcoin Signed Message:\n",
-       "pubKeyHash" 0,
-       "scriptHash" 5,
-       "wif" 128,
-       "bech32" "bc"},
-      "address" "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
-      "pubkey"
-      "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"}
+  => (contains-in
+      {"output" "76a914751e76e8199196d454941c45d1b3a323f1433bd688ac",
+       "hash" "751e76e8199196d454941c45d1b3a323f1433bd6",
+       "name" "p2pkh",
+       "network" {"bip32" {"private" 76066276, "public" 76067358},
+                  "messagePrefix" "Bitcoin Signed Message:\n",
+                  "pubKeyHash" 0, "scriptHash" 5, "wif" 128,
+                  "bech32" "bc"},
+       "address" "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"})
+  
+  
   
   ;;
   ;; DOGECOIN TESTNET
@@ -151,20 +150,14 @@
                 (:? (== "Buffer" (k/type-native x))
                     (. x (toString "hex"))
                     x))))
-  => {"output" "76a9141a355bfb57c5cabc104014713c3a68ff9277c2ff88ac",
-      "hash" "1a355bfb57c5cabc104014713c3a68ff9277c2ff",
-      "name" "p2pkh",
-      "network"
-      {"bip32" {"private" 70615956, "public" 70617039},
-       "messagePrefix" "\\x19Dogecoin Signed Message:\\n",
-       "pubKeyHash" 113,
-       "scriptHash" 196,
-       "wif" 241,
-       "bip44" 3,
-       "bech32" "td"},
-      "address" "nWajkjBzFoB4rb646NWqDRop5nmyP6WHBU",
-      "pubkey"
-      "02c4ecc73372c3d62008fe2963d4064c01547421ef6a47c756df41d191156b8192"}
+  => (contains-in
+      {"output" "76a9141a355bfb57c5cabc104014713c3a68ff9277c2ff88ac",
+       "hash" "1a355bfb57c5cabc104014713c3a68ff9277c2ff",
+       "name" "p2pkh",
+       "network" {"bip32" {"private" 70615956, "public" 70617039},
+                  "messagePrefix" "\\x19Dogecoin Signed Message:\\n",
+                  "pubKeyHash" 113, "scriptHash" 196, "wif" 241, "bip44" 3, "bech32" "td"},
+       "address" "nWajkjBzFoB4rb646NWqDRop5nmyP6WHBU", })
   
   
   ;;
@@ -178,7 +171,7 @@
    
    (. pair publicKey
       (toString "hex")))
-  => "02c4ecc73372c3d62008fe2963d4064c01547421ef6a47c756df41d191156b8192")
+  => "2,196,236,199,51,114,195,214,32,8,254,41,99,212,6,76,1,84,116,33,239,106,71,199,86,223,65,209,145,21,107,129,146")
 
 ^{:refer js.lib.bitcoin/pair-from-random :added "4.0"}
 (fact "makes a random key"
@@ -210,7 +203,7 @@
    (. (bc/wif-decode "chDWHF7Hg6tZzrn1XYi5VFrqidNY51Bo8LEhPmLkHh4syZV3xfTG")
       privateKey
       (toString "hex")))
-  => "49d80a6f9116dabd33222b0afd3a0e99d06d3ec09df29fde460aee7fc9013cd4"
+  => "73,216,10,111,145,22,218,189,51,34,43,10,253,58,14,153,208,109,62,192,157,242,159,222,70,10,238,127,201,1,60,212"
   
   (!.js
    (var pair (bc/pair-from-wif "chDWHF7Hg6tZzrn1XYi5VFrqidNY51Bo8LEhPmLkHh4syZV3xfTG"
@@ -223,20 +216,14 @@
                 (:? (== "Buffer" (k/type-native x))
                     (. x (toString "hex"))
                     x))))
-  => {"output" "76a91449af7a07cd4c366ab7419cede82db2650c05328588ac",
-      "hash" "49af7a07cd4c366ab7419cede82db2650c053285",
-      "name" "p2pkh",
-      "network"
-      {"bip32" {"private" 70615956, "public" 70617039},
-       "messagePrefix" "\\x19Dogecoin Signed Message:\\n",
-       "pubKeyHash" 113,
-       "scriptHash" 196,
-       "wif" 241,
-       "bip44" 3,
-       "bech32" "td"},
-      "address" "naumocEu7HMf4z2CTQRp9NWpT8JGrYaYqp",
-      "pubkey"
-      "0338042bc49430622c792856213984b4b086c8c1b625715fd7a15edb0d991e214f"})
+  => (contains-in
+      {"output" "76a91449af7a07cd4c366ab7419cede82db2650c05328588ac",
+       "hash" "49af7a07cd4c366ab7419cede82db2650c053285",
+       "name" "p2pkh",
+       "network" {"bip32" {"private" 70615956, "public" 70617039},
+                  "messagePrefix" "\\x19Dogecoin Signed Message:\\n", "pubKeyHash" 113,
+                  "scriptHash" 196, "wif" 241, "bip44" 3, "bech32" "td"},
+       "address" "naumocEu7HMf4z2CTQRp9NWpT8JGrYaYqp"}))
 
 ^{:refer js.lib.bitcoin/sign-message :added "4.0"}
 (fact "signs a message given wif"

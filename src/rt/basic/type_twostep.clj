@@ -24,44 +24,24 @@
   (let [tmp-exec (java.io.File/createTempFile "tmp" "")
         tmp-file (str tmp-exec
                       "."
-                        (or extension
-                            (h/error "Requires File Extension"
-                                     opts)))
+                      (or extension
+                          (h/error "Requires File Extension"
+                                   opts)))
         _   (spit tmp-file input-body)
+
+        _   (h/prn tmp-exec
+                   tmp-file
+                   input-body
+                   {:args (conj input-args (str tmp-file))
+                    :root (str (fs/parent tmp-file))}
+                   {:args [(str "./" (fs/file-name tmp-exec))]
+                    :root (str (fs/parent tmp-file))
+                    })
         _   (h/sh {:args (conj input-args (str tmp-file))
-                   :root (str (fs/parent tmp-file))})
-        _   (h/sh {:args [(str "./" tmp-exec)]
-                   :root (str (fs/parent tmp-file))
-                   })]
-    )
-  
-  #_
-  (try (let [args (if pipe
-                    input-args
-                    (conj input-args input-body))
-             proc (h/sh {:wait false
-                         :args args
-                         :root root})
-             _    (cond-> proc
-                    pipe  (doto (h/sh-write input-body) (h/sh-close))
-                    :then (h/sh-wait))
-             {:keys [err out exit] :as ret} (h/sh-output proc)]
-         (cond raw
-               [exit (or (not-empty (str/split-lines (trim out)))
-                         (str/split-lines (trim err)))]
-
-               :else
-               (trim out)))
-       (catch Throwable t
-         (if stderr
-           (trim (.getMessage t))
-           (throw t)))))
-
-(comment
-  
-  
-
-  )
+                   :root (str (fs/parent tmp-file))})]
+    (type (h/sh {:args [(str "./" (fs/file-name tmp-exec))]
+                 :root (str (fs/parent tmp-file))
+                 }))))
 
 (defn raw-eval-twostep
   "evaluates a raw statement with twostep"
@@ -133,3 +113,31 @@
            process] :as m}]
   (rt-twostep:create m))
 
+
+
+(comment
+  
+  #_
+  (try (let [args (if pipe
+                    input-args
+                    (conj input-args input-body))
+             proc (h/sh {:wait false
+                         :args args
+                         :root root})
+             _    (cond-> proc
+                    pipe  (doto (h/sh-write input-body) (h/sh-close))
+                    :then (h/sh-wait))
+             {:keys [err out exit] :as ret} (h/sh-output proc)]
+         (cond raw
+               [exit (or (not-empty (str/split-lines (trim out)))
+                         (str/split-lines (trim err)))]
+
+               :else
+               (trim out)))
+       (catch Throwable t
+         (if stderr
+           (trim (.getMessage t))
+           (throw t))))
+  
+
+  )

@@ -204,7 +204,9 @@
   "encodes a wallet interchange format"
   {:added "4.0"}
   [version private-key compressed]
-  (list '. 'WIF (list 'encode version private-key compressed)))
+  (list '. 'WIF (list 'encode {:version version
+                               :privateKey  private-key
+                               :compressed compressed})))
 
 (defmacro.js wif-decode
   "decodes a wallet interchange format"

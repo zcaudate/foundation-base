@@ -93,7 +93,7 @@
           (list '!:deref (list 'var (or (h/var-sym (resolve (second input)))
                                         (h/error "Var not found" {:input (second input)}))))
           (list '!:eval input))
-
+        
         #_#_
         (and (symbol? tag)
              (str/includes? (str tag) "$$"))

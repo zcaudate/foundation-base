@@ -40,7 +40,7 @@
                             hint))
          mixarr    (concat (if (or (not mod-rev?)
                                    (not-empty tmodarr))
-                             kmodarr)
+                             (concat tmodarr kmodarr))
                            (filter not-empty [mod-sym])
                            (if mod-rev? mod-has?))
          mixstr (str/join " "

@@ -44,7 +44,7 @@
    [org.apache.maven/maven-aether-provider "3.3.9"]
    
    ;; lib.javaosc
-   #_<64;64;10M
+   #_
    [com.illposed.osc/javaosc-core "0.8"]
    #_#_#_#_#_
    [org.clojars.technomancy/jmdns "3.2.1"]
@@ -112,8 +112,8 @@
    [borkdude/edamame "1.4.24"]
 
    ;; std.contract
-   [metosin/malli "0.14.0"]
-
+   [metosin/malli "0.17.0"]
+   
    ;; std.html
    [org.jsoup/jsoup "1.17.2"]
 
@@ -136,17 +136,16 @@
    
 
    ;; TESTS - std.object
-   [org.eclipse.jgit/org.eclipse.jgit "5.13.0.202109080827-r"]]
+   [org.eclipse.jgit/org.eclipse.jgit "7.1.0.202411261347-r"]]
   :global-vars {*warn-on-reflection* true}
   :cljfmt {:file-pattern #"^[^\.].*\.clj$"
            :indents {script [[:inner 0]]
                      template-vars [[:inner 0]]
                      fact [[:inner 0]]
                      comment [[:inner 0]]}}
-  :profiles {:dev {:plugins [[lein-ancient "0.6.15"]
-                             [lein-exec "0.3.7"]
-                             [lein-cljfmt "0.7.0"]
-                             [cider/cider-nrepl "0.45.0"]]}
+  :profiles {:dev {:plugins [#_[lein-ancient "0.6.15"]
+                             #_[lein-exec "0.3.7"]
+                             #_[cider/cider-nrepl "0.45.0"]]}
              :repl {:injections [(try (require 'jvm.tool)
                                       (require '[std.lib :as h])
                                       (catch Throwable t (.printStackTrace t)))]}}
@@ -155,7 +154,8 @@
   :java-output-path  "target/classes"
   :repl-options {:host "0.0.0.0" :port 51311}
   :jvm-opts
-  ["-Xms2048m"
+  [#_#_#_#_
+   "-Xms2048m"
    "-Xmx2048m"
    "-XX:MaxMetaspaceSize=1048m"
    "-XX:-OmitStackTraceInFastThrow"
@@ -163,6 +163,7 @@
    ;;
    ;; GC FLAGS
    ;;
+   #_#_#_#_#_#_
    "-XX:+UseAdaptiveSizePolicy"
    "-XX:+AggressiveHeap"
    "-XX:+ExplicitGCInvokesConcurrent"
@@ -173,6 +174,7 @@
    ;;
    ;; GC TUNING
    ;;   
+   #_#_#_#_#_
    "-XX:MaxNewSize=256m"
    "-XX:NewSize=256m"
    "-XX:CMSInitiatingOccupancyFraction=60"
@@ -186,4 +188,5 @@
    "-Djdk.attach.allowAttachSelf=true"
    "--add-opens" "javafx.graphics/com.sun.javafx.util=ALL-UNNAMED"
    "--add-opens" "java.base/java.lang=ALL-UNNAMED"
+   "--add-opens" "java.base/java.lang.reflect=ALL-UNNAMED"
    "--illegal-access=permit"])

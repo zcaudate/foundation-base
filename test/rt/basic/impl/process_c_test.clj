@@ -30,6 +30,10 @@
                  10)))
 
 
+(comment
+  ^*(!.c
+      (-/hello)))
+
 ^{:refer rt.basic.impl.process-c/CANARY :adopt true :added "4.0"}
 (fact "EVALUATE tcc in c"
   ^:hidden
@@ -39,7 +43,7 @@
 
   [(-/add 1 2)
    (!.c
-    (-/add 1 2))]
+     (-/add 1 2))]
   => [3 3]
 
   [(-/sub 1 2)

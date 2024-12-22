@@ -1,54 +1,215 @@
 (ns std.contract.type-test
   (:use code.test)
-  (:require [std.contract.type :refer :all]))
+  (:require [std.contract.type :as t]
+            [std.contract.sketch :as s]
+            [malli.core :as mc]))
 
 ^{:refer std.contract.type/check :added "3.0"}
-(fact "checks that data fits the spec")
+(fact "checks that data fits the spec"
+  ^:hidden
+  
+  (t/check (s/to-schema
+            {:a number?})
+           {:a 2})
+  => {:a 2}
+
+  (t/check (s/lax
+            {:a number?})
+           {:b 1})
+  => {:b 1}
+
+
+  (t/check (s/closed
+            (s/lax
+             {:a number?}))
+           {:b 1})
+  => (throws)
+  
+  (t/check (s/to-schema
+            {:a 1})
+           {:a 2})
+  => (throws))
 
 ^{:refer std.contract.type/common-spec-invoke :added "3.0"}
-(fact "invokes the common spec")
+(fact "invokes the common spec"
+  ^:hidden
+
+  (t/common-spec-invoke
+   (t/common-spec {:a 1})
+   {:a 1})
+  => {:a 1}
+
+  (t/common-spec-invoke
+   (t/common-spec {:a 1})
+   {:a 2})
+  => (throws))
 
 ^{:refer std.contract.type/common-spec-string :added "3.0"}
-(fact "displays the common spec")
+(fact "displays the common spec"
+  ^:hidden
+
+  (t/common-spec-string
+   (t/common-spec {:a 1}))
+  => "#spec {:a 1}")
 
 ^{:refer std.contract.type/combine :added "3.0"}
-(fact "combines spec schemas (usually maps)")
+(fact "combines spec schemas (usually maps)"
+  ^:hidden
+  
+  (mc/form (t/combine {:a 1}
+                      [{:b 2}]))
+  => [:map [:a [:= 1]] [:b [:= 2]]])
 
 ^{:refer std.contract.type/common-spec :added "3.0"}
-(fact "creates a common spec")
+(fact "creates a common spec"
+  ^:hidden
+  
+  (mc/form
+   (s/to-schema (t/common-spec {:a 1}
+                               {:b 2})))
+  => [:map [:a [:= 1]] [:b [:= 2]]])
 
 ^{:refer std.contract.type/defspec :added "3.0"}
-(fact "macro for defining a spec")
+(fact "macro for defining a spec"
+  ^:hidden
+  
+  (macroexpand-1
+   '(t/defspec <hello>
+      {:a 1}))
+  => '(def <hello> (std.contract.type/common-spec {:a 1})))
 
 ^{:refer std.contract.type/multi-spec-invoke :added "3.0"}
-(fact "invokes the multi spec")
+(fact "invokes the multi spec"
+  ^:hidden
+  
+  (t/multi-spec-invoke
+   (t/multi-spec :type
+                 [[:raw {:data [:or :string]}]])
+   {:type :raw
+    :data "hello"})
+  => {:type :raw, :data "hello"}
+
+  (t/multi-spec-invoke
+   (t/multi-spec :type
+                 [[:raw {:data [:or :string]}]])
+   {:data "hello"})
+  => (throws)
+
+  (t/multi-spec-invoke
+   (t/multi-spec :type
+                 [[:raw {:data [:or :string]}]])
+   {:data "hello"})
+  => (throws))
 
 ^{:refer std.contract.type/multi-spec-string :added "3.0"}
-(fact "displays the multi spec")
+(fact "displays the multi spec"
+  ^:hidden
+  
+  (t/multi-spec-string
+   (t/multi-spec :type
+                 [[:raw {:data [:or :string]}]]))
+  => "#spec.multi {:raw {:data [:or [:string]]}}")
 
 ^{:refer std.contract.type/multi-gen-final :added "3.0"}
-(fact "generates the final schema for a multispec")
+(fact "generates the final schema for a multispec"
+  ^:hidden
+  
+  (mc/form
+   (t/multi-gen-final :type
+                      [[:raw (s/to-schema {:data [:or :string]})]]))
+  => [:multi {:dispatch :type} [:raw [:map [:data [:or :string]]]]])
 
 ^{:refer std.contract.type/multi-spec-add :added "3.0"}
-(fact "adds additional types to the multi spec")
+(fact "adds additional types to the multi spec"
+  ^:hidden
+  
+  (t/multi-spec-add
+   (t/multi-spec :type
+                 [])
+   :raw (s/to-schema {:data [:or :string]}))
+  => '(:raw)
+
+  (mc/form
+   (s/to-schema
+    (doto (t/multi-spec :type
+                        [])
+      (t/multi-spec-add :raw (s/to-schema {:data [:or :string]})))))
+  => [:multi {:dispatch :type} [:raw [:map [:data [:or :string]]]]])
 
 ^{:refer std.contract.type/multi-spec-remove :added "3.0"}
-(fact "removes additional types from the multi spec")
+(fact "removes additional types from the multi spec"
+  ^:hidden
+  
+  (t/multi-spec-remove
+   (t/multi-spec :type
+                 [[:raw {:data [:or :string]}]])
+   :raw)
+  => nil
+
+  (mc/form
+   (s/to-schema
+    (doto (t/multi-spec :type
+                        [[:raw (s/to-schema {:data [:or :string]})]])
+      (t/multi-spec-remove :raw))))
+  => [:multi {:dispatch :type}])
 
 ^{:refer std.contract.type/multi-spec :added "3.0"}
-(fact "creates a multi spec")
+(fact "creates a multi spec"
+  ^:hidden
+
+  (mc/form
+   (s/to-schema
+    (t/multi-spec :type
+                  [[:raw (s/to-schema {:data [:or :string]})]])))
+  => [:multi {:dispatch :type} [:raw [:map [:data [:or :string]]]]])
 
 ^{:refer std.contract.type/defmultispec :added "3.0"}
-(fact "macro for defining a multispec")
+(fact "macro for defining a multispec"
+  ^:hidden
+
+  (macroexpand-1
+   '(t/defmultispec <hello> :type
+      :raw (s/to-schema {:data [:or :string]})))
+  => '(def <hello>
+        (std.contract.type/multi-spec :type
+                                      {:raw (s/to-schema {:data [:or :string]})})))
 
 ^{:refer std.contract.type/defcase :added "3.0"}
-(fact "adds an additional case to the multispec")
+(fact "adds an additional case to the multispec"
+  ^:hidden
+  
+  (macroexpand-1
+   '(t/defcase <hello> 
+      :raw {:data [:or :string]}))
+  => '(do (std.contract.type/multi-spec-add
+           <hello>
+           :raw (std.contract.type/combine {:data [:or :string]} []))
+          (var <hello>)))
 
 ^{:refer std.contract.type/spec? :added "3.0"}
-(fact "checks that object is of type spec")
+(fact "checks that object is of type spec"
+  ^:hidden
+
+  (t/spec? (t/multi-spec :type
+                         [[:raw (s/to-schema {:data [:or :string]})]]))
+  => true)
 
 ^{:refer std.contract.type/valid? :added "3.0"}
-(fact "checks that data is valid")
+(fact "checks that data is valid"
+  ^:hidden
+
+  (t/valid? (t/multi-spec :type
+                         [[:raw (s/to-schema {:data [:or :string]})]])
+
+            {:type :raw
+             :data "hello"})
+  => true
+
+  (t/valid? (t/multi-spec :type
+                         [[:raw (s/to-schema {:data [:or :string]})]])
+
+            {:data "hello"})
+  => false)
 
 (comment
 

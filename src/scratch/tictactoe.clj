@@ -1,33 +1,5 @@
-(ns hello
-  (:require [std.lang :as l]
-            [std.lib :as h]
-            [clojure.set :as set]))
-
-(l/script :js)
-
-(!.js
-  (fn []
-    (var a 1)
-    (var b 2)
-    (return
-     (+ 1 2 3))))
-
-
-(defn.js add-10
-  [x]
-  (return (+ x 10)))
-
-
-
-
-
-(l/script :python
-  {:runtime :basic
-   :require [[xt.lang.base-lib :as k]]})
-
-(defn.py add-20
-  [y]
-  (return (+ y 20)))
+(ns scratch.tictactoe
+  (:require [clojure.set :as set]))
 
 ;;;
 ;;; TIC TAC TOE
@@ -38,6 +10,8 @@
 ;;;
 
 (defn new-game
+  "creates a new game"
+  {:added "4.0"}
   []
   {:board {:bg #{:aa :ab :ac
                  :ba :bb :bc
@@ -61,6 +35,8 @@
    #{:ac :bb :ca}])
 
 (defn check-win
+  "checks if pieces are in the winning position"
+  {:added "4.0"}
   [board]
   (boolean
    (some (fn [c]
@@ -68,6 +44,8 @@
          +winning-conditions+)))
 
 (defn next-move
+  "transitions from one state to the next"
+  {:added "4.0"}
   [game move]
   (let [[side pos] move
         {:keys [board turn status]} game
@@ -81,8 +59,8 @@
 
         ;; Update board
         new-board (-> board
-                      (update :bg dissoc pos)
-                      (update side assoc pos))
+                      (update :bg disj pos)
+                      (update side conj pos))
         
         ;; Check for winner 
         is-winner (check-win (get new-board side))
@@ -93,16 +71,11 @@
      :turn   (if (= side :p1) :p2 :p1)
      :status (if (or is-winner
                      is-full)
-               :active
-               :finished)}))
+               :done
+               :active)
+     :winner (cond is-winner
+                   side
 
+                   is-full
+                   :draw)}))
 
-
-
-(comment
-  (check-win #{:aa :ab :cc})
-  
-  (add-10 10)
-  (add-20 10)
-
-  )

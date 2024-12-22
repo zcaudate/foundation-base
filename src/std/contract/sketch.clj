@@ -70,9 +70,9 @@
   "gets function symbol"
   {:added "3.0"}
   ([f]
-   (h/-> (re-find #"#function\[(.*?)(--\d+)?\]"
+   (h/-> (re-find #"#(function|object)\[(.*?)(--\d+)?\]"
                   (prn-str f))
-         (second)
+         (nth 2)
          (if % (symbol %)))))
 
 (defn func-form
@@ -112,22 +112,22 @@
    (let [{:keys [type properties children]} m]
      (case type
        :map  (with-meta
-               (reduce (fn [acc [id opts sub]]
+               (reduce (fn [acc [id {:keys [value properties]}]]
                          (assoc acc
-                                (if (:optional opts)
+                                (if (:optional properties)
                                   (as:optional id)
                                   id)
-                                (from-schema-map sub)))
+                                (from-schema-map value)))
                        {}
-                       children)
+                       (:keys m))
                properties)
        :multi  (mc/from-ast m)
        :fn     (first children)
-       :=      (first children)
-       :enum   (set children)
-       :maybe  (with-meta (as:maybe (from-schema-map (first children)))
+       :=      (:value m)
+       :enum   (set (:values m))
+       :maybe  (with-meta (as:maybe (from-schema-map (:child m)))
                  properties)
-       :string  [:string properties]
+       :string  (filterv identity [:string properties])
 
        (if (keyword? type)
          (with-meta (apply vector type (map from-schema-map children)) properties)
@@ -140,7 +140,7 @@
   {:added "3.0"}
   [schema]
   (cond (map? schema) schema
-
+        
         (vector? schema) (from-schema (mc/schema schema))
 
         (mc/schema? schema) (from-schema-map (mc/ast schema))
@@ -178,9 +178,9 @@
 
          (list? x)
          (mc/schema (apply vector :enum x))
-
+         
          (maybe? x)
-         (mc/schema [:maybe (to-schema x)])
+         (mc/schema [:maybe (to-schema (:v x))])
 
          (set? x)
          (mc/schema (apply vector :enum (seq x)))
@@ -210,9 +210,10 @@
        (h/error "Not Supported" {:input schema}))))
   ([schema ks]
    (let [schema (to-schema schema)
-         vs     (mapv #(if (= (mc/-type %) :maybe)
-                         %
-                         (mc/schema [:maybe %]))
+         vs     (mapv (fn [v]
+                        (if (= (mc/type v) :maybe)
+                          v
+                          (mc/schema [:maybe v])))
                       (map (partial mu/get schema) ks))]
      (-> (reduce (fn [schema i]
                    (mu/assoc schema (nth ks i) (nth vs i)))
@@ -226,7 +227,11 @@
   ([schema]
    (let [m (from-schema schema)]
      (if (map? m)
-       (norm schema (keys m))
+       (norm schema (map (fn [k]
+                           (if (optional? k)
+                             (:v k)
+                             k))
+                         (keys m)))
        (h/error "Not Supported" {:input schema}))))
   ([schema ks]
    (let [schema (to-schema schema)]
@@ -252,13 +257,19 @@
   ([schema]
    (let [m (from-schema schema)]
      (if (map? m)
-       (tighten schema (keys m))
+       (tighten schema
+                (map (fn [k]
+                       (if (optional? k)
+                         (:v k)
+                         k))
+                     (keys m)))
        (h/error "Not Supported" {:input schema}))))
   ([schema ks]
    (let [schema (to-schema schema)
-         vs     (mapv #(if (= (mc/-type %) :maybe)
-                         (first (mc/-children %))
-                         %)
+         vs     (mapv (fn [v]
+                        (if (= (mc/type v) :maybe)
+                          (first (mc/children v))
+                          v))
                       (map (partial mu/get schema) ks))]
      (-> (reduce (fn [schema i]
                    (mu/assoc schema (nth ks i) (nth vs i)))
@@ -275,6 +286,7 @@
 
 (comment
 
+  (mc/type (mc/schema [:maybe [:= 1]]))
   (mc/schema [:fn (func [1 2 3])])
 
   (from-schema
@@ -296,7 +308,7 @@
                          [:tags [:set keyword?]]]))
 
   (mu/to-map-syntax
-   (mc/-type (mu/get
+   (mc/type (mu/get
 
               :id))
    "oeu")

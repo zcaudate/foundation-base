@@ -37,11 +37,14 @@
   (snap/add-book prep/+snap+ +book-x+))
 
 ^{:refer std.lang.base.emit-assign/emit-def-assign-inline :added "4.0"}
-(fact "assigns an inline form"
+(fact "assigns an inline form directly"
   ^:hidden
   
   (emit-def-assign-inline
-   'j '<TODO> +grammar+ {}))
+   'j '[x.core/complex-fn (1)] +grammar+ {:lang :x
+                                          :book +book-x+})
+  => '(do* (var j := 1)
+           (:= j (+ j (1)))))
 
 ^{:refer std.lang.base.emit-assign/emit-def-assign :added "3.0"}
 (fact "emits a declare expression"
@@ -51,7 +54,7 @@
                    {:raw "var"}
                    '(var :int i := 9, :const :int j := 10)
                    +grammar+
-                {})
+                   {})
   => "var int i = 9, const int j = 10"
 
   (emit-def-assign :def-assign

@@ -5,13 +5,15 @@
 
 ^{:refer std.lib.env/ns-sym :added "3.0"}
 (fact "returns the namespace symbol"
-
+  ^:hidden
+  
   (ns-sym)
   => 'std.lib.env-test)
 
 ^{:refer std.lib.env/ns-get :added "3.0"}
 (fact "gets a symbol in the current namespace"
-
+  ^:hidden
+  
   (ns-get 'std.lib.env "ns-get"))
 
 ^{:refer std.lib.env/require :added "3.0"}
@@ -19,33 +21,38 @@
 
 ^{:refer std.lib.env/dev? :added "3.0"}
 (fact "checks if current environment is dev"
-
+  ^:hidden
+  
   (dev?)
   => boolean?)
 
 ^{:refer std.lib.env/sys:resource :added "3.0"}
 (fact "finds a resource on class path"
-
+  ^:hidden
+  
   (sys:resource "std/lib.clj")
   => java.net.URL)
 
 ^{:refer std.lib.env/sys:resource-cached :added "4.0"}
 (fact "caches the operation on a resource call"
+  ^:hidden
 
   (sys:resource-cached (atom {})
-                       "project.clj"
+                       "scratch.clj"
                        slurp)
   => string?)
 
 ^{:refer std.lib.env/sys:resource-content :added "3.0"}
 (fact "reads the content"
-
-  (sys:resource-content "project.clj")
+  ^:hidden
+  
+  (sys:resource-content "scratch.clj")
   => string?)
 
 ^{:refer std.lib.env/sys:ns-url :added "4.0"}
 (fact "gets the url for ns"
   ^:hidden
+  
   (sys:ns-url 'std.lib.env)
   => java.net.URL)
 

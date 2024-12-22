@@ -29,10 +29,10 @@
 (fact "creates an accessibility layer for map-like objects"
 
   (framework/map-like
-   org.eclipse.jgit.revwalk.RevCommit
+    org.eclipse.jgit.revwalk.RevCommit
    {:tag "commit"
     :include [:commit-time :name :author-ident :full-message]})
-
+  
   (framework/map-like
    org.eclipse.jgit.lib.PersonIdent
    {:tag "person"

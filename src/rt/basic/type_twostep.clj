@@ -19,8 +19,6 @@
                                  extension]
                           :as opts
                           :or {trim str/trim-newlines}}]
-  (h/prn input-args input-body
-         opts)
   (let [tmp-exec (java.io.File/createTempFile "tmp" "")
         tmp-file (str tmp-exec
                       "."
@@ -28,20 +26,11 @@
                           (h/error "Requires File Extension"
                                    opts)))
         _   (spit tmp-file input-body)
-
-        _   (h/prn tmp-exec
-                   tmp-file
-                   input-body
-                   {:args (conj input-args (str tmp-file))
-                    :root (str (fs/parent tmp-file))}
-                   {:args [(str "./" (fs/file-name tmp-exec))]
-                    :root (str (fs/parent tmp-file))
-                    })
         _   (h/sh {:args (conj input-args (str tmp-file))
                    :root (str (fs/parent tmp-file))})]
-    (type (h/sh {:args [(str "./" (fs/file-name tmp-exec))]
-                 :root (str (fs/parent tmp-file))
-                 }))))
+    (str (h/sh {:args [(str "./" (fs/file-name tmp-exec))]
+                :root (str (fs/parent tmp-file))
+                }))))
 
 (defn raw-eval-twostep
   "evaluates a raw statement with twostep"

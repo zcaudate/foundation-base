@@ -13,6 +13,8 @@
    :import  [["std::mem"]]
    })
 
+(script/script- :js)
+
 (comment
   (!.rs
     (var [:> Cell :i32] i
@@ -315,6 +317,10 @@ let a: List<i32> = List::Cons(7, Box::new(List::Cons(13, Box::new(List::Nil))));
       "fn main() {"
       "  println!(\"{}\",123);"
       "}")
+
+  (!.js
+   (var (:int a) 3))
+  => "let int a = 3;"
   
   (!.rs
     (var :mutable (:f64 number) 1.0))

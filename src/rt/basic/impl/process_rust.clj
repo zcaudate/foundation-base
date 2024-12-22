@@ -25,7 +25,7 @@
                                           :ws-client false}}}}))
 
 (defn transform-form
-  "transforms the form for tcc output"
+  "transforms the rust form"
   {:added "4.0"}
   [forms opts]
   (let [forms (if (symbol? (first forms))
@@ -34,7 +34,7 @@
         body (concat
               '[do]
               (butlast forms)
-              [(list 'println! "{}"
+              [(list (list :- "println!") "{}"
                      (last forms))])]
     `(:- "fn main() {\n "
          ~body
@@ -44,7 +44,9 @@
   (common/set-context-options
    [:rust :twostep :default]
    {:emit  {:body  {:transform #'transform-form}}
-    ;;:json :string
+
+    #_#_
+    :json :string
     }))
 
 (def +c-twostep+

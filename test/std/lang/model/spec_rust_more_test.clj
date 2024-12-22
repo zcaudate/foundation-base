@@ -39,11 +39,11 @@
   []
   (var :% -/Point     point (-/origin))
   (var :% -/Rectangle rect
-       (new -/Rectange
+       (new -/Rectangle
             :top-left (-/origin)
             :bottom-right (new -/Point :x 3.0 :y -4.0)))
   (var :% -/Rectangle rect
-       (new -/Rectange
+       (new -/Rectangle
             :top-left (-/origin)
             :bottom-right (new -/Point :x 3.0 :y -4.0))))
 

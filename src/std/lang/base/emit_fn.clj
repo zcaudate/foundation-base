@@ -38,11 +38,22 @@
                           (if (and mod-rev?
                                    mod-has?)
                             hint))
-         mixarr    (concat (if (or (not mod-rev?)
-                                   (not-empty tmodarr))
-                             (concat tmodarr kmodarr))
+         mixarr    (concat (if (not mod-rev?)
+                             (concat kmodarr tmodarr)
+                             (if (not= kmodarr mod-has?)
+                               kmodarr))
                            (filter not-empty [mod-sym])
                            (if mod-rev? mod-has?))
+         
+         #_#_
+         _         (h/prn {:mod-rev? mod-rev?
+                           :tmodarr tmodarr
+                           :kmodarr kmodarr
+                           :mod-sym mod-sym
+                           :modifiers modifiers
+                           :mixarr  mixarr
+                           :mod-has? mod-has?})
+
          mixstr (str/join " "
                           (filter (fn [x]
                                     (if (seq x)

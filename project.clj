@@ -180,6 +180,11 @@
    "-XX:CMSInitiatingOccupancyFraction=60"
    "-XX:MaxTenuringThreshold=8"
    "-XX:SurvivorRatio=4"
+
+   ;;
+   ;; Truffle
+   ;;
+   "-Dpolyglot.engine.WarnInterpreterOnly=false"
    
    ;;
    ;; JVM

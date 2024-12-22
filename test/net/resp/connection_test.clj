@@ -204,7 +204,7 @@
   :style/indent 1}
 (fact "creates an runs statements using a test connection"
 
-  (with-connection [conn {:port 17000}]
+  (with-connection [conn {:port 17001}]
     (cc/bulk conn
             (fn []
               (cc/req conn ["FLUSHDB"])
@@ -216,7 +216,7 @@
 ^{:refer net.resp.connection/with-connection :added "3.0"}
 (fact "creates a temporary connection and runs code"
 
-  (with-connection [conn  {:port 17000}]
+  (with-connection [conn  {:port 17001}]
     (cc/bulk conn
             (fn []
               (cc/req conn ["FLUSHDB"])

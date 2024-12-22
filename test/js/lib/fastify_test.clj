@@ -65,7 +65,7 @@
   -server-
   => map?
 
-  (std.json/read (str (h/sh {:args ["curl" "http://localhost:40281/euoeu/oue?a=2"]})))
+  (std.json/read (str (h/sh {:args ["curl" (str "http://localhost:" +port+ "/euoeu/oue?a=2")]})))
   => (contains-in
       {"url" "/euoeu/oue?a=2", "method" "GET", "query" {"a" "2"},
        "path" "/euoeu/oue", "headers" {"User-Agent" "curl/8.5.0", "Accept" "*/*",

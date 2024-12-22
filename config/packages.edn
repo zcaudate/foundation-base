@@ -220,10 +220,6 @@
  xyz.zcaudate/lua.ext.sochain
  {:description "sochain library" 
   :include [[lua.ext.sochain   :complete]]}
- 
- xyz.zcaudate/lua.torch
- {:description "torch library" 
-  :include [[lua.torch   :complete]]}
   
  xyz.zcaudate/math.infix
  {:description "lisp infix notation"

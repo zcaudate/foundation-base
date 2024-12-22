@@ -160,23 +160,23 @@
   {:added "4.0"}
   ([{:keys [port container]
      :as rt}]
-   (let [port  (h/port:check-available port)
+   (let [available  (h/port:check-available port)
          ports (all-nginx-ports)
          arch  (keyword (h/os-arch))]
-     (h/prn {:container container
-             :port port})
-     (cond (not port)
-           (h/error "Port not available" {:port port})
-
-           (get ports port)
+     #_(h/prn {:container container
+               :port port})
+     (cond (get ports port)
            [:running]
 
+           (not available)
+           (h/error "Port not available" {:port port})
+           
            (and container
                 (contains? (:only container) arch))
-           (start-test-server-container (assoc rt :port port))
+           (start-test-server-container (assoc rt :port available))
 
            :else
-           (start-test-server-shell (assoc rt :port port))))))
+           (start-test-server-shell (assoc rt :port available))))))
 
 (defn kill-single-nginx
   "kills nginx processes for a single port"
@@ -228,9 +228,7 @@
 
 (defn- start-nginx
   ([{:keys [id state host port container no-server] :as rt}]
-   (cond 
-         
-         (or no-server
+   (cond (or no-server
              (not= host "localhost"))
          rt
          

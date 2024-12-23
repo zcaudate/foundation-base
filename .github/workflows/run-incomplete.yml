@@ -1,0 +1,24 @@
+name: Run Incomplete
+
+on: [push, workflow_dispatch]
+
+jobs:
+  
+  incomplete:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: zcaudate/foundation-base
+          token: ${{ secrets.GH_TOKEN }}
+        
+      - name: Run Incomplete
+        run: >
+          docker run --network host 
+          -v /var/run/docker.sock:/var/run/docker.sock 
+          -v $(pwd):$(pwd) 
+          -w $(pwd) 
+          ghcr.io/zcaudate-xyz/infra-foundation-clean:main lein incomplete

@@ -7,17 +7,18 @@ jobs:
   run-base-test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         
       - name: Running Tests
-        run: > 
+        run: >
           docker run --network host 
           -v /var/run/docker.sock:/var/run/docker.sock 
           -v $(pwd):$(pwd) 
           -w $(pwd) 
-          ghcr.io/zcaudate-xyz/infra-foundation:amd64 lein test
+          ghcr.io/zcaudate-xyz/infra-foundation-clean:main lein test
         
     services:
       postgres:

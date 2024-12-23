@@ -1,0 +1,24 @@
+name: Notify
+
+on: [push, workflow_dispatch]
+
+jobs:
+  
+  notify:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        downstream:
+            - 'zcaudate-xyz/foundation-embed'
+            - 'zcaudate-xyz/foundation-fx'
+            - 'zcaudate-xyz/foundation-web'
+    
+    steps:    
+      - name: Notify Downstream
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          repository: ${{ matrix.downstream }}
+          event-type: code-base-changed
+          client-payload: '{"repo": "${{ github.repository.id }}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "comment": "${{ github.payload.comment }}"}'

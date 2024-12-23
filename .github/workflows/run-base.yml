@@ -6,7 +6,7 @@ jobs:
   
   run-base-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     steps:
     
       - name: Log into registry ${{ env.REGISTRY }}

@@ -5,7 +5,7 @@
             [net.http :as http]))
 
 (l/script :js
-  {:runtime :websocket
+  {;;:runtime :websocket
    :config {:bench true
             :id :dev/web-main
             :emit {:native {:suppress true}

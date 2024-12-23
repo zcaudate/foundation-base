@@ -6,18 +6,9 @@ jobs:
   
   run-base-test:
     runs-on: ubuntu-latest
-
     timeout-minutes: 40
-    steps:
     
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ github.token }}
-      
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         

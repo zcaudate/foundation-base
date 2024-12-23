@@ -11,9 +11,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          repository: zcaudate/foundation-base
-          token: ${{ secrets.GH_TOKEN }}
         
       - name: Run Incomplete
         run: >

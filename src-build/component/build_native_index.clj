@@ -57,7 +57,7 @@
 (def.make COMPONENT-NATIVE
   {:tag      "native"
    :build    ".build/native"
-   :github   {:repo   "zcaudate/foundation.react-native"
+   :github   {:repo   "zcaudate-xyz/foundation.react-native"
               :description "Native components"}
    :sections {:common [+expo-makefile+
                        +github-workflows-build+]

@@ -12,6 +12,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
-          repository: zcaudate/foundation-ci
+          repository: zcaudate-xyz/foundation-ci
           event-type: base-changed
           client-payload: '{"repo": "${{ github.repository.id }}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "comment": "${{ github.payload.comment }}", "ref_name": "${{ github.ref_name }}"}'

@@ -17,7 +17,7 @@ jobs:
           -v /var/run/docker.sock:/var/run/docker.sock 
           -v $(pwd):$(pwd) 
           -w $(pwd) 
-          ghcr.io/zcaudate/testing-foundation:amd64 lein test
+          ghcr.io/zcaudate-xyz/testing-foundation:amd64 lein test
         
     services:
       postgres:

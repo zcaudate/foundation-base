@@ -5,14 +5,14 @@
          [:postgres :jdbc]             'rt.postgres.client
          [:postgres :jdbc.client]      'rt.postgres.client
          
+         [:redis    :default]          'rt.redis
+         [:redis    :redis]            'rt.redis
+         
          [:solidity :default]          'rt.solidity.grammar
-         #_#_#_#_
-         [:solidity :truffle]          'rt.solidity.client
-         [:solidity :truffle.shared]   'rt.solidity.client
 	 
-	 [:bash   :oneshot]            'rt.basic.impl.process-bash
-	 [:bash   :basic]              'rt.shell
-	 [:bash   :remote]             'rt.shell
+	     [:bash   :oneshot]            'rt.basic.impl.process-bash
+	     [:bash   :basic]              'rt.shell
+	     [:bash   :remote]             'rt.shell
 
          [:lua    :oneshot]            'rt.basic.impl.process-lua
          [:lua    :basic]              'rt.basic.impl.process-lua
@@ -50,5 +50,6 @@
          
          [:c      :jocl]               'rt.jocl
          [:c      :oneshot]            'rt.basic.impl.process-c
+         [:c      :twostep]            'rt.basic.impl.process-c
 	 
          [:xtalk  :oneshot]            'rt.basic.impl.process-xtalk}))

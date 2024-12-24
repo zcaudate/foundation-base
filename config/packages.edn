@@ -266,6 +266,15 @@
  {:description "wrapper for nginx" 
   :include [[rt.nginx :complete]]}
   
+ xyz.zcaudate/rt.postgres
+ {:description "wrapper for postgres" 
+  :include [[rt.postgres :complete]]}
+  
+ xyz.zcaudate/rt.redis
+ {:description "wrapper for redis" 
+  :include [[rt.redis :complete]]
+  :bundle [{:path "resources" :include ["assets/rt.redis"]}]}
+  
  xyz.zcaudate/rt.shell
  {:description "shell runtime"
   :include [[rt.shell :complete]]}
@@ -377,8 +386,6 @@
             [std.string :complete]
 	    [std.task :complete]]}
 
- 
- 
  xyz.zcaudate/std.log
  {:description "foundation logging library"
   :include [[std.log :complete]]}
@@ -418,10 +425,18 @@
  {:description "timeseries manipulation"
   :include [[std.timeseries :complete]]}
   
+ xyz.zcaudate/xtalk.db
+ {:description "xtalk language"
+  :include [[xt.db     :complete]]}
+  
  xyz.zcaudate/xtalk.lang
  {:description "xtalk language"
   :include [[xt.lang     :complete]
             [xt.module   :complete]]}
+
+ xyz.zcaudate/xtalk.runtime
+ {:description "xtalk language"
+  :include [[xt.runtime     :complete]]}
  
  xyz.zcaudate/xtalk.system
  {:description "xtalk language"

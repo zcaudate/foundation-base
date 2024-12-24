@@ -5,10 +5,39 @@
              :input "src-doc/documentation/main_index.clj"
              :title "foundation"
              :subtitle "core libs"}
-            std-lib-foundation      
+            std-lib
             {:input "src-doc/documentation/std_lib_foundation.clj"
              :title "std.lib.foundation"
              :subtitle "basic functionality for foundation"}
+            std-lib-bin
+            {:input "src-doc/documentation/std_lib_bin.clj"
+             :title "std.lib.bin"
+             :subtitle "basic functionality for buffers"}
+
+            std-lib-generate
+            {:input "src-doc/documentation/std_lib_bin.clj"
+             :title "std.lib.bin"
+             :subtitle "basic functionality for buffers"}
+            std-lib-foundation
+            {:input "src-doc/documentation/std_lib_foundation.clj"
+             :title "std.lib.foundation"
+             :subtitle "basic functionality for foundation"}
+            std-lib-link
+            {:input "src-doc/documentation/std_lib_foundation.clj"
+             :title "std.lib.foundation"
+             :subtitle "basic functionality for foundation"}
+            std-lib-stream
+            {:input "src-doc/documentation/std_lib_system.clj"
+             :title "std.lib.system"
+             :subtitle "components and subcomponents"}
+            std-lib-system
+            {:input "src-doc/documentation/std_lib_system.clj"
+             :title "std.lib.system"
+             :subtitle "components and subcomponents"}
+            std-lib-zip
+            {:input "src-doc/documentation/std_lib_system.clj"
+             :title "std.lib.system"
+             :subtitle "components and subcomponents"}
             code-doc      
             {:input "src-doc/documentation/code_doc.clj"
              :title "code.doc"

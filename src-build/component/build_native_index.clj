@@ -41,7 +41,7 @@
               {:name "SSH Init"
                :run (str/|
                      "install -m 600 -D /dev/null ~/.ssh/id_rsa"
-                     "echo '${{ secrets.GH_PRIVATE_COMMIT_KEY }}' > ~/.ssh/id_rsa"
+                     "echo '${{ secrets.GH_SSH_PRIVATE_KEY }}' > ~/.ssh/id_rsa"
                      "ssh-keyscan -H www.github.com > ~/.ssh/known_hosts")}
               
               {:name "Deploy gh-pages"
@@ -51,7 +51,7 @@
                 "git config --global user.name github-actions"
                 "git config --global user.email github-actions@github.com"
                 "cd web-build && git init && git add -A && git commit -m 'deploying to gh-pages'"
-                "git remote add origin git@github.com:zcaudate/foundation.react-native.git"
+                "git remote add origin git@github.com:zcaudate-xyz/demo.foundation-base.git"
                 "git push origin HEAD:gh-pages --force")}]}}]]})
 
 (def.make COMPONENT-NATIVE

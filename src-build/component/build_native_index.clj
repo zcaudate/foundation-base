@@ -57,8 +57,8 @@
 (def.make COMPONENT-NATIVE
   {:tag      "native"
    :build    ".build/native"
-   :github   {:repo   "zcaudate-xyz/foundation.react-native"
-              :description "Native components"}
+   :github   {:repo   "zcaudate-xyz/demo.foundation-base"
+              :description "Js Web Components"}
    :sections {:common [+expo-makefile+
                        +github-workflows-build+]
               :node   [{:type :gitignore,
@@ -79,8 +79,8 @@
                        {:type :json
                         :file "app.json"
                         :main  {"expo"
-                                {"name" "Native Components"
-                                 "slug" "native-components"
+                                {"name" "Js Web Components"
+                                 "slug" "js-web-components"
                                  "version" "1.0.0",
                                  "orientation" "portrait",
                                  "entryPoint" "./src/App.js",
@@ -93,9 +93,9 @@
                        
                        {:type :package.json,
                         :main {"main" "node_modules/expo/AppEntry.js",
-                               "name" "component-native",
+                               "name" "js-web-components",
                                "private" true,
-                               "homepage" "/foundation.react-native"
+                               "homepage" "/demo.foundation-base"
                                
                                "scripts"
                                {"start" "expo start",

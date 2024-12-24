@@ -176,17 +176,17 @@
 
 ^{:refer rt.basic.type-oneshot/rt-oneshot :added "4.0"
   :setup [(defn rt-oneshot
-            [lang]
-            [(-> (p/rt-oneshot {:lang lang})
+            [lang & [opts]]
+            [(-> (p/rt-oneshot (merge {:lang lang} opts))
                  (p/invoke-ptr-oneshot (ut/lang-pointer lang {:library +library-ext+})
                                        ['(+ 1 2 3 4)])
                  (ptr/with:input))
-             (-> (p/rt-oneshot {:lang lang})
+             (-> (p/rt-oneshot (merge {:lang lang} opts))
                  (p/invoke-ptr-oneshot (ut/lang-pointer lang {:library +library-ext+})
                                        ['(+ 1 2 3 4)])
                  (ptr/with:raw)
                  (json/read))
-             (-> (p/rt-oneshot {:lang lang})
+             (-> (p/rt-oneshot (merge {:lang lang} opts))
                  (p/invoke-ptr-oneshot (ut/lang-pointer lang {:library +library-ext+})
                                        ['(+ 1 2 3 4)]))])]}
 (fact "creates a oneshot runtime"

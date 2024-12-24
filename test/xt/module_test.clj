@@ -6,6 +6,7 @@
 
 (l/script- :js
   {:runtime :oneshot
+   :config  {:program :nodejs}
    :require [[js.core :as j]
              [xt.module :as module]]})
 

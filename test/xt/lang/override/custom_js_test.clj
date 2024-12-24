@@ -5,6 +5,7 @@
 
 (l/script :js
   {:runtime :oneshot
+   :config  {:program :nodejs}
    :layout :full
    :require [[xt.lang :as k]
              [xt.lang.base-lib :as lib :include [:fn]]]})

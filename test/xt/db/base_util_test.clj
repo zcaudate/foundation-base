@@ -4,6 +4,7 @@
 
 (l/script- :js
   {:runtime :oneshot
+   :config {:program :nodejs}
    :require [[xt.db.base-util :as ut]
              [xt.lang.base-lib :as k]]})
 

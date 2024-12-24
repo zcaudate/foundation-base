@@ -6,6 +6,7 @@
 
 (l/script- :js
   {:runtime :oneshot
+   :config  {:program :nodejs}
    :require [[xt.db.base-check :as chk]
              [xt.lang.base-lib :as k]]})
 

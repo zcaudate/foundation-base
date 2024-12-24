@@ -36,7 +36,7 @@
 (defn bootstrap-lua
   []
   (!.lua
-   (var ngxsqlite (require "lsqlite3complete"))
+   (var ngxsqlite (require "lsqlite3"))
    (:= (!:G INSTANCE) (dbsql/connect {:constructor lua-sqlite/connect-constructor
                                       :memory true}))
    (dbsql/query-sync INSTANCE

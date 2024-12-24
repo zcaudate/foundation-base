@@ -2,6 +2,7 @@
   (:use [code.test])
   (:require [net.resp.connection :refer :all :as conn]
             [net.resp.node :as node]
+            [lib.redis.bench :as bench]
             [std.lib :as h]
             [std.concurrent :as cc])
   (:refer-clojure :exclude [read]))

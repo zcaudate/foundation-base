@@ -2,12 +2,13 @@
   (:use code.test)
   (:require [std.lang :as  l]
             [std.lib :as h]
-            [rt.redis]))
+            [rt.redis]
+            [lib.redis.bench :as bench]))
 
 (l/script- :lua
   {:runtime :redis.client
    :config {:rt/id :test.exchange
-            :port 17000
+            :port 17001
             :bench true}
    :require [[xt.lang.base-lib :as k]
              [kmi.redis :as r]]})

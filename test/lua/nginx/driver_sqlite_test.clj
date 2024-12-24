@@ -20,7 +20,7 @@
   ^:hidden
   
   (!.lua
-   (:= ngxsqlite (require "lsqlite3complete"))
+   (:= ngxsqlite (require "lsqlite3"))
    [(lua-sqlite/version)
     (lua-sqlite/lversion)])
   => (contains [string?
@@ -44,10 +44,10 @@
    (local conn (lua-sqlite/connect-constructor {:memory true}))
    (lua-sqlite/raw-exec (. conn ["raw"]) "select 1;"))
   => [{"1" "1"}]
-  
+
   (!.lua
-   (local conn (lua-sqlite/connect-constructor {:memory true}))
-   (lua-sqlite/raw-exec (. conn ["raw"]) "select value from json_each('[1,2,3,4]')"))
+    (local conn (lua-sqlite/connect-constructor {:memory true}))
+    (lua-sqlite/raw-exec (. conn ["raw"]) "select value from json_each('[1,2,3,4]')"))
   => [{"value" "1"} {"value" "2"} {"value" "3"} {"value" "4"}])
 
 ^{:refer lua.nginx.driver-sqlite/raw-query :added "4.0"}

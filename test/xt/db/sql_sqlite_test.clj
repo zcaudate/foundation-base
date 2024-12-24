@@ -8,17 +8,17 @@
             [xt.lang.base-notify :as notify]))
 
 (l/script- :js
-  {:runtime :basic
-   :require [[xt.lang.base-repl :as repl]
-             [xt.lang.base-lib :as k]
-             [xt.db.sample-test :as sample]
-             [xt.db.sql-util :as ut]
-             [xt.db.sql-raw :as raw]
-             [xt.db.sql-manage :as manage]
-             [xt.db.sql-table :as table]
-             [xt.db :as xdb]
-             [xt.sys.conn-dbsql :as dbsql]
-             [js.lib.driver-sqlite :as js-sqlite]]})
+ {:runtime :basic
+  :require [[xt.lang.base-repl :as repl]
+            [xt.lang.base-lib :as k]
+            [xt.db.sample-test :as sample]
+            [xt.db.sql-util :as ut]
+            [xt.db.sql-raw :as raw]
+            [xt.db.sql-manage :as manage]
+            [xt.db.sql-table :as table]
+            [xt.db :as xdb]
+            [xt.sys.conn-dbsql :as dbsql]
+            [js.lib.driver-sqlite :as js-sqlite]]})
 
 (l/script- :lua
   {:runtime :basic
@@ -63,7 +63,7 @@
              (reset-lua)]
   :teardown [(l/rt:stop)]})
 
-^{:refer js.lib.driver-sqlite/CANARY :adopt true :added "4.0"}
+^{:refer xt.db.sql-sqlite/CANARY :adopt true :added "4.0"}
 (fact "connects to an embeded sqlite file"
   ^:hidden
   
@@ -80,7 +80,7 @@
    (dbsql/query conn "SELECT 1;"))
   => 1)
 
-^{:refer js.lib.driver-sqlite/CANARY.schema :adopt true :added "4.0"}
+^{:refer xt.db.sql-sqlite/CANARY.schema :adopt true :added "4.0"}
 (fact "ensures that the results are the same"
   ^:hidden
   
@@ -117,7 +117,7 @@
       "RegionCity" "RegionCountry" "RegionState" "UserAccount"
       "UserNotification" "UserPrivilege" "UserProfile" "Wallet" "WalletAsset"])
 
-^{:refer js.lib.driver-sqlite/CANARY.data :adopt true :added "4.0"}
+^{:refer xt.db.sql-sqlite/CANARY.data :adopt true :added "4.0"}
 (fact "ensures that the results are the same"
   ^:hidden
 

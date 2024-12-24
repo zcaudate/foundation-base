@@ -36,7 +36,7 @@
 (defn bootstrap-lua
   []
   (!.lua
-   (var ngxsqlite (require "lsqlite3complete"))
+   (var ngxsqlite (require "lsqlite3"))
    (:= (!:G DBSQL) (impl/db-create {"::" "db.sql"
                                     :constructor lua-sqlite/connect-constructor
                                     :memory true}
@@ -302,7 +302,8 @@
                 +account0+])
 
   [(set (!.js
-         (impl/sync-event DBCACHE
+         (impl/sync-event
+          DBCACHE
           ["add" {"Currency" (@! sample/+currency+)}])
          (impl/db-pull-sync DBCACHE
                             sample/Schema
@@ -324,19 +325,18 @@
           ["add"
            {"Currency" (@! sample/+currency+)}])
          (impl/db-pull-sync DBSQL
-                           sample/Schema
-                           ["Currency"
-                            ["id"]]
-                           nil)))
+                            sample/Schema
+                            ["Currency"
+                             ["id"]])))
    (!.lua
     (impl/sync-event DBSQL
                      ["add" {"UserAccount" [sample/RootUser]}])
-   (impl/db-pull-sync DBSQL
-                     sample/Schema
-                     ["UserAccount"
-                      ["*/data"
-                       ["profile"]]]
-                     nil))]
+    (impl/db-pull-sync DBSQL
+                       sample/Schema
+                       ["UserAccount"
+                        ["*/data"
+                         ["profile"]]]
+                       nil))]
   => (contains [+countries+
                 +account0+])
 

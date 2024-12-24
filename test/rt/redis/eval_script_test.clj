@@ -9,8 +9,8 @@
             [std.lang :as l]))
 
 (fact:global
- {:setup [(bench/start-redis-array [17000])]
-  :teardown [(bench/stop-redis-array [17000])]})
+ {:setup [(bench/start-redis-array [17001])]
+  :teardown [(bench/stop-redis-array [17001])]})
 
 ^{:refer rt.redis.eval-script/raw-compile-form :added "4.0"}
 (fact "converts a ptr into a form"
@@ -75,7 +75,7 @@
 (fact "retries the function if not installed")
 
 ^{:refer rt.redis.eval-script/redis-invoke-sha :added "4.0"
-  :setup    [(def -client- (r/client {:port 17000}))
+  :setup    [(def -client- (r/client {:port 17001}))
              (cc/req -client- ["FLUSHDB"])
              (cc/req -client- ["SCRIPT" "FLUSH"])]
   :teardown [(h/stop -client-)]}

@@ -5,7 +5,7 @@
 
 (l/script :lua
   {:require [[xt.lang.base-lib :as k]]
-   :import [["lsqlite3complete" :as ngxsqlite]]
+   :import [["lsqlite3" :as ngxsqlite]]
    :export [MODULE]})
 
 (h/template-entries [l/tmpl-entry {:type :fragment

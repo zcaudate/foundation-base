@@ -12,7 +12,7 @@
 
 (def +program-init+
   (common/put-program-options
-   :js  {:default  {:oneshot    :qjs
+   :js  {:default  {:oneshot    :nodejs
                     :basic      :nodejs
                     :websocket  :nodejs}
          :env      {:nodejs    {:exec   "node"

@@ -10,12 +10,12 @@
   (:refer-clojure :exclude [read]))
 
 (fact:global
- {:setup [(bench/start-redis-array [17000])]
+ {:setup [(bench/start-redis-array [17001])]
   :component
-  {|client|   {:create   (r/client:create {:port 17000})
+  {|client|   {:create   (r/client:create {:port 17001})
                :setup    h/start
                :teardown h/stop}}
-  :teardown [(bench/stop-redis-array [17000])]})
+  :teardown [(bench/stop-redis-array [17001])]})
 
 ^{:refer std.lang.base.runtime-h/wrap-start :adopt true :added "3.0"
   :use [|client|]}
@@ -36,7 +36,7 @@
 (fact "creates a redis client"
 
   (r/client:create {:id "localhost"
-                    :port 17000})
+                    :port 17001})
   => r/client?)
 
 ^{:refer rt.redis.client/client :added "3.0"

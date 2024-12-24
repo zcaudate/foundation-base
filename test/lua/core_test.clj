@@ -5,6 +5,7 @@
 
 (l/script- :lua
   {:runtime :basic
+   :exec    :resty
    :require [[lua.core :as u]
              [xt.lang.base-iter :as it]]})
 
@@ -18,7 +19,7 @@
   
   (!.lua
    (local lustache (require "lustache"))
-
+   
    (u/render "123 {{hello}} {{world}}"
              {:hello 456
               :world 789}))

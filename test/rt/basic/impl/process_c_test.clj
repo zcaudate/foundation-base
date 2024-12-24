@@ -32,7 +32,10 @@
 
 (comment
   ^*(!.c
-      (-/hello)))
+      (-/hello))
+
+  ^*(!.c
+      (-/main)))
 
 ^{:refer rt.basic.impl.process-c/CANARY :adopt true :added "4.0"}
 (fact "EVALUATE tcc in c"

@@ -4,6 +4,7 @@
             [std.lang :as l]
             [std.json :as json]
             [net.http :as http]
+            [lib.docker :as docker]
             [xt.lang.base-notify :as notify]))
 
 (l/script- :js
@@ -56,7 +57,7 @@
               (:= (!:G initSqlJs) (require "sql.js")))
              (l/rt:scaffold :js)
              (!.lua
-              (:= (!:G ngxsqlite) (require "lsqlite3")))
+              (:= (!:G ngxsqlite) (require "lsqlite3complete")))
              (l/rt:scaffold :lua)
              (reset-js)
              (reset-lua)]

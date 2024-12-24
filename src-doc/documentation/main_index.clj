@@ -42,7 +42,7 @@ providing the building blocks for building more declarative and robust systems.
 - [lib.oshi](./hara-lib-oshi.html)
 - [lib.rabbitmq](./hara-lib-rabbitmq.html)
 - [math](./hara-math.html)
-- [math.variant](./hara-math-variant.html)
+- [math.variant](./hara-m;65;7Math-variant.html)
 - [module](./hara-module.html)
 - [module.deps](./hara-module-deps.html)
 - [module.namespace](./hara-module-namespace.html)
@@ -61,5 +61,4 @@ providing the building blocks for building more declarative and robust systems.
 - [test](./hara-test.html)
 - [time](./hara-time.html)
 - [tool.monitor](./hara-tool-monitor.html)
-- [watch](./hara-watch.html)
-"
+- [watch](./hara-watch.html)"

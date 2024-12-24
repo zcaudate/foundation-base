@@ -81,8 +81,8 @@
 
         ;; Update board
         new-board (-> board
-                      (update :bg dissoc pos)
-                      (update side assoc pos))
+                      (update :bg disj pos)
+                      (update side conj pos))
         
         ;; Check for winner 
         is-winner (check-win (get new-board side))
@@ -93,13 +93,24 @@
      :turn   (if (= side :p1) :p2 :p1)
      :status (if (or is-winner
                      is-full)
-               :active
-               :finished)}))
+               :done
+               :active)
+     :winner (cond is-winner
+                   side
+
+                   is-full
+                   :draw)}))
+
+
+
+
 
 
 
 
 (comment
+  
+  
   (check-win #{:aa :ab :cc})
   
   (add-10 10)

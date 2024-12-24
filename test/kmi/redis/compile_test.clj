@@ -1,7 +1,7 @@
 (ns kmi.redis.compile-test
   (:use code.test)
   (:require [kmi.redis.compile :refer :all]
-            [kmi.exchange.impl.type :as type]
+            [kmi.redis.sample-type :as type]
             [std.lib :as h])
   (:refer-clojure :exclude [compile]))
 

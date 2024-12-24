@@ -6,7 +6,7 @@
 
 "Add to `project.clj` dependencies:
 
-    [hara/base \"{{PROJECT.version}}\"]"
+    [xyz.zcaudate/base \"{{PROJECT.version}}\"]"
      
 [[:chapter {:title "Apply" :link "std.lib.apply"}]]
 

@@ -18,11 +18,11 @@
   ^:hidden
   
   (!.lua
-   (local lustache (require "lustache"))
-   
-   (u/render "123 {{hello}} {{world}}"
-             {:hello 456
-              :world 789}))
+    (local lustache (require "lustache"))
+    
+    (u/render "123 {{hello}} {{world}}"
+              {:hello 456
+               :world 789}))
   => "123 456 789")
 
 ^{:refer lua.core/ffi:C :added "4.0"}

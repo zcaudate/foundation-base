@@ -8,7 +8,7 @@
   ^:hidden
   
   (def +pool+ (conn/conn-create {:dbname "test"}))
-
+  
   +pool+
   => com.impossibl.postgres.jdbc.PGPooledConnection
 

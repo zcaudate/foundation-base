@@ -7,7 +7,9 @@
   (:refer-clojure :exclude [read]))
 
 (fact:global
- {:component
+ {:setup    [(bench/start-redis-array [17001])]
+  :teardown [(bench/stop-redis-array [17001])]
+  :component
   {|node|    {:create   nil
               :setup    (fn [_] (node/start-node nil 4456))
               :teardown node/stop-node}

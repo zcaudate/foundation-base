@@ -20,7 +20,7 @@
   ^:hidden
   
   (!.lua
-   (:= ngxsqlite (require "lsqlite3"))
+   (:= ngxsqlite (require "lsqlite3complete"))
    [(lua-sqlite/version)
     (lua-sqlite/lversion)])
   => (contains [string?

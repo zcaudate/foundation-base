@@ -37,7 +37,7 @@ jobs:
         
     services:
       postgres:
-        image: postgres:13
+        image: ghcr.io/zcaudate-xyz/infra-db:main
         env:
           POSTGRES_DB: test
           POSTGRES_PASSWORD: postgres

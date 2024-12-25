@@ -68,7 +68,7 @@
                          thread  (-> (h/future (h/sh-wait process))
                                      (h/on:complete (fn [_ _]
                                                       (try (let [out (h/sh-output process)]
-                                                             #_(when (not= 0 (:exit out))
+                                                             (when (not= 0 (:exit out))
                                                                (h/prn out)))
                                                            (catch Throwable t))
                                                       (swap! *active* dissoc port))))]

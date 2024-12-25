@@ -17,7 +17,7 @@ jobs:
           -v /var/run/docker.sock:/var/run/docker.sock 
           -v $(pwd):$(pwd) 
           -w $(pwd) 
-          ghcr.io/zcaudate-xyz/infra-foundation-clean:main lein incomplete
+          ghcr.io/zcaudate-xyz/infra-foundation-clean:ci lein incomplete
           
   run-tests:
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
           -v /var/run/docker.sock:/var/run/docker.sock 
           -v $(pwd):$(pwd) 
           -w $(pwd) 
-          ghcr.io/zcaudate-xyz/infra-foundation-clean:main lein test
+          ghcr.io/zcaudate-xyz/infra-foundation-clean:ci lein test
         
     services:
       postgres:
@@ -73,5 +73,5 @@ jobs:
           -v $(pwd):$(pwd) -w $(pwd)
           -e "GITHUB_TOKEN=${{ secrets.GH_TOKEN }}"  
           -e "GITHUB_USER=${{ secrets.GH_USER }}"
-          ghcr.io/zcaudate-xyz/infra-foundation-clean:main 
+          ghcr.io/zcaudate-xyz/infra-foundation-clean:ci 
           bash -c "cd foundation-base && git config --global --add safe.directory '*' && lein push-native-code"

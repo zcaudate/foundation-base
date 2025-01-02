@@ -35,8 +35,9 @@
    => []"
   {:added "4.0"}
   ([lang key config]
+   #_(h/prn lang key config)
    (let [_ (if-let [ns (get @reg/+registry+ [lang key])] (require ns))
-         sp          (h/p:space)
+         sp          (h/p:space std.lib.context.space/*namespace*)
          ctx         (ut/lang-context lang)
          placement   (get @(:state sp) ctx)
          started?    (boolean (:instance placement))

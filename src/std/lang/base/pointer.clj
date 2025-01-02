@@ -67,6 +67,13 @@
    `(binding [*rt-wrap* f]
       ~@body)))
 
+(defmacro with:rt
+  ""
+  {:added "4.0"}
+  ([[rt] & body]
+   `(binding [std.lib.context.pointer/*runtime* ~rt]
+      ~@body)))
+
 (defmacro ^{:style/indent 0}
   with:input
   "form to control `input` option"

@@ -30,7 +30,7 @@
    (or where (h/error "No WHERE clause" params))
    (-> (main/t-select spec-sym (merge {:single true
                                        :as :raw}
-                                       params))
+                                      params))
        (with-meta {:op/type :get}))))
 
 (defmacro.pg ^{:- [:block]

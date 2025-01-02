@@ -82,7 +82,7 @@
              (not= [:block] (get-in book [:modules module section id :static/return])))
         (and (not (:id ptr))
              (= 1 (count args))
-
+             
              (let [x (first args)]
                (and (not (vector? x))
                     (or (string? x)

@@ -403,15 +403,19 @@
   [sym]
   (h/$ (def$.pg ~sym ~sym)))
 
+(defmacro.pg ^{:- [:block]}
+  exec
+  [args] args)
+
 (h/template-entries [pg-tmpl]
-  +array+
-  +bit+
-  +current+
-  +functions+
-  +has+
-  +jsonb+
-  +math+
-  +regexp+
-  +xml+)
+                    +array+
+                    +bit+
+                    +current+
+                    +functions+
+                    +has+
+                    +jsonb+
+                    +math+
+                    +regexp+
+                    +xml+)
 
 (comment (l/ns:reset))

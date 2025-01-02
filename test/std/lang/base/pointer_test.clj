@@ -52,6 +52,9 @@
 ^{:refer std.lang.base.pointer/with:print-all :added "4.0"}
 (fact "toggles print for all intermediate steps")
 
+^{:refer std.lang.base.pointer/with:rt :added "4.0"}
+(fact "forcibly applies a runtime")
+
 ^{:refer std.lang.base.pointer/with:rt-wrap :added "4.0"}
 (fact "wraps an additional function to the invoke function")
 

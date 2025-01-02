@@ -839,7 +839,7 @@
   ([[tmpl-fn & [tmpl-meta]] & entries]
    (let [tmpl-fn (cond (symbol? tmpl-fn)
                        (resolve tmpl-fn)
-
+                       
                        (list? tmpl-fn)
                        (eval tmpl-fn))
          entries (mapcat (fn [entry]

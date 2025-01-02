@@ -6,7 +6,7 @@
             [std.make.github :as github]
             [std.make.project :as project]
             [std.make.readme :as readme]
-            [std.make.deploy :as deploy]))
+            [std.make.bulk :as bulk]))
 
 (h/intern-in
  compile/with:mock-compile
@@ -22,6 +22,7 @@
  common/triggers-purge
  common/triggers-set
  common/get-triggered
+ common/make-config
  
  [dir               common/make-dir]
  [dir:exists?       common/make-dir-exists?]
@@ -64,10 +65,12 @@
  project/build-default
  project/build-triggered
  project/is-changed?
-
- [deploy-build deploy/make-deploy-build]
- [deploy deploy/make-deploy]
- [deploy-gh-init deploy/make-deploy-gh-init]
- [deploy-gh-push deploy/make-deploy-gh-push])
+ 
+ [bulk-container-build bulk/make-bulk-container-build]
+ [bulk-container-filter bulk/make-bulk-container-filter]
+ [bulk-build bulk/make-bulk-build]
+ [bulk bulk/make-bulk]
+ [bulk-gh-init bulk/make-bulk-gh-init]
+ [bulk-gh-push bulk/make-bulk-gh-push])
 
 

@@ -6,7 +6,7 @@
 
 (l/script- :lua
   {:runtime :redis.client
-   :config {:port 17003
+   :config {:port 17001
             :bench true}
    :require [[xt.lang.base-lib :as k :include [:fn]]
              [kmi.redis :as r]

@@ -12,6 +12,13 @@
 
 (defonce ^:dynamic *triggers* (atom {}))
 
+(defmacro with:triggers
+  "sets the mock output flag"
+  {:added "4.0"}
+  [[triggers] & body]
+  `(binding [*triggers* ~triggers]
+     ~@body))
+
 (defn triggers-purge
   "purges triggers"
   {:added "4.0"}
@@ -40,7 +47,9 @@
   "lists all trigers"
   {:added "4.0"}
   ([]
-   (keys @*triggers*)))
+   (c/map-keys (fn [mcfg]
+                 (:tag @(:instance mcfg)))
+               @*triggers*)))
 
 (defn get-triggered
   "gets all configs given a trigger namespace"
@@ -78,7 +87,7 @@
   ([{:keys [instance]}]
    (let [{:keys [sections
                  triggers] :as m} @instance]
-     (str "#make.config " (assoc (select-keys m [:id :build :root :params])
+     (str "#make.config " (assoc (select-keys m [:id :container :build :root :params])
                                  :sections (conj (keys sections) :default)
                                  :triggers (keys triggers))))))
 
@@ -92,9 +101,12 @@
   ([obj]
    (instance? MakeConfig obj)))
 
+(defn get-config-tag
+  [mcfg]
+  (when (make-config? mcfg)
+    (:tag @(:instance mcfg))))
+
 (defn- make-config-defaults
-  "TODO"
-  {:added "4.0"}
   ([]
    {:ns (.getName *ns*)
     :build ".build"
@@ -190,7 +202,6 @@
     :package
     :release
     :dev
-    :run
     :test
     :start
     :stop})

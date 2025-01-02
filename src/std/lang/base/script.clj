@@ -138,7 +138,9 @@
      (script-fn lang (h/ns-sym) module)
      (script-fn lang  module {})))
   ([lang module config]
-   (let [_ (if-let [ns (get @reg/+registry+ [lang :default])] (require ns))
+   (let [;; loading runtime
+         _ (if-let [ns (get @reg/+registry+ [lang :default])] (require ns))
+         ;; _ (h/prn lang module config)
          rt-config (script-fn-base lang module config (impl/default-library))]
      (control/script-rt-get lang
                             (:runtime config)

@@ -1,4 +1,3 @@
-^{:no-test true}
 (ns lib.docker.compose
   (:require [std.lib :as h]
             [std.string :as str]))
@@ -13,6 +12,7 @@
         keys (cond-> keys
                (not (get lu :environment))   (conj :environment)
                :then (conj :depends_on))]
+    
     (cond-> (map (fn [k] [k (get m k)]) keys)
       :then (->> (filterv second))
       (not (:networks lu)) (conj 
@@ -25,7 +25,7 @@
 (defn create-compose
   [{:keys [config
            network
-           scaffold]}]
+           entries]}]
   (let [config  (h/map-entries (fn [[k m]]
                                  [k (assoc m :name (name k))])
                                config)
@@ -35,7 +35,7 @@
                                 name))
                             config)
         prep    (h/map-vals (fn [{:keys [type] :as m}]
-                              ((or (scaffold type)
+                              ((or (get entries type)
                                    (h/error "NOT FOUND:" {:type type}))
                                m))
                             config)

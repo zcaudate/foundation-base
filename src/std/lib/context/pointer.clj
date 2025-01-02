@@ -12,7 +12,7 @@
             [std.lib.context.space :as space]
             [std.lib.context.registry :as reg]))
 
-(def ^:dynamic *runtime* nil)
+(defonce ^:dynamic *runtime* nil)
 
 (defn pointer-deref
   "derefs a pointer"
@@ -25,10 +25,10 @@
   "function to get the pointer's context"
   {:added "4.0"}
   [ptr]
-  (or (if (:context/fn ptr)
-        ((:context/fn ptr) ptr))
-      *runtime*
+  (or *runtime*
       (:context/rt ptr)
+      (if (:context/fn ptr)
+        ((:context/fn ptr) ptr))
       (space/space:rt-current (:context ptr))))
 
 (defn- pointer-string

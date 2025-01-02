@@ -6,7 +6,7 @@
 
 (l/script- :lua
   {:runtime :redis.client
-   :config {:port 17001
+   :config {:port 17003
             :bench true}
    :require [[xt.lang.base-lib :as k :include [:fn]]
              [kmi.redis :as r]
@@ -14,7 +14,9 @@
              [kmi.queue.list :as list]]})
 
 (fact:global
- {:setup  [(l/rt:restart)]
+ {:setup  [(l/rt:restart)
+           (h/wait-for-port "localhost" 17003
+                            {:timeout 500})]
   :teardown [(l/rt:stop)]})
 
 (defn reset-l

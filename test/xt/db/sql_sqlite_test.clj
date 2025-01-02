@@ -57,7 +57,7 @@
               (:= (!:G initSqlJs) (require "sql.js")))
              (l/rt:scaffold :js)
              (!.lua
-              (:= (!:G ngxsqlite) (require "lsqlite3complete")))
+              (:= (!:G ngxsqlite) (require "lsqlite3")))
              (l/rt:scaffold :lua)
              (reset-js)
              (reset-lua)]

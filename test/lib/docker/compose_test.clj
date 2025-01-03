@@ -49,14 +49,15 @@
                :APP_WEB_PORT  80
                :APP_WEB_SECURED  "no"}})
 
-
 ^{:refer lib.docker.compose/create-compose-single :guard true :added "4.0"}
 (fact "executes a shell command"
   ^:hidden
   
   (compose/create-compose-single
    [[:image "postgres:14"]
-    [:environment {:POSTGRES_USER "postgres", :POSTGRES_PASSWORD "postgres", :POSTGRES_DB "statstrade"}]
+    [:environment {:POSTGRES_USER "postgres",
+                   :POSTGRES_PASSWORD "postgres",
+                   :POSTGRES_DB "statstrade"}]
     [:volumes 
      ["./volumes/app-db/data:/var/lib/postgresql/data"]]
     [:healthcheck {:test ["CMD" "pg_isready" "-U" "postgres"], :interval "1m"}]]
@@ -92,7 +93,7 @@
                                 :ports {80 8080}
                                 :deps [:redis-mq
                                      :minio]}}
-    :scaffold {:minio    #'entry-minio
+    :entries  {:minio    #'entry-minio
                :redis.mq #'entry-redis-mq
                :app      #'entry-app-server}
     :network  :app-demo})

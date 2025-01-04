@@ -7,3 +7,13 @@
 
   (str (to-url "/dev/null"))
   => "file:/dev/null/")
+
+^{:refer jvm.classloader.common/bytecode-version :added "4.0"}
+(fact "gets the bytecode version of a class file"
+  ^:hidden
+  
+  (bytecode-version "target/classes/test/Cat.class")
+  => (contains-in
+      {:minor-version int?
+       :major-version int?
+       :jdk-version string?}))

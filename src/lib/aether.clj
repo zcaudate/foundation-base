@@ -224,7 +224,7 @@
   ([coords opts]
    (pull (base/aether opts) coords opts))
   ([{:keys [loader] :as aether} coords {:keys [keep renew nodeps] :as opts}]
-   (let [loader    (or loader classloader/+base+)
+   (let [loader    (or loader (classloader/dynamic-classloader))
          coords    (if (or (not (vector? coords))
                            (artifact/coord? coords))
                      [coords]

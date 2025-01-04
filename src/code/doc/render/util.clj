@@ -30,7 +30,7 @@
 (defn basic-html-unescape
   "unescape html output for rendering"
   {:added "3.0"}
-  ([data]
+  ([^String data]
    (let [out (-> data
                  (.replaceAll "&amp;quot;" "&quot;")
                  (.replaceAll "&amp;lt;" "&lt;")

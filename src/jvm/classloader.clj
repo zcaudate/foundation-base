@@ -2,7 +2,7 @@
   (:require [clojure.java.io :as io]
             [std.lib :refer [definvoke]]
             [jvm.protocol :as protocol.classloader]
-            ;;[jvm.classloader.system-classloader :as system]
+            [jvm.classloader.base-classloader :deps true]
             [jvm.classloader.url-classloader :deps true]
             [jvm.classloader.common :as common]
             [jvm.artifact :as artifact]
@@ -11,7 +11,7 @@
   (:import (clojure.lang DynamicClassLoader RT)
            (java.net URL URLClassLoader)))
 
-(defonce +base+ (.getClassLoader RT))
+(defonce +base+ (ClassLoader/getSystemClassLoader))
 
 (defn has-url?
   "checks whether the classloader has the following url
@@ -47,9 +47,7 @@
    (protocol.classloader/-all-urls loader)))
 
 (defn add-url
-  "adds a classpath to the loader
- 
-   (add-url (fs/path \"path/to/somewhere\"))"
+  "adds a classpath to the loader"
   {:added "3.0"}
   ([path]
    (add-url +base+ path))
@@ -57,17 +55,7 @@
    (protocol.classloader/-add-url loader path)))
 
 (defn remove-url
-  "removes url from classloader
- 
-   (do (add-url (fs/path \"path/to/somewhere\"))
-       (has-url? (fs/path \"path/to/somewhere\")))
-   => true
- 
-   (try (remove-url (fs/path \"path/to/somewhere\"))
-        (has-url? (fs/path \"path/to/somewhere\"))
-        (catch Throwable t
-          false))
-   => false?"
+  "removes url from classloader"
   {:added "3.0"}
   ([path]
    (remove-url +base+ path))
@@ -75,12 +63,7 @@
    (protocol.classloader/-remove-url loader path)))
 
 (defn delegation
-  "returns a list of classloaders in order of top to bottom
- 
-   (-> (Thread/currentThread)
-       (.getContextClassLoader)
-       (delegation))
-   => list?"
+  "returns a list of classloaders in order of top to bottom"
   {:added "3.0"}
   ([cl]
    (->> cl
@@ -89,9 +72,7 @@
         (reverse))))
 
 (defn classpath
-  "returns the classpath for the loader, including parent loaders
- 
-   (classpath)"
+  "returns the classpath for the loader, including parent loaders"
   {:added "3.0"}
   ([]
    (classpath +base+))
@@ -111,10 +92,7 @@
        (first)))
 
 (defn all-jars
-  "gets all jars on the classloader
- 
-   (all-jars)
-   => seq?"
+  "gets all jars on the classloader"
   {:added "3.0"}
   ([] (all-jars +base+))
   ([loader]
@@ -122,10 +100,7 @@
         (filter #(.endsWith ^String % ".jar")))))
 
 (defn all-paths
-  "gets all paths on the classloader
- 
-   (all-paths)
-   => seq?"
+  "gets all paths on the classloader"
   {:added "3.0"}
   ([] (all-paths +base+))
   ([^ClassLoader loader]
@@ -133,12 +108,7 @@
         (remove #(.endsWith ^String % ".jar")))))
 
 (defn ^java.net.URLClassLoader url-classloader
-  "returns a `java.net.URLClassLoader` from a list of strings
- 
-   (->> (url-classloader [\"/dev/null/\"])
-        (.getURLs)
-        (map str))
-   => [\"file:/dev/null/\"]"
+  "returns a `java.net.URLClassLoader` from a list of strings"
   {:added "3.0"}
   ([urls]
    (url-classloader urls +base+))
@@ -149,10 +119,7 @@
                     parent)))
 
 (defn dynamic-classloader
-  "creates a dynamic classloader instance
- 
-   (dynamic-classloader [])
-   => clojure.lang.DynamicClassLoader"
+  "creates a dynamic classloader instance"
   {:added "3.0"}
   ([]
    (dynamic-classloader []))
@@ -172,11 +139,7 @@
   (query/apply-element clojure.lang.DynamicClassLoader "rq" []))
 
 (defn ^Class load-class
-  "loads class from an external source
- 
-   (.getName (load-class \"target/classes/test/Cat.class\"
-                         {:name \"test.Cat\"}))
-   => \"test.Cat\""
+  "loads class from an external source"
   {:added "3.0"}
   ([x]
    (load-class x {}))
@@ -186,19 +149,13 @@
    (protocol.classloader/-load-class x loader opts)))
 
 (defn unload-class
-  "unloads a class from the current namespace
- 
-   (unload-class \"test.Cat\")
-   ;; #object[java.lang.ref.SoftReference 0x10074132
-   ;;         \"java.lang.ref.SoftReference@10074132\"]"
+  "unloads a class from the current namespace"
   {:added "3.0"}
   ([name]
    (.remove +class-cache+ name) (clojure.lang.Util/clearCache +rq+ +class-cache+)))
 
 (defmulti to-bytes
-  "opens `.class` file from an external source
-   (to-bytes \"target/classes/test/Dog.class\")
-   => bytes?"
+  "opens `.class` file from an external source"
   {:added "3.0"}
   (fn [x] (type x)))
 
@@ -213,10 +170,7 @@
    (to-bytes (io/input-stream path))))
 
 (definvoke any-load-class
-  "loads a class, storing class into the global cache
- 
-   (any-load-class test.Cat nil nil)
-   => test.Cat"
+  "loads a class, storing class into the global cache"
   {:added "3.0"}
   [:method {:multi protocol.classloader/-load-class
             :val [Class ClassLoader]}]
@@ -226,12 +180,7 @@
    cls))
 
 (definvoke dynamic-load-bytes
-  "loads a class from bytes
- 
-   (dynamic-load-bytes (to-bytes \"target/classes/test/Cat.class\")
-                       (dynamic-classloader)
-                       {:name \"test.Cat\"})
-   => test.Cat"
+  "loads a class from bytes"
   {:added "3.0"}
   [:method {:multi protocol.classloader/-load-class
             :val [(Class/forName "[B") DynamicClassLoader]}]
@@ -241,13 +190,7 @@
      (any-load-class cls loader opts))))
 
 (definvoke dynamic-load-string
-  "loads a class from a path string
- 
-   (dynamic-load-string \"<.m2>/org/yaml/snakeyaml/1.5/snakeyaml-1.5.jar\"
-                        (dynamic-classloader)
-                        {:name \"org.yaml.snakeyaml.Dumper\"
-                         :entry-path \"org/yaml/snakeyaml/Dumper.class\"})
-   => org.yaml.snakeyaml.Dumper"
+  "loads a class from a path string"
   {:added "3.0"}
   [:method {:multi protocol.classloader/-load-class
             :val [String DynamicClassLoader]}]
@@ -267,13 +210,7 @@
                (dynamic-load-bytes loader opts))))))
 
 (definvoke dynamic-load-coords
-  "loads a class from a coordinate
- 
-   (.getName (dynamic-load-coords '[org.yaml/snakeyaml \"1.5\"]
-                                  (dynamic-classloader)
-                                  {:name \"org.yaml.snakeyaml.Dumper\"
-                                   :entry-path \"org/yaml/snakeyaml/Dumper.class\"}))
-   => \"org.yaml.snakeyaml.Dumper\""
+  "loads a class from a coordinate"
   {:added "3.0"}
   [:method {:multi protocol.classloader/-load-class
             :val [clojure.lang.PersistentVector DynamicClassLoader]}]

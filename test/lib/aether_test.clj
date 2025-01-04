@@ -13,7 +13,7 @@
 
 ^{:refer lib.aether/populate-artifact :added "3.0"}
 (fact "allows coordinate to fill rest of values"
-
+  
   (populate-artifact '[midje "1.6.3"]
                      {:artifacts [{:extension "pom"
                                    :file "midje.pom"}

@@ -1,4 +1,4 @@
-(defproject xyz.zcaudate/foundation-base "4.0.4"
+(defproject xyz.zcaudate/foundation-base "4.0.5"
   :description "base libraries for foundation"
   :url "https://www.github.com/zcaudate-xyz/foundation-base"
   :license  {:name "MIT License"
@@ -154,8 +154,7 @@
   :java-source-paths ["src-java" "test-java"]
   :java-output-path  "target/classes"
   :repl-options {:host "0.0.0.0"
-                 :port 10234
-                 #_#_:port 51311}
+                 :port 51311}
   :jvm-opts
   ["-Xms2048m"
    "-Xmx2048m"

@@ -455,7 +455,6 @@
 
 (defn- fn-request-single
   ([f args _]
-   (std.lib/prn f args)
    (apply f args)))
 
 (defn- fn-request-bulk

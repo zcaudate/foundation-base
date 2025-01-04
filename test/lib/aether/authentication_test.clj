@@ -43,3 +43,8 @@
                     AuthenticationBuilder)
   ;;=> #builder.auth{:username "chris", :password "lucid"}
   )
+
+(comment
+
+  (.? SecretAuthentication)
+  (.? StringAuthentication))

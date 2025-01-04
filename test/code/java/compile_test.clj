@@ -35,7 +35,7 @@
 
 ^{:refer code.java.compile/class-object :added "3.0"}
 (fact "creates a class object for use with compiler"
-
+  
   (class-object "test.Cat"
                 (fs/read-all-bytes "target/classes/test/Cat.class"))
   => javax.tools.SimpleJavaFileObject)
@@ -53,6 +53,9 @@
 ^{:refer code.java.compile/supers :added "3.0"}
 (fact "finds supers of a class given it's bytecode"
 
+  (clojure.asm.ClassReader.
+   (fs/read-all-bytes "target/classes/test/Cat.class"))
+  
   (supers (fs/read-all-bytes "target/classes/test/Cat.class"))
   => #{"java.lang.Object" "test.Pet"})
 

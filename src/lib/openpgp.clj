@@ -3,7 +3,6 @@
             [std.lib :refer [definvoke]]
             [std.lib.bin :as binary]
             [std.fs :as fs]
-            [std.object :as object]
             [std.string :as str])
   (:import (org.bouncycastle.openpgp PGPPublicKey
                                      PGPPrivateKey
@@ -18,6 +17,7 @@
                                      PGPLiteralData
                                      PGPSignatureGenerator
                                      PGPSignature
+                                     PGPSignatureList
                                      PGPEncryptedDataList
                                      PGPPublicKeyEncryptedData
                                      PGPCompressedData
@@ -38,7 +38,7 @@
            (java.security SecureRandom)
            (java.util Collections)))
 
-(def +bc-calc+ (BcKeyFingerprintCalculator.))
+
 
 (defn fingerprint
   "returns the fingerprint of a public key
@@ -74,7 +74,7 @@
   ([input]
    (-> (binary/input-stream input)
        (PGPUtil/getDecoderStream)
-       (PGPPublicKeyRing. ^BcKeyFingerprintCalculator +bc-calc+))))
+       (PGPPublicKeyRing. ^BcKeyFingerprintCalculator (BcKeyFingerprintCalculator.)))))
 
 (defn parse-public-key
   "parses a public key from string
@@ -106,7 +106,7 @@
   ([input]
    (-> (binary/input-stream input)
        (PGPUtil/getDecoderStream)
-       (PGPSecretKeyRing. ^BcKeyFingerprintCalculator +bc-calc+))))
+       (PGPSecretKeyRing. ^BcKeyFingerprintCalculator (BcKeyFingerprintCalculator.)))))
 
 (defn parse-secret-key
   "parses a secret key from string
@@ -304,6 +304,7 @@
    => bytes?"
   {:added "3.0"}
   ([input sig-file {:keys [public private] :as opts}]
+   (std.lib/prn opts)
    (let [input-bytes (fs/read-all-bytes input)
          sig-bytes  (-> (generate-signature input-bytes opts)
                         (.getEncoded))]
@@ -321,11 +322,19 @@
    => org.bouncycastle.openpgp.PGPSignature"
   {:added "3.0"}
   ([bytes]
-   (let [make-pgp-signature (object/query-class PGPSignature ["new" [BCPGInputStream] :#])]
-     (-> bytes
-         (java.io.ByteArrayInputStream.)
-         (BCPGInputStream.)
-         (make-pgp-signature)))))
+   (let [input-stream (BCPGInputStream. (java.io.ByteArrayInputStream. bytes)) 
+         fingerprint-calc (BcKeyFingerprintCalculator.)
+         object-factory (PGPObjectFactory. input-stream fingerprint-calc)
+         obj (.nextObject object-factory)]
+     (cond (instance? PGPSignature obj)
+           obj
+
+           (instance? PGPSignatureList obj)
+           (first obj)
+
+           :else
+           (throw (ex-info "Expected PGPSignature, got different object type."
+                           {:object obj}))))))
 
 (defn verify
   "verifies that the signature works

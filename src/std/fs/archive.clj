@@ -101,7 +101,7 @@
          :else
          (let [path (fs/path archive)]
            (cond (fs/exists? path)
-                 (FileSystems/newFileSystem path nil)
+                 (FileSystems/newFileSystem path)
 
                  (:create opts)
                  (create archive)

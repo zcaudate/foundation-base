@@ -12,7 +12,7 @@
 (fact "parses a qualifier from string input"
 
   (parse-qualifier "" "") => 6
-
+  
   (parse-qualifier "alpha" "") => 0 ^:hidden
 
   (parse-qualifier "beta" "") => 1
@@ -124,7 +124,7 @@
              {:major 1  :minor 7})
   => false
 
-  (satisfied [:java  :not-newer  {:major 12 :minor 0}])
+  (satisfied [:java  :not-newer  {:major 30 :minor 0}])
   => true)
 
 ^{:refer std.lib.version/init :added "3.0"}

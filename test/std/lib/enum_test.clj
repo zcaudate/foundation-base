@@ -26,8 +26,9 @@
 
 ^{:refer std.lib.enum/enum-map :added "3.0"}
 (fact "cached map of enum values"
-
-  (enum-map ElementType) ^:hidden
+  ^:hidden
+  
+  (enum-map ElementType)
   => (satisfies [:annotation-type
                  :constructor
                  :field
@@ -36,6 +37,7 @@
                  :module
                  :package
                  :parameter
+                 :record-component
                  :type
                  :type-parameter
                  :type-use]
@@ -43,14 +45,16 @@
 
 ^{:refer std.lib.enum/enum-map-form :added "3.0"}
 (fact "creates the form for the enum"
-
-  (enum-map-form ElementType) ^:hidden
+  ^:hidden
+  
+  (enum-map-form ElementType) 
   => '{:package java.lang.annotation.ElementType/PACKAGE,
        :type-use java.lang.annotation.ElementType/TYPE_USE,
        :method java.lang.annotation.ElementType/METHOD,
        :field java.lang.annotation.ElementType/FIELD,
        :type java.lang.annotation.ElementType/TYPE,
        :module java.lang.annotation.ElementType/MODULE,
+       :record-component java.lang.annotation.ElementType/RECORD_COMPONENT
        :type-parameter java.lang.annotation.ElementType/TYPE_PARAMETER,
        :constructor java.lang.annotation.ElementType/CONSTRUCTOR,
        :local-variable java.lang.annotation.ElementType/LOCAL_VARIABLE,
@@ -59,14 +63,16 @@
 
 ^{:refer std.lib.enum/enum-map> :added "3.0"}
 (fact "a macro for getting elements of the enum"
-
-  (enum-map> ElementType) ^:hidden
+  ^:hidden
+  
+  (enum-map> ElementType)
   => {:package ElementType/PACKAGE,
       :type-use ElementType/TYPE_USE,
       :method ElementType/METHOD,
       :field ElementType/FIELD,
       :type ElementType/TYPE,
       :module ElementType/MODULE,
+      :record-component ElementType/RECORD_COMPONENT
       :type-parameter ElementType/TYPE_PARAMETER,
       :constructor ElementType/CONSTRUCTOR,
       :local-variable ElementType/LOCAL_VARIABLE,
@@ -75,7 +81,7 @@
 
 ^{:refer std.lib.enum/to-enum :added "3.0"}
 (fact "gets an enum value given a symbol"
-
+  
   (to-enum "TYPE" ElementType)
   => ElementType/TYPE
 

@@ -491,7 +491,7 @@
       (cond res res
 
             :else
-            (do (Thread/sleep (or sleep 500))
+            (do (Thread/sleep (long (or sleep 500)))
                 (recur (- limit 1) ex))))))
 
 (defmacro with-retry

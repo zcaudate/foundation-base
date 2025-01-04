@@ -27,9 +27,9 @@
  
    ((wrap-min-time (fn []) 100 10))"
   {:added "3.0"}
-  ([f total]
+  ([f ^long total]
    (wrap-min-time f total 0))
-  ([f total delay]
+  ([f ^long total ^long delay]
    (fn []
      (let [start (System/currentTimeMillis)
            _ (if (and delay (pos? delay)) (Thread/sleep delay))

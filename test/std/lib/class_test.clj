@@ -101,10 +101,15 @@
 ^{:refer std.lib.class/ancestor:tree :added "3.0"}
 (fact "Lists the hierarchy of bases and interfaces of a class."
   (ancestor:tree Class)
-  => [[java.lang.Object #{java.io.Serializable
-                          java.lang.reflect.Type
-                          java.lang.reflect.AnnotatedElement
-                          java.lang.reflect.GenericDeclaration}]]
+  => [[java.lang.Object
+       #{java.lang.constant.Constable
+         java.lang.invoke.TypeDescriptor
+         java.lang.reflect.GenericDeclaration
+         java.io.Serializable
+         java.lang.reflect.Type
+         java.lang.reflect.AnnotatedElement
+         java.lang.invoke.TypeDescriptor$OfField}]]
+  
   ^:hidden
   (ancestor:tree clojure.lang.PersistentHashMap)
   => [[clojure.lang.APersistentMap #{clojure.lang.IMapIterable
@@ -132,10 +137,12 @@
 
   (ancestor:all String)
   => #{java.lang.CharSequence
-       java.io.Serializable
-       java.lang.Object
+       java.lang.constant.ConstantDesc
+       java.lang.constant.Constable
+       java.lang.Comparable
        java.lang.String
-       java.lang.Comparable})
+       java.io.Serializable
+       java.lang.Object})
 
 ^{:refer std.lib.class/class:inherits? :added "3.0"}
 (fact "checks if one class inherits from another"

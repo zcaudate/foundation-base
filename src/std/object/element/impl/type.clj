@@ -4,9 +4,11 @@
             [std.object.element.class :as class]
             [std.string :as str]))
 
-(defonce +override+
-  (doto (.getDeclaredField java.lang.reflect.AccessibleObject "override")
-    (.setAccessible true)))
+(defonce +override+ 
+  (try
+    (doto (.getDeclaredField java.lang.reflect.AccessibleObject "override")
+      (.setAccessible true))
+    (catch Throwable t)))
 
 (extend-type Class
   protocol.string/IString
@@ -38,8 +40,17 @@
                                                 (aset 0 Integer/TYPE)))
                           true)"
   {:added "3.0"}
-  ([obj flag]
-   (.set ^java.lang.reflect.Field +override+ obj flag)))
+  ([^java.lang.reflect.AccessibleObject obj flag]
+   (cond +override+
+         (.set ^java.lang.reflect.Field +override+ obj flag)
+
+         (instance? java.lang.reflect.Constructor obj)
+         (try
+           (.setAccessible obj flag)
+           (catch Throwable t))
+         
+         :else
+         (.setAccessible obj flag))))
 
 (defn add-annotations
   "adds additional annotations to the class

@@ -133,7 +133,7 @@
    (try (doto future (.get))
         (catch Throwable t
           future)))
-  ([^CompletableFuture future interval]
+  ([^CompletableFuture future ^long interval]
    (Thread/sleep interval)
    future))
 

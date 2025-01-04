@@ -257,6 +257,8 @@
  xyz.zcaudate/rt.graal
  {:description "wrapper for graal contexts"
   :include [[rt.graal :complete]]
+  :bundle [{:path "target/classes" 
+            :include ["hara/lib/graal"]}]
   :dependencies [org.graalvm.sdk/graal-sdk
                  org.graalvm.js/js
 		 org.graalvm.js/js-scriptengine

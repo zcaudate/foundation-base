@@ -19,8 +19,10 @@
   (.%> String)
   => [java.lang.String
       [java.lang.Object
-       #{java.io.Serializable
+       #{java.lang.constant.ConstantDesc
+         java.io.Serializable
          java.lang.Comparable
+         java.lang.constant.Constable
          java.lang.CharSequence}]])
 
 ^{:refer jvm.reflect/.& :added "3.0"}

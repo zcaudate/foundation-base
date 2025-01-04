@@ -129,7 +129,8 @@
   ([type]
    (all-loaded-artifacts loader/+base+ type))
   ([loader type]
-   (->> (loader/all-urls loader)
+   (->> (try (loader/all-urls loader)
+             (catch Throwable t))
         (map #(.getFile ^java.net.URL %))
         (filter #(.endsWith ^String % ".jar"))
         (map (partial artifact/artifact type)))))

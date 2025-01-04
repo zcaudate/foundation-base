@@ -28,9 +28,11 @@
   (reify Supplier
     (get [this] obj)))
 
+
 (object/map-like
  HttpClientBuilderImpl
  {:tag "http.client.builder" :read :class})
+
 
 (defn wrap-get-optional
   "wraps function, nil-punning outputs for java.util.Optional

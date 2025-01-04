@@ -278,7 +278,7 @@
    (fn pool-handler-fn []
      (let [{:keys [executor options]} @state]
        (pool:cleanup pool)
-       (Thread/sleep (:poll options))
+       (Thread/sleep (long (:poll options)))
        (if executor
          (e/submit executor pool-handler-fn))))))
 

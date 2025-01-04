@@ -79,7 +79,7 @@
          debounce-fn (fn [ret]
                        (let [start (get @counter group)
                              current (h/time-ms)
-                             diff (- (+ start interval) current)]
+                             diff (long (- (+ start interval) current))]
                          (if (pos? diff)
                            (do (Thread/sleep diff)
                                (recur ret))

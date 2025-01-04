@@ -12,12 +12,12 @@
   => '[hara/hara "2.4.0"])
 
 ^{:refer jvm.artifact/rep->path :added "3.0"}
-(comment "encodes the rep to a path"
+(fact "encodes the rep to a path"
 
   (-> {:group "hara" :artifact "hara" :version "2.4.0"}
       (map->Rep)
       (rep->path))
-  => "<.m2>/hara/hara/2.4.0/hara-2.4.0.jar")
+  => #"/hara/hara/2.4.0/hara-2.4.0.jar")
 
 ^{:refer jvm.artifact/rep->string :added "3.0"}
 (fact "encodes the rep to a string"

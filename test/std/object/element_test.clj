@@ -29,13 +29,15 @@
 
 ^{:refer std.object.element/class-hierarchy :added "3.0"}
 (fact "Lists the class and interface hierarchy for the class"
-
+  
   (element/class-hierarchy String)
   => [java.lang.String
       [java.lang.Object
-       #{java.io.Serializable
+       #{java.lang.CharSequence
+         java.lang.constant.ConstantDesc
+         java.lang.constant.Constable
          java.lang.Comparable
-         java.lang.CharSequence}]])
+         java.io.Serializable}]])
 
 ^{:refer std.object.element/constructor? :added "3.0"}
 (fact "checks if if an element is a constructor"

@@ -103,7 +103,7 @@
   {:added "3.0"}
   ([ms]
    (let [ms-fn (cond (fn? ms) ms :else (constantly ms))]
-     (x:map (fn [v] (Thread/sleep (ms-fn)) v)))))
+     (x:map (fn [v] (Thread/sleep (long (ms-fn))) v)))))
 
 (defn x:mapcat
   "mapcat transducer"

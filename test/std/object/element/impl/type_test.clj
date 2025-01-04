@@ -40,4 +40,11 @@
                 :delegate  java.lang.reflect.Method}))
 
 (comment
-  (code.manage/import))
+  (code.manage/import)
+
+  (.setAccessible
+   (.getDeclaredMethod String "charAt"
+                       (doto ^"[Ljava.lang.Class;"
+                           (make-array Class 1)
+                         (aset 0 Integer/TYPE)))
+   true))

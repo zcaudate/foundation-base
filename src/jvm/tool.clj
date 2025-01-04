@@ -18,7 +18,7 @@
   "set the hotkey function"
   {:added "4.0"}
   [idx f]
-  (case idx
+  (case (long idx)
     0 (alter-var-root #'hotkey-0 (fn [_] f))
     1 (alter-var-root #'hotkey-1 (fn [_] f))
     2 (alter-var-root #'hotkey-2 (fn [_] f))
@@ -29,7 +29,6 @@
     7 (alter-var-root #'hotkey-7 (fn [_] f))
     8 (alter-var-root #'hotkey-8 (fn [_] f))
     9 (alter-var-root #'hotkey-9 (fn [_] f))))
-
 
 (defn- inject-reflectors
   []

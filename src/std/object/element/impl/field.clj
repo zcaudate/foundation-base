@@ -2,17 +2,26 @@
   (:require [std.object.element.common :as common]
             [std.object.element.class :as class]
             [std.object.element.impl.type :as type]
-            [std.object.element.util :as util]))
+            [std.object.element.util :as util])
+  (:import (java.lang.reflect Field)))
 
-(def patch-field
-  (let [mf (.getDeclaredField java.lang.reflect.Field  "modifiers")]
-    (.setAccessible mf true)
-    (fn [^java.lang.reflect.Field field]
-      (.setInt mf
-               field
-               (bit-and (.getModifiers field)
-                        (bit-not java.lang.reflect.Modifier/FINAL)))
-      field)))
+(defonce +modifiers+ 
+  (try
+    (doto (.getDeclaredField java.lang.reflect.Field  "modifiers")
+      (.setAccessible true))
+    (catch Throwable t)))
+
+(defn patch-field
+  [^java.lang.reflect.Field field]
+  (cond +modifiers+
+        (.setInt ^Field +modifiers+
+                 field
+                 (bit-and (.getModifiers field)
+                          (bit-not java.lang.reflect.Modifier/FINAL)))
+        
+        :else
+        (try (.setAccessible field true)))
+  field)
 
 (defn arg-params
   "arguments for getters and setters of fields

@@ -2,7 +2,7 @@
   (:require [clojure.java.io :as io]
             [std.lib :refer [definvoke]]
             [jvm.protocol :as protocol.classloader]
-            [jvm.classloader.system-classloader :as system]
+            ;;[jvm.classloader.system-classloader :as system]
             [jvm.classloader.url-classloader :deps true]
             [jvm.classloader.common :as common]
             [jvm.artifact :as artifact]

@@ -13,8 +13,9 @@
           [(keyword (reflect/apply-element auth "key" []))
            (reflect/apply-element auth "value" [])])
   :write (fn [[k v]]
-           ((reflect/query-class StringAuthentication ["new" :#]) (name k) v))}
-
+           (.build (doto (AuthenticationBuilder.)
+                     (.addString (name k) ^String v))))}
+ 
  SecretAuthentication
  {:tag "auth.secret"
   :read (fn [auth]
@@ -24,13 +25,12 @@
                 (reflect/apply-element auth "xor")
                 (apply str))])
   :write (fn [[k v]]
-           ((reflect/query-class SecretAuthentication ["new" :#])
-            (name k)
-            v))})
+           (.build (doto (AuthenticationBuilder.)
+                     (.addSecret (name k) ^String v))))})
 
 (defn auth-map
   "creates a map of the `:authentications` element
- 
+  
    (auth-map (-> (AuthenticationBuilder.)
                  (.addUsername \"chris\")
                  (.addPassword \"lucid\")))
@@ -48,7 +48,7 @@
   :write {:from-map
           (fn [m]
             (.build ^AuthenticationBuilder
-             (object/from-data m AuthenticationBuilder)))}} Authentication
+                    (object/from-data m AuthenticationBuilder)))}} Authentication
  {:tag "auth"
   :write {:from-map
           (fn [m]
@@ -59,5 +59,7 @@
  {:tag "builder.auth"
   :read {:to-map auth-map}
   :write {:empty (fn [] (AuthenticationBuilder.))
-          :methods (object/write-all-setters AuthenticationBuilder {:prefix "add"
-                                                                    :select {:password java.lang.String}})}})
+          :methods (object/write-all-setters
+                    AuthenticationBuilder
+                    {:prefix "add"
+                     :select {:password java.lang.String}})}})

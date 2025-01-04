@@ -150,7 +150,7 @@
    (thread:join (thread:current)))
   ([^Thread thread]
    (.join thread))
-  ([^Thread thread millis]
+  ([^Thread thread ^long millis]
    (.join thread millis))
   ([^Thread thread millis nanos]
    (.join thread millis nanos)))

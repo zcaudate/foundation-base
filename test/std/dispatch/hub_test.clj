@@ -29,11 +29,11 @@
                              (future (dotimes [i times]
                                        (let [id (swap! *counter* inc)]
                                          (future
-                                           (Thread/sleep (rand-int wait))
+                                           (Thread/sleep (long (rand-int wait)))
                                            (main-fn {:id  id
                                                      :group group
                                                      :val (+ i (* group groups))}))))
-                                     (if wait (Thread/sleep wait))))
+                                     (if wait (Thread/sleep (long wait)))))
                            (catch Throwable t
                              (.printStackTrace t)))
 

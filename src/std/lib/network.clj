@@ -129,7 +129,7 @@
                       [true false]
                       [false true])))]
          (cond retry?
-               (do (Thread/sleep (or pause 100))
+               (do (Thread/sleep (long (or pause 100)))
                    (recur (inc retries)))
 
                :else

@@ -244,4 +244,18 @@
    "--add-opens" "java.net.http/java.net.http=ALL-UNNAMED"
    "--add-opens" "java.net.http/jdk.internal.net.http=ALL-UNNAMED"
    "--add-opens" "java.management/java.lang.management=ALL-UNNAMED"
-   "--add-opens" "java.management/sun.management=ALL-UNNAMED"])
+   "--add-opens" "java.management/sun.management=ALL-UNNAMED"
+
+   "--add-opens" "java.desktop/java.applet=ALL-UNNAMED"
+   "--add-opens" "java.desktop/java.awt=ALL-UNNAMED"
+   "--add-opens" "java.desktop/java.awt.color=ALL-UNNAMED"
+   "--add-opens" "java.desktop/java.awt.dnd=ALL-UNNAMED"
+   "--add-opens" "java.desktop/java.awt.event=ALL-UNNAMED"
+   "--add-opens" "java.desktop/java.awt.font=ALL-UNNAMED"
+   "--add-opens" "java.desktop/java.awt.geom=ALL-UNNAMED"
+   "--add-opens" "java.desktop/java.awt.im=ALL-UNNAMED"
+   "--add-opens" "java.desktop/java.awt.im.spi=ALL-UNNAMED"
+   "--add-opens" "java.desktop/java.awt.image=ALL-UNNAMED"
+   "--add-opens" "java.desktop/java.awt.image.renderable=ALL-UNNAMED"
+   "--add-opens" "java.desktop/java.awt.print=ALL-UNNAMED"
+   ])

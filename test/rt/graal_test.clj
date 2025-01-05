@@ -9,8 +9,6 @@
   {:runtime :graal
    :require [[xt.lang.base-lib :as k]]})
 
-
-
 (fact:global
  {:setup [(l/rt:restart)]
   :teardown [(l/rt:stop)]})

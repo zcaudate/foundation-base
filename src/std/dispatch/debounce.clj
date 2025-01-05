@@ -17,7 +17,11 @@
 (defn- wrap-min-time
   ([handler interval delay]
    (fn [dispatch entry]
-     ((cc/wrap-min-time (fn [] (handler dispatch entry)) interval delay)))))
+     (try ((cc/wrap-min-time (fn []
+                               (handler dispatch entry))
+                             interval delay))
+          (catch Throwable t
+            (h/prn t))))))
 
 (defn submit-eager
   "submits and executes eagerly
@@ -35,7 +39,7 @@
                     (let [val (or (get m group) 0)]
                       (cond (zero? val)
                             [true (assoc m group 1)]
-
+                            
                             :else
                             [false m])))
          submit? (h/swap-return! counter check-fn)]
@@ -52,7 +56,7 @@
                   (catch Throwable t
                     (.printStackTrace t)
                     (hooks/on-error dispatch entry t))))
-
+           
            :else
            (do (hooks/on-skip dispatch entry)
                nil)))))

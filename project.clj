@@ -29,6 +29,9 @@
    ;; code.doc
    [markdown-clj/markdown-clj "1.11.8"] ;; not mustache
 
+   ;; code.java.compile
+   [org.ow2.asm/asm "9.7.1"]
+   
    ;; code.manage
    [org.clojure/tools.reader "1.3.7"]
 
@@ -146,7 +149,7 @@
                      comment [[:inner 0]]}}
   :profiles {:dev {:plugins [[lein-ancient "0.6.15"]
                              [lein-exec "0.3.7"]
-                             #_[cider/cider-nrepl "0.45.0"]]}
+                             [cider/cider-nrepl "0.45.0"]]}
              :repl {:injections [(try (require 'jvm.tool)
                                       (require '[std.lib :as h])
                                       (catch Throwable t (.printStackTrace t)))]}}
@@ -154,7 +157,7 @@
   :java-source-paths ["src-java" "test-java"]
   :java-output-path  "target/classes"
   :repl-options {:host "0.0.0.0"
-                 :port 51311}
+                 :port 10234 #_51311}
   :jvm-opts
   ["-Xms2048m"
    "-Xmx2048m"
@@ -241,59 +244,4 @@
    "--add-opens" "java.net.http/java.net.http=ALL-UNNAMED"
    "--add-opens" "java.net.http/jdk.internal.net.http=ALL-UNNAMED"
    "--add-opens" "java.management/java.lang.management=ALL-UNNAMED"
-   "--add-opens" "java.management/sun.management=ALL-UNNAMED"
-   
-   "--add-opens" "java.desktop/java.applet=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.awt=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.awt.color=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.awt.dnd=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.awt.event=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.awt.font=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.awt.geom=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.awt.im=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.awt.im.spi=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.awt.image=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.awt.image.renderable=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.awt.print=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.beans=ALL-UNNAMED"
-   "--add-opens" "java.desktop/java.beans.beancontext=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.accessibility=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.imageio=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.imageio.event=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.imageio.metadata=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.imageio.plugins.bmp=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.imageio.plugins.jpeg=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.imageio.spi=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.imageio.stream=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.print=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.print.attribute=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.print.attribute.standard=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.print.event=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.sound.midi=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.sound.midi.spi=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.sound.sampled=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.sound.sampled.spi=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.border=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.colorchooser=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.event=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.filechooser=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.plaf=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.plaf.basic=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.plaf.metal=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.plaf.multi=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.plaf.nimbus=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.plaf.synth=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.table=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.text=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.text.html=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.text.html.parser=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.text.rtf=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.tree=ALL-UNNAMED"
-   "--add-opens" "java.desktop/javax.swing.undo=ALL-UNNAMED"
-
-   "--add-opens" "org.bouncycastle.openpgp/org.bouncycastle.openpgp=ALL-UNNAMED"
-   
-   
-   ;;"--illegal-access=permit"
-   ])
+   "--add-opens" "java.management/sun.management=ALL-UNNAMED"])

@@ -27,17 +27,17 @@
  
    ((wrap-min-time (fn []) 100 10))"
   {:added "3.0"}
-  ([f ^long total]
+  ([f total]
    (wrap-min-time f total 0))
-  ([f ^long total ^long delay]
+  ([f total delay]
    (fn []
      (let [start (System/currentTimeMillis)
-           _ (if (and delay (pos? delay)) (Thread/sleep delay))
+           _ (if (and delay (pos? delay)) (Thread/sleep (long delay)))
            _ (f)
            end (System/currentTimeMillis)
            duration (- end start)]
        (if (> total duration)
-         (Thread/sleep (- total duration)))))))
+         (Thread/sleep (long (- total duration))))))))
 
 (defn ^BlockingQueue exec:queue
   "contructs a raw queue in different ways

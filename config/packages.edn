@@ -14,7 +14,8 @@
  
  xyz.zcaudate/code.java
  {:description "source and test management"
-  :include [[code.java :complete]]}
+  :include [[code.java :complete]]
+  :dependencies [org.ow2.asm/asm]}
  
  xyz.zcaudate/code.link
  {:description "code packaging and distribution"
@@ -143,6 +144,14 @@
  xyz.zcaudate/js.react-native
  {:description "js react native ui libraries" 
   :include [[js.react-native :complete]]}
+   
+ xyz.zcaudate/kmi.queue
+ {:description "kmi queue library" 
+  :include [[kmi.queue    :complete]]} 
+ 
+ xyz.zcaudate/kmi.redis
+ {:description "kmi redis library" 
+  :include [[kmi.redis    :complete]]}
  
  xyz.zcaudate/lib.aether
  {:description "wrapper for org.eclipse.aether"

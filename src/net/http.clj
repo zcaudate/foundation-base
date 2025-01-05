@@ -26,7 +26,7 @@
              ws/close!
              ws/abort!)
 
-(defn url-encode [s]
+(defn url-encode [^String s]
   (.replace (URLEncoder/encode s "UTF-8") "+" "%20"))
 
 (defn encode-form-params

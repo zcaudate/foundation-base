@@ -11,7 +11,7 @@
             [std.lang.base.grammar :as grammar]
             [std.lang.base.grammar-spec :as spec]
             [std.lang.base.util :as ut]
-	    [std.lang.base.book :as book]
+	        [std.lang.base.book :as book]
             [std.lang.base.script :as script]
             [std.lang.model.spec-xtalk]
             [std.lang.model.spec-xtalk.fn-js :as fn]

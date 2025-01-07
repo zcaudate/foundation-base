@@ -1,6 +1,7 @@
 (ns std.lang.base.compile-test
   (:use code.test)
-  (:require [std.lang.base.compile :refer :all]))
+  (:require [std.lang.base.compile :refer :all]
+            [std.make.compile :as compile]))
 
 ^{:refer std.lang.base.compile/compile-script :added "4.0"}
 (fact "compiles a script")
@@ -20,7 +21,7 @@
   (fact "compiles a script with dependencies when given a "
     ^:hidden
     
-    (with:mock-compile
+    (compile/with:mock-compile
      (compile-script {:root   ".build"
                       :target "src"
                       :file   "pkg/file.lua"
@@ -59,33 +60,43 @@
          "  end,nil,seq)"
          "  return out"
          "end")])
-
+  
   ^{:refer std.make.compile/compile-module :added "4.0"}
   (fact "compiles a module"
     ^:hidden
-
     
-    (with:mock-compile
-     (compile-module 'L.core
-                     {:lang :lua
-                      :root   ".build"
-                      :target "src"
-                      :file   "pkg/file.lua"}))
+    (compile/with:mock-compile
+      (compile-module-single 
+       {:lang :lua
+        :root   ".build"
+        :target "src"
+        :file   "pkg/file.lua"
+        :main 'L.core}))
     => (contains
         [".build/src/pkg/file.lua"
          string?]))
-
+  
   ^{:refer std.make.compile/compile-graph :added "4.0"}
   (fact "compiles a root module and all dependencies"
     ^:hidden
     
     (require 'js.blessed.form-test)
-    (with:mock-compile
-     (compile-graph 
-      {:lang :js
-       :main 'js.blessed.form-test
-       :root   ".build"
-       :target "src"}))
+    (compile/with:mock-compile
+      (compile-module-graph
+       {:lang :js
+        :main 'js.blessed.form-test
+        :root   ".build"
+        :target "src"}))
+    => coll?
+
+
+    (require 'js.blessed.form-test)
+    (compile/with:mock-compile
+      (compile-module-single
+       {:lang :js
+        :main 'js.blessed.form-test
+        :root   ".build"
+        :target "src"}))
     => coll?)
 
   ^{:refer std.make.compile/compile-schema :added "4.0"}

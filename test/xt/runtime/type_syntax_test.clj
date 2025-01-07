@@ -40,8 +40,9 @@
 (fact "creates a syntax"
 
   (!.js
-   (tc/count
-    (syn/syntax-create [1 2 3] "hello"))))
+    (tc/count
+    (syn/syntax-create [1 2 3] "hello")))
+  => 3)
 
 ^{:refer xt.runtime.type-syntax/get-metadata :added "4.0"}
 (fact "gets metadata"

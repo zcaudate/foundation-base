@@ -102,20 +102,20 @@
 (defn compile-module-schema
   "compiles all namespaces into a single file (for sql)"
   {:added "4.0"}
-    ([{:keys [header footer lang main root target] :as opts}]
-     (let [mopts   (last (impl/emit-options opts))
-           lib         (impl/runtime-library)
-           snapshot    (lib/get-snapshot lib)
-           book        (snap/get-book snapshot lang)
-           deps        (h/deps:ordered book [main])
-           full-arr    (map (fn [module-id]
-                              (-> (lifecycle/emit-module-setup module-id
-                                                               mopts)
-                                  (compile/compile-fullbody opts)))
-                            deps)
-           full        (str/join "\n\n" full-arr)
-           output (compile/compile-out-path opts)]
-       (compile/compile-write output full))))
+  ([{:keys [header footer lang main root target] :as opts}]
+   (let [mopts   (last (impl/emit-options opts))
+         lib         (impl/runtime-library)
+         snapshot    (lib/get-snapshot lib)
+         book        (snap/get-book snapshot lang)
+         deps        (h/deps:ordered book [main])
+         full-arr    (map (fn [module-id]
+                            (-> (lifecycle/emit-module-setup module-id
+                                                             mopts)
+                                (compile/compile-fullbody opts)))
+                          deps)
+         full        (str/join "\n\n" full-arr)
+         output (compile/compile-out-path opts)]
+     (compile/compile-write output full))))
 
 (def +install-module-schema-fn+
   (compile/types-add :module.schema #'compile-module-schema))

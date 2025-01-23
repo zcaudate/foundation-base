@@ -104,10 +104,15 @@
    (-> (query/query-fn spec-sym (merge params {:single true}))
        (with-meta {:op/type :get}))))
 
-(defmacro.pg view
+(defmacro.pg ^{:- [:block]
+               :style/indent 0}
+  view
   "constructs a view form"
   {:added "4.0"}
   [qret
    qsel
    & [qopts]]
-  (apply list query/query-fn (view/view-fn qret qsel qopts)))
+  (apply query/query-fn (view/view-fn qret qsel qopts))
+  ;;(list 'quote )
+  ;;(apply list query/query-fn (view/view-fn qret qsel qopts))
+  )

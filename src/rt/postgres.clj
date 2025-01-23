@@ -40,8 +40,7 @@
              
              graph-view/defaccess.pg
              graph-view/defret.pg
-             graph-view/defsel.pg
-             graph-view/view)
+             graph-view/defsel.pg)
 
 (defn purge-postgres
   "purges the rt.postgres library. Used for debugging"

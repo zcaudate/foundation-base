@@ -246,4 +246,5 @@
    qsel
    & [qopts]]
   (l/with:macro-opts [(l/rt:macro-opts :postgres)]
-    (list 'quote (apply query/query-fn (view-fn qret qsel qopts)))))
+    (apply query/query-fn (view-fn qret qsel qopts))
+    #_(list 'quote )))

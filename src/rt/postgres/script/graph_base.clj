@@ -68,9 +68,10 @@
   {:added "4.0"}
   [[k v] where-fn tsch mopts]
   (let [k (cond (string? k)
-                (if (str/ends-with? k "_id")
-                  (keyword (subs k 0 (- (count k) 3)))
-                  (keyword k))
+                ((str/wrap str/spear-case)
+                 (if (str/ends-with? k "_id")
+                   (keyword (subs k 0 (- (count k) 3)))
+                   (keyword k)))
                 
                 :else k)]
     

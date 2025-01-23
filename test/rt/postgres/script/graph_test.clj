@@ -1,6 +1,7 @@
 (ns rt.postgres.script.graph-test
   (:use code.test)
   (:require [rt.postgres.script.graph :refer :all]
+            [rt.postgres.script.graph-view :as view]
             [rt.postgres.script.impl-base :as impl]
             [rt.postgres.grammar.common-application :as app]
             [rt.postgres.script.scratch :as scratch]
@@ -24,7 +25,11 @@
   => string?)
 
 ^{:refer rt.postgres.script.graph/g:count :added "4.0"}
-(fact "gets only count")
+(fact "gets only count"
+  ^:hidden
+  
+  (pg/g:count scratch/Task)
+  => string?)
 
 ^{:refer rt.postgres.script.graph/g:select :added "4.0"}
 (fact "returns matching entries"
@@ -96,4 +101,22 @@
   => string?)
 
 ^{:refer rt.postgres.script.graph/view :added "4.0"}
-(fact "constructs a view form")
+(fact "constructs a view form"
+  ^:hidden
+
+  (view/defret.pg ^{:- [scratch/Task]}
+    task-basic
+    [:uuid i-task-id]
+    #{:*/data})
+  
+  (view/defsel.pg ^{:- [scratch/Task]
+                  :scope #{:public}
+                    :args [:name i-name]}
+    task-by-name
+    {:name i-name})
+  
+  (pg/view
+      [-/task-basic]
+      [-/task-by-name "hello"]
+    {:limit 10})
+  => string?)

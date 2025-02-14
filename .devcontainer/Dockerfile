@@ -13,4 +13,4 @@ WORKDIR /workspace
 # COPY . /workspace
 
 # Expose any ports needed for live-reload or webserver (if you want).
-EXPOSE 8080,10234
+EXPOSE 8080 10234

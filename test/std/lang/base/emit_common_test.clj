@@ -308,7 +308,13 @@
   ^:hidden
   
   (emit-assign ":eq" '[x 1] helper/+default+ {})
-  => "x :eq 1")
+  => "x :eq 1"
+
+  (emit-assign "=" '[x 1] helper/+default+ {})
+  => "x = 1"
+
+  (emit-assign "=" '[x 1] helper/+default+ {})
+  => "x = 1")
 
 ^{:refer std.lang.base.emit-common/emit-return-do :added "4.0"}
 (fact "creates a return statement on `do` block"
@@ -323,7 +329,10 @@
   ^:hidden
   
   (emit-return-base "break" [1] helper/+default+ {})
-  => "break 1")
+  => "break 1"
+
+  (emit-return-base "return" [1] helper/+default+ {})
+  => "return 1")
 
 ^{:refer std.lang.base.emit-common/emit-return :added "3.0"}
 (fact "creates a return type statement"
@@ -332,6 +341,9 @@
   (emit-return "break" [1] helper/+default+ {})
   => "break 1"
 
+  (emit-return "return" [1 2 3] helper/+default+ {})
+  => (throws)
+  
   (emit-return "return" [1 2 3] (assoc-in helper/+default+
                                           [:default :return :multi] true) {})
   => "return 1, 2, 3")
@@ -517,6 +529,9 @@
 
   (emit-index-entry [9] helper/+default+ {})
   => "[9]"
+
+  (emit-index-entry [9 10] helper/+default+ {})
+  => (throws)
   
   (emit-index-entry '(call 1 2 3) helper/+default+ {})
   => ".call(1,2,3)")

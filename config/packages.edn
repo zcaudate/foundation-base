@@ -263,8 +263,13 @@
   :include [[rt.basic :complete]]
   :dependencies [http-kit]}
  
+ xyz.zcaudate/rt.jep
+ {:description "runtime for jep" 
+  :include [[rt.jep :complete]]
+  :dependencies [black.ninia/jep]}
+ 
  xyz.zcaudate/rt.graal
- {:description "wrapper for graal contexts"
+ {:description "runtime for graal contexts"
   :include [[rt.graal :complete]]
   :bundle [{:path "target/classes" 
             :include ["hara/lib/graal"]}]
@@ -274,15 +279,15 @@
 		 commons-io/commons-io]}
  
  xyz.zcaudate/rt.nginx
- {:description "wrapper for nginx" 
+ {:description "runtime for nginx" 
   :include [[rt.nginx :complete]]}
   
  xyz.zcaudate/rt.postgres
- {:description "wrapper for postgres" 
+ {:description "runtime for postgres" 
   :include [[rt.postgres :complete]]}
   
  xyz.zcaudate/rt.redis
- {:description "wrapper for redis" 
+ {:description "runtime for redis" 
   :include [[rt.redis :complete]]
   :bundle [{:path "resources" :include ["assets/rt.redis"]}]}
   

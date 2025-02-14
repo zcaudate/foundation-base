@@ -1,0 +1,41 @@
+{
+  "name": "Clojure Dev Environment",
+  // Point to the Dockerfile we just created
+  "dockerFile": "Dockerfile",
+  
+  // (Optional) Specify default container run arguments
+  "runArgs": [
+    // "--cap-add=SYS_PTRACE",
+    "--security-opt",
+    "seccomp=unconfined"
+  ],
+
+  // Define environment variables if needed
+  "containerEnv": {
+    "MY_ENV_VAR": "some_value"
+  },
+
+  // Configure some default settings in VS Code
+  "settings": {
+    "terminal.integrated.profiles.linux": {
+      "bash": {
+        "path": "/bin/bash"
+      }
+    },
+    // Make Calva extension auto-format on save, for example:
+    "[clojure]": {
+      "editor.formatOnSave": true
+    }
+  },
+
+  // List VS Code extensions to install in the container
+  "extensions": [
+    // Calva is a popular extension for Clojure
+    "betterthantomorrow.calva"
+    // Add more extensions if desired
+  ],
+
+  // The command to run after the container is created
+  // e.g. to pull dependencies with tools.deps or lein
+  "postCreateCommand": "lein deps"
+}

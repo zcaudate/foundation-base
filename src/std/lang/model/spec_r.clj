@@ -138,7 +138,7 @@
         :for-return  {:macro #'tf-for-return :emit :macro}})
       (grammar/build:override fn/+r+ )
       (grammar/build:extend
-       {:na     {:op :na    :symbol '#{NA}    :raw "NA"    :value true :emit :throw}
+       {;;:na     {:op :na    :symbol '#{NA}    :raw "NA"    :value true :emit :throw}
         :next   {:op :next  :symbol '#{:next} :raw "next"  :emit :return}
         :throw  {:op :next  :symbol '#{throw} :raw 'stop :emit :alias}
         :repeat {:op :repeat
@@ -188,7 +188,13 @@
 
 (def +init+
   (script/install +book+))
-  
+
+(comment
+  (std.lang/script :r)
+
+  (!.R
+    (NA (+ 1 2 NA))))
+
 
 (comment
   :on     {:op :on    :symbol '#{on :on}     :raw "~" :emit :bi}
@@ -197,25 +203,25 @@
   :mmul   {:op :mmul  :symbol '#{*| mmul} :raw "%*%" :emit :bi}
   
 
-(def +reserved+
-  (-> (grammar/ops :exclude [[:general :exclude [:try]]
-                             :type
-                             :counter
-                             :yield
-                             :infix
-                             [:return :exclude [:ret]]
-                             [:bit :exclude [:bitsl :bitsr]]])
-      (h/merge-nested
-       {:new    {:value true}
-        :setrq  {:op :setrq :symbol '#{:>} :raw "->"}
-        :neg    {:emit :invoke}
+  (def +reserved+
+    (-> (grammar/ops :exclude [[:general :exclude [:try]]
+                               :type
+                               :counter
+                               :yield
+                               :infix
+                               [:return :exclude [:ret]]
+                               [:bit :exclude [:bitsl :bitsr]]])
+        (h/merge-nested
+         {:new    {:value true}
+          :setrq  {:op :setrq :symbol '#{:>} :raw "->"}
+          :neg    {:emit :invoke}
         
-        :defn   {:emit r-defn}
+          :defn   {:emit r-defn}
         
-        :prog   {:op :prog
-                 :symbol '#{prog} :type :block
-                 :block {:raw ""
-                         :main    #{:body}}}})
-      (grammar/map-symbols)))
+          :prog   {:op :prog
+                   :symbol '#{prog} :type :block
+                   :block {:raw ""
+                           :main    #{:body}}}})
+        (grammar/map-symbols)))
   
   )

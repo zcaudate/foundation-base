@@ -5,8 +5,10 @@
 
 (l/script :js)
 
+#_{:clj-kondo/ignore [:unresolved-symbol]}
 (!.js
   (fn []
+    #_{:clj-kondo/ignore [:invalid-arity]}
     (var a 1)
     (var b 2)
     (return
@@ -21,13 +23,17 @@
 
 
 
+
+
 (l/script :python
   {:runtime :basic
    :require [[xt.lang.base-lib :as k]]})
 
+
 (defn.py add-20
   [y]
   (return (+ y 20)))
+
 
 ;;;
 ;;; TIC TAC TOE

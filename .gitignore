@@ -15,6 +15,9 @@ form-init*
 .#*
 .DS_Store
 .hara
+.clj-kondo/.cache
+.calva
+.lsp/.cache
 /hsperfdata_root
 /tmp*
 /lein-*

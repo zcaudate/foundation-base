@@ -1,7 +1,6 @@
 (ns code.framework.test.fact
   (:require [code.framework.common :as common]
             [code.query :as query]
-            [std.block :as block]
             [code.query.block :as nav]))
 
 (defn gather-fact-body
@@ -24,9 +23,9 @@
                (recur (nav/right* nav) (conj output
                                              (nav/block
                                               (nav/right (nav/down nav)))))
-               
+
                :else output)
-         
+
          (query/match nav string?)
          (recur (nav/right* nav)
                 (conj output (common/gather-string nav)))
@@ -77,7 +76,7 @@
 
 (defmethod common/analyse-test :fact
   ([type nav]
-   (let [fns  (query/$ nav [(#{fact comment} | & _)] {:return :zipper :walk :top})]
+   (let [fns  (query/$* nav ['(#{fact comment} | & _)] {:return :zipper :walk :top})]
      (->> (keep gather-fact fns)
           (reduce (fn [m {:keys [ns var class sexp test intro line form] :as meta}]
                     (-> m

@@ -31,7 +31,8 @@
   // List VS Code extensions to install in the container
   "extensions": [
     // Calva is a popular extension for Clojure
-    "betterthantomorrow.calva"
+    "betterthantomorrow.calva",
+    "ms-vsliveshare.vsliveshare"
     // Add more extensions if desired
   ],
 

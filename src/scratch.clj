@@ -1,32 +1,31 @@
 (ns scratch
   (:require [std.lang :as l]
-            [std.lib :as h]
             [clojure.set :as set]))
 
 (l/script :lua
-  {:runtime :basic
-   })
+  {:runtime :basic})
 
 (!.lua
-  ('((fn [] (return 1)))))
+ ((fn []
+    (return ((fn [] (return 2)))))))
 
 (l/script :js
   {:runtime :basic})
 
 (!.js
   ((fn []
-     (return ((fn [] (return 1)))))))
+     (return ((fn [] (return 2)))))))
 
 (!.py
     ((fn []
        (return ((fn [] (return 1)))))))
 
 (!.js
-  (fn []
-    (var a 1)
-    (var b 2)
-    (return
-     (+ 1 2 3))))
+(fn []
+   (var a 1)
+   (var b 2)
+   (return
+    (+ 1 2 3))))
 
 
 (defn.js add-10
@@ -122,7 +121,7 @@
         new-board (-> board
                       (update :bg disj pos)
                       (update side conj pos))
-        
+
         ;; Check for winner 
         is-winner (check-win (get new-board side))
 
@@ -148,11 +147,9 @@
 
 
 (comment
-  
-  
-  (check-win #{:aa :ab :cc})
-  
-  (add-10 10)
-  (add-20 10)
 
-  )
+
+  (check-win #{:aa :ab :cc})
+
+  (add-10 10)
+  (add-20 10))

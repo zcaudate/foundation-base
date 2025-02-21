@@ -94,7 +94,7 @@
 
 (defmethod common/analyse-test :clojure
   ([type nav]
-   (let [fns  (query/$ nav [(deftest _ | & _)] {:return :zipper :walk :top})]
+   (let [fns  (query/$* nav ['(deftest _ | & _)] {:return :zipper :walk :top})]
      (->> (keep gather-deftest fns)
           (reduce (fn [m {:keys [ns var class test intro line] :as meta}]
                     (-> m

@@ -2,7 +2,6 @@
   (:require [std.fs :as fs]
             [code.framework.common :as common]
             [std.block :as block]
-            [std.concurrent :as cc]
             [std.lib :as h])
   (:refer-clojure :exclude [update]))
 

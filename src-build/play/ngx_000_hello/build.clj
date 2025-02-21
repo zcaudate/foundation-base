@@ -30,20 +30,20 @@
   ;; BUILD SETUP
   ;;
   }
-(fact "Code FOR PROJECT SETUP" 
+(fact "Code FOR PROJECT SETUP"
 
-  (make/build-all PROJECT))
+      (make/build-all PROJECT))
 
 ^{:eval false
   ;;
   ;; BUILD SETUP
   ;;
   }
-(fact "Code FOR PROJECT SETUP" 
+(fact "Code FOR PROJECT SETUP"
 
-  (make/run:dev PROJECT)
+      (make/run:dev PROJECT)
 
-  (make/run-internal PROJECT :run))
+      (make/run-internal PROJECT :run))
 
 ^{:eval false
   ;;
@@ -52,7 +52,7 @@
   :ui/action [:GITHUB :SETUP]}
 (fact "initial setup of repo from github"
 
-  (make/gh:dwim-init PROJECT))
+      (make/gh:dwim-init PROJECT))
 
 ^{:eval false
   ;;
@@ -61,5 +61,5 @@
   :ui/action [:GITHUB :PUSH]}
 (fact "pushes changes to github"
 
-  (make/gh:dwim-push PROJECT))
+      (make/gh:dwim-push PROJECT))
 

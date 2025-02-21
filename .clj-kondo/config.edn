@@ -1,0 +1,30 @@
+{:hooks {std.lib.foundation/intern-in clj-kondo.hooks.std-lib/import-vars-hook}
+ :lint-as {std.make/def.make clojure.core/def}
+ :linters {:refer-all {:exclude [clojure.set code.test]
+                       :level :off}
+           :clojure-lsp/unused-public-var
+           {:level :off}
+           :use
+           {:level :off}
+           :unused-namespace
+           {:level :off}
+           :unused-import
+           {:level :off}
+           :unused-binding
+           {:level :off}
+           :redundant-do
+           {:level :off}
+           :missing-else-branch
+           {:level :off}
+           :unknown-require-option
+           {:level :off}
+           :unresolved-var
+           {:level :off}
+           :unresolved-namespace
+           {:exclude [code.manage]}
+           :unresolved-symbol
+           {:exclude [=>
+                      fact
+                      (clojure.test/is [match?])]}}}
+
+  

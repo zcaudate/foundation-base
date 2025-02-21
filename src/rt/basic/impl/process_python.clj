@@ -18,7 +18,14 @@
                         :basic       :cpython
                         :interactive :cpython
                         :websocket   :cpython}
-             :env      {:cpython   {:exec    "python3"
+             :env      {:conda     {:exec    "conda"
+                                    :flags   {:oneshot     ["run" "-n" :venv "python" "-c"]
+                                              :basic       ["run" "-n" :venv "python" "-c"]
+                                              :websocket   ["run" "-n" :venv "python" "-c"]
+                                              :interactive ["run" "-n" :venv "python" "-i"]
+                                              :json ["json" :builtin]
+                                              :ws-client ["websocket" :installed]}}
+                        :cpython   {:exec    "python3"
                                     :flags   {:oneshot   ["-c"]
                                               :basic     ["-c"]
                                               :websocket ["-c"]

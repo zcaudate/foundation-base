@@ -143,7 +143,7 @@
                wrap   true
                trim   true}} opts
          root      (or root (System/getenv "PWD"))
-         _         (if print (env/p (str "\nSH " args)))
+         _         (if print (env/prn args))
          wait      (if (nil? wait)
                      (or async (not inherit))
                      wait)

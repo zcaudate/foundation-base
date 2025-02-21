@@ -187,6 +187,7 @@
            {:keys [macro emit wrappable]} (get-in grammar [:reserved (first form)])]
        (boolean (or wrappable
                     (infix? emit)
+                    ('#{fn fn.inner} (first form))
                     (and (= :macro emit)
                          (emit-wrappable? (macro form) grammar)))))
      false)))

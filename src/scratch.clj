@@ -1,14 +1,28 @@
-(ns hello
+(ns scratch
   (:require [std.lang :as l]
             [std.lib :as h]
             [clojure.set :as set]))
 
-(l/script :js)
+(l/script :lua
+  {:runtime :basic
+   })
 
-#_{:clj-kondo/ignore [:unresolved-symbol]}
+(!.lua
+  ('((fn [] (return 1)))))
+
+(l/script :js
+  {:runtime :basic})
+
+(!.js
+  ((fn []
+     (return ((fn [] (return 1)))))))
+
+(!.py
+    ((fn []
+       (return ((fn [] (return 1)))))))
+
 (!.js
   (fn []
-    #_{:clj-kondo/ignore [:invalid-arity]}
     (var a 1)
     (var b 2)
     (return
@@ -19,16 +33,35 @@
   [x]
   (return (+ x 10)))
 
+(comment
+
+  (h/sh {:print true
+         :args ["python", "-c", "import os; print(os.getenv('HELLO', 'Undefined'))"]
+         :env {"HELLO" "WORLD"}}))
 
 
+(do 
 
+  (l/script :python
+    {:require [[xt.lang.base-lib :as k]]})
+  
+  (l/script :python
+    {:runtime :basic
+     :config {:program :conda
+              :params  {:venv "dummy"}
+              :shell   {:env {"HELLO" "1"
+                              "WORLD" "2"}
+                        :print true}}
+     :require [[xt.lang.base-lib :as k]]}))
 
+^*(!.py
+    ((fn []
+       ((fn [] 1)))))
 
-
-(l/script :python
-  {:runtime :basic
-   :require [[xt.lang.base-lib :as k]]})
-
+(!.py
+  (:- import os)
+  [(os.getenv "HELLO")
+   (os.getenv "WORLD")])
 
 (defn.py add-20
   [y]

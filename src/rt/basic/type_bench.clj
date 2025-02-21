@@ -39,9 +39,19 @@
                      host]
               :as opts}
    input-args input-body]
-  (let [process (h/sh {:args (concat input-args (h/seqify input-body))
-                       :wait false
-                       :root root-dir})
+  (let [cmd  (concat input-args (h/seqify input-body))
+        cmd  (h/postwalk (fn [x]
+                           (if (keyword? x)
+                             (or (get (:params opts) x)
+                                 (throw (ex-info (str "Need to supply in [:config :params " x "]")
+                                                 {:cmd cmd
+                                                  :params (:params opts)})))
+                             x))
+                         cmd)  
+        process (h/sh (merge (:shell opts)
+                             {:args cmd
+                              :wait false
+                              :root root-dir}))
         thread  (-> (h/future (h/sh-wait process))
                     (h/on:complete (fn [ret err]
                                      (try (let [out (h/sh-output process)]

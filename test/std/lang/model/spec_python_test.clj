@@ -35,15 +35,15 @@
   
   (l/emit-as
    :python '[(fn:> 1)])
-  => "(lambda : 1)"
+  => "lambda : 1"
 
   (l/emit-as
    :python '[(fn [] 1)])
-  => "(lambda : 1)"
+  => "lambda : 1"
   
   (l/emit-as
    :python '[(fn [] (return 1))])
-  => "(lambda : 1)"
+  => "lambda : 1"
 
   (l/emit-as
    :python '[(fn hello [] (return 1))])

@@ -11,10 +11,6 @@
             [rt.basic.type-bench :as bench]
             [rt.basic.type-container :as container]))
 
-(comment
-  (h/os-arch)
-  "aarch64")
-
 (defn start-basic
   "starts the basic rt"
   {:added "4.0"}

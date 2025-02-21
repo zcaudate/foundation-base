@@ -63,14 +63,14 @@
          
          :else
          (let [[args body] args]
-           (list 'quote (list (apply list :- :lambda
-                                     (concat (if (not-empty args)
-                                               [(list 'quote args) ":"]
-                                               [":"])
-                                             [(if (and (h/form? body)
-                                                       (= 'return (first body)))
-                                                (second body)
-                                               body)]))))))))
+           (apply list :- :lambda
+                  (concat (if (not-empty args)
+                            [(list 'quote args) ":"]
+                            [":"])
+                          [(if (and (h/form? body)
+                                    (= 'return (first body)))
+                             (second body)
+                             body)]))))))
 
 (defn python-defclass
   "emits a defclass template for python"

@@ -10,10 +10,10 @@
          
          [:solidity :default]          'rt.solidity.grammar
 	 
-	     [:bash   :oneshot]            'rt.basic.impl.process-bash
-	     [:bash   :basic]              'rt.shell
-	     [:bash   :remote]             'rt.shell
-
+	 [:bash   :oneshot]            'rt.basic.impl.process-bash
+	 [:bash   :basic]              'rt.shell
+	 [:bash   :remote]             'rt.shell
+         
          [:lua    :oneshot]            'rt.basic.impl.process-lua
          [:lua    :basic]              'rt.basic.impl.process-lua
          [:lua    :interactive]        'rt.basic.impl.process-lua
@@ -40,6 +40,7 @@
          [:python :websocket]          'rt.basic.impl.process-python
          [:python :graal]              'rt.graal
          [:python :jep]                'rt.jep
+         [:python :libpython]          'rt.libpython
          [:python :remote-port]        'rt.basic.impl.process-python
          [:python :remote-ws]          'rt.basic.impl.process-python
          

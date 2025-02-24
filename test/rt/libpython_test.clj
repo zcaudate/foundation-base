@@ -63,7 +63,7 @@
 ^{:refer rt.libpython/rt-libpython:create :added "4.0"}
 (fact "creates a libpython runtime"
 
-  (h/-> (rt-libpython:create {:lang :js})
+  (h/-> (lp/rt-libpython:create {:lang :js})
         (h/start)
         (h/stop))
-  => rt-libpython?)
+  => lp/rt-libpython?)

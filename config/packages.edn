@@ -263,11 +263,6 @@
   :include [[rt.basic :complete]]
   :dependencies [http-kit]}
  
- xyz.zcaudate/rt.jep
- {:description "runtime for jep" 
-  :include [[rt.jep :complete]]
-  :dependencies [black.ninia/jep]}
- 
  xyz.zcaudate/rt.graal
  {:description "runtime for graal contexts"
   :include [[rt.graal :complete]]
@@ -277,6 +272,16 @@
                  org.graalvm.js/js
 		 org.graalvm.js/js-scriptengine
 		 commons-io/commons-io]}
+ 
+ xyz.zcaudate/rt.jep
+ {:description "runtime for jep" 
+  :include [[rt.jep :complete]]
+  :dependencies [black.ninia/jep]}
+ 
+ xyz.zcaudate/rt.libpython
+ {:description "runtime for libpython" 
+  :include [[rt.libpython :complete]]
+  :dependencies [clj-python/libpython-clj]} 
  
  xyz.zcaudate/rt.nginx
  {:description "runtime for nginx" 

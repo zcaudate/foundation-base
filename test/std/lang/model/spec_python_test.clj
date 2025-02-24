@@ -17,15 +17,16 @@
   ^:hidden
   
   (l/emit-as
-   :python '[(defn ^{"@" [:classmethod
-                          :classmethod
-                          :classmethod]}
+   :python '[(defn ^{:decorators
+                     [classmethod
+                      classmethod
+                      (app.route "/about")]}
                hello [] (return 1))])
   => (std.string/|
       ""
       "@classmethod"
       "@classmethod"
-      "@classmethod"
+      "@app.route(\"/about\")"
       "def hello():"
       "  return 1"))
 
@@ -73,9 +74,10 @@
                                         :maxlen 255)
                      bl-text)
                
-               ^{"@" [:classmethod
-                      :classmethod
-                      :classmethod]}
+               ^{:decorators
+                 [classmethod
+                  classmethod
+                  classmethod]}
                (fn execute [self context]
                  (let [my-path (bpy.path.abspath "//")]
                    (when [:not my-path]

@@ -1,19 +1,41 @@
 (ns clj-kondo.hooks.std-lib
   (:require [clj-kondo.hooks-api :as api]))
 
-(defn import-vars-hook
-  "A hook to handle (import-vars some.ns/foo some.ns/bar) by generating
-   (declare foo bar). That way clj-kondo knows these vars exist."
+(defn intern-in-hook
   [call]
-  ;; `call` is a node representing (potemkin.namespaces/import-vars ...)
-  (let [[_ & imported] (api/child-nodes call)  ; skip macro symbol itself
-        ;; The import-vars macro can take a list of qualified symbols, options, etc.
-        ;; We'll do a simple approach: for each symbol, emit (declare symbol).
-        syms (->> imported
-                  (map api/sexpr)
-                  (filter symbol?))]   ; keep only symbols
+  (let [[_ & inputs] (:children call)  ; skip macro symbol itself
+        inputs  (map api/sexpr inputs)
+        syms    (filter symbol? inputs)
+        vecs    (filter vector? inputs)]
     (api/list-node
-     (cons (api/token-node 'do)
-           (for [s syms]
-             (api/list-node [(api/token-node 'declare)
-                             (api/token-node s)]))))))
+     (concat
+      [(api/token-node 'do)]
+      (for [s syms]
+        (api/list-node [(api/token-node 'def)
+                        (api/token-node (symbol (name s)))
+                        (api/token-node s)]))
+      (for [v vecs]
+        (api/list-node [(api/token-node 'def)
+                        (api/token-node (first v))
+                        (api/token-node (second v))]))))))
+
+(defn intern-all-hook
+  [call]
+  (let [[_ & inputs] (:children call)   ; skip macro symbol itself
+        inputs  (map api/sexpr inputs)
+        syms    (filter symbol? inputs)]
+    (api/list-node
+     (concat
+      [(api/token-node 'do)]
+      (for [s syms]
+        (api/list-node [(api/token-node 'use)
+                        (api/token-node s)]))))))
+
+(comment
+  (api/sexpr (api/coerce '(def a 1)))
+  
+  (api/token-node 'a/b)
+  (into {}
+        (api/list-node [(api/token-node 'a)
+                        (api/token-node 'b)
+                        (api/token-node 'c)])))

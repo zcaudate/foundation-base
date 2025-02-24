@@ -5,9 +5,13 @@
 (l/script :lua
   {:runtime :basic})
 
+(require '[js.core :as j])
+
+
+
 (!.lua
- ((fn []
-    (return ((fn [] (return 2)))))))
+  ((fn []
+     (return ((fn [] (return 2)))))))
 
 (l/script :js
   {:runtime :basic})
@@ -21,11 +25,11 @@
        (return ((fn [] (return 1)))))))
 
 (!.js
-(fn []
-   (var a 1)
-   (var b 2)
-   (return
-    (+ 1 2 3))))
+  (fn []
+    (var a 1)
+    (var b 2)
+    (return
+     (+ 1 2 3))))
 
 
 (defn.js add-10

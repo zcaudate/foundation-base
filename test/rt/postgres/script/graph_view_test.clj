@@ -145,20 +145,24 @@
   (view/view-fn '[-/task-basic]
                 '[-/task-by-name "hello"]
                 {:limit 10})
-  => '[rt.postgres.script.scratch/Task {:where {"name" [:eq "hello"]}, :returning #{:*/data}, :limit 10}])
+  => '[rt.postgres.script.scratch/Task
+       {:where {"name" [:eq "hello"]},
+        :returning #{:*/data},
+        :limit 10}])
 
 ^{:refer rt.postgres.script.graph-view/view :added "4.0"}
 (fact "view macro"
   ^:hidden
-  
-  (view/view [-/task-basic]
-      [-/task-by-name "hello"]
-      {:limit 10})
+
+  (macroexpand-1
+   '(view/view
+     [-/task-basic]
+     [-/task-by-name "hello"]
+     {:limit 10}))
   => '[:with j-ret :as [:select (--- [#{"id"} #{"status"} #{"name"} #{"time_created"} #{"time_updated"}])
                         :from rt.postgres.script.scratch/Task \\ :where {"name" [:eq "hello"]}
                         \\ :limit 10]
        \\ :select (jsonb-agg j-ret) :from j-ret])
 
 (comment
-  (./import)
-  )
+  (./import))

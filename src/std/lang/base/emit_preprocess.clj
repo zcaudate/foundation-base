@@ -78,7 +78,9 @@
                             (apply list
                                    (list 'var (or (h/var-sym (resolve (second tok)))
                                                   (h/error "Var not found" {:input (second tok)})))
-                                   input more))
+                                   (if input
+                                     (cons input more)
+                                     more)))
                       
                       :else
                       (apply list '!:decorate (apply vec (rest tag))
@@ -92,13 +94,7 @@
                  (= 'var (first input)))
           (list '!:deref (list 'var (or (h/var-sym (resolve (second input)))
                                         (h/error "Var not found" {:input (second input)}))))
-          (list '!:eval input))
-        
-        #_#_
-        (and (symbol? tag)
-             (str/includes? (str tag) "$$"))
-        (let [[cls func] (str/split (str tag) #"\$\$")]
-          (concat '($) [(symbol cls) func] (rest x)))))
+          (list '!:eval input))))
 
 (defn to-input
   "converts a form to input (extracting deref forms)"

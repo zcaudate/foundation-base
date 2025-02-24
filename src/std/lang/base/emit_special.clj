@@ -76,6 +76,7 @@
   "emits an eval form"
   {:added "4.0"}
   [_ _ [_ form] grammar {:keys [lang snapshot] :as mopts}]
+  (h/prn form)
   (emit-with-preprocess (eval form) grammar mopts))
 
 (defn emit-with-deref

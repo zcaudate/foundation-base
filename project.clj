@@ -25,6 +25,7 @@
    [javax.xml.bind/jaxb-api "2.4.0-b180830.0359"]
    [com.sun.xml.bind/jaxb-core "4.0.3"]
    [com.sun.xml.bind/jaxb-impl "4.0.3"]
+   [clj-kondo "2025.02.20"]
    
    ;; code.doc
    [markdown-clj/markdown-clj "1.11.8"] ;; not mustache
@@ -81,9 +82,6 @@
    
    ;; rt.basic
    [http-kit "2.6.0"]
-
-   ;; rt.jep
-   [black.ninia/jep "4.2.0"]
    
    ;; rt.graal
    [org.graalvm.sdk/graal-sdk "21.2.0"]
@@ -91,6 +89,13 @@
    [org.graalvm.js/js "21.2.0"]
    [org.graalvm.js/js-scriptengine "21.2.0"]
    [commons-io/commons-io "2.15.1"]
+   
+   ;; rt.jep
+   [black.ninia/jep "4.2.0"]
+   
+   ;; rt.libpython
+   [clj-python/libpython-clj "2.026"]
+   
    
    ;; std.pretty
    [org.clojure/core.rrb-vector "0.1.2"]
@@ -157,7 +162,7 @@
   :java-source-paths ["src-java" "test-java"]
   :java-output-path  "target/classes"
   :repl-options {:host "0.0.0.0"
-                 :port 10234 #_51311}
+                 :port #_10234 51311}
   :jvm-opts
   ["-Xms2048m"
    "-Xmx2048m"

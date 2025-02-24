@@ -40,7 +40,7 @@
   "creates a defn function for python"
   {:added "4.0"}
   ([form]
-   (let [decorators (get (meta (second form)) "@")
+   (let [decorators (get (meta (second form)) :decorators)
          body  (cons 'defn- (rest form))]
      (if (empty? decorators)
        body
@@ -48,7 +48,9 @@
                     \\ (mapcat (fn [d]
                                  [\\ (list :%
                                            (list :- "@")
-                                           (list :- (if (keyword? d) (h/strn d) d)))])
+                                           (if (keyword? d)
+                                             (list :- (h/strn d))
+                                             d))])
                                decorators))
          \\ ~body)))))
 
